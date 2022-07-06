@@ -1,0 +1,37 @@
+{
+  "version2": [
+    "kubeslice-architecture",
+    {
+      "type": "category",
+      "label": "Menu Example",
+      "collapsed": true,
+      "link" : {
+        "type": "doc",
+        "id": "menu/index"
+      },
+      "items": [
+        {
+          "type": "category",
+          "label": "Menu level 2",
+          "link": {
+            "type": "doc",
+            "id": "menu/menu2/index"
+          },
+          "items": [
+            {
+              "type": "category",
+              "label": "Menu level 3",
+              "link": {
+                "type": "doc",
+                "id" : "menu/menu2/menu3/index"
+              },
+              "items": [
+                "menu/menu2/menu3/sub-menu"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

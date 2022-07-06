@@ -1,0 +1,69 @@
+# Overview 
+
+## Introduction
+KubeSlice combines network, application, Kubernetes, and deployment services in a framework to accelerate 
+application deployment in a multi-cluster, multi-tenant environment. KubeSlice achieves this by 
+creating logical application Slice boundaries that allow pods and services to communicate seamlessly 
+across clusters, clouds, edges, and data centers.
+
+As enterprises expand application architectures to span multiple clusters located in data centers or cloud 
+provider regions, or across cloud providers, Kubernetes clusters need the ability to fully integrate 
+connectivity and pod-to-pod communications with namespace propagation across clusters.
+
+KubeSlice enables creating multiple logical slices in a single cluster or group of clusters regardless of 
+their physical location.  Existing intra-cluster communication remains local to the cluster utilizing each 
+pod’s CNI interface. Kubeslice provides isolation of network traffic between clusters by creating an overlay 
+network for inter-cluster communication.
+
+KubeSlice accomplishes this by adding a second interface to the pod allowing local traffic to remain on the 
+CNI interface, and traffic bound for external clusters route over the overlay network to its destination pod 
+making KubeSlice CNI agnostic. 
+
+KubeSlice solves the complex problem of overlapping IP addressing between cloud providers, data centers, and 
+edge locations. The overlay network is configured with a non-overlapping RFC1918 private network CIDR address 
+space. As KubeSlice creates network isolation, KubeSlice also takes the responsibility of allocating subnets 
+that are configurable based on the number of pods allocated to have inter-cluster reachability. In addition, 
+the same RFC1918 address can be configured across multiple slices created on the same cluster or cluster sets 
+further simplifying IP address management.
+
+KubeSlice offers services that dramatically increase application velocity for platform and product teams to 
+achieve uniformity for applications in multi-cluster environments.
+
+## Why KubeSlice?
+As enterprises expand application architectures to span multiple clusters located in data centers or cloud 
+provider regions, or across cloud providers, Kubernetes clusters need the ability to fully integrate 
+connectivity and pod-to-pod communications with namespace propagation across clusters.
+
+KubeSlice enables creating multiple logical slices in a single cluster or group of clusters regardless of 
+their physical location.  Existing intra-cluster communication remains local to the cluster utilizing each 
+pod’s CNI interface. Kubeslice provides isolation of network traffic between clusters by creating an overlay 
+network for inter-cluster communication.
+
+KubeSlice accomplishes this by adding a second interface to the pod allowing local traffic to remain on the 
+CNI interface, and traffic bound for external clusters route over the overlay network to its destination pod 
+making KubeSlice CNI agnostic. 
+
+KubeSlice solves the complex problem of overlapping IP addressing between cloud providers, data centers, and 
+edge locations. The overlay network is configured with a non-overlapping RFC1918 private network CIDR address 
+space. As KubeSlice creates network isolation, KubeSlice also takes the responsibility of allocating subnets 
+that are configurable based on the number of pods allocated to have inter-cluster reachability. In addition, 
+the same RFC1918 address can be configured across multiple slices created on the same cluster or cluster sets 
+further simplifying IP address management.
+
+KubeSlice offers services that dramatically increase application velocity for platform and product teams to 
+achieve uniformity for applications in multi-cluster environments.
+
+## KubeSlice Features
+
+
+| **Services**                        | **Feature**  | **Description**   |
+| ----------------------------------- | --------------------------------| ----------------------------------------------------------------- 
+| Application                         |  Namespace sameness | Allows the freedom to deploy applications across clusters with namespace |parity.|
+| | Service exports and Service imports | Automatic service imports and exports allow service discovery across cluster boundaries. |
+| | Isolation | Allows isolation by association of application namespaces with a slice.- | 
+|  | Network | East-West cluster communication Enabled by automatically creating tunnels between clusters, on a per slice basis, establishing an overlay network enabling service-to-service communication as a flat Layer 3 network. Kubeslice can also be configured to utilize East-West ingress and egress gateways.|
+| | Remove IP Addressing Complexity- | KubeSlice solves the complex problem of overlapping IP addressing between clusters across cloud providers, data centers, and edge locations. The overlay network is configured with a non-overlapping RFC1918 address space removing overlapping CNI CIDR concerns.| 
+|  | QoS Profiling |  Slices in a cluster have a QoS profile defined per slice, allowing granular traffic control between clusters.< |
+| Security                            | Cross cluster Layer 3 secure connectivity  | KubeSlice gateway nodes establish encrypted VPN tunnels between all registered clusters. |
+|                                     | Network Policy Management | KubeSlice provides Network Policies that are normalized across all clusters. The clusters registered in the slice configuration can be tied to a slice forming network segmentation at Layer 3 that allow/deny traffic to applications external from the slice application and allowed namespaces. |
+|                                     | Multi-Tenancy   | KubeSlice manages namespaces that are associated with a slice, creating application isolation and reducing the blast radius.    |                                                                                                                                                                   |

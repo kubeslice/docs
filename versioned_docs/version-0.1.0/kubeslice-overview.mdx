@@ -1,0 +1,30 @@
+---
+sidebar_position: 1
+slug: /
+---
+
+# KubeSlice Overview
+---
+
+## Introduction
+
+KubeSlice combines network, application, Kubernetes, and deployment services in a framework to accelerate application deployment
+in a multi-cluster, multi-tenant environment. KubeSlice achieves this by creating logical application **Slice** boundaries that allow
+pods and services to communicate seamlessly across clusters, clouds, edges, and data centers.
+
+## Why KubeSlice?
+
+As enterprises expand application architectures to span multiple clusters located in data centers or cloud provider regions,
+or across cloud providers, Kubernetes clusters need the ability to fully integrate connectivity and pod-to-pod communications
+with namespace propagation across clusters.
+
+KubeSlice enables creating multiple logical slices in a single cluster or group of clusters regardless of their physical location.
+Existing intra-cluster communication remains local to the cluster utilizing each pod’s CNI interface. Kubeslice provides isolation
+of network traffic between clusters by creating an overlay network for inter-cluster communication.
+
+## KubeSlice Features
+
+Services | Feature | Description
+-------- | ------- | --
+Application | Namespace sameness | Allows the freedom to deploy applications across clusters with namespace parity.
+
