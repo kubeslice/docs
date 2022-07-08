@@ -1,1 +1,56 @@
 # Deleting the Project
+
+## Introduction
+
+This topic describes the steps to delete the project from the KubeSlice Controller. The 
+order of these steps is very important to ensure proper resource clean-up. Ensure that 
+you have completed the tasks in the prerequisites.
+
+## Prerequisites
+
+:::warning
+Offboard all the namespaces from the slice before deleting it. To know
+more, see [Offboarding namespaces](offboarding-namespaces).
+:::
+
+
+:::warning
+Delete all the slices from your cluster before deleting the Slice Operator. To know more, 
+see [Deleting the slice](deleting-the-slice).
+:::
+
+:::warning
+Deregister all worker clusters from the KubeSlice Controller. To know
+more, see [Deregistering the worker cluster](deregistering-the-worker-cluster).
+:::
+
+## Deleting the Project and Project Namespace
+
+Deleting the project from the KubeSlice Controller deletes the service
+account, namespaces, clusters, secrets, certificates, and tokens.
+
+:::info
+Deleting the Project automatically deletes the associated project namespace.
+:::
+
+Switch the context to the KubeSlice Controller.
+
+``` 
+kubectx <cluster name>
+```
+
+Delete an individual project using the following command:
+
+``` 
+kubectl delete projects <project-name> -n kubeslice-controller
+```
+
+To delete all projects, use the following command:
+
+``` 
+kubectl delete projects --all -n kubeslice-controller
+```
+
+:::success
+You have now successfully deleted your project and the project namespace.
+:::

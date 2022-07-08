@@ -1,1 +1,65 @@
 # Uninstalling the KubeSlice Controller
+
+## Introduction
+
+This topic describes the steps to uninstall the KubeSlice Controller.
+The order of these steps is very important to ensure proper resource
+clean-up. Ensure that you have completed the tasks in the
+prerequisites.
+
+Uninstalling the KubeSlice Controller deletes the deployments, services, and pods running 
+from a controller cluster.
+
+## Prerequisites
+
+:::warning
+Offboard all the namespaces from the slice before deleting it. To know
+more, see [offboarding namespaces](offboarding-namespaces). 
+:::
+
+:::warning
+Delete all the slices from your cluster before deleting the Slice
+Operator. To know more, see [deleting the slice](deleting-the-slice). 
+:::
+
+:::warning
+Deregister all worker clusters from the KubeSlice Controller. To know
+more, see [deregistering the worker cluster](deregistering-the-worker-cluster). 
+:::
+
+:::warning
+Delete all the projects from the KubeSlice Controller. To know more, see 
+[deleting the project](deleting-the-project). 
+:::
+
+## Uninstalling the KubeSlice Controller
+After deleting all the projects, uninstall the KubeSlice Controller. 
+After uninstalling the KubeSlice Controller, you must uninstall the Certificate Manager.
+
+Uninstall the KubeSlice Controller using the following command:
+
+``` 
+helm uninstall kubeslice-controller -n kubeslice-controller
+```
+
+Delete the `kubeslice-controller` namespace using the following command:
+
+```
+kubectl delete ns kubeslice-controller
+```
+
+Delete the Certificate Manager using the following command:
+
+``` 
+helm uninstall cert-manager -n cert-manager
+```
+
+Delete the namespace `cert-manager` using the following command:
+
+```
+kubectl delete ns cert-manager
+```
+
+:::success
+All set! KubeSlice Controller has been uninstalled from your cluster.
+:::

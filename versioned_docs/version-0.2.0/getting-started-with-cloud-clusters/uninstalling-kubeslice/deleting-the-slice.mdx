@@ -1,1 +1,39 @@
 # Deleting the Slice
+
+## Introduction
+
+This topic describes the steps to delete the slice(s) from your cluster. The order of
+these steps is very important to ensure proper resource clean-up. Ensure that you have 
+completed the tasks in the prerequisites.
+
+## Prerequisites
+
+:::warning
+Offboard all the namespaces from the slice before deleting it. To know
+more, see [offboarding namespaces](offboarding-namespaces).
+:::
+
+## Deleting the Slice 
+
+:::warning
+This step **must** be completed before uninstalling the Slice Operator. Failing to do so 
+can result in slices and resources not being cleaned up properly.
+:::
+
+Switch the context to the controller cluster.
+
+```
+kubectx <cluster name>
+```
+
+To delete an individual slice, use the following command:
+
+```
+kubectl delete sliceconfig <slice-name> -n kubeslice-<project-name>
+```
+
+To delete all the slices, use the following command:
+
+``` 
+kubectl delete sliceconfig --all -n kubeslice-<project-name>
+```
