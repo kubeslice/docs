@@ -1,1 +1,275 @@
 # Configuration Parameters
+
+
+## Introduction
+
+This topic describes the parameters used in creating the configuration
+or YAML files.
+
+
+## Configuration Tips
+
+- Specify the latest API version while defining the configurations.
+
+- Use only required values to create minimal and simple configurations.
+
+- Use YAML to create your configuration file, instead of JSON.
+
+
+## Controller Configuration Parameters
+
+The following tables describe the configuration parameters used to install the KubeSlice Controller.
+
+### KubeSlice Parameters 
+
+
+| **Parameter** | **Parameter Type** |**Description**  |  **Required** |
+|----|----|----|----|
+|[controller](#controller-parameters) | Object | The cluster where the KubeSlice Controller is installed. |   Mandatory |
+ 
+
+#### Controller Parameters
+
+|**Parameter** |  **Parameter Type** |**Description** |                     **Required**|
+|----|----|----|----|
+|loglevel  |  String  | The log level of Controller. The default value is `INFO`. The other values are `DEBUG` or `ERROR`. | Optional |
+|rbacResourcePrefix |  String  |            The RBAC resource prefix.|                                        Optional|
+| projectnsPrefix   |   String               The project namespace |prefix. |          Optional|
+|endpoint | AlphaNumeric |  The URL of the Kubernetes control plane. |                                       Mandatory|
+
+## Project Namespace Configuration Parameters
+
+The following tables list the parameters in the configuration file used to create the Project Namespace.
+
+| **Parameter**  | **Parameter  Type**  |   **Description** | **Required** | 
+|----|----|----|----|
+| apiVersion     | String      | The KubeSlice Controller API version. The value must be    `controller.kubeslice.io/v1alpha1`. |   Mandatory    |
+| kind           | String         | The name of a   Mandatory  particular  object schema.The value must  be `Project`.  | Mandatory   |
+|[metadata](#controller-metadata-parameters)  |Object | The metadata  describes the parameters (names and types) and    attributes that have been applied. | Mandatory    |
+| [spec](#controller-specification-parameters)      | Object         | The     specification  of the desired  state of an    object.        |    Mandatory          |
+
+
+#### Controller Metadata Parameters
+
+| **Parameter** | **Parameter Type**    | **Description** | **Required** |
+|----|----|----|----|
+| name          | String          | The name of the project you are  creating. Each   project should   have a   `unique` name.           | Mandatory              |
+| namespace     | String          | The project namespace on which you apply the project configuration file. The value must  be `kubeslice-controller`. |Mandatory|
+
+
+#### Controller Specification Parameters
+
+|**Parameter** |**Parameter Type** |   **Description**     |  **Required** |
+|----|----|----|----|
+|[ServiceAccount](#service-account-parameters) |  Object | To specify permissions on the Project namespace. |  Mandatory |
+
+#### Service Account Parameters
+
+| **Parameter** |   **Parameter Type**   |**Description**  |    **Required** |
+|----|----|----|----|
+|readOnly  |    List of Strings  |    The user to be created with read-only permission.  |  Optional|
+|readWrite |    List of Strings  |   The user to be created with read-write permission.  |  Optional |
+
+## Cluster Registration Configuration Parameters
+
+The following tables describe the configuration parameters used to
+register the worker cluster with the controller cluster.
+
+| **Parameter**  | **Parameter Type**   | **Required** | **Description** |
+|---|----|----|----|
+| apiVersion     | String         | The KubeSlice Controller API version. The value must be `controller.kubeslice.io/v1alpha1`. |Mandatory|
+| kind           | String         | The name of a particular object schema. The value must be `Cluster`. |Mandatory|
+| [metadata](#metadata-parameters)   | Object         | The meta data parameters (names and types) and attributes that have been applied. | Mandatory | 
+| [spec](#specification-parameters)      | Object         | The specification  of the desired state of an    object.        | Mandatory              |
+
+
+### Metadata Parameters
+
+| **Parameter**  | **Parameter Type**   |**Description**  |      **Required** |
+|----|----|----|----|
+| name  |  String | The given name of the cluster. | Mandatory |
+| namespace  |  String |    The project namespace on which you apply the project configuration file. |  Mandatory | 
+
+### Specification Parameters
+
+| **Parameter**  | **Parameter  Type**  | **Description** |  **Required**        |
+|----|----|----|----|
+| networkInterface   | String         | The name of the network interface for egress traffic on a gateway  node. The QoS profile for a slice will be applied to this interface.Default Interface:   **eth0**       |       Mandatory       |
+| [clusterProperty](#cluster-property-parameters)  | Object         | It contains  the worker  cluster  details.       |    Mandatory          |
+
+
+#### Cluster Property Parameters
+
+|**Parameter** |                              **Parameter Type** |**Description** |                                               **Required** |
+|----|----|----|----|
+|[geoLocation](#geolocation-parameters) |  Object     | It contains information on the geological location of the worker cluster.  | Optional |
+
+#### Geolocation Parameters
+
+|**Parameter** |  **Parameter Type** |  **Description** | **Required** |
+|----|----|----|----|
+|CloudProvider  | String   |            The name of your cloud provider |                           Optional |
+|CloudRegion  |  String  |   The cloud provider region where your cluster is located. |  Optional |
+
+
+## Slice Operator Configuration Parameters
+
+The following tables describe the configuration parameters used to
+install the Slice Operator in the registered Worker cluster.
+
+|**Parameter**  | **Parameter Type** |**Description** |                              **Required**|
+|----|----|----|----|
+|[operator](#slice-operator-parameters) |  Object          |     This contains the Slice Operator information. |  Optional |
+
+#### Slice Operator Parameters
+
+| **Parameter** | **Parameter Type**    | **Description** | **Required** |
+|----|----|----|----|
+| logLevel      | String          | The log level    can be set to  INFO or DEBUG. The default value is set to  INFO.        |      Optional        |
+
+
+### Controller Secret Parameters
+
+|**Parameter** |  **Parameter Type** |**Description** | **Required** |
+|----|----|----|----|
+| namespace   |    String     | The namespace that you get from the secret.      |        Mandatory|
+| endpoint    |    String     |  The ` controllerEndpoint` that you get from the secret.|   Mandatory |
+| ca.crt   |       String  |   The `ca.crt` that you get from the secret.      |         Mandatory |
+| token      |     String   |     The `token `that you get from the secret. |     Mandatory |
+ 
+### Cluster Parameters
+
+| **Parameter** | **Parameter Type**    | **Description** | **Required** |
+|----|----|----|----|
+| name          | String          | The name of the  cluster that is  registered with  the KubeSlice   controller.  The cluster name must be  `unique` in the  project. |Mandatory|
+| nodeIP        | String          | The Node IP      address of the   registered  worker cluster( Required for  Kind cluster  only). |Mandatory | 
+
+
+## Slice Configuration Parameters
+
+The following tables describe the configuration parameters used to create the Slice with registered worker cluster.
+
+| **Parameter**  | **Parameter Type**  | **Description** |        **Required**      |
+|----|----|----|----|
+| apiVersion     | String         | The KubeSlice  Controller API  version. A set of resources  that are  exposed   together,  along with the version.  The value must be `controller.kubeslice.io/v1alpha1`. |Mandatory|
+| kind           | String         | The name of a  particular  object schema. The value must be    `SliceConfig`. |    Mandatory          |
+| [metadata](#slice-metadata-parameters)  | Object         | The meta data   describes  parameters  (names and  types) and  attributes  that have been  applied.    |          Mandatory    |
+| [spec](#slice-spec-parameters)       | Object         | The     specification of the desired state of an object. | Mandatory |
+
+
+### Slice Metadata Parameters
+
+| **Parameter** |  **Parameter Type** |   **Description** |                                         **Required** |
+|----|----|----|----|
+|name   |         String   |            The name of the Slice. The name of the slice you are creating. Each slice **must** have a unique name within a Project namespace. |  Mandatory |
+|namespace   |    String |  The project namespace on which you apply the slice configuration file. |                                            Mandatory |
+
+
+### Slice Spec Parameters
+
+| **Parameter**  | **Parameter  Type**  | **Description** | **Required** |
+|----|----|----|----|
+| sliceSubnet    | String (IP/16 Subnet) (** RFC 1918 addressess**) | This subnet would be used to assign IP  addresses to  pods that connect to the slice overlay network. The CIDR range can be re-used  for each slice or can be  modified as     required.  Example:   192.168.0.0/16 |   Mandatory           |
+| sliceType      | String         | Denotes the  type of the slice. The  value must be set to `Application`. | Mandatory             |
+| [sliceGatewayProvider](#slice-gateway-provider-parameters)    | Object         | It is the type  of slice  gateway  created for inter cluster  communication. |Mandatory|
+| sliceIpamType  | String         | It is the type of the IP address  management for  the slice  subnet. The  value must be  always set to `Local`.       |   Mandatory           |
+| clusters       | List of Strings     | The names of  the worker  clusters that  would be part of the slice.  You can  provide the list of worker clusters.      |   Mandatory           |
+| [qosProfileDetails](#qos-profile-parameters)      | Object         | QoS profile for the slice inter cluster traffic.       |    Mandatory          |
+| [namespaceIsolationProfile](#namespace-isolation-profile-parameters)   | Object         | It is the  configuration  to onboard   namespaces  and/or isolate namespaces  with the  network  policy.        |   Mandatory           |
+| [externalGatewayConfig](#external-gateway-configuration-parameters)   | Object         | It is the  slice  ingress/egress gateway configuration. It is an optional  configuration. |     Mandatory         |
+
+
+### Slice Gateway Provider Parameters
+
+|**Parameter**  |    **Parameter Type** |   **Description** |                                **Required**|
+|----|----|----|----|
+|sliceGatewayType |  String      |         The slice gateway type for inter cluster communication. The value must be `OpenVPN`. |  Mandatory |
+|sliceCaType  |  String     |     The slice gateway certificate authority type that provides certificates to secure inter-cluster traffic. The value must be always set to `Local`. |  Mandatory |
+
+### QOS Profile Parameters
+
+| **Parameter**  |     **Parameter Type** |   **Description** |                                **Required**|
+|----|----|----|----|
+|queueType          |       String     |          It is the slice traffic control queue type. The value must be Hierarchical Token Bucket (`HTB`). HTB facilitates guaranteed bandwidth for the slice traffic. |  Mandatory |
+| priority    |    Integer  |  QoS profiles allows traffic management within a slice as well as prioritization across slices. The value range is 0-3. Integer 0 represents the lowest priority and integer 3 represents the highest priority. |   Mandatory |
+|tcType |    String     |  It is the traffic control type. The value must be `BANDWIDTH_CONTROL`. |                                            Mandatory |
+|bandwidthCeilingKbps  |     Integer    |          The maximum bandwidth in Kbps that is allowed for the slice traffic.  |                                                  Mandatory |
+|bandwidthGuaranteedKbps |  Integer     |         The guaranteed bandwidth in Kbps for the slice traffic. |                                         Mandatory |
+|dscpClass    |             Alphanumeric |        DSCP marking code for the slice inter-cluster traffic. |                                                   Mandatory |
+
+### Namespace Isolation Profile Parameters
+
+| **Parameter**  | **Parameter Type**   | **Description**              | **Required** |
+|----|----|----|----|
+| [applicationNamespaces](#application-namespace-parameters)      | Array object   | Defines the   [namespaces  that will be onboarded] to the slice    and their  corresponding  worker  clusters.      |    Mandatory          |
+| isolationEnabled            | Boolean        | Defines if the namespace isolation is enabled with  network policy. By default, it is set to `false`. The  [isolation policy] only applies to the traffic  from the  application  and allowed namespaces to   the same   slice.         |  Optional            |
+| [allowedNamespaces](#allowed-namespaces-parameters)     | Array object   | Contains the list of  namespaces from which the  traffic flow  is allowed to the slice. By default, native kubernetes namespaces such as `kube-system` are allowed.  If  `isolationEnabled ` is set to `true`,  then you must include  namespaces that you want  to allow  traffic from.  |  Optional            |
+
+#### Application Namespaces Parameters
+
+| **Parameter** | **Parameter Type**    | **Description** | **Required** |
+|----|----|----|----|
+| namespace     | String          | The namespace    that you want   to onboard to  the slice. These  namespaces can  be isolated  using the namespace  isolation feature.        |         Mandatory     |
+| clusters      | List of Strings | Corresponding   | cluster names  for the  namespaces listed above.  To onboard the  namespace on all clusters,  specify the  asterisk `*` as  this parameter\'s value.          | Mandatory             |
+
+
+#### Allowed Namespaces Parameters
+
+| **Parameter** | **Parameter Type**     | **Description** | **Required** |
+|----|----|----|----|
+| namespace     | Strings         | List of          external   namespaces that  are not a part   of the slice  from which traffic is allowed into     the slice. |Optional|
+| clusters      | List of Strings | Corresponding   cluster names  for the  namespaces listed above. To onboard the namespace on all clusters, specify the  asterisk `*` as  this  parameter\'s value. |     Optional         |
+
+
+
+### External Gateway Configuration Parameters
+
+
+| **Parameter** | **Parameter Type**    | **Description** | **Required** |
+|----|----|----|----|
+| ingress       | Boolean         | To use the      ingress gateway for E-W traffic  on your slice,  set the value  to `true`. | Optional |
+| egress        | Boolean         | To use the       egress gateway   for E-W traffic on your slice,   set the value  to `true`.      | Optional             |
+| gatewayType   | String          | The type of      ingress/egress  gateways that  need to be provisioned for the slice. It   can either be    `none` or `istio`.If set to  `istio`, -   The ingress    gateway is  created for   a slice     when       `ingress`       is enabled. -   The egress   gateway is created for  a slice  when    `egress` is   enabled.  If set to  `istio`, and     ingress and    egress are set   to `false` then Istio  gateways are not created.   |Mandatory|
+| clusters      | List of Strings | Names of the     clusters to   which the `externalGateway`  configuration should be  applied.        |   Optional           |
+
+## Service Export Configuration Parameters
+
+The following tables describe the configuration parameters used to create Service Export.
+
+
+| **Parameter**  | **Parameter Type**    | **Description**              | **Required** |
+|----|----|----|----|
+| apiVersion     | String         | The KubeSlice Controller API version. A set of resources that are  exposed  together,  along with the version. The value must be `networking.kubeslice.io/v1beta1`. |   Mandatory           |
+| kind           | String         | The name of a    particular object schema. The value must be  `ServiceExport`. |    Mandatory          |
+| [metadata](#serviceexport-metadata-parameters) | Object         | The meta data  |  describes parameters (names and types) and attributes that have been  applied.       |    Mandatory          |
+| [spec](#serviceexport-specification-parameters)      | Object         | The  specification  of the desired state of an object.        |  Mandatory   |
+
+### ServiceExport Metadata Parameters
+
+| **Parameter** |  **Parameter Type** |   **Description**         |          **Required** |
+|----|----|----|----|
+|name    |        String  |             The name of the service export. |  Mandatory |
+| namespace   |    String    |           The application namespace.    |    Mandatory |
+
+
+### ServiceExport Specification Parameters
+
+|**Parameter** |                             **Parameter Type**|   **Description** |          **Required**|
+|----|----|----|----|
+|slice  |  String  |   The name of the slice on which the service should be exported.  | Mandatory |
+|[selector](#selector-parameters) |  Object |   The labels used to select the endpoints. |  Mandatory |
+|[port](#ports-parameters) |  Object   |  The details of the port for the service. |   Mandatory |
+
+### Selector Parameters
+
+| **Parameter** |  **Parameter Type** |  **Description** |                           **Required**|
+|----|----|----|----|
+| matchLabels  |   Map    |   The labels used to select the endpoints. |  Mandatory |
+
+### Ports Parameters
+
+| **Parameter** | **Parameter Type**     | **Description** | **Required** |
+|----|----|----|----|
+| name          | String          | It is a unique  identifier for the port.  It must be prefixed with    `http `for HTTP  services or `tcp` for TCP   services. |Mandatory |
+| containerPort | Integer         | The port number  for the  service.     |   Mandatory           |
+| Protocol      | String          | The protocol    type for theservice. For example: TCP.   |   Mandatory           |
