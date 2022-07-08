@@ -45,11 +45,11 @@ The following tables list the parameters in the configuration file used to creat
 |----|----|----|----|
 | apiVersion     | String      | The KubeSlice Controller API version. The value must be    `controller.kubeslice.io/v1alpha1`. |   Mandatory    |
 | kind           | String         | The name of a   Mandatory  particular  object schema.The value must  be `Project`.  | Mandatory   |
-|[metadata](#metadata-parameters)  |Object | The metadata  describes the parameters (names and types) and    attributes that have been applied. | Mandatory    |
-| [spec](#specification-parameters)      | Object         | The     specification  of the desired  state of an    object.        |    Mandatory          |
+|[metadata](#controller-metadata-parameters)  |Object | The metadata  describes the parameters (names and types) and    attributes that have been applied. | Mandatory    |
+| [spec](#controller-specification-parameters)      | Object         | The     specification  of the desired  state of an    object.        |    Mandatory          |
 
 
-#### Metadata Parameters
+#### Controller Metadata Parameters
 
 | **Parameter** | **Parameter Type**    | **Description** | **Required** |
 |----|----|----|----|
@@ -57,7 +57,7 @@ The following tables list the parameters in the configuration file used to creat
 | namespace     | String          | The project namespace on which you apply the project configuration file. The value must  be `kubeslice-controller`. |Mandatory|
 
 
-#### Specification Parameters
+#### Controller Specification Parameters
 
 |**Parameter** |**Parameter Type** |   **Description**     |  **Required** |
 |----|----|----|----|
@@ -203,7 +203,7 @@ The following tables describe the configuration parameters used to create the Sl
 |----|----|----|----|
 | [applicationNamespaces](#application-namespace-parameters)      | Array object   | Defines the   [namespaces  that will be onboarded] to the slice    and their  corresponding  worker  clusters.      |    Mandatory          |
 | isolationEnabled            | Boolean        | Defines if the namespace isolation is enabled with  network policy. By default, it is set to `false`. The  [isolation policy] only applies to the traffic  from the  application  and allowed namespaces to   the same   slice.         |  Optional            |
-| [allowedNamespaces](#allowed-namespace-parameters)     | Array object   | Contains the list of  namespaces from which the  traffic flow  is allowed to the slice. By default, native kubernetes namespaces such as `kube-system` are allowed.  If  `isolationEnabled ` is set to `true`,  then you must include  namespaces that you want  to allow  traffic from.  |  Optional            |
+| [allowedNamespaces](#allowed-namespaces-parameters)     | Array object   | Contains the list of  namespaces from which the  traffic flow  is allowed to the slice. By default, native kubernetes namespaces such as `kube-system` are allowed.  If  `isolationEnabled ` is set to `true`,  then you must include  namespaces that you want  to allow  traffic from.  |  Optional            |
 
 #### Application Namespaces Parameters
 
