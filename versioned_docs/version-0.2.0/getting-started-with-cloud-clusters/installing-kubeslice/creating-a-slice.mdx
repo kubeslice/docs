@@ -1,1 +1,464 @@
 # Creating a Slice
+# Creating the Slice 
+  
+## Introduction
+
+This topic describes the steps to create a slice on the worker clusters
+that are registered with the KubeSlice Controller.
+
+
+## Creating the Slice YAML File
+
+The following information is required to create the .yaml file for the
+slice.
+
+>Before creating the slice configuration .yaml file, see [onboarding
+namespaces](onboarding-applications)
+to add namespaces in the slice configuration.
+
+### Slice Configuration 
+
+Create the Slice configuration `.yaml` file using the following
+template.
+
+To understand more about the configuration parameters, see [Slice
+Configuration
+Parameters](configuration-parameters).
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata: 
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:
+    queueType: HTB
+    priority: <qos_priority>                      #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+```
+
+
+### Slice Configuration using Istio Gateway
+
+Create the Slice configuration `.yaml` file using the following
+template.
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata: 
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:
+    queueType: HTB
+    priority: <qos_priority>                      #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+  externalGatewayConfig:         #enable which gateway we wanted to and on which cluster
+    - ingress:
+        enabled: false              
+      egress:
+        enabled: true
+      gatewayType: istio
+      clusters:
+        - <cluster-name>
+    - ingress:
+        enabled: true
+      egress:
+        enabled: false
+      gatewayType: istio
+      clusters:
+        - <cluster-name>  
+```
+
+
+There are different scenarios to configure the slice that enables you to
+route the application traffic with/without Istio and with/without egress
+and ingress gateways.
+
+#### Scenario 1: Slice Configuration without Egress and Ingress Gateways
+
+Create the slice configuration file without Istio ingress and egress gateways using the following template.
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>         #Ex: 10.1.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-1>
+  qosProfileDetails: <qos-profile>
+    queueType: HTB
+    priority: 1               #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+  externalGatewayConfig:
+    - ingress:
+        enabled: false 
+      egress:
+        enabled: false
+      nsIngress:
+        enabled: false 
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-1>
+    - ingress:
+        enabled: false
+      egress:
+        enabled: false 
+      nsIngress:
+        enabled: false
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-2>
+```
+
+
+#### Scenario 2: Slice Configuration only with Egress Gateways
+
+Create the slice configuration file with Istio egress gateway using the
+following template.
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>         #Ex: 10.1.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:<qos-profile>
+    queueType: HTB
+    priority: 1               #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+  externalGatewayConfig:
+    - ingress:
+        enabled: false 
+      egress:
+        enabled: true
+      nsIngress:
+        enabled: false 
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-1>
+    - ingress:
+        enabled: false
+      egress:
+        enabled: false 
+      nsIngress:
+        enabled: false
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-2>
+```
+
+#### Scenario 3: Slice Configuration only with Ingress Gateways
+
+Create the slice configuration file with Istio ingress gateways using
+the following template.
+
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>         #Ex: 10.1.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:
+    queueType: HTB
+    priority: 1               #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+  externalGatewayConfig:
+    - ingress:
+        enabled: false 
+      egress:
+        enabled: false
+      nsIngress:
+        enabled: false 
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-1>
+    - ingress:
+        enabled: true
+      egress:
+        enabled: false 
+      nsIngress:
+        enabled: false
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-2>
+```
+
+#### Scenario 4: Slice Configuration with Egress and Ingress Gateways
+
+Create the slice configuration file with Istio ingress and egress gateways using the following template.
+
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata: 
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:
+    queueType: HTB
+    priority: <qos_priority>                      #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+      - namespace: iperf
+        clusters:
+        - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+      - namespace: kube-system
+        clusters:
+        - '*'
+  externalGatewayConfig:         #enable which gateway we wanted to and on which cluster
+    - ingress:
+        enabled: false              
+      egress:
+        enabled: true
+        gatewayType: istio
+      clusters:
+        - <cluster-name-1>
+    - ingress:
+        enabled: true
+      egress:
+        enabled: false
+      gatewayType: istio
+      clusters:
+        - <cluster-name-2>
+```
+
+## Applying the Slice Configuration 
+
+The following information is required.
+
+| **Variable**     |         **Description** |
+| -----|-----|
+|  \<cluster name\>  |        The name of the cluster.|
+|  \<slice configuration\> |  The name of the slice configuration file |
+|  \<project namespace\>  |   The project namespace on which you apply the slice configuration file.|
+ 
+
+
+You will now apply the Slice configuration `.yaml`file on the project
+namespace. To begin, switch context to the KubeSlice Controller.
+
+``` 
+kubectx <cluster name>
+```
+
+Run the following command to apply the manifest file on the project
+namespace:
+
+
+``` 
+kubectl apply -f <slice configuration>.yaml -n <project namespace>
+```
+
+>You have successfully created the Slice with the Worker clusters.
+
+
+## Validating the Installation
+
+To validate the slice configuration in the KubeSlice controller, run the
+following command:
+
+
+``` 
+kubectl get workersliceconfig -n kubeslice-<projectname>
+```
+
+Example
+
+``` 
+kubectl get workersliceconfig -n kubeslice-avesha
+```
+
+Example Output
+
+``` 
+NAME                        AGE
+red-dev-worker-cluster-1    45s
+red-dev-worker-cluster-2    45s
+```
+
+To validate the slice gateway in the KubeSlice Controller, run the
+following command:
+
+
+``` 
+kubectl get workerslicegateway -n kubeslice-<projectname>
+```
+Example
+
+
+``` 
+kubectl get workerslicegateway -n kubeslice-avesha
+```
+
+Example Output
+
+
+``` 
+NAME                                            AGE
+red-dev-worker-cluster-1-dev-worker-cluster-2   45s
+red-dev-worker-cluster-2-dev-worker-cluster-1   45s
+```
+
+
+To validate the slice creation on worker clusters, use the following command on each worker cluster:
+
+``` 
+kubectl get slice -n kubeslice-system
+```
+
+Example Output
+
+``` 
+NAME    AGE
+red     45s
+```
+
+
+To validate the slice gateway has been created on your worker cluster,
+use the following command:
+
+
+``` 
+kubectl get slicegw -n kubeslice-system
+```
+
+Example Output
+
+
+``` 
+NAME                                          SUBNET        REMOTE SUBNET   REMOTE CLUSTER        GW STATUS
+red-dev-worker-cluster-1-dev-worker-cluster-2   10.1.1.0/24   10.1.2.0/24     dev-worker-cluster-2  
+```
+
