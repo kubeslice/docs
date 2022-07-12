@@ -1,0 +1,33 @@
+# Isolating Namespaces
+
+## Introduction
+The namespace isolation feature allows you to confine application namespaces to a slice. The associated namespaces
+are connected to the slice and are isolated from other namespaces in the cluster. This forms a secure inter-cluster
+network segment of pods, that are isolated from the rest of the pods in the clusters. The slice segmentation isolates
+and protects applications from each other, and reduces blast radius of failure conditions.
+
+The following figure illustrates how the namespaces are isolated from different namespaces on a worker cluster.
+Namespaces are isolated with respect to sending and receiving data traffic to other namespaces in a cluster.
+
+![alt](/images/Namespace-Isolation-OS.png)
+
+## Enabling Namespace Isolation
+Namespace isolation is enabled by setting the isolationEnabled parameter to true and disabled by setting the
+same parameter to false in the slice configuration file. To know more, see [namespace isolation profile parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#namespace-isolation-profile-parameters)
+and the [slice configuration YAML](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file) file.
+
+When the namespace isolation feature is enabled, the namespace isolation policy is 
+applied to isolate the application namespaces. Verify the namespace isolation policy by 
+running the following command to confirm that the namespace isolation feature is enabled:
+```
+kubectl get netpol -n <application_namespace>
+```
+Expected Output
+
+```
+NAME                  POD-SELECTOR            AGE
+peacock-bookinfo      <none>                  15s
+```
+
+In the above output, `peacock` is the slice name and `bookinfo` is the onboarded 
+namespace to which the namespace isolation policy is applied.

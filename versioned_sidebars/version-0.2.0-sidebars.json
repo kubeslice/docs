@@ -1,0 +1,94 @@
+{
+  "version2": [
+    "overview",
+    "architecture",
+    "getting-started-with-kind-clusters",
+    {
+      "type": "category",
+      "label": "Getting Started With Cloud Clusters",
+      "collapsed": true,
+      "link": {
+        "type": "doc",
+        "id": "getting-started-with-cloud-clusters/getting-started-with-cloud-clusters"
+      },
+      "items": [
+        {
+          "type": "category",
+          "label": "Prerequisites",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-cloud-clusters/prerequisites/prerequisites"
+          },
+          "items": [
+            "getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "Installing KubeSlice",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice"
+          },
+          "items": [
+            "getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller",
+            "getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster",
+            "getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice",
+            "getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces",
+            "getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces",
+            "getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster",
+            "getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "Tutorials",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-cloud-clusters/tutorials/tutorials"
+          },
+          "items": [
+            "getting-started-with-cloud-clusters/tutorials/deploying-the-iperf-application",
+            "getting-started-with-cloud-clusters/tutorials/deploying-the-bookinfo-application",
+            "getting-started-with-cloud-clusters/tutorials/deploying-the-iperf-application-on-an-intra-cluster-slice",
+            "getting-started-with-cloud-clusters/tutorials/deploying-the-bookinfo-application-on-an-intra-cluster-slice"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "Uninstalling KubeSlice",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-kubeslice"
+          },
+          "items": [
+            "getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces",
+            "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-slice",
+            "getting-started-with-cloud-clusters/uninstalling-kubeslice/deregistering-the-worker-cluster",
+            "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-project",
+            "getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-the-kubeslice-controller"
+          ]
+        }
+      ]
+    },
+    "troubleshooting-guide",
+    {
+      "type": "category",
+      "label": "Release Notes",
+      "collapsed": true,
+      "link": {
+        "type": "doc",
+        "id": "release-notes/release-notes"
+      },
+      "items": [
+        "release-notes/release-notes-for-kubeslice-oss-0.2.0",
+        "release-notes/release-notes-for-kubeslice-oss-0.1.0"
+      ]
+    },
+    "community"
+  ]
+}

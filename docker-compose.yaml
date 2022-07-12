@@ -1,0 +1,14 @@
+version: "3"
+services:
+  oss:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./versioned_docs:/build/versioned_docs
+      - ./versioned_sidebars:/build/versioned_sidebars
+      - ./versions.json:/build/versions.json
+      - ./images:/build/static/images

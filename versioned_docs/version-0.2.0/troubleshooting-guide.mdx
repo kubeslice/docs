@@ -1,0 +1,148 @@
+# Troubleshooting Guide
+
+## Introduction
+
+This guide describes a few troubleshooting scenarios that you could face
+during installing and configuring KubeSlice.
+
+## Installation Issues 
+
+### Why did the download of the KubeSlice Cert Manager fail? {#Bookmark6}
+
+During the installation of the KubeSlice cert-manager, if you get the
+following error message.
+
+``` 
+failed to download "kubeslice/cert-manager" (hint: running helm repo update may help)
+```
+
+Check the helm version. If the helm version is older than version 3.7.0,
+then you cannot download the `kubeslice/cert-manager`. Upgrade the helm
+version to 3.7.0 to successfully install the cert-manager.
+
+
+### Why do I face installation issues while installing KubeSlice on kind clusters on Ubuntu OS?
+On Ubuntu OS, if you have too many files open and try installing KubeSlice on kind clusters, 
+then you face issues.
+
+You must increase the `ulimit` to `2048` or `unlimited` and try installing KubeSlice on kind 
+clusters. If you still face issues, see [errors due to too many open files](https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files).
+
+
+## Connectivity Issues
+
+### Why is my registered cluster not connected to the KubeSlice Controller? 
+
+There could be an issue during the installation of the Slice Operator on the registered 
+cluster. Try these steps:
+
+1. Switch context to the registered cluster on which you are facing
+   connectivity issues using the following command:
+
+   ```
+   kubectx <cluster name>
+   ```
+
+2. Validate the installation of the Slice Operator by checking the pods belonging to 
+   the namespace `kubeslice-controller-system`using the following command (from the output, check the status of the pods):
+
+   ``` 
+   kubectl get pods -n kubeslice-controller-system
+   ```
+
+3. If the connection issue still persists, check if the KubeSlice Controller endpoint and token in the cluster are correct in the
+   Slice Operator YAML configuration file that is applied in that registered cluster. To know about the configuration, 
+   see the [Slice Operator YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-slice-operator-yaml-file).
+   file.
+
+
+### Registering clusters with the same name does not throw an error. 
+
+Each instance of the cluster is registered separately as two different clusters and 
+Kubernetes ignores duplication of the cluster's name.
+
+It is best to avoid the duplication of the clusters names as Kubernetes inherently ignores 
+the duplication of cluster names.
+
+### The KubeSlice Controller was successfully installed with a controller endpoint that is not reachable by a slice. 
+
+Check if the controller endpoint is correct during the installation of  the Slice Operator 
+on the worker cluster. Check if the controller cluster's secret token and ca-cert installed on the 
+worker cluster is correct. To know more, see [Getting the Secrets of the Registered
+Cluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#getting-the-secrets-of-the-registered-cluster).
+
+### Node IP address on the registered cluster was changed but the KubeSlice components were not cleaned up. 
+
+When the Node IP address is changed on a registered cluster, then a manual clean-up is 
+required for the worker cluster configuration to use the updated IP. So, we recommend not 
+to change the Node IP manually when it is already configured or add an invalid Node IP 
+address.
+
+While registering a cluster, the Node IP is configured by pulling the value from the cluster.
+
+### A cluster registration failed with a correct cluster.yaml file. 
+
+The registration fails when a `cluster.yaml` file is applied to register more than one 
+clusters.
+
+Ensure that a` cluster.yaml `file is applied to only one cluster and not multiple clusters.
+
+## Cluster Issues
+
+### The error/warning states that the CRD object is stuck.
+
+1. Patch an empty finalizer with the failing object CRD warning as shown in this example.
+
+   (`serviceexportconfigs.hub.kubeslice.io` is a failing CRD object in this
+example.)
+
+   ```
+   kubectl patch crd/serviceexportconfigs.hub.kubeslice.io -p '{"metadata":{"finalizers":[]}}' --type=merge
+   ```
+
+2. Uninstall and reinstall the KubeSlice Controller.
+
+
+###  The error states that the project namespace is stuck.
+
+1. Delete the stuck namespace by running the following command:
+
+    ```
+    kubectl patch ns/<stuck-namespace> -p '{"metadata":{"finalizers":[]}}' --type=merge
+    ```
+
+2. Uninstall and reinstall the KubeSlice Controller.
+
+# Onboarded Application Namespace Issues
+
+### NSM containers are not injected in pods during deployments in the application namespace. 
+
+If NSM containers are not injected in pods during deployments in the application namespace, 
+then check if that application namespace contains the KubeSlice label. If the label is 
+not there, wait for the Slice Operator to label the namespace.
+
+For example, run the following command to check the label:
+
+``` 
+kubectl describe ns iperf
+```
+
+
+In the command output below, `kubeslice.io/slice=blue` is the KubeSlice label.
+
+```
+Name:          iperf
+Labels:        hnc.x-k8s.io/included-namespace=true
+               iperf.tree.hnc.x-k8s.io/depth=0
+               kubernetes.io/metadata.name=iperf
+               kubeslice.io/slice=blue
+Annotations:  <none>
+Status:       Active
+
+No resource quota.
+
+No LimitRange resource.
+```
+
+In the command output, the iperf namespace contains the `kubeslice.io/slice=blue` label. 
+This means that the namespace is already onboarded to the blue slice.

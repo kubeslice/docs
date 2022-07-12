@@ -1,0 +1,118 @@
+# Managing Namespaces
+
+## Introduction
+This topic describes the steps to onboard namespaces to a slice. A namespace in Kubernetes 
+is a logical separation of resources in a cluster. Kubernetes resources such as pods and 
+services are associated with a namespace and are guaranteed to be uniquely identifiable 
+within it. 
+
+Namespaces that are created to run application deployments can be onboarded on a slice to 
+form a micro-network segment. After a namespace is bound to a slice, all the pods that get 
+scheduled in the namespace would get connected to the slice. 
+
+## Onboarding Namespaces
+To onboard namespaces, you must add them as part of applicationNamespaces in the [slice configuration](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file) YAML file.
+You can add namespaces in the following ways in the slice configuration YAML file:
+
+- Add namespaces for each worker cluster.
+- Add a wildcard * (asterisk) to add all namespaces in the worker clusters.
+
+:::info
+Ensure that the namespace that you want to onboard exists on the worker cluster.
+:::
+
+Add the namespace and the corresponding clusters under the applicationNamespaces in the slice configuration file as illustrated below.
+```
+namespaceIsolationProfile:
+  applicationNamespaces:
+   - namespace: iperf
+     clusters:
+      - 'worker-cluster-1'
+   - namespace: bookinfo
+     clusters:
+      - '*'
+```
+:::info
+Adding the asterisk (*) enables the namespace sameness, which means that the namespace 
+is onboarded on all the worker clusters of that slice.
+:::
+
+To know more on parameters, see [namespace isolation profile parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#namespace-isolation-profile-parameters).
+This configuration ensures that all the application deployments from that namespace are 
+onboarded automatically on to the slice.
+
+## Offboarding Namespaces
+You can offboard namespaces from the slice and prevent the applications on the slice 
+from accessing them. To know more, see [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
+
+## ServiceExports and ServiceImports
+The Service Discovery is implemented using the CRDs ServiceExport and ServiceImport.
+
+ServiceExport CRD is used to configure an existing service in the slice to be exposed and discovered across the
+clusters in the slice. On creating a ServiceExport in a cluster, a corresponding ServiceImport is created in all
+the clusters that includes the list of endpoints populated from ServiceExport. This CRD contains endpoints aggregated
+from all the clusters that expose the same service. The reconciler populates the DNS entries and ensures traffic
+to reach the correct clusters and endpoint.
+
+:::info
+If you want the service discoverable across the KubeSlice DNS, you must create a ServiceExport.
+:::
+
+### Creating a ServiceExport
+To export a service, you must create a service export .yaml file using the following template.
+
+:::info
+To understand more about the configuration parameters, see [Service Export Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#service-export-configuration-parameters).
+:::
+```
+apiVersion:  networking.kubeslice.io/v1beta1
+kind: ServiceExport
+metadata:
+  name: <serviceexport name>
+  namespace: <application namespace>
+spec:
+  slice: <slice name>
+  selector:
+    matchLabels:
+      <key>: <value>
+  ports:
+   - name: <protocol name>
+     containerPort: <port>
+     protocol: <protocol>
+```
+
+### Applying the ServiceExport YAML File
+To apply the service export to the service deployed in the previous section, use the following command targeting
+the newly created service export .yaml file:
+```
+kubectl apply -f <serviceexport yaml> -n <namespace>
+```
+
+You can verify the service was exported successfully using the following command:
+```
+kubectl get serviceexport -n <namespace>
+```
+
+The service is exported and reachable through KubeSlice DNS as.
+```
+<serviceexport name>.<namespace>.<slice name>.svc.slice.local
+```
+
+:::success
+You have successfully deployed and exported a service to your KubeSlice cluster.
+:::
+
+## ServiceImports
+When a ServiceExport is deployed, the corresponding ServiceImport is automatically created on each of the clusters
+that are part of the slice. This populates the necessary DNS entries and ensures your traffic always reaches the
+correct cluster and endpoint.
+
+You can verify that the service is imported on other clusters correctly using the following command:
+```
+kubectl get serviceimport -n <namespace>
+```
+## Limitations
+:::info
+Only HTTP services can be exported on a slice that is configured to use Istio gateways for ingress/egress.
+Raw TCP or UDP services cannot be exported.
+:::

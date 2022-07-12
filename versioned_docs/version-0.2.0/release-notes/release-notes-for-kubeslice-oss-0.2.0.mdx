@@ -1,0 +1,87 @@
+# Release Notes for KubeSlice OSS 0.2.0
+*Release Date 16th June 2022*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this by creating logical application ***slice*** boundaries which allow pods and services to communicate seamlessly across clusters, clouds, edges, and data centres. 
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What’s New
+
+These release notes describe the new changes and enhancements in this version.
+
+## Onboarding Namespaces
+
+Namespaces that are created to run application deployments can be onboarded on a slice to form a micro 
+network segment. Once a namespace is bound to a slice, all the pods that get scheduled in 
+the namespace would get connected to the slice. The configuration is part of the slice YAML file. 
+This feature onboards namespaces and not indivdiual applications.
+
+## Breaking Change for Onboarding Applications 
+With the onboarding namespaces feature, onboarding each application is no longer supported. 
+The onboarding namespaces feature can onboard complete namespaces and not individual 
+applications. 
+
+:::caution
+If you upgrade the worker operator to this 0.2.0 version, then the existing onboarded 
+applications do not work as expected.
+
+To avoid this breaking change, you must add the corresponding namespace of the existing 
+onboarded application in the slice configuration file. To know more, see 
+[namespace isolation profile parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#namespace-isolation-profile-parameters).
+:::
+
+To onboard namespaces:
+
+1. Edit the [slice configuration](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file) YAML file to add namespaces as part of applicationNamespaces . You can add namespaces in the following ways in the slice configuration YAML file:
+
+   * Add namespaces for each worker cluster.
+   * Add a wildcard ***** (asterisk) to add all namespaces in the worker clusters.
+
+   :::info
+   Ensure that the namespace that you want to onboard exists on the worker cluster.
+   :::
+
+2. Add the namespace and the corresponding clusters under the applicationNamespaces in the slice configuration file as illustrated below.
+
+   ```
+     namespaceIsolationProfile:
+      applicationNamespaces:
+       - namespace: iperf
+         clusters:
+         - 'worker-cluster-1'
+       - namespace: bookinfo
+         clusters:
+         - '*'
+   ```
+
+   :::info
+   Adding the asterisk (*) enables the namespace sameness, which means that the namespace is onboarded on all the worker clusters of that slice.
+   :::
+
+3. Apply the slice configuration to complete the process of  onboarding namespaces.
+   ```
+   kubectl apply -f <slice configuration>.yaml -n <project namespace>
+   ```
+
+## Namespace Isolation
+By default, all namespaces on a slice are not isolated and accept traffic from any source. 
+To secure the slice, you can selectively allow traffic to namespaces by isolating them.
+
+The namespace isolation feature enables you to confine application namespaces with a slice. 
+The application namespaces are isolated from other namespaces in a cluster and are 
+connected to the slice network. This leads to the formation of a secure inter-cluster 
+network segment of pods that are isolated from the rest of the pods in the clusters.
+
+## Intra-cluster Slice 
+A slice can now also be created within a single worker cluster.
+
+## Supported Kubernetes Services 
+This version of KubeSlice has been tested on Azure Kubernetes Service and 
+Google Kubernetes Engine, and KIND Kubernetes clusters.  
+
+The supported Kubernetes versions for cloud clusters are 
+[1.20](https://v1-20.docs.kubernetes.io/), [1.21](https://v1-21.docs.kubernetes.io/),
+and [1.22](https://v1-22.docs.kubernetes.io/). 
+
+The supported Kubernetes versions for KIND clusters are 
+[1.21](https://v1-21.docs.kubernetes.io/) and [1.22](https://v1-22.docs.kubernetes.io/).
