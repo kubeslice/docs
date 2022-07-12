@@ -78,6 +78,7 @@ const config = {
         logo: {
           alt: 'Avesha logo',
           src: 'img/avesha-big.svg',
+          srcDark: 'img/avesha-big-dark.svg',
         },
         items: [
           {
