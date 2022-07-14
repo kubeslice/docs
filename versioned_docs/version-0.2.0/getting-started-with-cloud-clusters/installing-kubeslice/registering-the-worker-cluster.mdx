@@ -30,11 +30,11 @@ Create the namespace `istio-system` using the following command:
 kubectl create ns istio-system
 ```
 
-Install the istio- chart from the helm repository using the following command:
+Install the `istio-chart` from the helm repository using the following command:
 ``` 
 helm install istio-base kubeslice/istio-base -n istio-system
 ```
-Install the istio-discovery chart from the helm repository using the following command:
+Install the `istio-discovery` chart from the helm repository using the following command:
 ```
 helm install istiod kubeslice/istio-discovery -n istio-system
 ```
@@ -208,7 +208,7 @@ cluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/insta
 
     Example
     ``` 
-    kubectl get secrets -n avesha
+    kubectl get secrets -n kubeslice-avesha
     ```
     
     Example Output
@@ -233,9 +233,13 @@ cluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/insta
     kubectl get secrets <worker-cluster-secret-name> -o yaml -n kubeslice-<projectname>
     ```
 
-    Example Output
+    Example
     ``` 
-    $ kubectl get secrets kubeslice-rbac-worker-aks-worker-1-token-hml58 -o yaml -n  kubeslice-cisco
+    kubectl get secrets kubeslice-rbac-worker-aks-worker-1-token-hml58 -o yaml -n  kubeslice-cisco
+    ```
+
+    Example Output
+    ```
     apiVersion: v1
     data:
       ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUU2VENDQXRHZ0F3SUJBZ0lSQUtkdGsrOTJWQlJaSlJ4K2w5SHFabWN3RFFZSktvWklodmNOQVFFTEJRQXcKRFRFTE1Ba0dBMVVFQXhNQ1kyRXdJQmNOTWpJd016RTFNRGN3TURNM1doZ1BNakExTWpBek1UVXdOekV3TXpkYQpNQTB4Q3pBSkJnTlZCQU1UQW1OaE1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBCm1PZVNWQ3VVY0NNYlJtYkxsREFGSjljZk1ER0hHbWlVcy9PaU1zRm1QelZzcGkveEM0bFhqdStnSGtvNXMwcEEKeWZ6aURMU3cxeFA1RWk0S1NLMmhxZnBjYW04MFViTTV0RTIyaHowd21sOGlRblhES1Ztdm9JOFBqNm9SZHpiNApxcC9sMGFMZHUvOGtrVEhSWVU4MVJyWFJtWEVaUjJUcG9qaGZCYXd6UGxCNWFJall2YVc0djRERFpqRjFaTzNwCjdvNFg5RWZsZmZtd0wyNmlUSWZINjNwU3VBNjlob25RY0NLVjh3SmdDQVdxZHBDT0hJQlBUWjVzQThSWkdja2sKSDlzNXR3U00zbWVBcXEzaGhLVmNRL0YxNTlOLzdDRUZOZytjUTdtYkgxS21ISnEzYSsvYmRJM296L3R3cGRUZwppUUVEVS94UENxNTJHRnNFazNYTEcxSG5GUVpmZWVCNThQNVd6NS9Iak9KbHJwOExUN0RDdHFDK2FuLzNCRTh4ClJwMkRaOW9TT2UyblhyK3FreDRpampndVlKeCtiRHpGM2o0MVRrd1Q3am1teWlGMkZYN25nWGVpVk1nSU8xdisKZjFSdVRiTHpsYlFSNU12a09qUm9vVlBybWRXVVRFNVdaMFp4QnRkS1dtdUdHR2ZMOFljNndQc0NKUldianpORwppb2psZU9lVkg5UDB5S3VkREZPWkFINHp6Vk1CYTAvMHJXKzRnWnhtVzVpRkxaVE1BbEQ5QXhSclhPbFB4Uzg5CnFMY3NCMHNqbDNzeGlzb0lieEJGSUwzeGtRa0szK1RDYktIQmlnR1dBQmxlRGJHYWZHVjRDalpBL0E5MC93QlUKNjJRWUdEZ1FkVDhsN2U1anp0RjZWanBFbXo5T1IrUUphR3FXczFMQ04vRUNBd0VBQWFOQ01FQXdEZ1lEVlIwUApBUUgvQkFRREFnS2tNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGSlp0UHlYZ0wrcXIxRzIyCmtVWllpN0E4U1dPME1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQ0FRQWhXNG9QdVlEazNiamZSdlpYQmllTU5Sa3cKc1FCSjNoL3dCT3c5K0hMZ2lpYzJhNDdtWUJHcDlDV0ZvWTIvKzNDcjdZQThKYzZyY3QrcnlMeDUvQThlOVB3bApXV1VKbnVSalA5d3NoTkk0UUFKalRESEdMYVd4dXphOXFtVUxHUHV0VWpORkcySlJOTWxiV2pxakJzN1I1RFNMClVXazBEVi92dWU4YUhyRTJPRk5wVjFIK2V3VS9xdHFyRlVUWFI4d2NIRXdSNVU0cG9SSU9mOUl2OTdyOTdLY2gKTGFiQ1hJTWhpeVZMcDcvRXpGNVFyNFA0OUNhS0ZvMXhQQm1zcWUrV0lJZzFxbjk1ZlRHRjZmc3dwMHM0TE5pcQpJRnRsS3doR294VFNONXZWMU9EcTFWY3NOY2VRT0FNQVE0WE9zNGxBZURGTXFoaUtVcDJHZlZ2RWZKb2I4QzQ5CnAxcFB1ZWl5dksrc1ZUL2NWSkpzeUMvcnZBQUZ4ZnFlUytZbFlXajMwdG1pTitSdjRlS3V2c1ZadWZQSGVuNDcKdHVZSUQrNDZEL0x2ZVBBdGcwVVg4U3Qwakx4ZWg5bTFwRzZqSWk4NVlYQ0kzVy9XUms0aXpXMC85NldwZ1BJSAplOWQrRlhOZWY3eXJNWWExbGdGV1V2ajNiNG11aGlHQngvNE9oTWt6R3BUYU1aOWhCMUJyVlE5N1BwM0xkVHhxCnFESEJyZThETXN3MXJ4Uk12azVKNWEvVlMvUlBMS21KK2k2czN1RzlnaFVCSXIyQmVaS0gzdGFKUFpEaEhYNlUKaW1yS3F5KzV2MG9vTTl3OTU0MVlyMFVyUTZPSkpqNzRhc044MjRlVVJueFRCZDFTTVFMSGtYeThMS1FFYUVweQpZWXNrYUpPSys0cFJRREZTeFE9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
