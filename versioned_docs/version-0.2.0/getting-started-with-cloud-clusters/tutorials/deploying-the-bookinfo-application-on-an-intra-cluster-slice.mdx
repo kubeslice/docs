@@ -320,7 +320,7 @@ Using the template below, create serviceexports.yaml. All fields in the template
 ##################################################################################
 # Details ServiceExport
 ##################################################################################
-apiVersion: networking.avesha.io/v1beta1
+apiVersion: networking.kubeslice.io/v1beta1
 kind: ServiceExport
 metadata:
  name: details
@@ -338,7 +338,7 @@ spec:
 ##################################################################################
 # Reviews ServiceExport
 ##################################################################################
-apiVersion: networking.avesha.io/v1beta1
+apiVersion: networking.kubeslice.io/v1beta1
 kind: ServiceExport
 metadata:
  name: reviews
@@ -431,8 +431,8 @@ kubectl apply -f serviceexports.yaml -n bookinfo
 ```
 Expected Output
 ```
-serviceexport.networking.avesha.io/details created
-serviceexport.networking.avesha.io/reviews created
+serviceexport.networking.kubeslice.io/details created
+serviceexport.networking.kubeslice.io/reviews created
 ```
 
 ## Validating the BookInfo Deployment
