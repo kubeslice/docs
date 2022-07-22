@@ -17,16 +17,14 @@ Before you begin, ensure the following prerequisites are met:
 
 - You have a KubeSlice configuration with two or more clusters registered. For more information, 
 see [Installing KubeSlice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
-- Before creating the slice, create a namespace iperf in all participating worker clusters.
-  Use the following command to create the namespace iperf:
+- Before creating the slice, create a `iperf` namespace in all participating worker clusters.
+  Use the following command to create the `iperf` namespace:
   ```
   kubectl create ns iperf
   ```
 - You have the slice created across worker clusters. For more information, 
 see [Creating a Slice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/creating-a-slice.mdx).
 
-## Creating the Slice
-To install the iPerf application on a single cluster, create a slice without Istio.
 
 ## Creating the Slice Configuration YAML File
 Use the following template to create the Slice without Istio:
@@ -208,15 +206,15 @@ Perform these steps:
 
 1. Switch context to the registered cluster you want to install the iperf server.
 ```
-kubectx <cluster name>
+   kubectx <cluster name>
 ```
 2. Create the `iperf` namespace using the following command:
 ```
-kubectl create ns iperf
+   kubectl create ns iperf
 ```
 3. Apply the iperf-server.yaml deployment using the following command:
 ```
-kubectl apply -f iperf-server.yaml -n iperf
+   kubectl apply -f iperf-server.yaml -n iperf
 ```
 
 ## Validating your iPerf Installation
@@ -229,12 +227,12 @@ Perform these steps:
 
 1. Switch the context to the cluster where you installed the Iperf Sleep.
 ```
-kubectx <cluster name>
+  kubectx <cluster name>
 ```
 
 2. To validate the iperf-sleep pods belonging to the namespace iperf, run the following command:
 ```
-$ kubectl get pods -n iperf
+   kubectl get pods -n iperf
 ```
 Example Output
 ```
@@ -244,7 +242,7 @@ iperf-sleep-5477bf94cb-vmmtd   4/4     Running   0          10s
 
 3. Validate the ServiceImport using the following command:
 ```
-$ kubectl get serviceimport -n iperf
+  kubectl get serviceimport -n iperf
 ```
 Example Output
 ```
@@ -257,11 +255,11 @@ Perform these steps:
 
 1. Switch the context to the cluster where you have installed the Iperf Server.
 ```
-kubectx <cluster name>
+   kubectx <cluster name>
 ```
 2. Validate the iperf-server pods belonging to the namespace iperf, run the following command:
 ```
-$ kubectl get pods -n iperf
+   kubectl get pods -n iperf
 ```
 Example Output
 ```
@@ -270,7 +268,7 @@ iperf-server-5958958795-fld2p   4/4     Running   0          20s
 ```
 3. Validate the ServiceImport using the following command:
 ```
-$ kubectl get serviceimport -n iperf
+   kubectl get serviceimport -n iperf
 ```
 Example Output
 ```
@@ -279,7 +277,7 @@ iperf-server   lion              1           READY
 ```
 4. Validate the ServiceExport using the following command:
 ```
-$ kubectl get serviceexport -n iperf
+    kubectl get serviceexport -n iperf
 ```
 Example Output
 ```
@@ -292,12 +290,12 @@ Perform these steps in the cluster where KubeSlice Controller is installed:
 
 1. Switch the context of the cluster.
 ```
-kubectx <cluster name>
+   kubectx <cluster name>
 ```
 
 2. To validate serviceexportconfig use the following command:
 ```
-kubectl get serviceexportconfigs -A
+  kubectl get serviceexportconfigs -A
 ```
 
 Example Output
@@ -308,7 +306,7 @@ kubeslice-devops   iperf-server   5m12s
 
 3. To validate the workerserviceimports use the following command:
 ```
-kubectl get workerserviceimports -A
+   kubectl get workerserviceimports -A
 ```
 
 Example Output
@@ -336,22 +334,22 @@ Perform these steps:
 
 1. Switch the context of the cluster.
 ```
-kubectx <cluster name>
+   kubectx <cluster name>
 ```
 
 2. List the pods in the `iperf` namespace to get the full name of the iperf-sleep pod.
 ```
-kubectl get pods -n iperf
+   kubectl get pods -n iperf
 ```
 
 3. Using the pod name you just retrieved, execute the command into the iperf-sleep pod with the following command:
 ```
-kubectl exec -it <iperf-sleep pod name> -c iperf -n iperf -- sh
+   kubectl exec -it <iperf-sleep pod name> -c iperf -n iperf -- sh
 ```
 
 4. After attaching the pod, use the short DNS Name retrieved above to connect to the server from the sleep pod.
 ```
-iperf -c <short iperf-server DNS Name> -p 5201 -i 1 -b 10Mb;
+   iperf -c <short iperf-server DNS Name> -p 5201 -i 1 -b 10Mb;
 ```
 
 Expected Output
@@ -382,5 +380,4 @@ TCP window size: 45.0 KByte (default)
 
 
 ## Uninstalling iPerf
-To uninstall iPerf from your KubeSlice configuration, follow the instructions 
-in [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
+To uninstall iPerf from your KubeSlice configuration, follow the instructions in [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).

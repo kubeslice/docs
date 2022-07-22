@@ -369,6 +369,7 @@ spec:
 ## Deploying the application on a Single Cluster
 
 Use the following command to ensure we are targeting the cluster we deploy the product page to:
+
 ```
 kubectx <services cluster>
 ```
@@ -376,7 +377,7 @@ Use the following command to create the bookinfo namespace that we deploy these 
 ```
 kubectl create ns bookinfo
 ```
-Use the following command to apply the productpage.yaml file:
+Use the following command to apply the `productpage.yaml` file:
 ```
 kubectl apply -f productpage.yaml -n bookinfo
 ```
@@ -397,7 +398,7 @@ productpage-v1-5cc46fc6dc-drd8b   5/5     Running   0          26h
 ```
 Using the following commands, apply the details.yaml, ratings.yaml, reviews.yaml, and serviceexports.yaml files.
 
-Run the following command to apply the details.yaml file.
+Use the following command to apply the `details.yaml` file.
 ```
 kubectl apply -f details.yaml -n bookinfo
 ```
@@ -407,7 +408,7 @@ service/details created
 serviceaccount/bookinfo-details created
 deployment.apps/details-v1 created
 ```
-Run the following command to apply the ratings.yaml file:
+Use the following command to apply the `ratings.yaml` file:
 ```
 kubectl apply -f ratings.yaml -n bookinfo
 ```
@@ -417,7 +418,7 @@ service/ratings created
 serviceaccount/bookinfo-ratings created
 deployment.apps/ratings-v1 created
 ```
-Run the following command to apply the reviews.yaml file:
+Use the following command to apply the `reviews.yaml` file:
 ```
 kubectl apply -f reviews.yaml -n bookinfo
 ```
@@ -438,7 +439,7 @@ details-v1-557b474454-fbfhh   4/4     Running   0          26h
 ratings-v1-5846f848bb-4dwtz   4/4     Running   0          26h
 reviews-v3-64cf7654f4-cfqz8   4/4     Running   0          26h
 ```
-Run the following command to apply serviceexports.yaml file:
+Use the following command to apply `serviceexports.yaml` file:
 ```
 kubectl apply -f serviceexports.yaml -n bookinfo
 ```
@@ -494,7 +495,7 @@ productpage   NodePort    10.0.20.209    <none>        9080:31194/TCP   2d2h
 reviews       ClusterIP   10.0.146.220   <none>        9080/TCP         2d2h
 ```
 To view the deployed Bookinfo product page, we need the external IP of an application node and the exposed port
- we just retrieved. Use the following command to get your node details:
+we just retrieved. Use the following command to get your node details:
 
 :::note
 Take note of the external IP address of one of the application nodes to use it later.

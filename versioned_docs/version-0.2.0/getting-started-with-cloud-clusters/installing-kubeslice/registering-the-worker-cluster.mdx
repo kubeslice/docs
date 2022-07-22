@@ -9,7 +9,7 @@ Before you begin, ensure the following prerequisites are met:
 
 - You have the KubeSlice Controller installed on a separate cluster. For more information, see [Installing the KubeSlice Controller](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
 - You have set up the environment for the worker clusters. For more information, see [Prerequisites](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
-- You have authenticated the worker clusters with the cloud providers. For more information, see [Preparing the clusters for registration](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registeration.mdx).
+- You have authenticated the worker clusters with the cloud providers. For more information, see [Preparing the clusters for registration](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
 - You have cluster administrator privileges to install the Slice Operator.
 
 ## Installing Istio
@@ -25,7 +25,7 @@ Switch the context to the cluster that will be registered with the KubeSlice Con
 kubectx <cluster name>
 ```
 
-Create the namespace `istio-system` using the following command:
+Create the `istio-system` namespace using the following command:
 ``` 
 kubectl create ns istio-system
 ```
@@ -378,7 +378,6 @@ You must repeat the same sequence of steps that is getting secrets, creating the
 .yaml file and applying it on each worker cluster to install the Slice Operator on 
 other worker clusters.
 :::
-
 :::success
 You have successfully installed the Slice Operator in the worker cluster. 
 Repeat the above steps to install the Slice Operator 
