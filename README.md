@@ -16,7 +16,7 @@ Go to the project repository on Github and click on **Fork** button. On this for
 
 ### 2. Clone the project
 
-Get the link of your forked repository and clone the repoitory using git clone.
+Get the link of your forked repository and clone the repository using git clone.
 ```
 $ git clone https://github.com/<Github-Username>/<Forked-repo-name>.git
 ```
