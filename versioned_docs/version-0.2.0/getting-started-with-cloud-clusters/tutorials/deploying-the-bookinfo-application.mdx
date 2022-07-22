@@ -1,35 +1,46 @@
 # Deploying the BookInfo Application
 
 ## Introduction
-Istio Bookinfo ([Bookinfo Application](https://istio.io/latest/docs/examples/bookinfo/)) is a sample application from Istio composed of four separate microservices intended to demonstrate various Istio features. In this topic, we will use Istio Bookinfo to demonstrate inter-slice communications.
+Istio Bookinfo ([Bookinfo Application](https://istio.io/latest/docs/examples/bookinfo/)) is a sample application 
+from Istio composed of four separate microservices intended to demonstrate various Istio features.
+ In this topic, we will use Istio Bookinfo to demonstrate inter-slice communications.
 
 ## Prerequisites
 Before you begin, ensure the following prerequisites are met:
 
-- You have a KubeSlice configuration with two or more clusters registered. For more information, see [Installing KubeSlice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
-- You have Istio installed in all registered worker clusters. For more information, see [Installing Istio](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#installing-istio).
+- You have a KubeSlice configuration with two or more clusters registered. For more information, 
+see [Installing KubeSlice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
+- You have Istio installed in all registered worker clusters. For more information, 
+see [Installing Istio](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#installing-istio).
 - Before creating the slice, create a namespace bookinfo in all participating worker clusters.
-Use the following command to create the namespace bookinfo:
+Use the following command to create the `bookinfo` namespace:
   ```
  kubectl create ns bookinfo
  ```
-- Inject the istio label to the bookinfo namespace 
+- Inject the istio label to the `bookinfo` namespace 
  ```
  kubectl label namespace bookinfo istio-injection=enabled
  ```
-- You have the slice created across worker clusters. For more information, see [Creating a Slice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/creating-a-slice.mdx).
+- You have the slice created across worker clusters. For more information, 
+see [Creating a Slice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/creating-a-slice.mdx).
 
 ## Creating the Slice
-To install the BookInfo Application on a single cluster, create a slice without Istio. For more information, see [Creating the Slice without External Gateway](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#slice-configuration-without-external-gateways).
+To install the BookInfo Application on a single cluster, create a slice without Istio. For more information, 
+see [Creating the Slice without External Gateway](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#slice-configuration-without-external-gateways).
 
 ## Creating the Bookinfo Deployment YAML Files
-Using the templates below, create the necessary .yaml files to deploy the Bookinfo application. All fields in the template will remain the same except for the <slice name\> which must be replaced with the name of your slice.
+Using the templates below, create the necessary .yaml files to deploy the Bookinfo application.
+ All fields in the template will remain the same except for the <slice name\> which must be replaced with the name of your slice.
+
 :::note
-These instructions will guide you through deploying the Product Page service to a cluster we will refer to as the <productpage cluster\>, and the remaining services as well as service exports will be deployed to a cluster referred to here as the <services cluster\>.
+These instructions will guide you through deploying the Product Page service to a cluster we will refer to as 
+the <productpage cluster\>, and the remaining services as well as service exports will be deployed to a cluster 
+referred to here as the <services cluster\>.
 :::
 
 ## Product Page
-Using the template below, create productpage.yaml. All fields in the template will remain the same except for the <slice name\> which must be replaced with the name of your slice.
+Using the template below, create productpage.yaml. All fields in the template will remain the same except for 
+the <slice name\> which must be replaced with the name of your slice.
 ```
 ##################################################################################################
 # Productpage service
@@ -107,7 +118,8 @@ spec:
 ```
 
 ## Details
-Using the template below, create details.yaml. All fields in the template will remain the same except for the <slice name\> which must be replaced with the name of your slice.
+Using the template below, create details.yaml. All fields in the template will remain the same except for 
+the <slice name\> which must be replaced with the name of your slice.
 ```
 ##################################################################################################
 # Details service
@@ -172,7 +184,8 @@ spec:
          privileged: true
 ```
 ## Ratings
-Using the template below, create ratings.yaml. All fields in the template will remain the same except for the <slice name\> which must be replaced with the name of your slice.
+Using the template below, create ratings.yaml. All fields in the template will remain the same except for 
+the <slice name\> which must be replaced with the name of your slice.
 ```
 ##################################################################################################
 # Ratings service
@@ -238,7 +251,8 @@ spec:
 ```
 
 ## Reviews
-Using the template below, create reviews.yaml. All fields in the template will remain the same except for the <slice name\> which must be replaced with the name of your slice.
+Using the template below, create reviews.yaml. All fields in the template will remain the same except for
+ the <slice name\> which must be replaced with the name of your slice.
 ```
 ##################################################################################################
 # Reviews service
@@ -316,7 +330,8 @@ spec:
        emptyDir: {}
 ```
 ## ServiceExports
-Using the template below, create serviceexports.yaml. All fields in the template will remain the same except for **two** <slice name\> instances which must be replaced with the name of your slice.
+Using the template below, create serviceexports.yaml. All fields in the template will remain the same except
+ for **two** <slice name\> instances which must be replaced with the name of your slice.
 ```
 ##################################################################################
 # Details ServiceExport
@@ -393,9 +408,9 @@ Use the following command to label the bookinfo namespace for istio-injection:
 kubectl label namespace bookinfo istio-injection=enabled
 ```
 
-Next, using the following commands, apply the details.yaml, ratings.yaml, reviews.yaml, and serviceexports.yaml files.
+Using the following commands, apply the details.yaml, ratings.yaml, reviews.yaml, and serviceexports.yaml files.
 
-Run the following command to apply the details.yaml file.
+Use the following command to apply the details.yaml file.
 ```
 kubectl apply -f details.yaml -n bookinfo
 ```
@@ -405,7 +420,7 @@ service/details created
 serviceaccount/bookinfo-details created
 deployment.apps/details-v1 created
 ```
-Run the following command to apply the ratings.yaml file:
+Use the following command to apply the ratings.yaml file:
 ```
 kubectl apply -f ratings.yaml -n bookinfo
 ```
@@ -415,7 +430,7 @@ service/ratings created
 serviceaccount/bookinfo-ratings created
 deployment.apps/ratings-v1 created
 ```
-Run the following command to apply the reviews.yaml file:
+Use the following command to apply the reviews.yaml file:
 ```
 kubectl apply -f reviews.yaml -n bookinfo
 ```
@@ -425,7 +440,7 @@ service/reviews created
 serviceaccount/bookinfo-reviews created
 deployment.apps/reviews-v3 created
 ```
-Run the following command to verify if the deployed pods are running on the cluster:
+Use the following command to verify if the deployed pods are running on the cluster:
 ```
 kubectl get pods -n bookinfo
 ```
@@ -436,7 +451,7 @@ details-v1-557b474454-fbfhh   5/5     Running   0          26h
 ratings-v1-5846f848bb-4dwtz   5/5     Running   0          26h
 reviews-v3-64cf7654f4-cfqz8   5/5     Running   0          26h
 ```
-Run the following command to apply serviceexports.yaml file:
+Use the following command to apply serviceexports.yaml file:
 ```
 kubectl apply -f serviceexports.yaml -n bookinfo
 ```
@@ -458,7 +473,7 @@ kubectl get serviceexport -n bookinfo
 ```
 Expected Output
 ```
-$ kubectl get serviceexport -n bookinfo
+kubectl get serviceexport -n bookinfo
 NAME      SLICE   INGRESS   PORT(S)    ENDPOINTS   STATUS
 details   white   true      9080/TCP   1           READY
 reviews   white   true      9080/TCP   1           READY
@@ -478,7 +493,8 @@ NAME      SLICE   PORT(S)    ENDPOINTS   STATUS
 details   white   9080/TCP   1           READY
 reviews   white   9080/TCP   1           READY
 ```
-Next, use the following command to check the exposed port for the product page service. In a moment, use this port to visit the Bookinfo webpage.
+Use the following command to check the exposed port for the product page service. In a moment, use this port to
+ visit the Bookinfo webpage.
 ```
 kubectl get services -n bookinfo
 ```
@@ -489,7 +505,8 @@ details       ClusterIP   10.0.116.23    <none>        9080/TCP         2d2h
 productpage   NodePort    10.0.20.209    <none>        9080:31194/TCP   2d2h
 reviews       ClusterIP   10.0.146.220   <none>        9080/TCP         2d2h
 ```
-To view the deployed Bookinfo product page, we need the external IP of an application node and the exposed port we just retrieved. Use the following command to get your node details:
+To view the deployed Bookinfo product page, we need the external IP of an application node and the exposed 
+port we just retrieved. Use the following command to get your node details:
 :::note
 Take note of the external IP address of one of the application nodes to use it later.
 :::
@@ -505,7 +522,8 @@ gke-preprod-knative--preprod-knative--aba5a0cc-9jrq   Ready    <none>   27h   v1
 gke-preprod-knative--preprod-knative--aba5a0cc-xj3j   Ready    <none>   27h   v1.20.15-gke.3600   10.6.0.5      35.243.229.81    Container-Optimized OS from Google   5.4.170+         containerd://1.4.8
 gke-preprod-knative--preprod-knative--d19d3a9f-c32x   Ready    <none>   28h   v1.20.15-gke.3600   10.6.0.3      104.196.200.27   Container-Optimized OS from Google   5.4.170+         containerd://1.4.8
 ```
-Combine the external IP the command returns with the port you retrieved in the last step in the format below, and visit the page in a browser to view your multi-cluster Bookinfo deployment.
+Combine the external IP the command returns with the port you retrieved in the last step in the format below, 
+and visit the page in a browser to view your multi-cluster Bookinfo deployment.
 ```
 http://<external ip>:<port>/productpage
 ```
@@ -561,4 +579,5 @@ You have successfully deployed Istio Bookinfo on a KubeSlice configuration conta
 :::
 
 ## Uninstalling Istio BookInfo
-To uninstall Istio Bookinfo from your KubeSlice configuration, the instructions [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
+To uninstall Istio Bookinfo from your KubeSlice configuration, the instructions 
+in [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).

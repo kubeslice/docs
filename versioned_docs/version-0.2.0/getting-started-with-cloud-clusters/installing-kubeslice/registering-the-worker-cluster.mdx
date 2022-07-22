@@ -7,9 +7,9 @@ register your worker clusters with the KubeSlice Controller.
 ## Prerequisites
 Before you begin, ensure the following prerequisites are met:
 
-- You have the KubeSlice Controller installed on a separate cluster. For more information, see [Installing the KubeSlice Controller](/versioned_docs/version/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
-- You have set up the environment for the worker clusters. For more information, see [Prerequisites](/versioned_docs/version/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
-- You have authenticated the worker clusters with the cloud providers. For more information, see [Preparing the clusters for registration](/versioned_docs/version/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registeration.mdx).
+- You have the KubeSlice Controller installed on a separate cluster. For more information, see [Installing the KubeSlice Controller](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
+- You have set up the environment for the worker clusters. For more information, see [Prerequisites](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
+- You have authenticated the worker clusters with the cloud providers. For more information, see [Preparing the clusters for registration](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registeration.mdx).
 - You have cluster administrator privileges to install the Slice Operator.
 
 ## Installing Istio
@@ -44,7 +44,7 @@ Repeat these steps to install Istio on other worker clusters.
 
 ## Validating the installation of Istio 
 
-Validate the installation by checking the pods belonging to the namespace `istio-system`.
+Validate the installation by checking the pods belonging to the `istio-system` namespace.
 ``` 
 kubectl get pods -n istio-system
 ```
@@ -348,7 +348,8 @@ You must apply the values **.yaml** file on each worker cluster to install the S
 
 ## Validating the Slice Operator Installation 
 
-To validate the Slice Operator installation in the registered cluster,check the pods belonging to the namespace `kubeslice-system` by running
+To validate the Slice Operator installation in the registered cluster,check the pods belonging to the 
+namespace `kubeslice-system` by running
 the following command:
 
 Example
@@ -379,6 +380,7 @@ other worker clusters.
 :::
 
 :::success
-You have successfully installed the Slice Operator in the Worker cluster. Repeat the above steps to install the Slice Operator 
+You have successfully installed the Slice Operator in the worker cluster. 
+Repeat the above steps to install the Slice Operator 
 in all the worker clusters.
 :::
