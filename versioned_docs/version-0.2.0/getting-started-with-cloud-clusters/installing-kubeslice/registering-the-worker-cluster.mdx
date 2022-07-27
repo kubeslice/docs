@@ -191,10 +191,9 @@ Before installing the Slice Operator in your registered cluster, you must get th
 
 ### Getting the Secrets of the Registered Cluster 
 
-After registering the worker cluster with the KubeSlice Controller, you
-will get a secret listed under the project namespace. The secret
-contains access information for the Slice Operator on the worker cluster
-to communicate with the KubeSlice Controller.
+After registering the worker cluster with the KubeSlice Controller, you will get a secret listed under the 
+project namespace. The secret contains access information for the Slice Operator on the worker cluster to 
+communicate with the KubeSlice Controller.
 
 :::info
 Alternatively, you can use the script to create your values `.yaml` file.
@@ -294,14 +293,14 @@ See [Script to get the secrets of the Workercluster](/versioned_docs/version-0.2
 
 ## Creating the Slice Operator YAML File
 
-Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and
-the `token` from the above secrets to create your `values.yaml` file.
+Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `token` from the above secrets 
+to create your `values.yaml` file.
 
 Create the `values.yaml` file using the following template.
 
 :::info
-To understand more about the configuration parameters, see [Slice Operator Configuration
-Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-operator-configuration-parameters)
+To understand more about the configuration parameters, 
+see [Slice Operator ConfigurationParameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-operator-configuration-parameters)
 :::
 
 ```
@@ -338,16 +337,18 @@ The following information is required to apply the manifest file.
 |<cluster name\>|The name of the cluster.|
 |<values\>|The file name with the values.|
 
-You must install the Slice Operator in the registered cluster. To begin, switch the context to the registered cluster.
+You must install the Slice Operator in the registered cluster.
+
+Switch the context to the registered cluster.
 ```
 kubectx <cluster name>
 ```
 
-Run the following command to apply the values file on the namespace `kubeslice-system`:
+Use the following command to apply the values file on the `kubeslice-system` namespace:
 ```
 helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of secrets file>.yaml -n kubeslice-system  --create-namespace
 ```
-:::note
+:::info
 You must apply the values **.yaml** file on each worker cluster to install the Slice operator.
 :::
 

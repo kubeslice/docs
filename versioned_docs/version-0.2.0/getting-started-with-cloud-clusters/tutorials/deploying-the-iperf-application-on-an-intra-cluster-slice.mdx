@@ -5,7 +5,6 @@ iPerf is a tool commonly used to measure network performance, perform network tu
 application consists of two main services, iperf-sleep (client) and iperf-server.
 
 This tutorial provides the steps to:
-
 * Install the iperf-sleep and iperf-server services on a single worker cluster within a KubeSlice configuration.
 * Verify intra-cluster communication over KubeSlice.
 
@@ -16,15 +15,15 @@ Before you begin, ensure the following prerequisites are met:
 see [Installing KubeSlice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
 - Before creating the slice, create a `iperf` namespace in all participating worker clusters.
 Use the following command to create the `iperf` namespace:
-```
-kubectl create ns iperf
-```
+  ```
+  kubectl create ns iperf
+  ```
 
 ## Creating the Slice
-To install the iPerf application on a single cluster you must create a slice without Istio.
+To install the iPerf application on a single cluster, you must create a slice without Istio.
 
 ### Creating the Slice Configuration YAML File
-Use the following template to create the Slice without Istio:
+Use the following template to create a slice without Istio:
 ```
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: SliceConfig
@@ -65,9 +64,9 @@ The following information is required.
 
 | Variable | Description |
 |------------|------------------------|
-| <cluster name\> | The name of the cluster. |
-| <slice configuration\> | The name of the slice configuration file. |
-| <project name\> | The project name on which you apply the slice configuration file. |
+| **cluster name** | The name of the cluster. |
+| **slice configuration**| The name of the slice configuration file. |
+| **project name** | The project name on which you apply the slice configuration file. |
 
 Perform these steps:
 
@@ -76,7 +75,7 @@ Perform these steps:
    ```
    kubectx <cluster name>
    ```
-2. Apply the manifest file on the project namespace using the following command:
+2. Apply the YAML file on the project namespace using the following command:
    
    ```
    kubectl apply -f <slice configuration>.yaml -n <project namespace>
@@ -85,12 +84,12 @@ Perform these steps:
 ## Deploying iPerf
 
 In this tutorial, iperf-sleep and iperf-server will be deployed in the same worker clusters. The cluster is used 
-for iperf-sleep is referred to as <sleep cluster\> as well as for iperf-server. Therefore it is also referred to 
-as <server cluster\>.
+for iperf-sleep is referred to as `sleep cluster` as well as for iperf-server. Therefore it is also referred to 
+as `server cluster`.
 
 ### Creating iPerf Sleep YAML File
 
-Using the template below, create a deployment file, iperf-sleep.yaml.
+Use the following template to create a `iperf-sleep.yaml` deployment file.
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -129,18 +128,18 @@ spec:
 
 Perform these steps:
 
-1. Switch the context to the registered cluster you want to install Iperf-sleep.
+1. Switch the context to the registered cluster you want to install iperf-sleep.
    ```
    kubectx <cluster name>
    ```
-2. Apply the iperf-sleep.yaml deployment using the following command:
+2. Apply the `iperf-sleep.yaml` deployment file using the following command:
    ```
    kubectl apply -f iperf-sleep.yaml -n iperf
    ```
 
 ## Creating the iPerf Server YAML File
-Using the template below, create a deployment file name iperf-server.yaml. All fields in the template will remain 
-the same except for **one <slice name\>** instance which must be replaced with the name of your slice.
+Using the following template create a `iperf-server.yaml` deployment file. All fields in the template will remain 
+the same except for **one `slice name`** instance which must be replaced with the name of your slice.
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -197,7 +196,7 @@ spec:
 ```
 
 ## Applying the iPerf Server YAML File
-As you want to install install the iperf server on the same worker cluster that has iperf sleep installed, you must remain on the same context of the worker cluster.
+Install the iperf server on the same worker cluster that has iperf sleep installed, you must remain on the same context of the worker cluster.
 
 Apply the iperf-server.yaml deployment.
 ```
@@ -205,7 +204,7 @@ kubectl apply -f iperf-server.yaml -n iperf
 ```
 
 ## Validating your iPerf Installation
-To verify our iPerf installation, first switch contexts to the cluster with the iperf-sleep.yaml applied.
+To verify our iPerf installation, switch contexts to the cluster with the iperf-sleep.yaml applied.
 
 ## Validating the iPerf Sleep Installation
 Perform these steps:
@@ -214,7 +213,7 @@ Perform these steps:
    ```
    kubectx <cluster name>
    ```
-2. To validate the iperf-sleep pods belonging to the namespace iperf, run the following command:
+2. Validate the iperf-sleep pods belonging to the `iperf` namespace using the following command:
    ```
    kubectl get pods -n iperf
    ```
@@ -235,7 +234,7 @@ Perform these steps:
    ```
    kubectx <cluster name>
    ```
-2. Validate the iperf-server pods belonging to the namespace iperf, run the following command:
+2. Validate the iperf-server pods belonging to the `iperf` namespace using the following command:
    ```
    kubectl get pods -n iperf
    ```
@@ -266,7 +265,7 @@ Perform these steps in the worker cluster where KubeSlice Controller is installe
    ```
    kubectx <cluster name>
    ```
-2. To validate serviceexportconfig use the following command:
+2. Validate serviceexportconfig using the following command:
    ```
    kubectl get serviceexportconfigs -A
    ```
@@ -275,7 +274,7 @@ Perform these steps in the worker cluster where KubeSlice Controller is installe
    NAMESPACE          NAME           AGE
    kubeslice-devops   iperf-server   5m12s
    ```
-3. To validate the workerserviceimports use the following command:
+3. Validate the workerserviceimports using the following command:
    ```
    kubectl get workerserviceimports -A
    ```
@@ -297,13 +296,13 @@ kubectl describe serviceimport iperf-server -n iperf | grep "Dns Name:"
 Expected Output
 ```
 Dns Name:  iperf-server.iperf.svc.slice.local #The DNS Name listed here will be used as the DNS Name below.
-   Dns Name: <iperf server service>.<cluster identifier>.iperf-server.iperf.svc.slice.local #Full DNS Name
+Dns Name: <iperf server service>.<cluster identifier>.iperf-server.iperf.svc.slice.local #Full DNS Name
 ```
 
 ## Verifying the Intra-Cluster Communication
 Perform these steps:
 
-1. List the pods in the iperf namespace to get the full name of the iperf-sleep pod.
+1. List the pods in the `iperf` namespace to get the full name of the iperf-sleep pod.
    ```
    kubectl get pods -n iperf
    ```
@@ -343,4 +342,5 @@ TCP window size: 45.0 KByte (default)
 ```
 
 ## Uninstalling iPerf
-To uninstall iPerf from your KubeSlice configuration, follow the instructions in [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
+To uninstall iPerf from your KubeSlice configuration, follow the instructions 
+in [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
