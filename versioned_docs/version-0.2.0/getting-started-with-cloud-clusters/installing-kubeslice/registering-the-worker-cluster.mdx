@@ -159,17 +159,20 @@ The following information is required.
 |<cluster registration\>|The name of the registration file.|
 |<project namespace\>|The namespace of your project.|
   
-You must apply the cluster registration YAML file on your Project namespace.
 
-To begin, switch the context to the cluster where the KubeSlice Controller is installed.
-``` 
-kubectx <cluster name>
-```
 
-Run the following command to apply the file.
-``` 
-kubectl apply -f <cluster registeration>.yaml -n <project namespace>
-```
+Perform these steps:
+
+1. Switch the context to the cluster where the KubeSlice Controller is installed.
+   ``` 
+   kubectx <cluster name>
+   ```
+
+2. Use the following command to apply the YAML file.You must apply the cluster registration YAML file on
+your Project namespace.
+   ``` 
+   kubectl apply -f <cluster registeration>.yaml -n <project namespace>
+   ```
 
 :::success
 You have successfully registered the Worker clusters with the KubeSlice
@@ -379,6 +382,6 @@ other worker clusters.
 :::
 
 :::success
-You have successfully installed the Slice Operator in the worker cluster. Repeat the above steps to install the Slice Operator 
-in all the worker clusters.
+You have successfully installed the Slice Operator in the worker cluster. Repeat the above steps to install
+the Slice Operator in all the worker clusters.
 :::
