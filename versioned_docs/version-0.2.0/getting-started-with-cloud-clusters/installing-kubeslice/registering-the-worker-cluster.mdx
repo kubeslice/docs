@@ -24,31 +24,31 @@ microservices within a cluster. The below instructions will install istio from t
 You can skip these steps if you have already installed the recommended Istio version in the cluster.
 :::
 
-Switch the context to the cluster that will be registered with the KubeSlice Controller.
-``` 
-kubectx <cluster name>
-```
+Perform these steps:
 
-Create the `istio-system` namespace using the following command:
-``` 
-kubectl create ns istio-system
-```
-
-Install the `istio-chart` from the helm repository using the following command:
-``` 
-helm install istio-base kubeslice/istio-base -n istio-system
-```
-Install the `istio-discovery` chart from the helm repository using the following command:
-```
-helm install istiod kubeslice/istio-discovery -n istio-system
-```
-:::caution
-Repeat these steps to install Istio on other worker clusters.
-:::
+1. Switch the context to the cluster that will be registered with the KubeSlice Controller.
+   ``` 
+   kubectx <cluster name>
+   ```
+2. Create the `istio-system` namespace using the following command:
+   ``` 
+   kubectl create ns istio-system
+   ```
+3. Install the `istio-chart` from the helm repository using the following command:
+   ``` 
+   helm install istio-base kubeslice/istio-base -n istio-system
+   ```
+4. Install the `istio-discovery` chart from the helm repository using the following command:
+   ```
+   helm install istiod kubeslice/istio-discovery -n istio-system
+   ```
+   :::caution
+   Repeat these steps to install Istio on other worker clusters.
+   :::
 
 ## Validating the installation of Istio 
 
-Validate the installation by checking the pods belonging to the `istio-system` namespace.
+Validate the installation by checking the pods  status belonging to the `istio-system` namespace.
 ``` 
 kubectl get pods -n istio-system
 ```
@@ -68,11 +68,11 @@ Currently, only Azure Kubernetes Service (AKS) and Google Kubernetes Engine(GKE)
 :::
 
 :::info
-Register the Worker clusters with the KubeSlice Controller by applying the manifest file on the Project namespace.
+Register the worker clusters with the KubeSlice Controller by applying the YAML on the Project namespace.
 :::
 
 :::info
-The cluster registration .yaml file can have multiple clusters listed to register with the controller.
+The cluster registration .yaml file can have multiple clusters listed to register with the KubeSlice Controller.
 :::
 
 Create the cluster registration YAML file using the following template.
@@ -162,8 +162,6 @@ The following information is required.
 |<cluster name\>|The name of the cluster.|
 |<cluster registration\>|The name of the registration file.|
 |<project namespace\>|The namespace of your project.|
-  
-
 
 Perform these steps:
 
@@ -184,9 +182,9 @@ You have successfully registered the Worker clusters with the KubeSlice Controll
 
 ## Installing the Slice Operator 
 
-Install the Slice Operator on the worker cluster that you just registered.
-
-Before installing the Slice Operator in your registered cluster, you must get the secrets and the endpoints from the KubeSlice Controller.
+Install the Slice Operator on the worker cluster that you just registered.Before installing the 
+Slice Operator in your registered cluster, you must get the secrets and the endpoints from the KubeSlice 
+Controller.
 
 
 ### Getting the Secrets of the Registered Cluster 
@@ -330,7 +328,7 @@ cluster:
 
 ## Applying the Values File
 
-The following information is required to apply the manifest file.
+The following information is required to apply the YAML.
 
 |Parameter|Description|
 |----|----|
@@ -339,23 +337,20 @@ The following information is required to apply the manifest file.
 
 You must install the Slice Operator in the registered cluster.
 
-Switch the context to the registered cluster.
-```
-kubectx <cluster name>
-```
+Perform these steps:
 
-Use the following command to apply the values file on the `kubeslice-system` namespace:
-```
-helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of secrets file>.yaml -n kubeslice-system  --create-namespace
-```
-:::info
-You must apply the values **.yaml** file on each worker cluster to install the Slice operator.
-:::
-
+1. Switch the context to the registered cluster.
+   ```
+   kubectx <cluster name>
+   ```
+2. Use the following command to apply the values file on the `kubeslice-system` namespace:
+   ```
+   helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of secrets file>.yaml -n kubeslice-system  --create-namespace
+   ```
 ## Validating the Slice Operator Installation 
 
 To validate the Slice Operator installation in the registered cluster,check the pods belonging to the 
-namespace `kubeslice-system` by running the following command:
+`kubeslice-system` namespace by running the following command:
 
 Example
 
@@ -378,12 +373,12 @@ nsmgr-gt7qz                             3/3     Running   0          41s
 prefix-service-76bd89c44f-pgdn7         1/1     Running   0          41s
 ```
 
-:::note
-You must repeat the same sequence of steps that is getting secrets, creating the values .yaml file and applying it on each worker cluster to install the Slice Operator on 
-other worker clusters.
+:::info
+You must repeat the same sequence of steps that are getting the secrets, creating the YAML file and 
+applying the YAML on each worker cluster to install the Slice Operator on other worker clusters.
 :::
 
 :::success
-You have successfully installed the Slice Operator in the worker cluster. Repeat the above steps to install
-the Slice Operator in all the worker clusters.
+You have successfully installed the Slice Operator in the worker cluster. Repeat the above steps to 
+install the Slice Operator in all the worker clusters.
 :::
