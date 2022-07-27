@@ -1,4 +1,4 @@
-# Contribute to KubeSlice documentation
+# Contributing to KubeSlice documentation
 
 _KubeSlice welcomes suggestions for improvement from all contributors, new and experienced!_
 
@@ -13,9 +13,9 @@ Everybody is welcome to suggest changes by submitting a pull request
 or report a bug/typo with the help of a GitHub issue to the
 [docs](https://github.com/kubeslice/docs) repository.
 
-## Pre-requisites 
+## Prerequisites 
 
-Below is the list of things you should be aware of before getting started with your contribution journey to the KubeSlice documentation
+Below is the list of things you should be aware of before getting started with your contribution journey to the KubeSlice documentation:
 
 - [Git](https://git-scm.com/)
 - [GitHub](https://lab.github.com/)
@@ -47,6 +47,6 @@ No contribution is too big or small! However, to ensure that the community deriv
 
 - Focus on providing a clear description of the issue. Some key points to consider would be specifically describing what is missing, outdated, erroneous, or requires qualitative/technical improvement.
 - Detail the specific impact the issue has on users.
-- Delimit the scope of the issue. If the scope is larger, we'd request you to break it down into smaller tasks within an issue. For example, "Creating a Contribution Guide" is very wide in scope since there would be multiple tasks associated with the issue. However, "Fixing a grammatical error on the Quickstart page" is a more narrowly scoped issue that would, potentially, require only a single pull request.
+- Delimit the scope of the issue. If the scope is larger, we'd request you to break it down into smaller tasks within an issue. For example, **Creating a Contribution Guide** is very wide in scope since there would be multiple tasks associated with the issue. However,**Fixing a grammatical error on the Quickstart page** is a more narrowly scoped issue that would, potentially, require only a single pull request.
 - Crosscheck existing issues to avoid duplicate work.
 - Check for an existing pull request or issue as there is a fair chance that you're opening an issue that has been referenced before. Ensure you reference the existing issue or pull request within the issue you're opening to provide context for contributors who may want to work on it.
