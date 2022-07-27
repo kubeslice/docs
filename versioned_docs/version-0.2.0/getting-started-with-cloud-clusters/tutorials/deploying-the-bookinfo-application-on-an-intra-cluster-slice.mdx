@@ -327,7 +327,7 @@ spec:
 
 ## ServiceExports
 Using the template below, create serviceexports.yaml. All fields in the template will remain the same except
- for **two** <slice name\> instances which must be replaced with the name of your slice.
+for **two** <slice name\> instances which must be replaced with the name of your slice.
 ```
 ##################################################################################
 # Details ServiceExport
@@ -455,7 +455,8 @@ To verify the Bookinfo installation, switch the contexts to target the <services
 ```
 kubectx <services cluster>
 ```
-Use the following command to verify the details and reviews services have been successfully exported to the KubeSlice configuration:
+Use the following command to verify the details and reviews services have been successfully exported to the 
+KubeSlice configuration:
 ```
 kubectl get serviceexport -n bookinfo
 ```
