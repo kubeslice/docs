@@ -2,10 +2,8 @@
 
 ## Introduction
 
-This topic describes the prerequisites for installing KubeSlice. Ensure
-that you have the following environment set up that is required to
-install KubeSlice. In this environment, you must install the KubeSlice
-Controller and register clusters with it.
+This topic describes the prerequisites for installing KubeSlice. Ensure that you have the following environment set up that is required to
+install KubeSlice. In this environment, you must install the KubeSlice Controller and register clusters with it.
 
 
 ## Command Line Tools
@@ -21,14 +19,13 @@ You need the following command line tools to install the KubeSlice.
 
 ## Infrastructure Requirements
 
-The following are the infrastructure requirements to install KubeSlice
-components.
+The following are the infrastructure requirements to install KubeSlice components.
 
 ### Requirements for Hosting KubeSlice Controller
 
-:::note
-You can install the KubeSlice Controller on a cluster and also register
-the same cluster with the KubeSlice Controller.
+:::info
+You can install the KubeSlice Controller on a cluster and also register the same cluster with the 
+KubeSlice Controller.
 :::
 
 | | |
@@ -53,7 +50,7 @@ the same cluster with the KubeSlice Controller.
 | **Required Istio Version** | 1.13.3 |
 
 ## Cluster Networking 
-:::note
+:::info
 Open the UDP Ports required for the KubeSlice Gateway Node in both public and private clusters.
 :::
 
@@ -65,14 +62,12 @@ Open the UDP Ports required for the KubeSlice Gateway Node in both public and pr
 
 ## Required Cluster Roles (RBAC) 
 :::caution
-Only the cluster administrator can install the KubeSlice Controller and
-the Slice Operator(Worker Operator).
+Only the cluster administrator can install the KubeSlice Controller and the Slice Operator (Worker Operator).
 :::
 
 ## Cluster Context Switching
 
-You must change your `kubeconfig` context frequently to run
-`kubectl `commands in each cluster. Using `kubectx` can make this
+You must change your `kubeconfig` context frequently to run `kubectl `commands in each cluster. Using `kubectx` can make this
 process easier and save you time.
 
 To switch the context to a certain cluster, run the following command
