@@ -367,96 +367,99 @@ spec:
    protocol: TCP
 ```
 ## Deploying to the Product Page Cluster
-Use the following command to ensure we are targeting the cluster we will be deploying the product page to:
-```
-kubectx <services cluster>
-```
-Use the following command to apply the `productpage.yaml` file:
-```
-kubectl apply -f productpage.yaml -n bookinfo
-```
-Expected Output:
-```
-service/productpage created
-serviceaccount/bookinfo-productpage created
-deployment.apps/productpage-v1 created
-```
-Use the following command to check if the deployed productpage pod is running on the cluster:
-```
-kubectl get pods -n bookinfo
-```
-Expected Output
-```
-NAME                              READY   STATUS    RESTARTS   AGE
-productpage-v1-5cc46fc6dc-drd8b   5/5     Running   0          26h
-```
+
+Perform these steps:
+1. Use the following command to ensure we are targeting the cluster we will be deploying the product page to:
+   ```
+   kubectx <services cluster>
+   ```
+2. Use the following command to apply the `productpage.yaml` file:
+   ```
+   kubectl apply -f productpage.yaml -n bookinfo
+   ```
+   Expected Output:
+   ```
+   service/productpage created
+   serviceaccount/bookinfo-productpage created
+   deployment.apps/productpage-v1 created
+   ```
+3. Use the following command to check if the deployed productpage pod is running on the cluster:
+   ```
+   kubectl get pods -n bookinfo
+   ```
+   Expected Output
+   ```
+   NAME                              READY   STATUS    RESTARTS   AGE
+   productpage-v1-5cc46fc6dc-drd8b   5/5     Running   0          26h
+   ```
 
 ## Deploying to the Service Cluster
-Use the following command to ensure we are targeting the cluster we deploy reviews, details, and ratings to:
-```
-kubectx <services cluster>
-```
-Use the following command to create the `bookinfo` namespace that we deploy these services on:
-```
-kubectl create ns bookinfo
-```
-Use the following command to label the `bookinfo` namespace for istio-injection:
-```
-kubectl label namespace bookinfo istio-injection=enabled
-```
 
-Using the following commands, apply the details.yaml, ratings.yaml, reviews.yaml, and serviceexports.yaml files.
+Perform these steps:
 
+1. Use the following command to ensure we are targeting the cluster we deploy reviews, details, and ratings to:
+   ```
+   kubectx <services cluster>
+   ```
+2. Use the following command to create the `bookinfo` namespace that we deploy these services on:
+   ```
+   kubectl create ns bookinfo
+   ```
+3. Use the following command to label the `bookinfo` namespace for istio-injection:
+   ```
+   kubectl label namespace bookinfo istio-injection=enabled
+   ```
+4. Using the following commands, apply the details.yaml, ratings.yaml, reviews.yaml, and serviceexports.yaml files.
 Use the following command to apply the `details.yaml` file.
-```
-kubectl apply -f details.yaml -n bookinfo
-```
-Expected Output
-```
-service/details created
-serviceaccount/bookinfo-details created
-deployment.apps/details-v1 created
-```
-Use the following command to apply the `ratings.yaml` file:
-```
-kubectl apply -f ratings.yaml -n bookinfo
-```
-Expected Output
-```
-service/ratings created
-serviceaccount/bookinfo-ratings created
-deployment.apps/ratings-v1 created
-```
-Use the following command to apply the `reviews.yaml` file:
-```
-kubectl apply -f reviews.yaml -n bookinfo
-```
-Expected Output
-```
-service/reviews created
-serviceaccount/bookinfo-reviews created
-deployment.apps/reviews-v3 created
-```
-Use the following command to verify if the deployed pods are running on the cluster:
-```
-kubectl get pods -n bookinfo
-```
-Expected Output
-```
-NAME                          READY   STATUS    RESTARTS   AGE
-details-v1-557b474454-fbfhh   5/5     Running   0          26h
-ratings-v1-5846f848bb-4dwtz   5/5     Running   0          26h
-reviews-v3-64cf7654f4-cfqz8   5/5     Running   0          26h
-```
-Use the following command to apply `serviceexports.yaml` file:
-```
-kubectl apply -f serviceexports.yaml -n bookinfo
-```
-Expected Output
-```
-serviceexport.networking.kubeslice.io/details created
-serviceexport.networking.kubeslice.io/reviews created
-```
+   ```
+   kubectl apply -f details.yaml -n bookinfo
+   ```
+   Expected Output
+   ```
+   service/details created
+   serviceaccount/bookinfo-details created
+   deployment.apps/details-v1 created
+   ```
+5. Use the following command to apply the `ratings.yaml` file:
+   ```
+   kubectl apply -f ratings.yaml -n bookinfo
+   ```
+   Expected Output
+   ```
+   service/ratings created
+   serviceaccount/bookinfo-ratings created
+   deployment.apps/ratings-v1 created
+   ```
+6. Use the following command to apply the `reviews.yaml` file:
+   ```
+   kubectl apply -f reviews.yaml -n bookinfo
+   ```
+   Expected Output
+   ```
+   service/reviews created
+   serviceaccount/bookinfo-reviews created
+   deployment.apps/reviews-v3 created
+   ```
+7. Use the following command to verify if the deployed pods are running on the cluster:
+   ```
+   kubectl get pods -n bookinfo
+   ```
+   Expected Output
+   ```
+   NAME                          READY   STATUS    RESTARTS   AGE
+   details-v1-557b474454-fbfhh   5/5     Running   0          26h
+   ratings-v1-5846f848bb-4dwtz   5/5     Running   0          26h
+   reviews-v3-64cf7654f4-cfqz8   5/5     Running   0          26h
+   ```
+8. Use the following command to apply `serviceexports.yaml` file:
+   ```
+   kubectl apply -f serviceexports.yaml -n bookinfo
+   ```
+   Expected Output
+   ```
+   serviceexport.networking.kubeslice.io/details created
+   serviceexport.networking.kubeslice.io/reviews created
+   ```
 
 ## Validating the BookInfo Deployment
 ### Validating the Services
@@ -583,8 +586,8 @@ The following is an example of the product page:
 ![alt](/images/Bookinfo-productpage-OS.png)
 
 :::success
-You have successfully deployed Istio Bookinfo on a KubeSlice configuration containing at least two clusters.
+You have successfully deployed Bookinfo applicaiton on a KubeSlice configuration containing at least two clusters.
 :::
 
 ## Uninstalling Istio BookInfo
-To uninstall Istio Bookinfo from your KubeSlice configuration, the instructions in [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
+To uninstall Bookinfo application from your KubeSlice configuration, follow the instructions in [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
