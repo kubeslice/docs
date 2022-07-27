@@ -497,7 +497,7 @@ reviews       ClusterIP   10.0.146.220   <none>        9080/TCP         2d2h
 To view the deployed Bookinfo product page, we need the external IP of an application node and the exposed port
 we just retrieved. Use the following command to get your node details:
 
-:::note
+:::info
 Take note of the external IP address of one of the application nodes to use it later.
 :::
 
@@ -525,7 +525,7 @@ Example
 ### Accessing the Product Page from the Local Machine
 If the kind clusters are on a local machine, follow these steps:
 
-First, set up port-forwarding from a local machine using the following command:
+Set up port-forwarding from a local machine using the following command:
 ```
 kubectl port-forward svc/<service-name> -n <namespace-name> <host-port>:<container-port>
 ```
