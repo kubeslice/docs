@@ -7,14 +7,18 @@ register your worker clusters with the KubeSlice Controller.
 ## Prerequisites
 Before you begin, ensure the following prerequisites are met:
 
-- You have the KubeSlice Controller installed on a separate cluster. For more information, see [Installing the KubeSlice Controller](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
-- You have set up the environment for the worker clusters. For more information, see [Prerequisites](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
-- You have authenticated the worker clusters with the cloud providers. For more information, see [Preparing the clusters for registration](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
+- You have the KubeSlice Controller installed on a separate cluster. For more information, 
+see [Installing the KubeSlice Controller](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
+- You have set up the environment for the worker clusters. For more information, 
+see [Prerequisites](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
+- You have authenticated the worker clusters with the cloud providers. For more information, 
+see [Preparing the clusters for registration](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
 - You have cluster administrator privileges to install the Slice Operator.
 
 ## Installing Istio
 
-[Istio](http://istio.io/) is an open source service mesh that is used frequently to connect and secure microservices within a cluster. The below instructions will install istio from the helm repository chart. 
+[Istio](http://istio.io/) is an open source service mesh that is used frequently to connect and secure 
+microservices within a cluster. The below instructions will install istio from the helm repository chart. 
 
 :::caution
 You can skip these steps if you have already installed the recommended Istio version in the cluster.
@@ -59,23 +63,23 @@ istiod-66f576dd98-jtshj       1/1     Running   0          100s
 
 The following information is required to create your cluster registration **.yaml** file.
 
-:::note
+:::info
 Currently, only Azure Kubernetes Service (AKS) and Google Kubernetes Engine(GKE) are supported.
 :::
 
-:::note
+:::info
 Register the Worker clusters with the KubeSlice Controller by applying the manifest file on the Project namespace.
 :::
 
-:::note
+:::info
 The cluster registration .yaml file can have multiple clusters listed to register with the controller.
 :::
 
 Create the cluster registration YAML file using the following template.
 
 :::info
-To understand more about the configuration parameters, see [Cluster Registration Configuration
-Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#cluster-registration-configuration-parameters)
+To understand more about the configuration parameters, 
+see [Cluster Registration ConfigurationParameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#cluster-registration-configuration-parameters)
 :::
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
@@ -175,8 +179,7 @@ your Project namespace.
    ```
 
 :::success
-You have successfully registered the Worker clusters with the KubeSlice
-Controller.
+You have successfully registered the Worker clusters with the KubeSlice Controller.
 :::
 
 ## Installing the Slice Operator 
@@ -193,10 +196,9 @@ will get a secret listed under the project namespace. The secret
 contains access information for the Slice Operator on the worker cluster
 to communicate with the KubeSlice Controller.
 
-:::note
-Alternatively, you can use the script to create your values .yaml file.
-see [Script to get the secrets of the Worker
-cluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+:::info
+Alternatively, you can use the script to create your values `.yaml` file.
+See [Script to get the secrets of the Workercluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
 :::
 
 1.  Switch the context to the controller cluster.
@@ -352,8 +354,7 @@ You must apply the values **.yaml** file on each worker cluster to install the S
 ## Validating the Slice Operator Installation 
 
 To validate the Slice Operator installation in the registered cluster,check the pods belonging to the 
-namespace `kubeslice-system` by running
-the following command:
+namespace `kubeslice-system` by running the following command:
 
 Example
 
