@@ -2,21 +2,21 @@
 
 ## Introduction
 
-The KubeSlice Controller orchestrates the creation and management of slices on worker clusters. The KubeSlice 
-Controller components and the worker cluster components can coexist on a cluster. Hence, the cluster
-running the KubeSlice controller can also be used as a worker cluster. **We recommend that you run the KubeSlice Controller on a separate
-cluster**.
+The KubeSlice Controller orchestrates the creation and management of slices on worker clusters. 
+The KubeSlice Controller components and the worker cluster components can coexist on a cluster. Hence, the 
+cluster running the KubeSlice controller can also be used as a worker cluster. **We recommend that you 
+run the KubeSlice Controller on a separate cluster**.
 
-This topic describes the steps to install the KubeSlice Controller in
-the cluster.
-
+This topic describes the steps to install the KubeSlice Controller in the cluster.
 
 ## Prerequisites
 Before you begin, ensure the following prerequisites are met:
 
-- You have set up the environment to install the KubeSlice Controller in the cluster. For more information, see [Prerequisites](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
+- You have set up the environment to install the KubeSlice Controller in the cluster. For more information,
+see [Prerequisites](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
 - You have cluster administrator privileges to install the KubeSlice Controller.
-- You have added the helm repository to your local configuration. For more information, see [Adding the Helm Repository](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx#adding-the-helm-repository).
+- You have added the helm repository to your local configuration. For more information, 
+see [Adding the Helm Repository](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx#adding-the-helm-repository).
 
 ## Installing the KubeSlice Controller
 
@@ -28,11 +28,10 @@ Installing the KubeSlice Controller installs the following:
 -   KubeSlice Controller API Gateway  
 
 ## Installing the Certificate Manager
-The KubeSlice Controller uses the certificate manager to provision the certificates 
-for the webhook server. The certificate manager uses the Kubernetes API server that 
-is extended using a webhook server for providing dynamic admission control over the 
-certificate manager resources. This implies that the certificate manager benefits 
-from the same behaviour as the basic Kubernetes resources.
+The KubeSlice Controller uses the certificate manager to provision the certificates for the webhook server.
+The certificate manager uses the Kubernetes API server that is extended using a webhook server for 
+providing dynamic admission control over the certificate manager resources. This implies that the 
+certificate manager benefits from the same behaviour as the basic Kubernetes resources.
 
 Switch the context to the controller cluster.
 ``` 
@@ -64,7 +63,7 @@ The values file will be used to install the KubeSlice Controller in one of the c
 
 ### Getting the Cluster Endpoint
 
-Run the following command to get the cluster endpoint:
+Use the following command to get the cluster endpoint:
 ``` 
 kubectl cluster-info
 ```
@@ -87,7 +86,8 @@ add it as the cluster endpoint in the `values.yaml` file. For example,
 ### Creating the Values YAML File
 
 :::info
-To understand more about the configuration parameters, see [Controller Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#controller-configuration-parameters)
+To understand more about the configuration parameters, see 
+[Controller Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#controller-configuration-parameters)
 :::
 
 To install the KubeSlice Controller, create the `values.yaml` file using the following template.
@@ -119,7 +119,7 @@ The following information is required.
 |<cluster name\>|The name of the cluster.|
 |<values\>|The name of the values file.|
 
-Use the following command to apply the manifest file:
+Use the following command to apply the YAML:
 ```
 helm install kubeslice-controller kubeslice/kubeslice-controller -f <full path of the values>.yaml --namespace kubeslice-controller --create-namespace
 ```
@@ -138,8 +138,8 @@ kubeslice-controller installation successful!
 
 ## Validating the Installation
 
-Perform these steps to validate the installation on the controller cluster where the KubeSlice Controller is 
-installed:
+Perform these steps to validate the installation on the controller cluster where the KubeSlice Controller 
+is installed:
 
 Validate the installation of the KubeSlice Controller by checking the pods belonging to the `kubeslice-controller` namespace using the following command:
 ```
@@ -154,18 +154,18 @@ kubeslice-controller-manager-768c774c69-5qsct   2/2     Running     0          1
 
 ## Creating the Project Namespace
 
-A project may represent an individual customer or an organization or a department within an organization. Each 
-project would have a dedicated auto-generated namespace, which will ensure that the resources of one project 
-do not clash with the resources of another project.
+A project may represent an individual customer or an organization or a department within an organization. 
+Each project would have a dedicated auto-generated namespace, which will ensure that the resources of one 
+project do not clash with the resources of another project.
 
-For example, a slice with the same name can exist across multiple projects but with different configurations. 
-Changes to the slice in one project will not affect the slice in another project. For more information, 
-see [The KubeSlice Architecture](/versioned_docs/version-0.2.0/architecture.mdx).
+For example, a slice with the same name can exist across multiple projects but with different 
+configurations. Changes to the slice in one project will not affect the slice in another project. 
+For more information, see [The KubeSlice Architecture](/versioned_docs/version-0.2.0/architecture.mdx).
 
 
 ### Creating the Project YAML File
-Create a project by applying the manifest file.After deploying the manifest, the project namespace is created.
-Create the Project name .yaml file using the following template.
+Create a project by applying the manifest file.After deploying the manifest, the project namespace is 
+created. Create the Project name .yaml file using the following template.
 
 :::info 
 To understand more about the configuration parameters, 
@@ -209,8 +209,7 @@ validate if the project and service accounts are created successfully.
 
 ### Validating the Project 
 
-Use the following command on the` kubeslice-controller` namespace to get
-the list of the project:
+Use the following command on the` kubeslice-controller` namespace to get the list of the project:
 ```
 kubectl get project -n kubeslice-controller
 ```
