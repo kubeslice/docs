@@ -7,8 +7,8 @@ This topic describes how to prepare your clusters to register with KubeSlice Con
 # Authenticating Clusters 
 
 :::info
-If you have already retrieved your credentials to log in to your clusters, continue to [Labeling KubeSlice Nodes](#labeling-kubeslice-gateway-nodes)
-below.
+If you have already retrieved your credentials to log in to your clusters, continue to 
+[Labeling KubeSlice Nodes](#labeling-kubeslice-gateway-nodes) below.
 :::
 :::info 
 Perform these steps on each cluster that you want to register with the KubeSlice Controller.
@@ -56,8 +56,8 @@ Kubernetes Service (AKS) `kubeconfig`.
 | <resource group name\> |  The name of the resource group the cluster belongs to.
   <cluster name\>         | The name of the cluster you would like to get credentials for.|
 
-The following command retrieves your AKS cluster `kubeconfig` and add it to your default `kubeconfig` path. Complete this step for each
-AKS cluster that you want to work with.
+The following command retrieves your AKS cluster `kubeconfig` and add it to your default `kubeconfig` path. 
+Complete this step for each AKS cluster that you want to work with.
 
 ``` 
 az aks get-credentials --resource-group <resource group name> --name <cluster name>
@@ -70,11 +70,12 @@ For more information, see [Microsoft AKS Docs](https://docs.microsoft.com/en-us/
 We recommend using a dedicated nodepool and follow the above instructions for labeling.
 :::
 
-If you have multiple node pools on your cluster, then you can add a label to each node pool. Labels are useful in managing scheduling rules
-for nodes.
+If you have multiple node pools on your cluster, then you can add a label to each node pool. Labels are useful 
+in managing scheduling rules for nodes.
 
 :::info
-If a cluster contains only one node pool, follow the instructions in [Labeling Individual Nodes](#labeling-individual-nodes).
+If a cluster contains only one node pool, follow the instructions in 
+[Labeling Individual Nodes](#labeling-individual-nodes).
 
 Labeling gateway nodes only applies to the worker cluster.
 :::
@@ -118,15 +119,13 @@ The following information is required to label an individual nodepool.
 
 Perform these steps to label your node:
 
-1. Switch contexts to the cluster that contains the node pool you would
-    like to label.
+1. Switch contexts to the cluster that contains the node pool you would like to label.
     ```
     kubectx <cluster name>
     ```
     
-2.  Run the following command to get the <node name\> and <cluster
-    name\> from the list of nodes belonging to the cluster you want to
-    label:
+2.  Run the following command to get the <node name\> and <cluster name\> from the list of nodes belonging to 
+the cluster you want to label:
     ``` 
     kubectl get nodes
     ```
@@ -148,7 +147,7 @@ Perform these steps to verify your cluster labels:
     kubectx <cluster name>
     ```
     
-2.  Run the following command to get all nodes with the `kubeslice.io/node-type=gateway` label.
+2.  Use the following command to get all nodes with the `kubeslice.io/node-type=gateway` label.
 
     ```
     kubectl get no -l kubeslice.io/node-type=gateway

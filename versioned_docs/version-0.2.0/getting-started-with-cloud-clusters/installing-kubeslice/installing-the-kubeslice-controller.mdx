@@ -138,10 +138,10 @@ kubeslice-controller installation successful!
 
 ## Validating the Installation
 
-Perform these steps to validate the installation on the controller
-cluster where the KubeSlice Controller is installed:
+Perform these steps to validate the installation on the controller cluster where the KubeSlice Controller is 
+installed:
 
-Validate the installation of the KubeSlice Controller by checking the pods belonging to the namespace `kubeslice-controller` using the following command:
+Validate the installation of the KubeSlice Controller by checking the pods belonging to the `kubeslice-controller` namespace using the following command:
 ```
 kubectl get pods -n kubeslice-controller
 ```
@@ -154,14 +154,13 @@ kubeslice-controller-manager-768c774c69-5qsct   2/2     Running     0          1
 
 ## Creating the Project Namespace
 
-A project may represent an individual customer or an organization or a
-department within an organization. Each project would have a dedicated
-auto-generated namespace, which will ensure that the resources of one
-project do not clash with the resources of another project.
+A project may represent an individual customer or an organization or a department within an organization. Each 
+project would have a dedicated auto-generated namespace, which will ensure that the resources of one project 
+do not clash with the resources of another project.
 
-For example, a slice with the same name can exist across multiple projects but with different configurations. Changes to the slice in one
-project will not affect the slice in another
-project. For more information, see [The KubeSlice Architecture](/versioned_docs/version-0.2.0/architecture.mdx).
+For example, a slice with the same name can exist across multiple projects but with different configurations. 
+Changes to the slice in one project will not affect the slice in another project. For more information, 
+see [The KubeSlice Architecture](/versioned_docs/version-0.2.0/architecture.mdx).
 
 
 ### Creating the Project YAML File
@@ -169,9 +168,8 @@ Create a project by applying the manifest file.After deploying the manifest, the
 Create the Project name .yaml file using the following template.
 
 :::info 
-To understand more about the configuration parameters, see [Project
-Namespace Configuration
-Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#project-namespace-configuration-parameters)
+To understand more about the configuration parameters, 
+see [Project Namespace Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#project-namespace-configuration-parameters)
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Project
@@ -241,7 +239,6 @@ kubeslice-rbac-ro-user1           1         17h
 kubeslice-rbac-rw-user2           1         17h
 ```
 
-::: success
-You have successfully installed the KubeSlice Controller and created the
-Project with a dedicated namespace.
+:::success
+You have successfully installed the KubeSlice Controller and created the Project with a dedicated namespace.
 :::
