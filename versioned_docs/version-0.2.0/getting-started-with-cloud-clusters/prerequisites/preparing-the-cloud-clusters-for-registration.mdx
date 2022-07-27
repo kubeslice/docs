@@ -15,11 +15,11 @@ Perform these steps on each cluster that you want to register with the KubeSlice
 :::
 
 Before registering your clusters with KubeSlice Controller, you must authenticate with each cloud provider 
-that is used in your installation. Each of the following commands retrieves the relevant`kubeconfig` and 
+that is used in your installation. Each of the following commands retrieves the relevant `kubeconfig` and 
 add it to your default `kubeconfig` path.
 
 ## Google Kubernetes Engine
-The following information is required to retrieve your Google Kubernetes Engine(GKE) `kubeconfig`.
+The following information is required to retrieve your Google Kubernetes Engine (GKE) `kubeconfig`.
 
 | **Variable**  |     **Description** |
 |-----|----|
@@ -92,8 +92,7 @@ The following information is required to label the GKE cluster nodepools.
 |  <region\>      |    The Compute Engine region for the cluster the nodepool belongs to.|
 |  <zone\>         |   The Compute Engine zone for the cluster the nodepool belongs to.|
  
-The following command labels the GKE cluster node
-pool: 
+The following command labels the GKE cluster nodepool: 
 
 ``` 
 gcloud container node-pools update <nodepool name> \
@@ -104,7 +103,7 @@ gcloud container node-pools update <nodepool name> \
 
 ## Microsoft Azure Kubernetes Service
 AKS nodepools can only be set during nodepool creation. The nodepool
-must contain the ``kubeslice.io/node-type=gateway` label. For instructions on creating
+must contain the `kubeslice.io/node-type=gateway` label. For instructions on creating
 a labeled nodepool, visit the [AKS documentation](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#setting-nodepool-labels).
 
 ## Labeling Individual Nodes
@@ -119,21 +118,20 @@ The following information is required to label an individual nodepool.
 Perform these steps to label your node:
 
 1. Switch contexts to the cluster that contains the node pool you would like to label.
-    ```
-    kubectx <cluster name>
-    ```
+   ```
+   kubectx <cluster name>
+   ```
     
-2.  Use the following command to get the `node name` and `cluster name` from the list of nodes belonging to 
+2. Use the following command to get the `node name` and `cluster name` from the list of nodes belonging to 
 the cluster you want to label:
-    ``` 
-    kubectl get nodes
-    ```
+   ``` 
+   kubectl get nodes
+   ```
     
-3.  Use the following command to label your node:
-    
-    ```
-    kubectl label node <node name> kubeslice.io/node-type=gateway
-    ```
+3. Use the following command to label your node:
+   ```
+   kubectl label node <node name> kubeslice.io/node-type=gateway
+   ```
 
 ## Verifying Your Labels
 :::info
@@ -146,17 +144,13 @@ Perform these steps to verify your cluster labels:
     
     ``` 
     kubectx <cluster name>
-    ```
-    
+    ``` 
 2.  Use the following command to get all nodes with the `kubeslice.io/node-type=gateway` label.
-
     ```
     kubectl get no -l kubeslice.io/node-type=gateway
-    ```
-    
+    ```    
 3.  If you successfully set your labels, you  get a list of the labeled nodes in the cluster. Use the following command to verify if
     each gateway node has an external IP address configured:
-
     ```
     kubectl get no -o wide
     ```
@@ -166,40 +160,29 @@ Perform these steps to verify your cluster labels:
 To add the helm repository:
 
 1. Add the helm repository information to your local system.
-
    ```
    helm repo add kubeslice https://kubeslice.github.io/charts/
    ```
-
    Expected Output
-
    ``` 
    "kubeslice" has been added to your repositories
    ```
-
 2. Update the repositories on your system with the following command:
-
    ``` 
    helm repo update
    ```
-
    Expected Output
-
    ``` 
    Hang tight while we grab the latest from your chart repositories...
    ...Successfully got an update from the "kubeslice" chart repository
    Update Complete. ⎈Happy Helming!⎈
    ```
-
 3. To verify the repository was added successfully, view the KubeSlice
 charts using the following command:
-
    ``` 
    helm search repo kubeslice
    ```
-
    Expected Output
-
    ```
    NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
    kubeslice/cert-manager          v1.7.0          v1.7.0          A Helm chart for cert-manager                     
