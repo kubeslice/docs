@@ -12,7 +12,7 @@ const config = {
   baseUrl: '/documentation/open-source/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/avesha.png',
+  favicon: 'img/kubeslice.svg',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -74,11 +74,11 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Docs',
+        // title: 'KubeSlice',
         logo: {
-          alt: 'Avesha logo',
-          src: 'img/avesha-big.svg',
-          srcDark: 'img/avesha-big-dark.svg',
+          alt: 'KubeSlice logo',
+          src: 'img/kubeslice-logo.svg',
+          srcDark: 'img/kubeslice-logo-bg.svg',
         },
         items: [
           {
