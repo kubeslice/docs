@@ -512,10 +512,11 @@ visit the Bookinfo webpage.
    productpage   NodePort    10.0.20.209    <none>        9080:31194/TCP   2d2h
    reviews       ClusterIP   10.0.146.220   <none>        9080/TCP         2d2h
    ```
-   :::info
-   To view the deployed Bookinfo product page, we need the external IP of an application node and the exposed 
-   port we just retrieved.Take note of the external IP address of one of the application nodes to use it later.
-   :::
+
+:::info
+To view the deployed Bookinfo product page, we need the external IP of an application node and the exposed 
+port we just retrieved.Take note of the external IP address of one of the application nodes to use it later.
+:::
 
 4. Use the following command to get your node details:
    ```
@@ -536,7 +537,7 @@ and visit the page in a browser to view your multi-cluster Bookinfo deployment.
    http://<external ip>:<port>/productpage
    ```
    Example
-   ![alt](/images/Bookinfo-productpage-OS.png)
+   ![alt](/img/Bookinfo-productpage-OS.png)
 
 ## Validating the Product page on the Kind Cluster
 ### Accessing the Product Page from the Local Machine
@@ -560,7 +561,7 @@ If the kind clusters are on a local machine, perform these steps:
    ```
 
 The following is an example of the product page:
-![alt](/images/Bookinfo-productpage-OS.png)
+![alt](/img/Bookinfo-productpage-OS.png)
 
 ### Accessing the Product page from the Cloud EC2 Machine
 If the kind clusters are on Cloud EC2 Machine, perform these steps:
@@ -583,7 +584,7 @@ If the kind clusters are on Cloud EC2 Machine, perform these steps:
    ```
 
 The following is an example of the product page:
-![alt](/images/Bookinfo-productpage-OS.png)
+![alt](/img/Bookinfo-productpage-OS.png)
 
 :::success
 You have successfully deployed Bookinfo applicaiton on a KubeSlice configuration containing at least two clusters.

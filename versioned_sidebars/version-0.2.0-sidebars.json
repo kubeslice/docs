@@ -89,6 +89,7 @@
         "release-notes/release-notes-for-kubeslice-oss-0.1.0"
       ]
     },
-    "community"
+    "community",
+    "contribute-to-kubeslice-docs"
   ]
 }
