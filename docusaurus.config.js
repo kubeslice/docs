@@ -12,7 +12,7 @@ const config = {
   baseUrl: '/documentation/open-source/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/avesha.png',
+  favicon: 'img/kubeslice.svg',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -74,11 +74,11 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Docs',
+        // title: 'KubeSlice',
         logo: {
-          alt: 'Avesha logo',
-          src: 'img/avesha-big.svg',
-          srcDark: 'img/avesha-big-dark.svg',
+          alt: 'KubeSlice logo',
+          src: 'img/kubeslice-logo.svg',
+          srcDark: 'img/kubeslice-logo-bg.svg',
         },
         items: [
           {
@@ -96,6 +96,29 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      algolia: {
+      // The application ID provided by Algolia
+        appId: 'HCZPZKPV7',
+
+        // Public API key: it is safe to commit it
+        apiKey: '82399216c0fe06bfa662affa5d2fbf46',
+
+        indexName: 'avesha',
+
+        // Optional: see doc section below
+        contextualSearch: true,
+
+        // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+        externalUrlRegex: 'external\\.com|domain\\.com',
+
+        // Optional: Algolia search parameters
+        searchParameters: {},
+
+        // Optional: path for search page that enabled by default (`false` to disable it)
+        searchPagePath: 'search',
+
+        //... other Algolia params
+    },
     }),
 };
 

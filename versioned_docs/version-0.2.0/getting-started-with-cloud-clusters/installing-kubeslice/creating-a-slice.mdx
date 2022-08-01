@@ -8,9 +8,12 @@ that are registered with the KubeSlice Controller.
 ## Prerequisites
 Before you begin, ensure the following prerequisites are met:
 
-- You have the KubeSlice Controller installed on a separate cluster. For more information, see [Installing the KubeSlice Controller](/versioned_docs/version/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
-- You have registered two or more worker clusters with the KubeSlice Controller. For more information, see [Registering the Worker Cluster](/versioned_docs/version/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx).
-- You have installed Istio in the worker clusters to configure the external gateways. For more information, see [Installing Istio](/versioned_docs/version/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#installing-istio).
+- You have the KubeSlice Controller installed on a separate cluster. For more information, 
+see [Installing the KubeSlice Controller](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
+- You have registered two or more worker clusters with the KubeSlice Controller. For more information, 
+see [Registering the Worker Cluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx).
+- You have installed Istio in the worker clusters to configure the external gateways. For more information, 
+see [Installing Istio](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#installing-istio).
 
 ## Creating the Slice YAML File
 
@@ -18,9 +21,9 @@ After successfully registering the worker clusters with the KubeSlice Controller
 
 The following information is required to create the .yaml file for the slice.
 
-:::note
-Before creating the slice configuration .yaml file, see [Managing
-Namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx)
+:::info
+Before creating the slice configuration .yaml file, 
+see [Managing Namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx)
 to add namespaces in the slice configuration.
 :::
 
@@ -69,19 +72,21 @@ spec:
 ```
 
 ### Slice Configuration using Istio Gateway
-A slice can be configured to use Istio ingress and egress gateways for East-West traffic(inter-cluster, egress from one cluster, and ingress into another cluster). Gateways operate at the edges of the clusters. Ingress gateway act as an entry point and Egress gateway acts as exit point for East-West traffic in a slice. Ingress/Egress gateway is not a core component of KubeSlice, it is an add-on feature that users can activate if needed.
+A slice can be configured to use Istio ingress and egress gateways for East-West traffic(inter-cluster, 
+egress from one cluster, and ingress into another cluster). Gateways operate at the edges of the clusters. 
+Ingress gateway act as an entry point and Egress gateway acts as exit point for East-West traffic in a 
+slice. 
 
 :::info
-Currently, Istio gateways are the only type of external gateways supported.
+Ingress/Egress gateway is not a core component of KubeSlice, it is an add-on feature that users can
+activate if needed. Currently, Istio gateways are the only type of external gateways supported.
 :::
 
-There are different ways to configure a slice that enables you to route the application traffic. Below are the scenarios to configure a slice with/without egress and ingress gateways.
+There are different ways to configure a slice that enables you to route the application traffic. Below 
+are the scenarios to configure a slice with/without egress and ingress gateways.
   
 #### Scenario 1: Slice Configuration only with Egress Gateways
-
-Create the slice configuration file with Istio egress gateway using the
-following template.
-
+Create the slice configuration file with Istio egress gateway using the following template.
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: SliceConfig
@@ -137,11 +142,7 @@ spec:
 ```
 
 #### Scenario 2: Slice Configuration only with Ingress Gateways
-
-Create the slice configuration file with Istio ingress gateways using
-the following template.
-
-
+Create the slice configuration file with Istio ingress gateways using the following template.
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: SliceConfig
@@ -197,9 +198,7 @@ spec:
 ```
 
 #### Scenario 3: Slice Configuration with Egress and Ingress Gateways
-
 Create the slice configuration file with Istio ingress and egress gateways using the following template.
-
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: SliceConfig
@@ -260,85 +259,84 @@ The following information is required.
 |<slice configuration\>|The name of the slice configuration file.|
 |<project namespace\>|The project namespace on which you apply the slice configuration file.|
  
+Perform these steps:
 
-Apply the slice configuration `.yaml`file on the project
-namespace. 
-Switch context to the KubeSlice Controller using the following command:
-``` 
-kubectx <cluster name>
-```
+1. Switch context to the KubeSlice Controller using the following command:
+   ``` 
+   kubectx <cluster name>
+   ```
 
-Run the following command to apply the manifest file on the project
-namespace:
-``` 
-kubectl apply -f <slice configuration>.yaml -n <project namespace>
-```
+2. Apply the YAML on the project namespace using the following command:
+   ``` 
+   kubectl apply -f <slice configuration>.yaml -n <project namespace>
+   ```
 
-:::success
-You have successfully created the Slice on the worker clusters.
-:::
+   :::success
+   You have successfully created the Slice on the worker clusters.
+   :::
 
 ## Validating the Installation
 Validate the slice configuration on the KubeSlice Controller and the worker clusters.
 
 ### Validating the Slice on the Controller Cluster
 
-To validate the slice configuration in the KubeSlice controller, run the
-following command:
-``` 
-kubectl get workersliceconfig -n kubeslice-<projectname>
-```
+Perform these steps:
 
-Example
-``` 
-kubectl get workersliceconfig -n kubeslice-avesha
-```
+1. Validate the slice configuration in the KubeSlice controller, using the following command:
+   ``` 
+   kubectl get workersliceconfig -n kubeslice-<projectname>
+   ```
 
-Example Output
-``` 
-NAME                        AGE
-red-dev-worker-cluster-1    45s
-red-dev-worker-cluster-2    45s
-```
+   Example
+   ``` 
+   kubectl get workersliceconfig -n kubeslice-avesha
+   ```
 
-To validate the slice gateway in the KubeSlice Controller, run the
-following command:
-``` 
-kubectl get workerslicegateway -n kubeslice-<projectname>
-```
+   Example Output
+   ``` 
+   NAME                        AGE
+   red-dev-worker-cluster-1    45s
+   red-dev-worker-cluster-2    45s
+   ```
+2. validate the slice gateway in the KubeSlice Controller, using the following command:
+   ``` 
+   kubectl get workerslicegateway -n kubeslice-<projectname>
+   ```
 
-Example
-``` 
-kubectl get workerslicegateway -n kubeslice-avesha
-```
+   Example
+   ``` 
+   kubectl get workerslicegateway -n kubeslice-avesha
+   ```
 
-Example Output
-``` 
-NAME                                            AGE
-red-dev-worker-cluster-1-dev-worker-cluster-2   45s
-red-dev-worker-cluster-2-dev-worker-cluster-1   45s
-```
+   Example Output
+   ``` 
+   NAME                                            AGE
+   red-dev-worker-cluster-1-dev-worker-cluster-2   45s
+   red-dev-worker-cluster-2-dev-worker-cluster-1   45s
+   ```
 
 ### Validating the Slice on the Worker Clusters
-To validate the slice creation on worker clusters, use the following command on each worker cluster:
-``` 
-kubectl get slice -n kubeslice-system
-```
 
-Example Output
-``` 
-NAME    AGE
-red     45s
-```
+Perform these steps:
 
-To validate the slice gateway has been created on your worker cluster,
-use the following command:
-``` 
-kubectl get slicegw -n kubeslice-system
-```
+1. Validate the slice creation on worker clusters, using the following command on each worker cluster:
+   ``` 
+   kubectl get slice -n kubeslice-system
+   ```
 
-Example Output
-``` 
-NAME                                          SUBNET        REMOTE SUBNET   REMOTE CLUSTER        GW STATUS
-red-dev-worker-cluster-1-dev-worker-cluster-2   10.1.1.0/24   10.1.2.0/24     dev-worker-cluster-2  
-```
+   Example Output
+   ``` 
+   NAME    AGE
+   red     45s
+   ```
+
+2. Validate the slice gateway creation on your worker cluster, using the following command:
+   ``` 
+   kubectl get slicegw -n kubeslice-system
+   ```
+
+   Example Output
+   ``` 
+   NAME                                          SUBNET        REMOTE SUBNET   REMOTE CLUSTER        GW STATUS
+   red-dev-worker-cluster-1-dev-worker-cluster-2   10.1.1.0/24   10.1.2.0/24     dev-worker-cluster-2  
+   ```
