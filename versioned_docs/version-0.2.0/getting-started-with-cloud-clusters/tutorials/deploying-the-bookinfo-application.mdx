@@ -22,7 +22,7 @@ see [Installing Istio](/versioned_docs/version-0.2.0/getting-started-with-cloud-
   kubectl label namespace bookinfo istio-injection=enabled
   ```
 - You have the slice created across worker clusters. For more information, 
-see [Creating a Slice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/creating-a-slice.mdx).
+see [Creating a Slice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx).
 
 ## Creating the Bookinfo Deployment YAML Files
 Using the templates below, create the necessary .yaml files to deploy the Bookinfo application.
@@ -536,7 +536,7 @@ and visit the page in a browser to view your multi-cluster Bookinfo deployment.
    http://<external ip>:<port>/productpage
    ```
    Example
-   ![alt](/images/Bookinfo-productpage-OS.png)
+   ![alt](/img/Bookinfo-productpage-OS.png)
 
 ## Validating the Product page on the Kind Cluster
 ### Accessing the Product Page from the Local Machine
@@ -560,7 +560,7 @@ If the kind clusters are on a local machine, perform these steps:
    ```
 
 The following is an example of the product page:
-![alt](/images/Bookinfo-productpage-OS.png)
+![alt](/img/Bookinfo-productpage-OS.png)
 
 ### Accessing the Product page from the Cloud EC2 Machine
 If the kind clusters are on Cloud EC2 Machine, perform these steps:
@@ -583,7 +583,7 @@ If the kind clusters are on Cloud EC2 Machine, perform these steps:
    ```
 
 The following is an example of the product page:
-![alt](/images/Bookinfo-productpage-OS.png)
+![alt](/img/Bookinfo-productpage-OS.png)
 
 :::success
 You have successfully deployed Bookinfo applicaiton on a KubeSlice configuration containing at least two clusters.

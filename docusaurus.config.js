@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Avesha Docs',
   tagline: 'Avesha Open Source Documentation',
-  url: 'https://docs.avesha.io',
+  url: 'https://kubeslice.io',
   baseUrl: '/documentation/open-source/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
