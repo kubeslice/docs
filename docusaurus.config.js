@@ -96,6 +96,12 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      sitemap: {
+          changefreq: 'weekly',
+          priority: 0.5,
+          ignorePatterns: ['/tags/**'],
+          filename: 'sitemap.xml',
+      },
       algolia: {
       // The application ID provided by Algolia
         appId: 'HCZPZKPV7',
