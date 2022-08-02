@@ -1,4 +1,4 @@
-# Contributing to KubeSlice documentation
+# Contributing to the KubeSlice Documentation
 
 _KubeSlice welcomes suggestions for improvement from all contributors, new and experienced!_
 
@@ -22,14 +22,14 @@ Below is the list of things you should be aware of before getting started with y
 - [Docusaurus](https://docusaurus.io)
     - Docusaurus is a static site generator that makes use of the Markdown syntax and uses [MDX](https://mdxjs.com/) as the parser.
 
-## Making your first contribution!
+## Making your First Contribution!
 
 - Familiarize yourself with the [GitHub repository](https://github.com/kubeslice/docs) hosting the documentation.
 - Whether you’re suggesting an improvement or adding new content, you will need to open an issue first.
 	- Refer to our section on opening an issue below to learn more.
 
 
-## Opening an issue
+## Opening an Issue
 
 The first step to begin work whether you’re suggesting an improvement or adding new content is to open an issue.
 
@@ -41,7 +41,7 @@ Follow the below steps to open an issue
 - Click Submit new issue.
 - After submitting the issue, you can either assign it to yourself or wait for a community member to pick it up. Members of the documentation team and the community might request clarifications before they can take action on your issue, so we request that you actively check your issue or [turn on GitHub notifications](https://docs.github.com/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications).
 
-## How do I make my contribution count?
+## How Do I Make My Contribution Count?
 
 No contribution is too big or small! However, to ensure that the community derives maximum value, we request that you follow the below when reporting an issue:
 
