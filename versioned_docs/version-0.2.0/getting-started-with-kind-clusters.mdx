@@ -17,7 +17,7 @@ The following sections help you to:
 -   Test the connectivity between the worker clusters using the iPerf
     tool
 
-The following diagram shows the topology of the KubeSlice installed on
+The following diagram shows the topology of KubeSlice installed on
 kind clusters.
 
 ![alt](/img/Kindclusters-OS.png)
@@ -28,7 +28,7 @@ KubeSlice. In this environment, you must install the KubeSlice Controller and re
 clusters with it.
 
 ### Command Line Tools 
-You need the following command line tools to install the KubeSlice.
+You need the following command line tools to install KubeSlice.
 
 |  Package Required   | Installation Instructions
 |---------------------|--------------------------
@@ -407,7 +407,7 @@ kubeslice/kubeslice-worker      0.2.0           0.4.1           KubeSlice Operat
 
 The KubeSlice Controller orchestrates the creation and management of slices on worker 
 clusters. The KubeSlice Controller components and the worker cluster components can 
-coexist on a cluster. Hence, the cluster running the KubeSlice controller can also be used 
+coexist on a cluster. Hence, the cluster running the KubeSlice Controller can also be used 
 as a worker cluster. **We recommend that you run the KubeSlice Controller on a separate
 cluster**.
 
@@ -520,7 +520,7 @@ kubeslice:
 ```
 
 ### Applying the Controller YAML File 
-Apply the KubeSlice controller YAML file by using the following command:
+Apply the KubeSlice Controller YAML file by using the following command:
 
 ```
 helm install kubeslice-controller kubeslice/kubeslice-controller -f <full path of the config yaml file> --namespace kubeslice-controller --create-namespace
@@ -678,7 +678,7 @@ kind-worker-2  51s
 ```
 
 ### Installing the Slice Operator 
-After registering the worker cluster with the KubeSlice controller, you must install the 
+After registering the worker cluster with the KubeSlice Controller, you must install the 
 Slice Operator in your worker cluster.
 
 To install the Slice Operator, get the secrets for the worker cluster from the KubeSlice 
@@ -916,7 +916,7 @@ The following information is required to apply the slice configuration.
 | `<slice configuration>` |  The name of the slice configuration file. |
 |  `<project name>`    |     The project name on which you apply the slice configuration file. |
 
-You must apply the Slice configuration `.yaml`file on the project name.
+You must apply the slice configuration `.yaml`file on the project name.
 
 Switch context to the KubeSlice Controller using the following command:
 
