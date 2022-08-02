@@ -107,7 +107,7 @@ const config = {
         appId: 'HCZPZKPV7K',
 
         // Public API key: it is safe to commit it
-        apiKey: '82399216c0fe06bfa662affa5d2fbf46',
+        apiKey: '07cc26575616425e88d3dc1f38c8fc91',
 
         indexName: 'avesha',
 
