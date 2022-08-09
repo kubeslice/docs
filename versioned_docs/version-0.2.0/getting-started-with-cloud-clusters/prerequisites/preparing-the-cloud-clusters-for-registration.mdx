@@ -18,6 +18,23 @@ Before registering your clusters with KubeSlice Controller, you must authenticat
 that is used in your installation. Each of the following commands retrieves the relevant `kubeconfig` and 
 add it to your default `kubeconfig` path.
 
+### Azure Kubernetes Service 
+For information on prerequisites and authentication, see [Microsoft AKS Docs](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-credentials).
+The following information is required to retrieve your Microsoft Azure
+Kubernetes Service (AKS) `kubeconfig`.
+
+| **Variable**      |        **Description** |
+|-----|-----|
+| <resource group name\> |  The name of the resource group the cluster belongs to.
+  <cluster name\>         | The name of the cluster you would like to get credentials for.|
+
+The following command retrieves your AKS cluster `kubeconfig` and add it to your default `kubeconfig` path. Complete this step for each
+AKS cluster that you want to work with.
+
+``` 
+az aks get-credentials --resource-group <resource group name> --name <cluster name>
+```
+
 ### Elastic Kubernetes Service 
 For information on prerequisites and other required details, see the [Amazon EKS documentation](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html).
 
@@ -29,7 +46,6 @@ Service (EKS) `kubeconfig`.
 |<cluster name\>  | The name of the cluster you want to get credentials for.|
 |  <cluster region\>       |  The AWS region the cluster belongs to.|
 
- 
 The following command retrieves your EKS cluster `kubeconfig` and adds
 it to your default `kubeconfig` path. Complete this step for each EKS
 cluster that you want to work with.
@@ -66,23 +82,6 @@ Fetching cluster endpoint and auth data.
 kubeconfig entry generated for <cluster name>
 ```
 
-### Microsoft Azure Kubernetes Service 
-For information on prerequisites and authentication, see [Microsoft AKS Docs](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-credentials).
-The following information is required to retrieve your Microsoft Azure
-Kubernetes Service (AKS) `kubeconfig`.
-
-| **Variable**      |        **Description** |
-|-----|-----|
-| <resource group name\> |  The name of the resource group the cluster belongs to.
-  <cluster name\>         | The name of the cluster you would like to get credentials for.|
-
-The following command retrieves your AKS cluster `kubeconfig` and add it to your default `kubeconfig` path. Complete this step for each
-AKS cluster that you want to work with.
-
-``` 
-az aks get-credentials --resource-group <resource group name> --name <cluster name>
-```
-
 ## Labeling KubeSlice Gateway Nodes
 
 :::info
@@ -97,19 +96,20 @@ If you have multiple node pools on your worker cluster, then you can add a
 label to each node pool. Labels are useful in managing scheduling rules
 for nodes.
 
-:::info
-If a worker cluster contains only one node pool, follow the instructions in [Labeling Individual Nodes](#labeling-individual-nodes).
-:::
-
 Perform these steps in each worker cluster that you want to register with 
 the KubeSlice Controller. If you have to use a single node pool, then perform the
 following steps.
 
-### Elastic Kubernetes Service 
-The following information is required to label the EKS cluster nodepools. 
+### Azure Kubernetes Service
+AKS nodepools can only be set during nodepool creation. The nodepool
+must contain the `kubeslice.io/node-type=gateway` label. For instructions on creating
+a labeled nodepool, visit the [AKS documentation](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#setting-nodepool-labels).
 
-```
-```
+### Elastic Kubernetes Service  
+Nodepools are called node groups in EKS clusters. The node group must contain 
+the `kubeslice.io/node-type=gateway` label. You can add or remove the Kubernetes 
+labels by editing a node group configuration as described in 
+[updating managed node groups](https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html).
 
 ### Google Kubernetes Engine
 The following information is required to label the GKE cluster nodepools.
@@ -129,11 +129,6 @@ gcloud container node-pools update <nodepool name> \
     --cluster=<cluster name> \
     [--region=<region> | --zone=<zone>]
 ```
-
-### Microsoft Azure Kubernetes Service
-AKS nodepools can only be set during nodepool creation. The nodepool
-must contain the ``kubeslice.io/node-type=gateway` label. For instructions on creating
-a labeled nodepool, visit the [AKS documentation](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#setting-nodepool-labels).
 
 ## Verifying Your Labels
 :::info
@@ -158,7 +153,6 @@ Perform these steps to verify your cluster labels:
     ```
   
 ## Adding the Helm Repository
-
 To add the helm repository:
 
 1. Add the helm repository information to your local system.
