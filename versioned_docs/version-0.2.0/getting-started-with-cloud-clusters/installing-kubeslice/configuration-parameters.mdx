@@ -203,7 +203,7 @@ configured in the [slice configuration YAML file](/versioned_docs/version-0.2.0/
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
 | queueType | String | It is the slice traffic control queue type. The value must be Hierarchical Token Bucket (`HTB`). HTB facilitates guaranteed bandwidth for the slice traffic. | Mandatory |
-| priority | Integer | QoS profiles allows traffic management within a slice as well as prioritization across slices. The value range is 0-3. 0 represents the highest priority and 3 represents the lowest priority. | Mandatory |
+| priority | Integer | QoS profiles allows traffic management within a slice as well as prioritization across slices. The value range is 0-3. 0 is the highest priority, and 3 is the lowest priority. | Mandatory |
 | tcType | String | It is the traffic control type. The value must be `BANDWIDTH_CONTROL`. | Mandatory |
 | bandwidthCeilingKbps | Integer | The maximum bandwidth in Kbps that is allowed for the slice traffic. | Mandatory |
 | bandwidthGuaranteedKbps | Integer | The guaranteed bandwidth in Kbps for the slice traffic. | Mandatory |
