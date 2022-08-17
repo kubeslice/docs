@@ -1,0 +1,26 @@
+### Creating the Cluster Registration YAML File
+Create the `cluster-reg.yaml`file for registering the worker cluster using the following
+template.
+
+:::info
+To understand more about the configuration parameters, see [Cluster
+Registration Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#cluster-registration-configuration-parameters).
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: <first-worker-cluster-name>  # kind-worker-1 
+  namespace: kubeslice-<project name> # kubeslice-avesha
+spec:
+  networkInterface: eth0
+---
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: <second-worker-cluster-name> # kind-worker-2
+  namespace: kubeslice-<project name> # kubeslice-avesha
+spec:
+  networkInterface: eth0
+```

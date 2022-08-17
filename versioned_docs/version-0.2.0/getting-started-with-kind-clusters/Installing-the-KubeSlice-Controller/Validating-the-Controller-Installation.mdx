@@ -1,0 +1,18 @@
+### Validating the Controller Installation
+Perform these steps to validate the installation on the controller
+cluster where the KubeSlice Controller is installed:
+
+Validate the installation of the KubeSlice Controller by checking the
+pods that belong to the `kubeslice-controller` namespace using the
+following command:
+
+```
+kubectl get pods -n kubeslice-controller
+```
+
+Expected Output
+
+```
+NAME                                            READY   STATUS      RESTARTS   AGE
+kubeslice-controller-manager-64c9d599d6-qjst4   2/2   Running       0          14s
+```

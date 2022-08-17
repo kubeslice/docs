@@ -1,0 +1,82 @@
+### Preparing the Controller Cluster for Registration
+
+Create a YAML file to prepare the controller cluster for registration by using the 
+following template:
+
+:::info
+The `networking` property is required for the namespace isolation
+feature. By default, the kind cluster has the kindnet CNI setting, but it needs to be 
+disabled for the namespace isolation feature to work. We install Calico instead for the
+CNI network.
+:::
+
+:::info
+To understand more about the configuration parameters, see
+[kind – Configuration](https://kind.sigs.k8s.io/docs/user/configuration/).
+:::
+
+:::caution
+If you face memory issues with a **two-nodes** kind cluster, then use a
+**single-node** kind cluster.
+:::
+
+```
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "127.0.0.1"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 6443
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+  - role: worker
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"
+```
+
+ Use the following template to create a single-node controller cluster. 
+
+ ```
+ kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "127.0.0.1"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 6443
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"
+ ```
+
+### Applying the YAML File to Create the Controller Cluster 
+Apply the YAML File to  create the controller cluster by running this command:
+
+```
+kind create cluster --name <Controller-Cluster-Name> --config kind-controller-cluster.yaml
+```

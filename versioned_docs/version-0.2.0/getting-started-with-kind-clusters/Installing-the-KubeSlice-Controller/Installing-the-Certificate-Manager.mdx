@@ -1,0 +1,19 @@
+### Installing the Certificate Manager 
+The KubeSlice Controller uses the certificate manager to provision the certificates for 
+the webhook server. The certificate manager uses the Kubernetes API server that is 
+extended using a webhook server for providing dynamic admission control over the 
+certificate manager resources. This implies that the certificate manager benefits from 
+the same behaviour as the basic Kubernetes resources.
+
+Switch the context to the controller cluster using the following command: 
+
+```
+kubectx <cluster name>
+```
+
+
+Install the `cert-manager` using the following command:
+
+``` 
+helm install cert-manager kubeslice/cert-manager --namespace cert-manager  --create-namespace --set installCRDs=true
+```

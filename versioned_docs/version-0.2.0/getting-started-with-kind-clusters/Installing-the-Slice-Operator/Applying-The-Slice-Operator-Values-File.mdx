@@ -1,0 +1,15 @@
+### Applying the Slice Operator Values File 
+The following information is required to apply the manifest file.
+
+| Parameter     |  Description |
+|---------------|--------------------------------|
+| `<values-file>` | The file name that contains the configuration values. |
+
+You must install the Slice Operator in the registered cluster.
+
+Apply the slice configuration through the `slice-operator.yaml` to the worker cluster by 
+using the following command:
+
+```
+helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of slice-operator.yaml> --namespace kubeslice-system  --create-namespace
+```

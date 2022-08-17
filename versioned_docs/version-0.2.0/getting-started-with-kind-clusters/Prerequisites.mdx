@@ -1,0 +1,87 @@
+## Prerequisites
+Ensure that you have the following environment set up that is required to install 
+KubeSlice. In this environment, you must install the KubeSlice Controller and register 
+clusters with it.
+
+### Command Line Tools 
+You need the following command line tools to install KubeSlice.
+
+|  Package Required   | Installation Instructions
+|---------------------|--------------------------
+| [Helm](https://helm.sh/) - The Package Manager for Kubernetes | https://helm.sh/docs/intro/install/ 
+| [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) - Kubernetes CLI | https://kubernetes.io/docs/tasks/tools/
+| [kubectx and kubens](https://github.com/ahmetb/kubectx) |  https://github.com/ahmetb/kubectx#Installation
+| [Docker](https://docs.docker.com/get-docker/) | https://docs.docker.com/engine/install/
+| Kind CLI | https://kind.sigs.k8s.io/docs/user/quick-start/#installation
+
+
+### Infrastructure Requirements
+The following are the infrastructure requirements to install KubeSlice
+components.
+
+:::info
+If you are on Ubuntu OS, then it is recommended to increase the `ulimit`
+to 2048 or unlimited.
+:::
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Host Requirements**               | Minimum of 8vCPUs and 8GB of RAM  |
+
+:::info
+Ensure to modify the memory and CPU usage allowed to docker as described in           
+https://docs.docker.com/desktop/windows/#resources. 
+::: 
+
+#### Requirements for Hosting KubeSlice Controller
+   
+:::info
+You can install the KubeSlice Controller on a cluster and also register the same cluster 
+with the KubeSlice Controller.
+:::
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Cluster Requirements**                |     1 Kubernetes Cluster  |  
+| **Supported Kubernetes Versions**       |   [1.21](https://v1-21.docs.kubernetes.io/) and [1.22](https://v1-22.docs.kubernetes.io/) |
+| **Required Helm Version**               |  3.7.0  |
+
+
+#### Requirements for Worker Clusters
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Minimum Clusters Required**           | 2 Kubernetes Clusters    |
+|  **Nodes Reserved for KubeSlice Components]** |   1 Node per cluster |
+| **Supported Kubernetes Versions**       |   [1.21](https://v1-21.docs.kubernetes.io/) and [1.22](https://v1-22.docs.kubernetes.io/) |
+| **Required Helm Version**               |  3.7.0  |
+
+### Cluster Context Switching
+You must change your `kubeconfig` context frequently to run
+`kubectl `commands in each cluster. Using `kubectx` can make this
+process easier and save you time.
+
+To switch the context to a certain cluster, run the following command
+with the corresponding cluster name:
+
+```
+kubectx <cluster name>
+```
+
+Expected Output
+
+```
+Switched to context "<cluster name>"
+```
+
+To return to the last used context, use the following command:
+
+```
+kubectx -
+```
+
+Expected Output
+
+```
+Switched to context "<previous context>"
+```

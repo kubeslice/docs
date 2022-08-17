@@ -1,0 +1,27 @@
+### Applying the Slice Configuration on the Controller Cluster 
+The following information is required to apply the slice configuration.
+
+| Variable |             Description |
+|------------|------------------------|
+| `<cluster name>` |         The name of the cluster. |
+| `<slice configuration>` |  The name of the slice configuration file. |
+|  `<project name>`    |     The project name on which you apply the slice configuration file. |
+
+You must apply the slice configuration `.yaml`file on the project name.
+
+Switch context to the KubeSlice Controller using the following command:
+
+```
+kubectx <cluster name>
+```
+
+Run the following command to apply the YAML file on the project:
+
+```
+kubectl apply -f <slice-configuration>.yaml -n kubeslice-<project name>
+```
+
+:::success
+You have successfully created a slice with the registered clusters. All the slice 
+configuration are applied at the KubeSlice Controller level.
+:::

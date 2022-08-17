@@ -1,0 +1,19 @@
+### Applying the Controller YAML File 
+Apply the KubeSlice Controller YAML file by using the following command:
+
+```
+helm install kubeslice-controller kubeslice/kubeslice-controller -f <full path of the config yaml file> --namespace kubeslice-controller --create-namespace
+```
+
+Expected Output
+
+```
+NAME: kubeslice-controller
+LAST DEPLOYED: Fri Jun 10 18:42:23 2022
+NAMESPACE: kubeslice-controller
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+kubeslice controller installation successful!
+```

@@ -1,0 +1,28 @@
+## Installing the KubeSlice Controller 
+
+The KubeSlice Controller orchestrates the creation and management of slices on worker 
+clusters. The KubeSlice Controller components and the worker cluster components can 
+coexist on a cluster. Hence, the cluster running the KubeSlice Controller can also be used 
+as a worker cluster. **We recommend that you run the KubeSlice Controller on a separate
+cluster**.
+
+This following section describes the steps to install the KubeSlice Controller in a 
+cluster. 
+
+:::caution
+The kind cluster deployment is only supported with a single host and it does not support 
+connectivity to the cloud clusters.
+:::
+
+Installing the KubeSlice Controller on a cluster installs the following:
+
+* KubeSlice Controller specific ClusterResourceDefinitions (CRDs)
+* ClusterRole, ServiceAccount and ClusterRoleBinding for KubeSlice Controller
+* A Role and RoleBinding for KubeSlice Controller Leader Election
+* KubeSlice Controller workload
+* Kubernetes Dashboard
+* KubeSlice Controller API Gateway
+
+:::info
+Only the cluster administrator can install the KubeSlice Controller.
+:::

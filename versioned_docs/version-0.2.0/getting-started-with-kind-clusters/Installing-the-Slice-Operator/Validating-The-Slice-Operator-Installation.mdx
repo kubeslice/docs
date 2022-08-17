@@ -1,0 +1,36 @@
+### Validating the Slice Operator Installation 
+To validate the Slice Operator installation in the registered cluster,
+check the pods belonging to the namespace `kubeslice-system` by using
+the following command:
+
+```
+kubectl get pods -n kubeslice-system
+```
+
+Expected Output
+
+```
+NAME                                                 READY   STATUS    RESTARTS   AGE
+jaeger-65c6b7f5dd-597wv                              1/1     Running   0          40s
+kubeslice-netop-xldst                                1/1     Running   0          40s
+kubeslice-operator-7c64667fd4-cvmps                  2/2     Running   0          40s
+mesh-dns-bf5d97cf5-lxlnr                             1/1     Running   0          40s
+nsm-admission-webhook-bb4994c7d-x25rk                1/1     Running   0          40s
+nsm-kernel-forwarder-99c6k                           1/1     Running   0          40s
+nsm-kernel-forwarder-cx6fn                           1/1     Running   0          40s
+nsmgr-blfvn                                          3/3     Running   0          40s
+nsmgr-z2msg                                          3/3     Running   0          40s
+prefix-service-76bd89c44f-pbrmn                      1/1     Running   0          40s
+```
+
+:::info
+You must repeat the same sequence of steps that is getting secrets, creating the values .yaml file 
+and applying it on each worker cluster to install the Slice Operator on other worker 
+clusters. 
+:::
+
+:::success
+You have successfully installed the Slice Operator in the worker
+cluster. Repeat the above steps to install the Slice Operator in all the
+worker clusters.
+:::

@@ -1,0 +1,58 @@
+### Installing the Slice Operator 
+After registering the worker cluster with the KubeSlice Controller, you must install the 
+Slice Operator in your worker cluster.
+
+To install the Slice Operator, get the secrets for the worker cluster from the KubeSlice 
+Controller manually. Use these secrets in your values .yaml file to install the Slice 
+Operator. 
+
+:::info
+Alternatively, you can use the script to create your values.yaml file as described in 
+[Script to Get the Secrets of the Worker Cluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+:::
+
+#### Getting the Secrets of the Registered Cluster from the Controller Cluster 
+After registering the worker cluster with the KubeSlice Controller, a secret gets listed 
+under the Project namespace. The secret contains access information that you must add in 
+the Slice Operator YAML file. The secret is required for the worker cluster to communicate 
+with the KubeSlice Controller. 
+
+:::info
+You can also retrieve the secrets of the worker clusters using these 
+[scripts](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+:::
+
+To get the secrets:
+
+1. Get the list of secrets belonging to the project namespace using the
+   following command:
+
+   ```
+   kubectl get secrets -n kubeslice-<project name>
+   ```
+
+   Example
+
+   ```
+   kubectl get secrets -n kubeslice-avesha
+   ```   
+
+   Example Output
+
+   ```
+   NAME                                              TYPE                                  DATA   AGE
+   default-token-mzh9h                               kubernetes.io/service-account-token   3      30s
+   kubeslice-rbac-rw-user-token-lf4zg                kubernetes.io/service-account-token   3      30s
+   kubeslice-rbac-worker-kind-worker-1-token-mw9vp   kubernetes.io/service-account-token   5      30s
+   kubeslice-rbac-worker-kind-worker-2-token-pksp5   kubernetes.io/service-account-token   5      30s
+   ```
+
+   The name of the secret is in this format: ` kubeslice-rbac-<registered cluster secret name>-token.`
+   For example, `kubeslice-rbac-worker-kind-worker-1-token-mw9vp` - this secret is meant 
+   for a worker cluster that was registered using the name kind-worker-1.
+
+2. Retrieve the details of the secret using the following command:
+
+   ```
+   kubectl get secrets <worker-cluster-secret-name> -o yaml -n kubeslice-<projectname>
+   ```

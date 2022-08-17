@@ -1,0 +1,59 @@
+### Creating a Project Namespace
+A project may represent an individual customer or an organization or a
+department within an organization. Each project would have a dedicated
+auto-generated namespace, which will ensure that the resources of one
+project do not clash with the resources of another project.
+
+For example, a slice with the same name can exist across multiple
+projects but with different configurations. Changes to the slice in one
+project will not affect the slice in another project.
+
+#### Creating a Project YAML File
+Create a `project.yaml` file for the project namespace.
+
+:::info
+To understand more about the configuration parameters, see [Project
+Namespace Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#project-namespace-configuration-parameters).
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Project
+metadata:
+  name: avesha
+  namespace: kubeslice-controller
+spec:
+  serviceAccount:
+    readOnly:
+      - <readonly user1>
+      - <readonly user2>
+      - <readonly user3>
+    readWrite:
+      - <readwrite user1>
+      - <readwrite user2>
+      - <readwrite user3>
+```
+
+#### Applying the Project YAML File
+
+Apply the project in the controller cluster by running the following
+command:
+
+```
+kubectl apply -f project.yaml -n kubeslice-controller
+```
+
+#### Validating the Project
+
+Check the project by using the following command:
+
+```
+kubectl get project -n kubeslice-controller
+```
+
+Expected Output
+
+```
+NAME     AGE
+avesha   30s
+```

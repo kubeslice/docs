@@ -1,0 +1,30 @@
+### Validating the Certificate Manager
+Verify if the pods are running on the controller cluster by running the
+following command:
+
+
+``` 
+kubectl get pods -n cert-manager
+```
+
+
+Expected Output
+
+```
+NAME                                       READY   STATUS    RESTARTS   AGE
+cert-manager-847544bbd-tfznw               1/1     Running   0          45s
+cert-manager-cainjector-5c747645bf-2dg9r   1/1     Running   0          45s
+cert-manager-webhook-5949b8dd88-tvplz      1/1     Running   0          45s
+```
+
+Retrieve the controller cluster Control Plane IP (endpoint) by running
+the following command:
+
+```
+kubectl get nodes -o wide
+```
+
+Expected Output
+```
+NAME                            STATUS   ROLES                  AGE   VERSION    INTERNAL-IP   EXTERNAL-IP   OS-IMAGE       KERNEL-VERSION   CONTAINER-RUNTIME
+kind-controller-control-plane   Ready    control-plane,master   74m   v1.20.15   172.18.0.3    <none>        Ubuntu 21.10   5.4.0-1071-aws   containerd://1.5.10

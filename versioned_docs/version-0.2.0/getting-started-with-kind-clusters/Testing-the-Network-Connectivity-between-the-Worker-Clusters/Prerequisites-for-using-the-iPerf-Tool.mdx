@@ -1,0 +1,11 @@
+### Prerequisites for using the iPerf Tool
+To deploy a application, you must create a namespace for that
+application in both the client and server clusters before creating the
+slice.
+
+Create the `iperf` namespace on the worker clusters identified as the
+client and server using the following command:
+
+```
+kubectl create ns iperf
+```

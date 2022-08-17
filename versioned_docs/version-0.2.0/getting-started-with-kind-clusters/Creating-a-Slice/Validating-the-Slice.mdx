@@ -1,0 +1,64 @@
+### Validating the Slice 
+Validate the slice configuration on the controller and worker clusters.
+
+#### Validating the Slice Configuration from the Controller Cluster 
+Validate the slice configuration from the controller cluster using the
+following command:
+
+```
+kubectl get sliceconfig -n kubeslice-<project name>
+```
+
+Expected Output
+
+```
+NAME    AGE
+water   35s
+```
+
+Validate the slice configuration in the KubeSlice Controller using the
+following command:
+
+```
+kubectl get workersliceconfig -n kubeslice-<project name>
+```
+Example 
+
+```
+kubectl get workerslicegateway -n kubeslice-avesha
+```
+
+Expected Output
+
+```
+NAME                                              AGE
+water-dev-worker-cluster-1-dev-worker-cluster-2   45s
+water-dev-worker-cluster-2-dev-worker-cluster-1   45s
+```
+
+#### Validating the Slice Configuration from the Worker Cluster 
+Validate the slice creation on the worker clusters using the following command on 
+each worker cluster:
+
+```
+kubectl get slice -n kubslice-system
+```
+
+Example Output
+```
+NAME    AGE
+water   45s
+```
+
+Validate the slice gateway on each worker cluster using the following command:
+
+```
+kubectl get slicegw -n kubeslice-system
+```
+
+Example Output
+
+```
+NAME                                SUBNET        REMOTE SUBNET   REMOTE CLUSTER   GW STATUS
+water-kind-worker-1-kind-worker-2   10.1.1.0/24   10.1.2.0/24     kind-worker-2
+```
