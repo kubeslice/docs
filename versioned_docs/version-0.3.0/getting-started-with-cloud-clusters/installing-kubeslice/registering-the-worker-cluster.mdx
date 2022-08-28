@@ -1,0 +1,381 @@
+# Registering the Worker Cluster
+
+## Introduction 
+Before creating a slice across your Kubernetes clusters, you must
+register your worker clusters with the KubeSlice Controller.
+
+## Prerequisites
+Before you begin, ensure the following prerequisites are met:
+
+- You have the KubeSlice Controller installed on a separate cluster. For more information, 
+see [Installing the KubeSlice Controller](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
+- You have set up the environment for the worker clusters. For more information, 
+see [Prerequisites](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
+- You have authenticated the worker clusters with the cloud providers. For more information, 
+see [Preparing the clusters for registration](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
+- You have cluster administrator privileges to install the Slice Operator.
+
+## Installing Istio
+
+[Istio](http://istio.io/) is an open source service mesh that is used frequently to connect and secure 
+microservices within a cluster. The below instructions will install istio from the helm repository chart. 
+
+:::caution
+You can skip these steps if you have already installed the recommended Istio version in the cluster.
+:::
+
+Perform these steps:
+
+1. Switch the context to the cluster that will be registered with the KubeSlice Controller.
+   ``` 
+   kubectx <cluster name>
+   ```
+2. Create the `istio-system` namespace using the following command:
+   ``` 
+   kubectl create ns istio-system
+   ```
+3. Install the `istio-chart` from the helm repository using the following command:
+   ``` 
+   helm install istio-base kubeslice/istio-base -n istio-system
+   ```
+4. Install the `istio-discovery` chart from the helm repository using the following command:
+   ```
+   helm install istiod kubeslice/istio-discovery -n istio-system
+   ```
+   :::caution
+   Repeat these steps to install Istio on other worker clusters.
+   :::
+
+## Validating the Installation of Istio 
+
+Validate the installation by checking the pods  status belonging to the `istio-system` namespace.
+``` 
+kubectl get pods -n istio-system
+```
+
+Example Output
+``` 
+NAME                          READY   STATUS    RESTARTS   AGE
+istiod-66f576dd98-jtshj       1/1     Running   0          100s
+```
+
+## Creating the Cluster Registration YAML File
+
+The following information is required to create your cluster registration **.yaml** file.
+
+:::info
+Currently, only Azure Kubernetes Service (AKS) and Google Kubernetes Engine (GKE) are supported.
+:::
+
+:::info
+Register the worker clusters with the KubeSlice Controller by applying the YAML on the Project namespace.
+:::
+
+:::info
+The cluster registration .yaml file can have multiple clusters listed to register with the KubeSlice Controller.
+:::
+
+Create the cluster registration YAML file using the following template.
+
+:::info
+To understand more about the configuration parameters, 
+see [Cluster Registration ConfigurationParameters](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#cluster-registration-configuration-parameters)
+:::
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: <cluster-name-1>
+  namespace: kubeslice-<projectname>
+spec:
+  networkInterface: <network_interface>
+  clusterProperty:
+    geoLocation:
+      cloudProvider: "<cloud_provider>"
+      cloudRegion: "<cloud_region>"
+---
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: <cluster-name-2>
+  namespace: <kubeslice-projectname>
+spec:
+  networkInterface: <network_interface>
+  clusterProperty:   
+    geoLocation:
+      cloudProvider: "<cloud_provider>"
+      cloudRegion: "<cloud_region>"
+```
+
+Example YAML file
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: worker-cluster-1
+  namespace: avesha
+spec:
+  networkInterface: eth0
+  clusterProperty:   
+    geoLocation:
+      cloudProvider: "AZURE"
+      cloudRegion: "eastus"
+---
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: worker-cluster-2
+  namespace: avesha
+spec:
+  networkInterface: eth0
+  clusterProperty:   
+    geoLocation:
+      cloudProvider: "AZURE"
+      cloudRegion: "westus2"
+```
+
+Example YAML File Only with Mandatory Parameters
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: worker-1
+  namespace: kubeslice-avesha
+spec:
+  networkInterface: eth0
+---
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: worker-2
+  namespace: kubeslice-avesha
+spec:
+  networkInterface: eth0
+```
+
+## Applying the Cluster Registration YAML File 
+
+The following information is required.
+
+|Values|Description|
+|----|----|
+|<cluster name\>|The name of the cluster.|
+|<cluster registration\>|The name of the registration file.|
+|<project namespace\>|The namespace of your project.|
+
+Perform these steps:
+
+1. Switch the context to the cluster where the KubeSlice Controller is installed.
+   ``` 
+   kubectx <cluster name>
+   ```
+2. Use the following command to apply the YAML file.You must apply the cluster registration YAML file on
+your Project namespace.
+   ``` 
+   kubectl apply -f <cluster registeration>.yaml -n <project namespace>
+   ```
+
+:::success
+You have successfully registered the Worker clusters with the KubeSlice Controller.
+:::
+
+## Installing the Slice Operator 
+
+Install the Slice Operator on the worker cluster that you just registered.Before installing the 
+Slice Operator in your registered cluster, you must get the secrets and the endpoints from the KubeSlice 
+Controller.
+
+
+### Getting the Secrets of the Registered Cluster 
+
+After registering the worker cluster with the KubeSlice Controller, you will get a secret listed under the 
+project namespace. The secret contains access information for the Slice Operator on the worker cluster to 
+communicate with the KubeSlice Controller.
+
+:::info
+Alternatively, you can use the script to create your values `.yaml` file.
+See [Script to get the secrets of the Workercluster](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+:::
+
+1.  Switch the context to the controller cluster.
+    ``` 
+    kubectx <cluster name>
+    ```
+
+2.  Get the list of secrets belonging to the project namespace using the following command:
+    ``` 
+    kubectl get secrets -n kubeslice-<projectname>
+    ```
+
+    Example
+    ``` 
+    kubectl get secrets -n kubeslice-avesha
+    ```
+    
+    Example Output
+    ``` 
+    NAME                                           TYPE                                  DATA   AGE
+    default-token-q2gp9                            kubernetes.io/service-account-token   3      43s
+    kubeslice-rbac-ro-abc-token-kp9tq              kubernetes.io/service-account-token   3      43s
+    kubeslice-rbac-ro-xyz-token-vcph6              kubernetes.io/service-account-token   3      43s
+    kubeslice-rbac-rw-abc-token-vkhfb              kubernetes.io/service-account-token   3      43s
+    kubeslice-rbac-rw-xyz-token-rwqr9              kubernetes.io/service-account-token   3      43s
+    kubeslice-rbac-worker-aks-worker-1-token-hml58 kubernetes.io/service-account-token   5      43s
+    kubeslice-rbac-worker-aks-worker-2-token-lwzj2 kubernetes.io/service-account-token   5      43s
+    ```
+
+    The name of the secret is in this format:` kubeslice-rbac-<registered cluster secret name>-token`.
+    For example, `kubeslice-rbac-worker-aks-worker-1-token-hml58` - this
+    secret is meant for a worker cluster that was registered using the
+    name aks-worker-1.
+
+3.  Retrieve the details of the secret using the following command:
+    ``` 
+    kubectl get secrets <worker-cluster-secret-name> -o yaml -n kubeslice-<projectname>
+    ```
+
+    Example
+    ``` 
+    kubectl get secrets kubeslice-rbac-worker-aks-worker-1-token-hml58 -o yaml -n  kubeslice-cisco
+    ```
+
+    Example Output
+    ```
+    apiVersion: v1
+    data:
+      ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUU2VENDQXRHZ0F3SUJBZ0lSQUtkdGsrOTJWQlJaSlJ4K2w5SHFabWN3RFFZSktvWklodmNOQVFFTEJRQXcKRFRFTE1Ba0dBMVVFQXhNQ1kyRXdJQmNOTWpJd016RTFNRGN3TURNM1doZ1BNakExTWpBek1UVXdOekV3TXpkYQpNQTB4Q3pBSkJnTlZCQU1UQW1OaE1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBCm1PZVNWQ3VVY0NNYlJtYkxsREFGSjljZk1ER0hHbWlVcy9PaU1zRm1QelZzcGkveEM0bFhqdStnSGtvNXMwcEEKeWZ6aURMU3cxeFA1RWk0S1NLMmhxZnBjYW04MFViTTV0RTIyaHowd21sOGlRblhES1Ztdm9JOFBqNm9SZHpiNApxcC9sMGFMZHUvOGtrVEhSWVU4MVJyWFJtWEVaUjJUcG9qaGZCYXd6UGxCNWFJall2YVc0djRERFpqRjFaTzNwCjdvNFg5RWZsZmZtd0wyNmlUSWZINjNwU3VBNjlob25RY0NLVjh3SmdDQVdxZHBDT0hJQlBUWjVzQThSWkdja2sKSDlzNXR3U00zbWVBcXEzaGhLVmNRL0YxNTlOLzdDRUZOZytjUTdtYkgxS21ISnEzYSsvYmRJM296L3R3cGRUZwppUUVEVS94UENxNTJHRnNFazNYTEcxSG5GUVpmZWVCNThQNVd6NS9Iak9KbHJwOExUN0RDdHFDK2FuLzNCRTh4ClJwMkRaOW9TT2UyblhyK3FreDRpampndVlKeCtiRHpGM2o0MVRrd1Q3am1teWlGMkZYN25nWGVpVk1nSU8xdisKZjFSdVRiTHpsYlFSNU12a09qUm9vVlBybWRXVVRFNVdaMFp4QnRkS1dtdUdHR2ZMOFljNndQc0NKUldianpORwppb2psZU9lVkg5UDB5S3VkREZPWkFINHp6Vk1CYTAvMHJXKzRnWnhtVzVpRkxaVE1BbEQ5QXhSclhPbFB4Uzg5CnFMY3NCMHNqbDNzeGlzb0lieEJGSUwzeGtRa0szK1RDYktIQmlnR1dBQmxlRGJHYWZHVjRDalpBL0E5MC93QlUKNjJRWUdEZ1FkVDhsN2U1anp0RjZWanBFbXo5T1IrUUphR3FXczFMQ04vRUNBd0VBQWFOQ01FQXdEZ1lEVlIwUApBUUgvQkFRREFnS2tNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGSlp0UHlYZ0wrcXIxRzIyCmtVWllpN0E4U1dPME1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQ0FRQWhXNG9QdVlEazNiamZSdlpYQmllTU5Sa3cKc1FCSjNoL3dCT3c5K0hMZ2lpYzJhNDdtWUJHcDlDV0ZvWTIvKzNDcjdZQThKYzZyY3QrcnlMeDUvQThlOVB3bApXV1VKbnVSalA5d3NoTkk0UUFKalRESEdMYVd4dXphOXFtVUxHUHV0VWpORkcySlJOTWxiV2pxakJzN1I1RFNMClVXazBEVi92dWU4YUhyRTJPRk5wVjFIK2V3VS9xdHFyRlVUWFI4d2NIRXdSNVU0cG9SSU9mOUl2OTdyOTdLY2gKTGFiQ1hJTWhpeVZMcDcvRXpGNVFyNFA0OUNhS0ZvMXhQQm1zcWUrV0lJZzFxbjk1ZlRHRjZmc3dwMHM0TE5pcQpJRnRsS3doR294VFNONXZWMU9EcTFWY3NOY2VRT0FNQVE0WE9zNGxBZURGTXFoaUtVcDJHZlZ2RWZKb2I4QzQ5CnAxcFB1ZWl5dksrc1ZUL2NWSkpzeUMvcnZBQUZ4ZnFlUytZbFlXajMwdG1pTitSdjRlS3V2c1ZadWZQSGVuNDcKdHVZSUQrNDZEL0x2ZVBBdGcwVVg4U3Qwakx4ZWg5bTFwRzZqSWk4NVlYQ0kzVy9XUms0aXpXMC85NldwZ1BJSAplOWQrRlhOZWY3eXJNWWExbGdGV1V2ajNiNG11aGlHQngvNE9oTWt6R3BUYU1aOWhCMUJyVlE5N1BwM0xkVHhxCnFESEJyZThETXN3MXJ4Uk12azVKNWEvVlMvUlBMS21KK2k2czN1RzlnaFVCSXIyQmVaS0gzdGFKUFpEaEhYNlUKaW1yS3F5KzV2MG9vTTl3OTU0MVlyMFVyUTZPSkpqNzRhc044MjRlVVJueFRCZDFTTVFMSGtYeThMS1FFYUVweQpZWXNrYUpPSys0cFJRREZTeFE9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+      clusterName: YWtzLXNwb2tlLTE=
+      controllerEndpoint: aHR0cHM6Ly8xMjcuMC4wLjE6MzY1MTU=
+      namespace: a3ViZXNsaWNlLWNpc2Nv
+      token: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklsbFBVbUpqTVVGaU5ucDRiSFUwWm1wdVowdHVUREJ5V1RsemFtdEdjR1p5TTNaSk5FSkhVbkpGY2pnaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUpyZFdKbGMyeHBZMlV0WTJselkyOGlMQ0pyZFdKbGNtNWxkR1Z6TG1sdkwzTmxjblpwWTJWaFkyTnZkVzUwTDNObFkzSmxkQzV1WVcxbElqb2lhM1ZpWlhOc2FXTmxMWEppWVdNdGMzQnZhMlV0WVd0ekxYTndiMnRsTFRFdGRHOXJaVzR0YUcxc05UZ2lMQ0pyZFdKbGNtNWxkR1Z6TG1sdkwzTmxjblpwWTJWaFkyTnZkVzUwTDNObGNuWnBZMlV0WVdOamIzVnVkQzV1WVcxbElqb2lhM1ZpWlhOc2FXTmxMWEppWVdNdGMzQnZhMlV0WVd0ekxYTndiMnRsTFRFaUxDSnJkV0psY201bGRHVnpMbWx2TDNObGNuWnBZMlZoWTJOdmRXNTBMM05sY25acFkyVXRZV05qYjNWdWRDNTFhV1FpT2lJd1l6Qm1ZalpoTWkwMlpUZG1MVFEwTkRVdE9UWTBaUzAwTURObVpqZzVPRGN6WldJaUxDSnpkV0lpT2lKemVYTjBaVzA2YzJWeWRtbGpaV0ZqWTI5MWJuUTZhM1ZpWlhOc2FXTmxMV05wYzJOdk9tdDFZbVZ6YkdsalpTMXlZbUZqTFhOd2IydGxMV0ZyY3kxemNHOXJaUzB4SW4wLnVYcnppc0U0ZkF6WklValV4Y2Q5d3dhVE41OGI0TVBlQjhOUUY0RHdWT1pwTzloQ293MU9BaE9Vc0k2cXdJeVNfcGN2T2tKeDBwN1hvTnVOZEZkdld5bThxUExNeThVNFhpZ2ZUeFhURUk4UG1RdGVzT2tRR3F3SFZlTExzME5LYUJ6ZUVaNFAwb2d4UWxXMVVxMzRTWFdJcTUzY3BNZFFJclZVdTBnYmdZMmZ6aUVrNnNlT3dVYkZ3ZGRuSElGUDN3Yi1qMDdTLUZpVG1ES042UmM3ZUFpNGNUZWtyXzNHZ0NOZllrbHdkdEd5czZETjg0ZlFQbVBqMmpUOS16QnRpcHJyS25SSzVPRHppWG4wT0FPQ0M3QlhpamJQeGswcHpNUG1jdDBBUzg0SGxFckd1WlVRUVNNQ2E5SEFwOG12UExYb3FaN1gxREI1bXBsTkxEM3gzaDgwcURZSExJUXZwNGhEUl8wdkpPSFZMaEl5akQ1NTNVUU5FMExhNThXTnhaTUhEZ1haRUtna3dlYXJBVWFXQ3U4VDRUNWdxS2dNMmFJMDU4RjhNWEVremdfWThCcjhJUnIzbmlJaEhnUXp2bHZFdG5ETl93ajNVXzZwUzJmRFZ4eFpDbURXSmlfUW9fWUpoN2JuVlh1bktDaVdqVWFZanQ1SjN4ZDhXcjkydVJBSDY3MzY4dmxjdWpVOTgyU2FjRTJBaks4NkhCR1FITTlfQ2FpZS1RUUgzc2hhUEVXVE5BT3FZWWMtbldUd29GcjJ0bUhFQnJsc0FVejVxaHdwcDVnMEV5dzFuMUdfS05MVWVwSUpCdF9VWjZpQ0NwX3NVbGZqSFdqb0R1OHJmd1ZIX3FudkZVNUViV0lpdnF4WkFVNTNqQmwtQkJELUlTbTJTMEoxWDJn
+    kind: Secret
+    metadata:
+      annotations:
+        kubernetes.io/service-account.name: kubeslice-rbac-worker-aks-worker-1
+        kubernetes.io/service-account.uid: 0c0fb6a2-6e7f-4445-964e-403ff89873eb
+      creationTimestamp: "2022-03-15T08:48:04Z"
+      managedFields:
+      - apiVersion: v1
+        fieldsType: FieldsV1
+        fieldsV1:
+          f:data:
+            .: {}
+            f:ca.crt: {}
+            f:namespace: {}
+            f:token: {}
+          f:metadata:
+            f:annotations:
+              .: {}
+              f:kubernetes.io/service-account.name: {}
+              f:kubernetes.io/service-account.uid: {}
+          f:type: {}
+        manager: kube-controller-manager
+        operation: Update
+        time: "2022-03-15T08:48:04Z"
+      - apiVersion: v1
+        fieldsType: FieldsV1
+        fieldsV1:
+          f:data:
+            f:clusterName: {}
+            f:controllerEndpoint: {}
+        manager: manager
+        operation: Update
+        time: "2022-03-15T08:48:34Z"
+      name: kubeslice-rbac-worker-aks-worker-1-token-hml58
+      namespace: kubeslice-cisco
+      resourceVersion: "21121"
+      uid: 611af586-b11d-45d4-a6e0-cee3167e837c
+    type: kubernetes.io/service-account-token
+    ```
+
+## Creating the Slice Operator YAML File
+
+Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `token` from the above secrets 
+to create your `values.yaml` file.
+
+Create the `values.yaml` file using the following template.
+
+:::info
+To understand more about the configuration parameters, 
+see [Slice Operator ConfigurationParameters](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-operator-configuration-parameters)
+:::
+
+```
+## Base64 encoded secret values for the namespace, endpoint, ca.crt and token from the controller cluster
+controllerSecret:
+  namespace: <encoded_namespace> 
+  endpoint: <encoded_endpoint>
+  ca.crt: <encoded_ca.crt>
+  token: <encoded_token>
+
+cluster:
+  name: <cluster-name>
+```
+
+Example
+
+``` 
+controllerSecret:
+  namespace: a3ViZXNsaWNlLWF2ZXNoYQ==
+  endpoint: aHR0cHM6Ly8xNzIuMTguMC4yOjY0NDM=
+  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQWVhZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJeU1EVXhNREEzTkRBd05sb1hEVE15TURVd056QTNOREF3Tmxvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTlNaCnlFcnhHQitHZTczTDdwS3dKTDNHR0k2VDdjazkrdmFHbGNkZ1ZuNnA3bWVSdHh1SFZMQmZQYWJlM0JkZjJTaE4KKzZpVEtscVJoN0VPNmltRVdJbkk0UitING9Xb2xkU09uOEQ5b1VVeDcydGkrK211ak5CRmlmbHB1TG85bk9TMQpKUjAxWWdwaC9IMi9mVE0yeVVlRmlJelBFZEdpOXUxM0JzOHZqQnRjUmdsZzdobEE0bm1HSDRMMGtERjkrZHNWCmJBN3N1S1dOZ2ZBeHp5SnRKYkN5SkFFSHdKY0V0aHhOREpwRUZ2UEZRY29FYzl6SHFkdFJMejF0Z05yRUZwU2oKOCtBbHRMdEZVSFd0ZmF0RnJ1M05qOHNWN2JITVM3UTlKeWRjWkFMcDJNM3RkNkFSeGxzSVg4WlJRei9EWm5jcgo5UjhYS0JwUmxnOWMzOTZERDVrQ0F3RUFBYU5aTUZjd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZEZmVYZC9YT0pSZWpVc2hzMnNPZ0E2RHdYcE5NQlVHQTFVZEVRUU8KTUF5Q0NtdDFZbVZ5Ym1WMFpYTXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBRHU0TVlNb2Rqa2JnQ0hndzZwbQpTWjhKWGMxNStWa0o0clNUbEtpTERlWVlYNit0dzdoek1FZFBieXkwSnprbTl6UWYrbnZlQlpYODhLeVhVTzIxCjI0NWZjanQxeEQ1ZEVMalR1ZlFFYjhqejByVmdMTnFKak5Gdm1OZXhtYzB0aTlXRVlMQUFtcVVoaUlFVVdCUjkKeEp3M2Z0eXI4OWRKZ1pRc2cyUkl5S3h0ajZacUtMRElZVlZKbzFLZjlUOUFFZUw4Qjc2RnJzU1RuQjIrek83OQpveUUrVGRvMFJOQUFOYlF2aVNRR3J2NHRTZlRja2t2c3lDNi9qL1ZCSGRGQ3Zhb3c5WXRtRnZJUkVJdWx4YjZ1Cmp4MjNJc0VuaEovSXlQblZhY3JJM29SNU9WVENIaGY5RGoxRHZTU0dDVkt1RTRjVGo0YjZ0clFrNm1qbUZMZlkKUlhVPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  token: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklrRjVTV0pEVEdObU4yOU1RM3BXZUY5MVNXSnNaVzVzVkhOdllrTlljRXN0ZDFRNU9VbGxlbTE0V2xFaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUpyZFdKbGMyeHBZMlV0WVhabGMyaGhJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpXTnlaWFF1Ym1GdFpTSTZJbXQxWW1WemJHbGpaUzF5WW1GakxYZHZjbXRsY2kxcmFXNWtMWGR2Y210bGNpMHhMWFJ2YTJWdUxYZzVjVzV0SWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXpaWEoyYVdObExXRmpZMjkxYm5RdWJtRnRaU0k2SW10MVltVnpiR2xqWlMxeVltRmpMWGR2Y210bGNpMXJhVzVrTFhkdmNtdGxjaTB4SWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXpaWEoyYVdObExXRmpZMjkxYm5RdWRXbGtJam9pTlRsaE16RXpOVE10WVdRek9DMDBaRE5tTFRsaVpHRXRObUZrWlRGak4yTTJPVGszSWl3aWMzVmlJam9pYzNsemRHVnRPbk5sY25acFkyVmhZMk52ZFc1ME9tdDFZbVZ6YkdsalpTMWhkbVZ6YUdFNmEzVmlaWE5zYVdObExYSmlZV010ZDI5eWEyVnlMV3RwYm1RdGQyOXlhMlZ5TFRFaWZRLjBuQzVRR1B5NUxFb1lQV2FfYVpaY1hqM2tjWm9abUNYekE5UWw2U3FwMGRpQ0p2VHAtWmpDa1QzX3k5YVhxTVZKNWJIUnN2SVBELUZKYkZMdVhaV2FmY05INW44ZkNqT25maG5BQ1lJWTZHUEVQQTBDV3ZMMUtNeEpoMjh1aU5HN3dVVUsyTHNhT1BFWUd5OHFZSTN2UEpJR3VvRUlkS0JVYmh4ZUdwTnBFQkM1aDNtVTY2TlV3MUZkWkNSNHBwRWwtYThXbXEtMmNqQUpBSmQ4MDVyQjE1UGM2b1dnc2xqUm5aNVNfeS12clg2dTZ4bVc2UUpYdmQ0bzNMY2QxVnJ2Z2pRczdkSkkyY0I2dnJmVWVPSXFHWWpYM3dKQnBOakFjZlBXeTQ0aG9CY1gtdlFSQ2ZwSndtTDlZX0EyTTRpZG5taE5xZ2dNb1RtaURGZ1NsYy1pZw==
+
+cluster:
+  name: cluster-worker-1
+```
+
+## Applying the Values File
+
+The following information is required to apply the YAML file.
+
+|Parameter|Description|
+|----|----|
+|<cluster name\>|The name of the cluster.|
+|<values\>|The file name with the values.|
+
+Perform these steps:
+
+1. Switch the context to the registered worker cluster.
+   ```
+   kubectx <cluster name>
+   ```
+2. Use the following command to apply the values file on the `kubeslice-system` namespace:
+   ```
+   helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of secrets file>.yaml -n kubeslice-system  --create-namespace
+   ```
+## Validating the Slice Operator Installation 
+
+To validate the Slice Operator installation in the registered cluster,check the pods belonging to the 
+`kubeslice-system` namespace by running the following command:
+
+Example
+
+``` 
+kubectl get pods -n kubeslice-system
+```
+Example Output
+
+``` 
+NAME                                    READY   STATUS    RESTARTS   AGE
+jaeger-65c6b7f5dd-dmhnl                 1/1     Running   0          41s
+kubeslice-netop-2h687                   1/1     Running   0          41s
+kubeslice-operator-58fbd594c4-gkb6s     2/2     Running   0          41s
+mesh-dns-bf5d97cf5-rzmqb                1/1     Running   0          41s
+nsm-admission-webhook-bb4994c7d-m7ssn   1/1     Running   0          41s
+nsm-kernel-forwarder-kffkt              1/1     Running   0          40s
+nsm-kernel-forwarder-ps9l9              1/1     Running   0          39s
+nsmgr-2zmgw                             3/3     Running   0          40s
+nsmgr-gt7qz                             3/3     Running   0          41s
+prefix-service-76bd89c44f-pgdn7         1/1     Running   0          41s
+```
+
+:::info
+You must repeat the same sequence of steps that are getting the secrets, creating the YAML file, and 
+applying the YAML on each worker cluster to install the Slice Operator on other registered worker clusters.
+:::
+
+:::success
+You have successfully installed the Slice Operator in the worker cluster. Repeat the above steps to 
+install the Slice Operator in all the registered worker clusters.
+:::
