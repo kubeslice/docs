@@ -338,7 +338,7 @@ spec:
   bandwidthGuaranteedKbps: 2562
   dscpClass: AF11
 ```
-
+#### Applying the QOS Profile YAML File
 Apply the `slice-qos-config` file using the following command. 
 
 ```
@@ -352,6 +352,21 @@ You can only add the filename if you are on the project namespace using the foll
 ```
 kubectl apply slice-qos-config.yaml -n project-namespace
 ```
+
+### Validating the QoS Profile 
+To validate the QoS profile that you created, use the following command: 
+
+```
+ kubectl get sliceqosconfigs.controller.kubeslice.io -n project-namespace
+```
+
+Expected Output
+```
+NAME       AGE
+profile1   33s
+```
+
+
 After applying the `slice-qos-config.yaml` file, add the profile name in a slice configuration. 
 You must add the name of the QoS profile for the `standardQosProfileName` parameter in a 
 slice configuration YAML file as illustrated in the following example. 
