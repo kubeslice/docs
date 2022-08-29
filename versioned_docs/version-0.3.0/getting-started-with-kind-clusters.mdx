@@ -868,6 +868,15 @@ multiple clusters or intra-cluster.
 Create the slice configuration .yaml file using the following template.
 
 :::info
+If you want to add a QoS profile configuration for multiple slices, 
+[create an external QoS profile](#creating-a-qos-profile). Add the name of the external 
+QoS profile as the value of `standardQosProfileName` in the slice configuration YAML file. 
+
+In a slice configuration YAML file, the `standardQosProfileName` parameter and the `qosProfileDetails` 
+object are mutually exclusive.
+:::
+
+:::info
 To understand more about the configuration parameters, see [Slice
 Configuration Parameters](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-configuration-parameters).
 :::
@@ -934,6 +943,93 @@ kubectl apply -f <slice-configuration>.yaml -n kubeslice-<project name>
 You have successfully created a slice with the registered clusters. All the slice 
 configuration are applied at the KubeSlice Controller level.
 :::
+
+### Creating a QoS Profile
+The slice configuration file contains a QoS profile object. To apply a QoS profile to 
+multiple slices, you can create a separate QOS profile YAML file and call it out 
+in other slice configuration. 
+
+#### Creating the QoS Profile YAML File
+Use the following template to create a `sliceqosconfig` file. 
+
+:::info
+To understand more about the configuration parameters, see 
+[Slice QoS Profile Parameters](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-qos-profile-parameters).
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceQoSConfig
+metadata:
+  name: profile1
+spec:
+  queueType: HTB
+  priority: 1
+  tcType: BANDWIDTH_CONTROL
+  bandwidthCeilingKbps: 5120
+  bandwidthGuaranteedKbps: 2562
+  dscpClass: AF11
+```
+
+Apply the `slice-qos-config` file using the following command. 
+
+```
+kubectl apply -f <full path of slice-qos-config.yaml> -n project-namespace
+```
+
+:::info
+You can only add the filename if you are on the project namespace using the following command.
+:::
+
+```
+kubectl apply slice-qos-config.yaml -n project-namespace
+```
+After applying the `slice-qos-config.yaml` file, add the profile name in a slice configuration. 
+You must add the name of the QoS profile for the `standardQosProfileName` parameter in a 
+slice configuration YAML file as illustrated in the following example. 
+
+:::info
+In a slice configuration YAML file, the `standardQosProfileName` parameter and the `qosProfileDetails` 
+object are mutually exclusive.
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: red
+spec:
+  sliceSubnet: 10.1.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - cluster-1
+    - cluster-2
+  standardQosProfileName: profile1
+  externalGatewayConfig:
+    - ingress:
+        enabled: false
+      egress:
+        enabled: false
+      nsIngress:
+        enabled: false
+      gatewayType: none
+      clusters:
+        - "*"
+    - ingress:
+        enabled: true
+      egress:
+        enabled: true
+      nsIngress:
+        enabled: true
+      gatewayType: istio
+      clusters:
+        - cluster-2
+```
+
 
 ### Validating the Slice 
 Validate the slice configuration on the controller and worker clusters.

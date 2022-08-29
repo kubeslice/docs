@@ -182,7 +182,8 @@ These parameters are related to the spec configured  in the
 | [sliceGatewayProvider](#slice-gateway-provider-parameters) | Object | It is the type of slice gateway created for inter cluster communication. |Mandatory|
 | sliceIpamType | String | It is the type of the IP address management for the slice subnet. The value must be always set to `Local`. | Mandatory |
 | clusters | List of Strings | The names of the worker clusters that would be part of the slice. You can provide the list of worker clusters. | Mandatory |
-| [qosProfileDetails](#qos-profile-parameters) | Object | QoS profile for the slice inter cluster traffic. | Mandatory |
+| [qosProfileDetails](#qos-profile-parameters) | Object | QoS profile for the slice inter cluster traffic. Note that `qosProfileDetails` and `standardQosProfileName` are mutually exclusive parameters.  | Mandatory |
+| [standardQosProfileName](#slice-qos-profile-parameters) | String | This [name](#slice-qos-profile-metadata-parameter) of the [external QoS profile](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-a-qos-profile) that you can apply for multiple slices. Note that `qosProfileDetails` and `standardQosProfileName` are mutually exclusive parameters. | Mandatory |
 | [namespaceIsolationProfile](#namespace-isolation-profile-parameters) | Object | It is the configuration to onboard namespaces and/or isolate namespaces with the network policy. | Mandatory |
 | [externalGatewayConfig](#external-gateway-configuration-parameters) | Object | It is the slice ingress/egress gateway configuration. It is an optional configuration. | Mandatory |
 
@@ -248,6 +249,35 @@ These parameters are related to external gateways, which are configured in the
 | egress | Boolean | To use the egress gateway for E-W traffic on your slice, set the value to `true`. | Optional |
 | gatewayType | String | The type of ingress/egress gateways that need to be provisioned for the slice. It can either be `none` or `istio`.If set to `istio`, - The ingress gateway is created for a slice when `ingress` is enabled. - The egress gateway is created for a slice when `egress` is enabled. If set to `istio`, and ingress and egress are set to `false` then Istio gateways are not created. |Mandatory|
 | clusters | List of Strings | Names of the clusters to which the `externalGateway` configuration should be applied. | Optional |
+
+## Slice QOS Profile Parameters
+These parameters are related to the QoS profile for the slice inter-cluster traffic 
+configured in the [slice QoS profile configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-a-qos-profile). 
+
+Parameter|Parameter Type|Description|Required|
+|----|----|----|----|
+| apiVersion | String | The KubeSlice Controller API version. A set of resources that are exposed together, along with the version. The value must be `networking.kubeslice.io/v1beta1`. | Mandatory |
+| kind | String | The name of a particular object schema. The value must be `SliceQoSConfig`. | Mandatory |
+| [metadata](#slice-qos-profile-metadata-parameters) | Object | The metadata describes parameters (names and types) and attributes that have been applied. | Mandatory |
+| [spec](#slice-qos-profile-specification-parameters) | Object | The specification of the desired state of an object. | Mandatory |
+
+### Slice QoS Profile Metadata Parameter
+|Parameter|Parameter Type|Description|Required|
+|----|----|----|----|
+| name | String | It is the name of the QoS profile. | Mandatory 
+
+### Slice QoS Profile Specification Parameters
+
+|Parameter|Parameter Type|Description|Required|
+|----|----|----|----|
+| queueType | String | It is the slice traffic control queue type. The value must be Hierarchical Token Bucket (`HTB`). HTB facilitates guaranteed bandwidth for the slice traffic. | Mandatory |
+| priority | Integer | QoS profiles allows traffic management within a slice as well as prioritization across slices. The value range is 0-3. 0 represents the highest priority and 3 represents the lowest priority. | Mandatory |
+| tcType | String | It is the traffic control type. The value must be `BANDWIDTH_CONTROL`. | Mandatory |
+| bandwidthCeilingKbps | Integer | The maximum bandwidth in Kbps that is allowed for the slice traffic. | Mandatory |
+| bandwidthGuaranteedKbps | Integer | The guaranteed bandwidth in Kbps for the slice traffic. | Mandatory |
+| dscpClass | Alphanumeric | DSCP marking code for the slice inter-cluster traffic. | Mandatory |
+
+
 
 ## Service Export Configuration Parameters
 The following tables describe the configuration parameters used to create Service Export.
