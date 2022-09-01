@@ -369,13 +369,33 @@ profile1   33s
 
 After applying the `slice-qos-config.yaml` file, add the profile name in a slice configuration. 
 You must add the name of the QoS profile for the `standardQosProfileName` parameter in a 
-slice configuration YAML file as illustrated in the following example. 
+slice configuration YAML file as illustrated in the following examples. 
 
 :::info
 In a slice configuration YAML file, the `standardQosProfileName` parameter and the `qosProfileDetails` 
 object are mutually exclusive.
 :::
 
+**Example of using the custom QoS Profile without Istio**
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: red
+spec:
+  sliceSubnet: 10.1.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - cluster-1
+    - cluster-2
+  standardQosProfileName: profile1
+```
+
+**Example of using the custom QoS Profile with Istio**
 ```
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: SliceConfig
