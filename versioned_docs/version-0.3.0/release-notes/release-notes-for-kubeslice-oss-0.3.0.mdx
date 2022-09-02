@@ -16,11 +16,15 @@ a slice configuration. This is useful when you want to configure the same
 QoS profile on multiple slices.
 
 ## Bug Fixes
-The issue where the QoS traffic on a worker cluster did not work due to 
-an incorrect *node port* while passing conContext to the NetOp pod is fixed. The 
-issue has also occurred because the master node's *node IP address* was configured on 
-the worker cluster. You must always configure the *node IP address* of the worker cluster's gateway node 
-while installing the Slice Operator on the worker cluster.
+* The issue where the QoS traffic on a worker cluster did not work due to 
+  an incorrect *node port* while passing conContext to the NetOp pod is fixed. The 
+  issue has also occurred because the master node's *node IP address* was configured on 
+  the worker cluster. You must always configure the *node IP address* of the worker cluster's gateway node 
+  while installing the Slice Operator on the worker cluster.
+
+* The issue where the exponential increase of goroutines in the gateway sidecar that caused
+  CPU utilization is fixed. The fix reduces the CPU utilization by around 500 percent. 
+
 
 ## Supported Kubernetes Services 
 This version of KubeSlice has been tested on Azure Kubernetes Service and 
