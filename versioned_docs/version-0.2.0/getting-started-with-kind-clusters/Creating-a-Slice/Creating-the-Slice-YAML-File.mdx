@@ -1,0 +1,47 @@
+### Creating the Slice YAML File 
+After successfully registering the worker clusters with the KubeSlice Controller, create 
+a slice to onboard your application namespaces. You can create a slice across the 
+multiple clusters or intra-cluster.
+
+#### Slice Configuration 
+Create the slice configuration .yaml file using the following template.
+
+:::info
+To understand more about the configuration parameters, see [Slice
+Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-configuration-parameters).
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: <SLICENAME>   # water
+  namespace: kubeslice-<project name>
+spec:
+  sliceSubnet: 10.1.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <worker cluster 1> # kind-worker-1
+    - <worker cluster 2> # kind-worker-2
+  qosProfileDetails:
+    queueType: HTB
+    priority: 1
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+```

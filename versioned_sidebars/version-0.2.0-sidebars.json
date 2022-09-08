@@ -5,6 +5,118 @@
     "getting-started-with-kind-clusters",
     {
       "type": "category",
+      "label": "Getting Started With Kind Clusters",
+      "collapsed": true,
+      "link": {
+        "type": "doc",
+        "id": "getting-started-with-kind-clusters/getting-started-with-kind-clusters"
+      },
+      "items": [
+        {
+          "type": "category",
+          "label": "Prerequisites",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-kind-clusters/Prerequisites"
+          }
+        },
+        {
+          "type": "category",
+          "label": "Preparing The Clusters For Registration",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-kind-clusters/preparing-clusters-for-registration/preparing-clusters-for-registration"
+          },
+          "items": [
+            "getting-started-with-kind-clusters/preparing-clusters-for-registration/preparing-the-controller-cluster-for-registration",
+            "getting-started-with-kind-clusters/preparing-clusters-for-registration/preparing-the-worker-cluster-for-registration",
+            "getting-started-with-kind-clusters/preparing-clusters-for-registration/Installing-Calico-Networking-and-Network-Security"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "Installing the KubeSlice Controller",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-kind-clusters/Installing-the-KubeSlice-Controller/Installing-the-KubeSlice-Controller"
+          },
+          "items": [
+            "getting-started-with-kind-clusters/Installing-the-KubeSlice-Controller/Prerequisites-for-KubeSlice-Controller",
+            "getting-started-with-kind-clusters/Installing-the-KubeSlice-Controller/Installing-the-Certificate-Manager",
+            "getting-started-with-kind-clusters/Installing-the-KubeSlice-Controller/Validating-the-Certificate-Manager",
+            "getting-started-with-kind-clusters/Installing-the-KubeSlice-Controller/Creating-the-Controller-YAML-File",
+            "getting-started-with-kind-clusters/Installing-the-KubeSlice-Controller/Creating-the-Controller-YAML-File",
+            "getting-started-with-kind-clusters/Installing-the-KubeSlice-Controller/Validating-the-Controller-Installation",
+            "getting-started-with-kind-clusters/Installing-the-KubeSlice-Controller/Creating-a-Project-Namespace"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "Registering the Worker Clusters",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-kind-clusters/Registering-The-Worker-Clusters/Registering-The-Worker-Clusters"
+          },
+          "items": [
+            "getting-started-with-kind-clusters/Registering-The-Worker-Clusters/Creating-the-Cluster-Registration-YAML-File",
+            "getting-started-with-kind-clusters/Registering-The-Worker-Clusters/Applying-the-Cluster-Registration-YAML-File",
+            "getting-started-with-kind-clusters/Registering-The-Worker-Clusters/Validating-the-Registered-Clusters"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "Installing The Slice Operator",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-kind-clusters/Installing-the-Slice-Operator/Installing-the-Slice-Operator"
+          },
+          "items": [
+            "getting-started-with-kind-clusters/Installing-the-Slice-Operator/Creating-The-Slice-Operator-YAML-File",
+            "getting-started-with-kind-clusters/Installing-the-Slice-Operator/Applying-The-Slice-Operator-Values-File",
+            "getting-started-with-kind-clusters/Installing-the-Slice-Operator/Validating-The-Slice-Operator-Installation"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "Creating a Slice",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-kind-clusters/Creating-a-Slice/Creating-a-Slice"
+          },
+          "items": [
+            "getting-started-with-kind-clusters/Creating-a-Slice/Prerequisites",
+            "getting-started-with-kind-clusters/Creating-a-Slice/Creating-the-Slice-YAML-File",
+            "getting-started-with-kind-clusters/Creating-a-Slice/Applying-the-Slice-Configuration-on-the-Controller-Cluster",
+            "getting-started-with-kind-clusters/Validating-the-Slice"
+          ]
+        },
+        "Managing-Namespaces",
+        "Isolating-Namespaces",
+        {
+          "type": "category",
+          "label": "Testing the Network Connectivity between the Worker Clusters",
+          "collapsed": true,
+          "link": {
+            "type": "doc",
+            "id": "getting-started-with-kind-clusters/Testing-the-Network-Connectivity-between-the-Worker-Clusters/Testing-the-Network-Connectivity-between-the-Worker-Clusters"
+          },
+          "items": [
+            "getting-started-with-kind-clusters/Testing-the-Network-Connectivity-between-the-Worker-Clusters/Prerequisites-for-using-the-iPerf-Tool",
+            "getting-started-with-kind-clusters/Testing-the-Network-Connectivity-between-the-Worker-Clusters/Deploying-the-iPerf-Application"
+          ]
+        },
+        "Uninstalling-KubeSlice"
+      ]
+
+    },
+    {
+      "type": "category",
       "label": "Getting Started With Cloud Clusters",
       "collapsed": true,
       "link": {
