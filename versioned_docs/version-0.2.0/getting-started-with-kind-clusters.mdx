@@ -1195,56 +1195,58 @@ command:
 10. Validate the iPerf server by checking if the pods are running on the worker cluster 
 using the following command:
 
-    ```
-    kubectl get pods -n iperf
-    ```
+   ```
+   kubectl get pods -n iperf
+   ```
 
    Expected Output
 
-    ```
-    NAME                            READY   STATUS    RESTARTS   AGE
-    iperf-server-7889799774-s5zrs   2/2     Running   0          60s
-    ```
+   ```
+   NAME                            READY   STATUS    RESTARTS   AGE
+   iperf-server-7889799774-s5zrs   2/2     Running   0          60s
+   ```
 
 11. Validate the service export of the iPerf server on the worker clusters using 
 the following command:
 
-    ```
-    kubectl get serviceexport -n iperf
-    ```
+   ```
+   kubectl get serviceexport -n iperf
+   ```
+    
    Expected Output
 
-    ```
-    NAME           SLICE   INGRESS   PORT(S)    ENDPOINTS   STATUS
-    iperf-server   water             5201/TCP   1           READY
-    ```
+   ```
+   NAME           SLICE   INGRESS   PORT(S)    ENDPOINTS   STATUS
+   iperf-server   water             5201/TCP   1           READY
+   ```
 
 12. Validate the service import of the iPerf server on the worker cluster using the 
 following command:
 
-    ```
-    kubectl get serviceimport -n iperf
-    ```
+   ```
+   kubectl get serviceimport -n iperf
+   ```
+   
    Expected Output
 
-    ```
-    NAME           SLICE   PORT(S)    ENDPOINTS   STATUS
-    iperf-server   water   5201/TCP   1           READY
-    ```
+   ```
+   NAME           SLICE   PORT(S)    ENDPOINTS   STATUS
+   iperf-server   water   5201/TCP   1           READY
+   ```
 
 13. Validate the service import of the iPerf client on the other worker cluster by running 
 the following command:
 
-    ```
-    kubectl get serviceimport -n iperf
-    ```
+   ```
+   kubectl get serviceimport -n iperf
+   ```
 
    Expected Output
 
-    ```
-    NAME           SLICE   PORT(S)    ENDPOINTS   STATUS
-    iperf-server   water   5201/TCP   1           READY
-    ```
+   ```
+   NAME           SLICE   PORT(S)    ENDPOINTS   STATUS
+   iperf-server   water   5201/TCP   1           READY
+   ```
 
 14. Switch context to the iperf client cluster using the following command: 
 
