@@ -1,6 +1,7 @@
 {
   "version2": [
     "overview",
+    "glossary",
     "architecture",
     "getting-started-with-kind-clusters",
     {
