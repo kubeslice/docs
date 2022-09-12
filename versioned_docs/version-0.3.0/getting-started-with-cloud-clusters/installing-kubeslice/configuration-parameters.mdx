@@ -123,6 +123,7 @@ install the Slice Operator in the worker cluster.
 |[operator](#slice-operator-parameters) | Object | This contains the Slice Operator information. | Optional |
 |[controllerSecret](#controller-secret-parameters) | Object | This contains the secrets to connect to controller cluster. | Optional |
 |[cluster](#cluster-parameters) | Object | This contains the information about the worker cluster. | Optional |
+|netop	| Object |	This contains the parameters related to network operations such as enforcing the QoS profile configured for a slice. |	Mandatory |
 
 ### Slice Operator Parameters
 These parameters are related to the installation of the Slice Operator and 
@@ -151,6 +152,14 @@ These parameters are related to the worker cluster that are configured in the
 |----|----|----|----|
 | name | String | The name of the  cluster that is  registered with the KubeSlice controller. The cluster name must be `unique` in the  project. |Mandatory|
 | nodeIp | String | The Node IP address of the registered  worker cluster (Required for  Kind cluster only). |Mandatory | 
+
+## Network Operator Parameter
+This parameter is related to network operations such as enforcing the QoS profile configured for a slice and is configured in the [Slice Operator YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-slice-operator-yaml-file).
+
+|----|----|----|----|
+| Parameter | Parameter Type | Description | Required |
+| networkInterface | AlphaNumeric | The name of the network interface on the gateway nodes that is the egress interface for external traffic. It may be obtained by doing a route lookup on a well known public IP address like the Google public DNS IP address 8.8.8.8. |	Mandatory |
+
 
 ## Slice Configuration Parameters
 The following tables describe the configuration parameters used to create the Slice with registered worker cluster.

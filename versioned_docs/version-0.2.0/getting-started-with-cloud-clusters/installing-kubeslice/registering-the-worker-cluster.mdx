@@ -172,7 +172,7 @@ Perform these steps:
 2. Use the following command to apply the YAML file.You must apply the cluster registration YAML file on
 your Project namespace.
    ``` 
-   kubectl apply -f <cluster registeration>.yaml -n <project namespace>
+   kubectl apply -f <cluster registration>.yaml -n <project namespace>
    ```
 
 :::success
@@ -288,6 +288,30 @@ See [Script to get the secrets of the Workercluster](/versioned_docs/version-0.2
     type: kubernetes.io/service-account-token
     ```
 
+
+## Getting the Worker Network Interface
+Get the name of the network interface on the gateway nodes that is the egress interface for external traffic.
+
+:::warning
+The below command does not work for OpenShift users.
+:::
+
+Use the following command on the gateway node:
+```
+ip route get 8.8.8.8 | awk '{ print $5 }'
+```
+Example
+```
+ip route get 8.8.8.8 | awk '{ print $5 }'
+```
+Example Output
+```
+eth0
+```
+
+
+
+
 ## Creating the Slice Operator YAML File
 
 Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `token` from the above secrets 
@@ -310,6 +334,10 @@ controllerSecret:
 
 cluster:
   name: <cluster-name>
+
+netop:
+  networkInterface: <network interface value>
+
 ```
 
 Example
@@ -323,6 +351,9 @@ controllerSecret:
 
 cluster:
   name: cluster-worker-1
+
+netop:
+  networkInterface: eth0
 ```
 
 ## Applying the Values File
