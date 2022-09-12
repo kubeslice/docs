@@ -1,0 +1,17 @@
+---
+name: Spell Check
+
+# Run this workflow on every PR to main
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  Spelling:
+    runs-on: ubuntu-latest
+    needs: Setup
+    steps:
+      - uses: actions/checkout@v2
+      - name: Spelling
+        run: make spelling
