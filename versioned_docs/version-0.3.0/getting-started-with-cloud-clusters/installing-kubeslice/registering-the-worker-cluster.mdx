@@ -8,11 +8,11 @@ register your worker clusters with the KubeSlice Controller.
 Before you begin, ensure the following prerequisites are met:
 
 - You have the KubeSlice Controller installed on a separate cluster. For more information, 
-see [Installing the KubeSlice Controller](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
+see [Installing the KubeSlice Controller](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
 - You have set up the environment for the worker clusters. For more information, 
-see [Prerequisites](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
+see [Prerequisites](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
 - You have authenticated the worker clusters with the cloud providers. For more information, 
-see [Preparing the clusters for registration](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
+see [Preparing the clusters for registration](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
 - You have cluster administrator privileges to install the Slice Operator.
 
 ## Installing Istio
@@ -79,7 +79,7 @@ Create the cluster registration YAML file using the following template.
 
 :::info
 To understand more about the configuration parameters, 
-see [Cluster Registration ConfigurationParameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#cluster-registration-configuration-parameters)
+see [Cluster Registration ConfigurationParameters](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#cluster-registration-configuration-parameters)
 :::
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
@@ -172,7 +172,7 @@ Perform these steps:
 2. Use the following command to apply the YAML file.You must apply the cluster registration YAML file on
 your Project namespace.
    ``` 
-   kubectl apply -f <cluster registration>.yaml -n <project namespace>
+   kubectl apply -f <cluster registeration>.yaml -n <project namespace>
    ```
 
 :::success
@@ -194,7 +194,7 @@ communicate with the KubeSlice Controller.
 
 :::info
 Alternatively, you can use the script to create your values `.yaml` file.
-See [Script to get the secrets of the Workercluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+See [Script to get the secrets of the Workercluster](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
 :::
 
 1.  Switch the context to the controller cluster.
@@ -288,7 +288,6 @@ See [Script to get the secrets of the Workercluster](/versioned_docs/version-0.2
     type: kubernetes.io/service-account-token
     ```
 
-
 ### Getting the Worker Network Interface
 Get the name of the network interface on the gateway nodes that is the egress interface for external traffic.
 
@@ -308,7 +307,6 @@ Example Output
 ```
 eth0
 ```
-
 ## Creating the Slice Operator YAML File
 
 Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `token` from the above secrets 
@@ -318,7 +316,7 @@ Create the `values.yaml` file using the following template.
 
 :::info
 To understand more about the configuration parameters, 
-see [Slice Operator ConfigurationParameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-operator-configuration-parameters)
+see [Slice Operator ConfigurationParameters](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-operator-configuration-parameters)
 :::
 
 ```
@@ -334,7 +332,6 @@ cluster:
 
 netop:
   networkInterface: <network interface value>
-
 ```
 
 Example
