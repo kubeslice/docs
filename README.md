@@ -5,7 +5,7 @@ This project repository contains the documentation for Kubeslice. We are so glad
 
 To use this website, you need
 - [Git](https://git-scm.com/downloads)
-- [Nodejs version 14 or greater](https://nodejs.org/en/download/)
+- [Nodejs version 16.14 or greater](https://nodejs.org/en/download/)
 - [Docusaurus](https://docusaurus.io/docs/installation)
 
 ## Installation

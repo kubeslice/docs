@@ -17,14 +17,14 @@ The following tables describe the configuration parameters used to install the K
 ### KubeSlice Parameters 
 
 This parameter contains the configuration object used in the 
-[KubeSlice Controller YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#creating-the-values-yaml-file). 
+[KubeSlice Controller YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#creating-the-values-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
 |[controller](#controller-parameters) | Object | The cluster where the KubeSlice Controller is installed. | Mandatory |
 
 #### Controller Parameters
-This object contains the different parameters used in the [KubeSlice Controller YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#creating-the-values-yaml-file).
+This object contains the different parameters used in the [KubeSlice Controller YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#creating-the-values-yaml-file).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -47,7 +47,7 @@ project namespace.
 
 ### Project Metadata Parameters
 These parameters are required for configuring the metadata in the 
-[project YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#creating-the-project-yaml-file).
+[project YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#creating-the-project-yaml-file).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -63,7 +63,7 @@ These parameters are required for configuring the metadata in the
 #### Service Account Parameters
 A service account provides an identity for running processes in application pods. It 
 contains the list of users configured in the in the 
-[project YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#creating-the-project-yaml-file).
+[project YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#creating-the-project-yaml-file).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -83,7 +83,7 @@ register the worker cluster with the controller cluster.
 
 ### Cluster Registration Metadata Parameters
 The parameters are related to metadata configured in the 
-[worker cluster registration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-cluster-registration-yaml-file).
+[worker cluster registration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-cluster-registration-yaml-file).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -92,7 +92,7 @@ The parameters are related to metadata configured in the
 
 ### Cluster Registration Specification Parameters
 The parameters are related to the specification configured in the 
-[worker cluster registration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-cluster-registration-yaml-file).
+[worker cluster registration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-cluster-registration-yaml-file).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -101,7 +101,7 @@ The parameters are related to the specification configured in the
 
 #### Cluster Property Parameters
 The parameters are related to the cluster property configured in the 
-[worker cluster registration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-cluster-registration-yaml-file).
+[worker cluster registration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-cluster-registration-yaml-file).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -127,7 +127,7 @@ install the Slice Operator in the worker cluster.
 
 ### Slice Operator Parameters
 These parameters are related to the installation of the Slice Operator and 
-they are configured in the [Slice Operator YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-slice-operator-yaml-file). 
+they are configured in the [Slice Operator YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-slice-operator-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -135,7 +135,7 @@ they are configured in the [Slice Operator YAML file](/versioned_docs/version-0.
 
 ### Controller Secret Parameters
 These parameters are related to the KubeSlice Controller that are required to install 
-the Slice Operator and they are configured in the [Slice Operator YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-slice-operator-yaml-file). 
+the Slice Operator and they are configured in the [Slice Operator YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-slice-operator-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -146,7 +146,7 @@ the Slice Operator and they are configured in the [Slice Operator YAML file](/ve
  
 ### Cluster Parameters
 These parameters are related to the worker cluster that are configured in the 
-[Slice Operator YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-slice-operator-yaml-file).
+[Slice Operator YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#creating-the-slice-operator-yaml-file).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -173,7 +173,7 @@ The following tables describe the configuration parameters used to create the Sl
 
 ### Slice Metadata Parameters
 These parameters are related to the metadata configured in the 
-[slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -182,7 +182,7 @@ These parameters are related to the metadata configured in the
 
 ### Slice Spec Parameters
 These parameters are related to the spec configured  in the 
-[slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -191,14 +191,15 @@ These parameters are related to the spec configured  in the
 | [sliceGatewayProvider](#slice-gateway-provider-parameters) | Object | It is the type of slice gateway created for inter cluster communication. |Mandatory|
 | sliceIpamType | String | It is the type of the IP address management for the slice subnet. The value must be always set to `Local`. | Mandatory |
 | clusters | List of Strings | The names of the worker clusters that would be part of the slice. You can provide the list of worker clusters. | Mandatory |
-| [qosProfileDetails](#qos-profile-parameters) | Object | QoS profile for the slice inter cluster traffic. | Mandatory |
+| [qosProfileDetails](#qos-profile-parameters) | Object | QoS profile for the slice inter cluster traffic. Note that `qosProfileDetails` and `standardQosProfileName` are mutually exclusive parameters.  | Mandatory |
+| [standardQosProfileName](#slice-qos-profile-parameters) | String | This [name](#slice-qos-profile-metadata-parameter) of the [external QoS profile](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-a-qos-profile) that you can apply for multiple slices. Note that `qosProfileDetails` and `standardQosProfileName` are mutually exclusive parameters. | Mandatory |
 | [namespaceIsolationProfile](#namespace-isolation-profile-parameters) | Object | It is the configuration to onboard namespaces and/or isolate namespaces with the network policy. | Mandatory |
 | [externalGatewayConfig](#external-gateway-configuration-parameters) | Object | It is the slice ingress/egress gateway configuration. It is an optional configuration. | Mandatory |
 
 #### Slice Gateway Provider Parameters
 These parameters are related to the slice gateway created for the inter-cluster 
 communication and they are configured in the 
-[slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -207,7 +208,7 @@ communication and they are configured in the
 
 #### QOS Profile Parameters
 These parameters are related to the QoS profile for the slice inter-cluster traffic 
-configured in the [slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
+configured in the [slice configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -221,17 +222,17 @@ configured in the [slice configuration YAML file](/versioned_docs/version-0.2.0/
 #### Namespace Isolation Profile Parameters
 These parameters are related to onboarding namespaces, isolating the slice, and allowing 
 external namespaces to communicate with the slice. They are configured in the 
-[slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-| [applicationNamespaces](#application-namespaces-parameters) | Array object | Defines the [namespaces that will be onboarded](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx) to the slice and their corresponding worker clusters. | Mandatory |
+| [applicationNamespaces](#application-namespaces-parameters) | Array object | Defines the [namespaces that will be onboarded](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx) to the slice and their corresponding worker clusters. | Mandatory |
 | [allowedNamespaces](#allowed-namespaces-parameters) | Array object | Contains the list of namespaces from which the traffic flow is allowed to the slice. By default, native kubernetes namespaces such as `kube-system` are allowed. If `isolationEnabled ` is set to `true`, then you must include namespaces that you want to allow traffic from. | Optional |
-| isolationEnabled | Boolean | Defines if the namespace isolation is enabled. By default, it is set to `false`. The [isolation policy](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces.mdx) only applies to the traffic from the application and allowed namespaces to the same slice. | Optional |
+| isolationEnabled | Boolean | Defines if the namespace isolation is enabled. By default, it is set to `false`. The [isolation policy](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces.mdx) only applies to the traffic from the application and allowed namespaces to the same slice. | Optional |
 
 #### Application Namespaces Parameters
 These parameters are related to onboarding namespaces onto a slice, which are configured 
-in the [slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
+in the [slice configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -240,7 +241,7 @@ in the [slice configuration YAML file](/versioned_docs/version-0.2.0/getting-sta
 
 #### Allowed Namespaces Parameters
 These parameters are related to allowing external namespaces to communicated with the slice, 
-which are configured in the [slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
+which are configured in the [slice configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -249,7 +250,7 @@ which are configured in the [slice configuration YAML file](/versioned_docs/vers
 
 #### External Gateway Configuration Parameters
 These parameters are related to external gateways, which are configured in the 
-[slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -257,6 +258,35 @@ These parameters are related to external gateways, which are configured in the
 | egress | Boolean | To use the egress gateway for E-W traffic on your slice, set the value to `true`. | Optional |
 | gatewayType | String | The type of ingress/egress gateways that need to be provisioned for the slice. It can either be `none` or `istio`.If set to `istio`, - The ingress gateway is created for a slice when `ingress` is enabled. - The egress gateway is created for a slice when `egress` is enabled. If set to `istio`, and ingress and egress are set to `false` then Istio gateways are not created. |Mandatory|
 | clusters | List of Strings | Names of the clusters to which the `externalGateway` configuration should be applied. | Optional |
+
+## Slice QOS Profile Parameters
+These parameters are related to the QoS profile for the slice inter-cluster traffic 
+configured in the [slice QoS profile configuration YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-a-qos-profile). 
+
+Parameter|Parameter Type|Description|Required|
+|----|----|----|----|
+| apiVersion | String | The KubeSlice Controller API version. A set of resources that are exposed together, along with the version. The value must be `networking.kubeslice.io/v1beta1`. | Mandatory |
+| kind | String | The name of a particular object schema. The value must be `SliceQoSConfig`. | Mandatory |
+| [metadata](#slice-qos-profile-metadata-parameters) | Object | The metadata describes parameters (names and types) and attributes that have been applied. | Mandatory |
+| [spec](#slice-qos-profile-specification-parameters) | Object | The specification of the desired state of an object. | Mandatory |
+
+### Slice QoS Profile Metadata Parameter
+|Parameter|Parameter Type|Description|Required|
+|----|----|----|----|
+| name | String | It is the name of the QoS profile. | Mandatory 
+
+### Slice QoS Profile Specification Parameters
+
+|Parameter|Parameter Type|Description|Required|
+|----|----|----|----|
+| queueType | String | It is the slice traffic control queue type. The value must be Hierarchical Token Bucket (`HTB`). HTB facilitates guaranteed bandwidth for the slice traffic. | Mandatory |
+| priority | Integer | QoS profiles allows traffic management within a slice as well as prioritization across slices. The value range is 0-3. 0 represents the highest priority and 3 represents the lowest priority. | Mandatory |
+| tcType | String | It is the traffic control type. The value must be `BANDWIDTH_CONTROL`. | Mandatory |
+| bandwidthCeilingKbps | Integer | The maximum bandwidth in Kbps that is allowed for the slice traffic. | Mandatory |
+| bandwidthGuaranteedKbps | Integer | The guaranteed bandwidth in Kbps for the slice traffic. | Mandatory |
+| dscpClass | Alphanumeric | DSCP marking code for the slice inter-cluster traffic. | Mandatory |
+
+
 
 ## Service Export Configuration Parameters
 The following tables describe the configuration parameters used to create Service Export.
@@ -270,7 +300,7 @@ The following tables describe the configuration parameters used to create Servic
 
 ### ServiceExport Metadata Parameters
 These parameters are related to metadata for exporting a service, which are configured in the 
- [ServiceExport YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx#creating-a-serviceexport).
+ [ServiceExport YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx#creating-a-serviceexport).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -279,7 +309,7 @@ These parameters are related to metadata for exporting a service, which are conf
 
 ### ServiceExport Specification Parameters
 These parameters are related to the exporting service specification configured in the 
-[ServiceExport YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx#creating-a-serviceexport).
+[ServiceExport YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx#creating-a-serviceexport).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -289,7 +319,7 @@ These parameters are related to the exporting service specification configured i
 
 ### Service Selector Parameters
 These parameters are related to the labels for selecting the endpoints in a service export, 
-which are configured in the [ServiceExport YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx#creating-a-serviceexport). 
+which are configured in the [ServiceExport YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx#creating-a-serviceexport). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -297,7 +327,7 @@ which are configured in the [ServiceExport YAML file](/versioned_docs/version-0.
 
 ### Service Ports Parameters
 These parameters contains the details of the port for the export service, which are configured in the
-[ServiceExport YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx#creating-a-serviceexport).
+[ServiceExport YAML file](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx#creating-a-serviceexport).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
