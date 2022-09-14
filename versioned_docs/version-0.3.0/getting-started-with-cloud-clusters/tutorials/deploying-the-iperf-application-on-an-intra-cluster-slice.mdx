@@ -317,7 +317,7 @@ Perform these steps:
    
 Example Output
 
-If the iperf-sleep pod is able to reach the iperf-server pod , you should see similar output to that below.
+If the iperf-sleep pod is able to reach the iperf-server pod, you should see similar output to that below.
 ```
 > kubectl exec -it iperf-sleep-5477bf94cb-vmmtd -c iperf -n iperf -- sh
 / $ iperf -c iperf-server.iperf.svc.slice.local -p 5201 -i 1 -b 10Mb;

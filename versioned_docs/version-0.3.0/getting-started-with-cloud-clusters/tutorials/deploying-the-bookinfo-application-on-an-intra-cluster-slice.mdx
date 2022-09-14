@@ -1,9 +1,9 @@
 # Deploying the BookInfo Application on an Intra-cluster Slice
 
 ## Introduction
-[Bookinfo](https://istio.io/latest/docs/examples/bookinfo/) is a sample application from Istio composed of four separate 
-microservices productpage, details, reviews, and ratings. This topic describes the steps to install the Bookinfo 
-application on a single cluster.
+[Bookinfo](https://istio.io/latest/docs/examples/bookinfo/) is a sample application from Istio that is composed 
+of four separate microservices: productpage, details, reviews, and ratings. In this topic, we will use the 
+Bookinfo application to demonstrate inter-slice communication.
 
 ## Prerequisites
 Before you begin, ensure the following prerequisites are met:
@@ -19,7 +19,7 @@ see [Installing KubeSlice](/versioned_docs/version-0.3.0/getting-started-with-cl
 To install the BookInfo Application on a single cluster, you must create a slice without Istio. For more information, 
 see [Creating a Slice](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx).
 
-## Creating the Bookinfo Deployment YAML Files
+## Creating the BookInfo Deployment YAML Files
 Using the templates below, create the necessary .yaml files to deploy the Bookinfo application. All fields in the 
 template will remain the same except for the `slice name` which must be replaced with the name of your slice.
 
@@ -446,7 +446,7 @@ Perform these steps:
    serviceexport.networking.kubeslice.io/reviews created
    ```
 :::info
-This completes the deployment of Bookinfo Appication on a Slice.**
+This completes the deployment of Bookinfo Application on a Slice.**
 :::
 
 ## Validating the BookInfo Deployment
@@ -511,7 +511,7 @@ visit the Bookinfo webpage.
    ```
    kubectl get nodes -o wide
    ```
-   Expected Output (your output will differ, here we are just focused on the external IP value).
+   Expected Output (your output will differ, here we are just focused on the external IP address).
    ```
    kubectl get nodes -o wide
    NAME                                                  STATUS   ROLES    AGE   VERSION             INTERNAL-IP   EXTERNAL-IP      OS-IMAGE
@@ -532,7 +532,7 @@ and visit the page in a browser to view your multi-cluster Bookinfo deployment.
 ### Accessing the Product Page from the Local Machine
 If the kind clusters are on a local machine, perform these steps:
 
-1. set up port-forwarding from a local machine using the following command:
+1. Set up port-forwarding from a local machine using the following command:
    ```
    kubectl port-forward svc/<service-name> -n <namespace-name> <host-port>:<container-port>
    ```
@@ -576,7 +576,7 @@ The following is an example of the product page:
 ![alt](/img/Bookinfo-productpage-OS.png)
 
 :::success
-You have successfully deployed Bookinfo application on a KubeSlice configuration containing at least two clusters.
+You have successfully deployed the Bookinfo application on a KubeSlice configuration containing at least two clusters.
 :::
 
 ## Uninstalling Istio BookInfo
