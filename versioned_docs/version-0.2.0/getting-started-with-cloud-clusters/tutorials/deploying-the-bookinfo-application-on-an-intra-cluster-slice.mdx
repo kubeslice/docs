@@ -1,4 +1,4 @@
-# Deploying the BookInfo Application on an Intra-cluster Slice
+# Deploying the Bookinfo Application on an Intra-cluster Slice
 
 ## Introduction
 [Bookinfo](https://istio.io/latest/docs/examples/bookinfo/) is a sample application from Istio that is composed 
@@ -446,10 +446,10 @@ Perform these steps:
    serviceexport.networking.kubeslice.io/reviews created
    ```
 :::info
-This completes the deployment of Bookinfo Application on a Slice.**
+This completes the deployment of Bookinfo application on a slice.**
 :::
 
-## Validating the BookInfo Deployment
+## Validating the Bookinfo Deployment
 ### Validating the Services
 
 Perform these steps:
@@ -471,7 +471,7 @@ KubeSlice configuration:
    reviews   white             9080/TCP   1           READY
    ```
 
-## Validating the Product Page on the Cloud Cluster
+## Validating the Productpage on the Cloud Cluster
 
 Perform these steps:
 
@@ -528,8 +528,8 @@ and visit the page in a browser to view your multi-cluster Bookinfo deployment.
    Example
    ![alt](/img/Bookinfo-productpage-OS.png)
 
-## Validating the Product Page on the Kind Cluster
-### Accessing the Product Page from the Local Machine
+## Validating the Productpage on the Kind Cluster
+### Accessing the Productpage from the Local Machine
 If the kind clusters are on a local machine, perform these steps:
 
 1. Set up port-forwarding from a local machine using the following command:
@@ -552,7 +552,7 @@ If the kind clusters are on a local machine, perform these steps:
 The following is an example of the product page:
 ![alt](/img/Bookinfo-productpage-OS.png)
 
-### Accessing the Product Page from the Cloud EC2 Machine
+### Accessing the Productpage from the Cloud EC2 Machine
 If the kind clusters are on Cloud EC2 Machine, perform these steps:
 
 1. Connect to your EC2 machine using SSH from your local machine using the following command:
@@ -579,6 +579,6 @@ The following is an example of the product page:
 You have successfully deployed the Bookinfo application on a KubeSlice configuration containing at least two clusters.
 :::
 
-## Uninstalling Istio BookInfo
+## Uninstalling Istio Bookinfo
 To uninstall Istio Bookinfo from your KubeSlice configuration, follow the instructions 
 in [offboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).

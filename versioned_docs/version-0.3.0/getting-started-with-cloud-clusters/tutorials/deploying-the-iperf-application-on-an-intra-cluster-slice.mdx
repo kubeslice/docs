@@ -64,9 +64,9 @@ The following information is required.
 
 | Variable | Description |
 |------------|------------------------|
-| **cluster name** | The name of the cluster. |
-| **slice configuration**| The name of the slice configuration file. |
-| **project name** | The project name on which you apply the slice configuration file. |
+| `<cluster name>` | The name of the cluster. |
+| `<slice configuration>`| The name of the slice configuration file. |
+| `<project name>` | The project name on which you apply the slice configuration file. |
 
 Perform these steps:
 
@@ -259,7 +259,7 @@ Perform these steps:
    ```
 
 ## Validating ServiceExportconfig and ServiceImportconfig
-Perform these steps in the worker cluster where KubeSlice Controller is installed:
+Perform these steps on the worker cluster where KubeSlice Controller is installed:
 
 1. Switch the context of the cluster.
    ```
@@ -288,7 +288,7 @@ Perform these steps in the worker cluster where KubeSlice Controller is installe
 ## Getting the DNS Name
 
 Use the following command to describe the iperf-server service and retrieve the short and full DNS names for the 
-service. We will use the short DNS name later to verify the inter-cluster communication.
+service. Use the short DNS name later to verify the inter-cluster communication.
 
 ```
 kubectl describe serviceimport iperf-server -n iperf | grep "Dns Name:"
