@@ -12,7 +12,7 @@ Before you begin, ensure the following prerequisites are met:
 see [Installing KubeSlice](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
 - You have Istio installed in all registered worker clusters. For more information, 
 see [Installing Istio](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#installing-istio).
-- Before creating the slice, create a `bookinfo` namespace in all participating worker clusters.
+- Before creating a slice, create the `bookinfo` namespace in all the participating worker clusters.
   Use the following command to create the `bookinfo` namespace:
   ```
   kubectl create ns bookinfo
@@ -21,7 +21,7 @@ see [Installing Istio](/versioned_docs/version-0.3.0/getting-started-with-cloud-
   ```
   kubectl label namespace bookinfo istio-injection=enabled
   ```
-- You have the slice created across worker clusters. For more information, 
+- You have the slice created across the worker clusters. For more information, 
 see [Creating a Slice](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx).
 
 ## Creating the Bookinfo Deployment YAML Files
@@ -531,7 +531,7 @@ port we just retrieved.Take note of the external IP address of one of the applic
    gke-preprod-knative--preprod-knative--aba5a0cc-xj3j   Ready    <none>   27h   v1.20.15-gke.3600   10.6.0.5      35.243.229.81    Container-Optimized OS from Google   5.4.170+         containerd://1.4.8
    gke-preprod-knative--preprod-knative--d19d3a9f-c32x   Ready    <none>   28h   v1.20.15-gke.3600   10.6.0.3      104.196.200.27   Container-Optimized OS from Google   5.4.170+         containerd://1.4.8
    ```
-5. Combine the external IP the command returns with the port you retrieved in the last step in the format below, 
+5. Combine the external IP address the command returns with the port you retrieved in the last step in the format below, 
 and visit the page in a browser to view your multi-cluster Bookinfo deployment.
    ```
    http://<external ip>:<port>/productpage
@@ -587,7 +587,7 @@ The following is an example of the product page:
 ![alt](/img/Bookinfo-productpage-OS.png)
 
 :::success
-You have successfully deployed Bookinfo applicaiton on a KubeSlice configuration containing at least two clusters.
+You have successfully deployed Bookinfo application on a KubeSlice configuration containing at least two clusters.
 :::
 
 ## Uninstalling Istio Bookinfo

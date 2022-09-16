@@ -10,13 +10,13 @@ Before you begin, ensure the following prerequisites are met:
 
 - You have the KubeSlice Controller components and worker cluster components on the same cluster. For more information, 
 see [Installing KubeSlice](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
-- Before creating the slice, create a `bookinfo` namespace in all participating worker.
+- Before creating a slice, create the `bookinfo` namespace in all the participating worker clusters.
   Use the following command to create the `bookinfo` namespace:
   ```
   kubectl create ns Bookinfo
   ```
 ## Creating the Slice
-To install the BookInfo Application on a single cluster, you must create a slice without Istio. For more information, 
+To install the Bookinfo application on a single cluster, you must create a slice without Istio enabled. For more information, 
 see [Creating a Slice](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx).
 
 ## Creating the BookInfo Deployment YAML Files
@@ -24,7 +24,7 @@ Using the templates below, create the necessary .yaml files to deploy the Bookin
 template will remain the same except for the `slice name` which must be replaced with the name of your slice.
 
 :::info
-These instructions will guide you through deploying the Product Page service to a cluster we will refer to as 
+These instructions will guide you through deploying the Productpage service to a cluster we will refer to as 
 the `productpage cluster`, and the remaining services as well as service exports will be deployed to a 
 cluster referred to here as the `services cluster`.
 :::
@@ -471,7 +471,7 @@ KubeSlice configuration:
    reviews   white             9080/TCP   1           READY
    ```
 
-## Validating the Product Page on the Cloud Cluster
+## Validating the Productpage on the Cloud Cluster
 
 Perform these steps:
 
@@ -552,7 +552,7 @@ If the kind clusters are on a local machine, perform these steps:
 The following is an example of the product page:
 ![alt](/img/Bookinfo-productpage-OS.png)
 
-### Accessing the Product Page from the Cloud EC2 Machine
+### Accessing the Productpage from the Cloud EC2 Machine
 If the kind clusters are on Cloud EC2 Machine, perform these steps:
 
 1. Connect to your EC2 machine using SSH from your local machine using the following command:
@@ -579,6 +579,6 @@ The following is an example of the product page:
 You have successfully deployed the Bookinfo application on a KubeSlice configuration containing at least two clusters.
 :::
 
-## Uninstalling Istio BookInfo
+## Uninstalling Istio Bookinfo
 To uninstall Istio Bookinfo from your KubeSlice configuration, follow the instructions 
 in [offboarding namespaces](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).

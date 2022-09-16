@@ -13,17 +13,17 @@ Before you begin, ensure the following prerequisites are met:
 
 - You have the KubeSlice Controller components and Worker cluster components on the same cluster. For more information, 
 see [Installing KubeSlice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
-- Before creating the slice, create a `iperf` namespace in all participating worker clusters.
+- Before creating a slice, create the `iperf` namespace in all participating worker clusters.
 Use the following command to create the `iperf` namespace:
   ```
   kubectl create ns iperf
   ```
 
-## Creating the Slice
-To install the iPerf application on a single cluster, you must create a slice without Istio.
+## Creating a Slice
+To install the iPerf application on a single cluster, you must create a slice without Istio enabled.
 
-### Creating the Slice Configuration YAML File
-Use the following template to create a slice without Istio:
+### Creating a Slice Configuration YAML File
+Use the following template to create a slice without Istio enabled:
 ```
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: SliceConfig
