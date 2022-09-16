@@ -18,7 +18,7 @@ see [Installing KubeSlice](/versioned_docs/version-0.3.0/getting-started-with-cl
   ```
   kubectl create ns iperf
   ```
-- You have the slice created across worker clusters. For more information, 
+- You have the slice created across the worker clusters. For more information, 
 see [Creating a Slice](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx).
 
 
@@ -63,9 +63,9 @@ The following information is required.
 
 | Variable     |  Description |
 |---------------|--------------------------------|
-| **cluster name** | The given name of the cluster. |
-| **slice configuration** | The name of the slice configuration file |
-| **project namespace** | The project namespace on which you apply the slice configuration file. |
+| `<cluster name>` | The given name of the cluster. |
+| `<slice configuration>` | The name of the slice configuration file |
+| `<project namespace>` | The project namespace on which you apply the slice configuration file. |
 
 Perform these steps:
 
@@ -125,7 +125,7 @@ spec:
 
 Perform these steps:
 
-1. Switch the context to the registered cluster you want to install Iperf-sleep. 
+1. Switch the context to the registered cluster you want to install iperf-sleep. 
    ```
    kubectx <cluster name>
    ```
@@ -200,7 +200,7 @@ spec:
 ### Applying the iPerf Server YAML File
 Perform these steps:
 
-1. Switch context to the registered cluster you want to install the iperf server.
+1. Switch the context to the registered cluster you want to install the iperf server.
    ```
    kubectx <cluster name>
    ```
@@ -214,7 +214,7 @@ Perform these steps:
    ```
 
 ## Validating your iPerf Installation
-To verify our iPerf installation, first switch contexts to the cluster with the iperf-sleep.yaml applied.
+To verify our iPerf installation, first switch the context to the cluster with the iperf-sleep.yaml applied.
 
 ## Validating the iPerf Sleep Installation
 Perform these steps:

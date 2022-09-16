@@ -11,19 +11,19 @@ This tutorial provides the steps to:
 ## Prerequisites
 Before you begin, ensure the following prerequisites are met:
 
-- You have the KubeSlice Controller components and Worker cluster components on the same cluster. For more information, 
+- You have the KubeSlice Controller components and worker cluster components on the same cluster. For more information, 
 see [Installing KubeSlice](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
-- Before creating the slice, create a `iperf` namespace in all participating worker clusters.
+- Before creating a slice, create the `iperf` namespace in all the participating worker clusters.
 Use the following command to create the `iperf` namespace:
   ```
   kubectl create ns iperf
   ```
 
-## Creating the Slice
-To install the iPerf application on a single cluster, you must create a slice without Istio.
+## Creating a Slice
+To install the iPerf application on a single cluster, you must create a slice without Istio enabled.
 
 ### Creating the Slice Configuration YAML File
-Use the following template to create a slice without Istio:
+Use the following template to create a slice without Istio enabled:
 ```
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: SliceConfig
@@ -64,9 +64,9 @@ The following information is required.
 
 | Variable | Description |
 |------------|------------------------|
-| **cluster name** | The name of the cluster. |
-| **slice configuration**| The name of the slice configuration file. |
-| **project name** | The project name on which you apply the slice configuration file. |
+| `<cluster name>` | The name of the cluster. |
+| `<slice configuration>`| The name of the slice configuration file. |
+| `<project name>` | The project name on which you apply the slice configuration file. |
 
 Perform these steps:
 
@@ -259,7 +259,7 @@ Perform these steps:
    ```
 
 ## Validating ServiceExportconfig and ServiceImportconfig
-Perform these steps in the worker cluster where KubeSlice Controller is installed:
+Perform these steps on the worker cluster where KubeSlice Controller is installed:
 
 1. Switch the context of the cluster.
    ```
@@ -288,7 +288,7 @@ Perform these steps in the worker cluster where KubeSlice Controller is installe
 ## Getting the DNS Name
 
 Use the following command to describe the iperf-server service and retrieve the short and full DNS names for the 
-service. We will use the short DNS name later to verify the inter-cluster communication.
+service. Use the short DNS name later to verify the inter-cluster communication.
 
 ```
 kubectl describe serviceimport iperf-server -n iperf | grep "Dns Name:"
@@ -317,7 +317,7 @@ Perform these steps:
    
 Example Output
 
-If the iperf-sleep pod is able to reach the iperf-server pod , you should see similar output to that below.
+If the iperf-sleep pod is able to reach the iperf-server pod, you should see similar output to that below.
 ```
 > kubectl exec -it iperf-sleep-5477bf94cb-vmmtd -c iperf -n iperf -- sh
 / $ iperf -c iperf-server.iperf.svc.slice.local -p 5201 -i 1 -b 10Mb;

@@ -63,9 +63,9 @@ The following information is required.
 
 | Variable     |  Description |
 |---------------|--------------------------------|
-| **cluster name** | The given name of the cluster. |
-| **slice configuration** | The name of the slice configuration file |
-| **project namespace** | The project namespace on which you apply the slice configuration file. |
+| `<cluster name>` | The given name of the cluster. |
+| `<slice configuration>` | The name of the slice configuration file |
+| `<project namespace>` | The project namespace on which you apply the slice configuration file. |
 
 Perform these steps:
 
@@ -125,7 +125,7 @@ spec:
 
 Perform these steps:
 
-1. Switch the context to the registered cluster you want to install Iperf-sleep. 
+1. Switch the context to the registered cluster you want to install iperf-sleep. 
    ```
    kubectx <cluster name>
    ```
@@ -200,7 +200,7 @@ spec:
 ### Applying the iPerf Server YAML File
 Perform these steps:
 
-1. Switch context to the registered cluster you want to install the iperf server.
+1. Switch the context to the registered cluster you want to install the iperf server.
    ```
    kubectx <cluster name>
    ```
@@ -280,7 +280,7 @@ Perform these steps:
    ```
 
 ## Validating ServiceExport and ServiceImport
-Perform these steps in the cluster where KubeSlice Controller is installed:
+Perform these steps on the cluster where KubeSlice Controller is installed:
 
 1. Switch the context of the cluster.
    ```
