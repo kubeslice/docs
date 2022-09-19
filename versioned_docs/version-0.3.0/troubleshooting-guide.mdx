@@ -28,6 +28,59 @@ then you face issues.
 You must increase the `ulimit` to `2048` or `unlimited` and try installing KubeSlice on kind 
 clusters. If you still face issues, see [errors due to too many open files](https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files).
 
+### Why do I get an error during a helm upgrade of the KubeSlice Controller? 
+
+:::caution 
+Currently, you can only upgrade to a software patch version that does not contain schema 
+changes and not a software patch/complete version upgrade that contains schema changes. 
+:::
+
+When you try to upgrade the controller using the `helm upgrade` command,
+during which, if the worker operator pod is down, you get the following error related 
+to a mutating webhook.
+
+```
+Patch Deployment "kubeslice-controller-manager" in namespace kubeslice-controller
+error updating the resource "kubeslice-controller-manager":
+cannot patch "kubeslice-controller-manager" with kind Deployment: Internal error occurred: failed calling webhook "mdeploy.avesha.io": failed to call webhook: Post "https://kubeslice-webhook-service.kubeslice-system.svc:443/mutate-appsv1-deploy?timeout=10s": no endpoints available for service "kubeslice-webhook-service"
+Looks like there are no changes for Deployment "kubernetes-dashboard"
+Looks like there are no changes for Deployment "dashboard-metrics-scraper"
+Patch Certificate "kubeslice-controller-serving-cert" in namespace kubeslice-controller
+Patch Issuer "kubeslice-controller-selfsigned-issuer" in namespace kubeslice-controller
+Patch MutatingWebhookConfiguration "kubeslice-controller-mutating-webhook-configuration" in namespace
+Patch ValidatingWebhookConfiguration "kubeslice-controller-validating-webhook-configuration" in namespace
+Error: UPGRADE FAILED: cannot patch "kubeslice-controller-manager" with kind Deployment: Internal error occurred: failed calling webhook "mdeploy.avesha.io": failed to call webhook: Post "https://kubeslice-webhook-service.kubeslice-system.svc:443/mutate-appsv1-deploy?timeout=10s": no endpoints available for service "kubeslice-webhook-service" 
+```
+To resolve this error, manually delete the mutating webhook configuration as described 
+below: 
+
+1. Get the name of the `MutatingWebhookConfiguration` webhook using the following command: 
+
+   ```
+   kubectl get mutatingwebhookconfiguration
+   ```
+   
+   Expected Output 
+
+   ```
+   NAME                                                  WEBHOOKS   AGE
+   cdi-api-datavolume-mutate                             1          16d
+   cert-manager-webhook                                  1          31d
+   istio-sidecar-injector                                4          15d   
+   kubeslice-controller-mutating-webhook-configuration   7          30d
+   kubeslice-mutating-webhook-configuration              1          29d
+   longhorn-webhook-mutator                              1          17d
+   nsm-admission-webhook-cfg                             1          29d
+   virt-api-mutator                                      4          18d
+   ```
+   Note down the name of the `MutatingWebhookConfiguration` webhook, which is `kubeslice-mutating-webhook-configuration` 
+   in the above output.   
+
+2. Delete the `MutatingWebhookConfiguration` using the following command: 
+
+   ```
+   kubectl delete mutatingwebhookconfiguration kubeslice-mutating-webhook-configuration
+   ```
 
 ## Connectivity Issues
 
