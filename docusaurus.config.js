@@ -112,7 +112,14 @@ const config = {
       }),
     ],
   ],
-  plugins: ['docusaurus-plugin-sass'],
+  plugins: ['docusaurus-plugin-sass',
+      [
+      require.resolve('docusaurus-gtm-plugin'),
+      {
+        id: 'GTM-N7K6NGB', // GTM Container ID
+      }
+    ]
+  ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
