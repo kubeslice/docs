@@ -22,23 +22,22 @@ One of the best real-world examples out there of a Slice is the concept of **Net
 Network Slicing is a method of creating multiple unique **logical** and **virtualized** networks over a common (shared) infrastructure. 
 Similar to virtual machines, a network slice is carved out of a large and common infrastructure. 
 
-Each network slice is logically separated from the other, is an independent part of the network, and targets different services with different requirements at the same time. This enables to build and manage a network, which has the capabilities to meet and exceed the emerging requirements from a wide range of users and that too, at the same time: the concept of multi-tenancy.
+Each network slice is logically separated from the other, is an independent part of the network, and targets different services
+with different requirements at the same time. This enables to build and manage a network that has the capabilities 
+to meet the emerging requirements from a wide range of users and enable multi-tenancy in a multi-cluster Kubernetes setup.
 
 ### Concept of a Slice in KubeSlice
 
-In terms of Kubernetes, a Slice is a Kubernetes [custom resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) which can be defined, and it basically describes a way to implement multi-tenancy in a cluster. Multi-tenancy is a concept wherein a single instance of an application or a single Kubernetes cluster can serve multiple users (called tenants) at the same time and is able to withstand that much amount of load.
+In KubeSlice, a Slice is a Kubernetes [custom resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) defined to implement multi-tenancy in a cluster. [Multi-tenancy](link to Kubernetes guide on multi-tenancy) is when a single instance of an application or a single Kubernetes cluster can serve multiple users (called tenants) at the same time without the problems of noisy/nosey neighbour, policy and configuration drift, and resource hogging creeping in.
 
-You might be wondering, how does the creation of a Slice an essential part of KubeSlice and helps in achieving the goals of multi-tenancy?
 
-Well, KubeSlice actually creates these logical application **slice boundaries** in a cluster, that allows pods and services to communicate efficiently within a cluster, across clusters as well as on the cloud or any other data center as well. In order to communicate in a multi-cluster architecture, an overlay network (an application slice) is created which provides seamless connectivity between the pods of an application running in multiple clusters.
+KubeSlice creates logical application **slice boundaries** in a cluster that allows pods and services to communicate efficiently within a cluster, across clusters on the cloud or datacenters. In order to communicate within a multi-cluster architecture, an overlay network (an application slice) following the RFC1918 protocol is created by KubeSlice that provides seamless connectivity between the pods of an application running in multiple clusters.
 
-Therefore, due to this **slice overlay network**, pods are able to communicate seamlessly across cluster boundaries.
 
-You may ask a question here, what are some of the benefits that we get due to the creation of the slice overlay network?
 
-There are a lot of advantages achieved here:
+There are a lot of advantages achieved with this way of implementing multi-cluster multi-tenancy in Kubernetes:
 
-- **Better Resiliency** - In layman's language, Resiliency is the ability of an application to react to problems in one of its components and still provide the best possible service. By deploying an application across clusters and connecting using the slice overlay network, application services get better resiliency
+- **Better Resiliency** - Resiliency is the ability of an application to react to problems in one of its components and still provide the best possible service. By deploying an application across clusters and connecting using the slice overlay network, application services are able to achieve resiliency.
 - **Traffic Control** - The ability to control traffic across nodes and clusters. The traffic control policy is maintained for all application pods on that slice. To know more about how do we achieve traffic control, refer to the [official documentation](https://kubeslice.io/documentation/open-source/0.3.0/).
 - **Better App-to-App Connectivity** - Application pods on a Slice have better connectivity between them across multiple cluster boundaries. This is due to the creation of an overlay network for inter-cluster communication. This overlay network provides a dedicated connection within a slice, thus there is no need for the request to transit the internet to establish a connection between apps on a slice. This type of connectivity is referred to as East-West connectivity.
 
