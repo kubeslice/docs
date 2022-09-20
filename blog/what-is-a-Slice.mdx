@@ -39,8 +39,8 @@ You may ask a question here, what are some of the benefits that we get due to th
 There are a lot of advantages achieved here:
 
 - **Better Resiliency** - In layman's language, Resiliency is the ability of an application to react to problems in one of its components and still provide the best possible service. By deploying an application across clusters and connecting using the slice overlay network, application services get better resiliency
-- **Traffic Control** - The ability to control traffic across nodes and clusters. The traffic control policy is maintained for all application pods on that slice.
-- **Better App-to-App Connectivity** - Application pods on a Slice have better connectivity between them across multiple cluster boundaries.
+- **Traffic Control** - The ability to control traffic across nodes and clusters. The traffic control policy is maintained for all application pods on that slice. To know more about how do we achieve traffic control, refer to the [official documentation](https://kubeslice.io/documentation/open-source/0.3.0/).
+- **Better App-to-App Connectivity** - Application pods on a Slice have better connectivity between them across multiple cluster boundaries. This is due to the creation of an overlay network for inter-cluster communication. This overlay network provides a dedicated connection within a slice, thus there is no need for the request to transit the internet to establish a connection between apps on a slice. This type of connectivity is referred to as East-West connectivity.
 
 
 If you want to explore more about KubeSlice, do refer to the [official documentation](https://kubeslice.io/documentation/open-source/0.3.0/). If you face any issue while following along or want to know more about the project, we encourage you to raise questions in the *`#kubeslice`* channel on the [Kubernetes slack](https://slack.k8s.io/) where we hang out.
