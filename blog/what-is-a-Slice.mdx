@@ -28,7 +28,10 @@ to meet the emerging requirements from a wide range of users and enable multi-te
 
 ### Concept of a Slice in KubeSlice
 
-In KubeSlice, a Slice is a Kubernetes [custom resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) defined to implement multi-tenancy in a cluster. [Multi-tenancy](link to Kubernetes guide on multi-tenancy) is when a single instance of an application or a single Kubernetes cluster can serve multiple users (called tenants) at the same time without the problems of noisy/nosey neighbour, policy and configuration drift, and resource hogging creeping in.
+In KubeSlice, a Slice is a Kubernetes [custom resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) defined to implement multi-tenancy in a cluster. 
+[Multi-tenancy](https://kubernetes.io/docs/concepts/security/multi-tenancy/) is when a single instance of an application or a single Kubernetes cluster 
+can serve multiple users (called tenants) at the same time without the problems of noisy/nosey neighbour, 
+policy and configuration drift, and resource hogging creeping in.
 
 
 KubeSlice creates logical application **slice boundaries** in a cluster that allows pods and services to 
