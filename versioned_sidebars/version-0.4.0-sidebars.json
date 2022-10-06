@@ -83,8 +83,8 @@
         "id": "reference/reference"
       },
       "items": [
-        "reference/script-to-get-the-secrets-of-the-worker-cluster",
-        "reference/configuration-parameters"
+        "reference/configuration-parameters",
+        "reference/script-to-get-the-secrets-of-the-worker-cluster"
       ]
     },
     {
