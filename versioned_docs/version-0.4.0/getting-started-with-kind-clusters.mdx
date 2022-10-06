@@ -889,6 +889,7 @@ metadata:
   namespace: kubeslice-<project name>
 spec:
   sliceSubnet: 10.1.0.0/16
+  maxClusters: <2 - 32>               #Ex: 5. By default, the maxClusters value is set to 16
   sliceType: Application
   sliceGatewayProvider:
     sliceGatewayType: OpenVPN
