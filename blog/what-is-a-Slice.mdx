@@ -13,8 +13,6 @@ The project combines network, application, and deployment services in a framewor
 
 It achieves this by creating a logical application boundary known as a **Slice** that allows pods and services to communicate efficiently across clusters, clouds, and data centers.  
 
-
-
 ### What is a Slice?
 
 A **Slice** is very similar to the **Network Slice* that is predominant in 5G network architectures today. 
@@ -30,10 +28,8 @@ to meet the emerging requirements from a wide range of users and enable multi-te
 In KubeSlice, a Slice is a Kubernetes [custom resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) defined to implement multi-tenancy in a cluster. 
 [Multi-tenancy](https://kubernetes.io/docs/concepts/security/multi-tenancy/) is when a single instance of an application or a single Kubernetes cluster can serve multiple users, called tenants, at the same time without the problems of noisy/nosey neighbor, policy and configuration drift, and resource hogging creeping in.
 
-
 KubeSlice creates logical application **slice boundaries** in a cluster that allows pods and services to communicate efficiently within a cluster, across clusters on the cloud or datacenters. In order to communicate within a multi-cluster architecture, an overlay network (an application slice) following the RFC1918 protocol is created by KubeSlice that provides seamless connectivity between the pods of an application running in multiple clusters. Existing intra-cluster communication remains local to the cluster utilizing each pod’s CNI interface. 
 Kubeslice provides isolation of network traffic between clusters by creating an overlay network for inter-cluster communication.
-
 
 There are a lot of advantages achieved with this way of implementing multi-cluster multi-tenancy in Kubernetes:
 
@@ -44,20 +40,7 @@ To know more about resiliency in Kubeslice, refer to the [documentation](https:/
 - **Traffic Control** - The ability to control traffic across nodes and clusters. The traffic control policy is maintained for all application pods on that slice. The slices in a cluster have a QoS profile, which is defined in each slice allowing granular traffic control between clusters.
 To know more about how do we achieve traffic control, refer to the [official documentation](#).
 
-<<<<<<< HEAD
-- **Better Resiliency** - Resiliency is the ability of an application to react to problems in one of its components and still provide the best possible service. Due to the overlay network created by Kubeslice, the application is separated into virtual clusters. The services in any virtual cluster can independently failover without disrupting services in other layers/clusters. These failovers can be done while intra-cluster communication continues at a reduced capacity. Therefore, connections can be re-routed to other clusters in a Slice, which ensures less disruptions and quick recoveries.
-By deploying an application across clusters and connecting using this slice overlay network, application services are able to achieve resiliency.
-To know more about resiliency in Kubeslice, refer to the [documentation](https://avesha.io/use-case/use-case-resiliency/) 
-
-- **Traffic Control** - The ability to control traffic across nodes and clusters. The traffic control policy is maintained for all application pods on that slice. The slices in a cluster have a QoS profile, which is defined in each slice allowing granular traffic control between clusters.
-To know more about how do we achieve traffic control, refer to the [official documentation](#).
-
 - **Better App-to-App Connectivity** - Application pods on a Slice have better connectivity between them across multiple cluster boundaries. This is due to the creation of an overlay network for inter-cluster communication. The overlay network provides a dedicated connection within a slice, thus there is no need for the request to transit the internet to establish a connection between apps on a slice. This type of connectivity is referred to as East-West connectivity.
-=======
-- **Better Resiliency** - Resiliency is the ability of an application to react to problems in one of its components and still provide the best possible service. By deploying an application across clusters and connecting using the slice overlay network, application services are able to achieve resiliency.
-- **Traffic Control** - The traffic control policy is maintained for all application pods on a slice. To know more about how we achieve traffic control, refer to the [official documentation](https://kubeslice.io/documentation/open-source/0.3.0/).
-- **Better App-to-App Connectivity** - Application pods on a Slice have better connectivity between them across multiple cluster boundaries. This is due to the creation of an overlay network for inter-cluster communication. This overlay network provides a dedicated connection within a slice, thus there is no need for the request to transit the internet to establish a connection between apps on a slice. This type of connectivity is referred to as East-West connectivity.
->>>>>>> 30d57f7d0250d6d51311a7e23d1f05214848b80f
 
 - **Removes IP Addressing Complexities - Overlapping IPs** - The overlay network is configured with a non-overlapping RFC1918 address space which removes the overlapping CNI CIDR concerns. Thus, KubeSlice solves the complex problem of overlapping IP addressing between clusters across cloud providers, data centers etc.
 
