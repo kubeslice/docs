@@ -27,11 +27,6 @@ In KubeSlice, a Slice is a Kubernetes [custom resource](https://kubernetes.io/do
 [Multi-tenancy](https://kubernetes.io/docs/concepts/security/multi-tenancy/) is when a single instance of an application or a single Kubernetes cluster can serve multiple users, called tenants, at the same time without the problems of noisy/nosey neighbor, policy and configuration drift, and resource hogging creeping in.
 
 In order to communicate within a multi-cluster architecture, an overlay network (an application slice) following the RFC1918 protocol is created by KubeSlice that provides seamless connectivity between the pods of an application running in multiple clusters. Existing intra-cluster communication remains local to the cluster utilizing each pod’s CNI interface. 
-<<<<<<< HEAD
-
-Kubeslice provides isolation of network traffic between clusters by creating an overlay network for inter-cluster communication.
-=======
->>>>>>> 2e16e053bd4923014265f26d7e6b60688937881d
 
 There are a lot of advantages achieved with this way of implementing multi-cluster multi-tenancy in Kubernetes:
 
