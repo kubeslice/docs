@@ -19,22 +19,14 @@ A **Slice** is very similar to the **Network Slice* that is predominant in 5G ne
 [Network Slicing](https://en.wikipedia.org/wiki/5G_network_slicing) is a method of creating multiple unique **logical** and **virtualized** networks over a common, shared infrastructure. 
 We can also liken it to a virtual machine since it is similarly carved out of a large and common infrastructure to enable more efficient utilization & sharing of resources among multiple tenants.
 
-Each network slice is logically separated from the other, is an independent part of the network, and targets different services
-with different requirements at the same time. This enables to build and manage a network that has the capabilities 
-to meet the emerging requirements from a wide range of users and enable multi-tenancy in a multi-cluster Kubernetes setup.
+Each network slice is logically separated from the other, is an independent part of the network, and targets different services with different requirements at the same time. This enables to build and manage a network that has the capabilities to meet the emerging requirements from a wide range of users and enable multi-tenancy in a multi-cluster Kubernetes setup.
 
 ### Concept of a Slice in KubeSlice
 
 In KubeSlice, a Slice is a Kubernetes [custom resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) defined to implement multi-tenancy in a cluster. 
-[Multi-tenancy](https://kubernetes.io/docs/concepts/security/multi-tenancy/) is when a single instance of an application or a single Kubernetes cluster 
-can serve multiple users, called tenants, at the same time without the problems of noisy/nosey neighbor, 
-policy and configuration drift, and resource hogging creeping in.
+[Multi-tenancy](https://kubernetes.io/docs/concepts/security/multi-tenancy/) is when a single instance of an application or a single Kubernetes cluster can serve multiple users, called tenants, at the same time without the problems of noisy/nosey neighbor, policy and configuration drift, and resource hogging creeping in.
 
-KubeSlice creates logical application **slice boundaries** in a cluster that allows pods and services to 
-communicate efficiently within a cluster, across clusters on the cloud or datacenters. In order to communicate 
-within a multi-cluster architecture, an overlay network (an application slice) following the RFC1918 protocol is 
-created by KubeSlice that provides seamless connectivity between the pods of an application running in multiple 
-clusters. Existing intra-cluster communication remains local to the cluster utilizing each pod’s CNI interface. 
+KubeSlice creates logical application **slice boundaries** in a cluster that allows pods and services to communicate efficiently within a cluster, across clusters on the cloud or datacenters. In order to communicate within a multi-cluster architecture, an overlay network (an application slice) following the RFC1918 protocol is created by KubeSlice that provides seamless connectivity between the pods of an application running in multiple clusters. Existing intra-cluster communication remains local to the cluster utilizing each pod’s CNI interface. 
 Kubeslice provides isolation of network traffic between clusters by creating an overlay network for inter-cluster communication.
 
 There are a lot of advantages achieved with this way of implementing multi-cluster multi-tenancy in Kubernetes:
