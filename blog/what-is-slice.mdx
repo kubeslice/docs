@@ -35,7 +35,6 @@ By deploying an application across multiple Kubernetes clusters that are connect
 To know more about resiliency in Kubeslice, [download our whitepaper](https://avesha.io/use-case/use-case-resiliency/).
 
 - **Traffic Control** - Each slice in a cluster is associated with a QoS profile for bandwidth control across the clusters. The QoS profile is applied to the external interface of the VPN gateway nodes. To know more about the profile parameters that help us achieve this, refer to the guide on [QOS Profile Parameters](https://kubeslice.io/documentation/open-source/0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters#qos-profile-parameters).
-To know more about how do we achieve traffic control, refer to the [official documentation](#).
 
 - **Better App-to-App Connectivity** - Application pods on a Slice have better connectivity between them across multiple cluster boundaries. This is due to the creation of an overlay network for inter-cluster communication. This overlay network provides a dedicated connection within a slice, thus there is no need for the request to transit the internet to establish a connection between apps on a slice. This type of connectivity is referred to as East-West connectivity.
 
