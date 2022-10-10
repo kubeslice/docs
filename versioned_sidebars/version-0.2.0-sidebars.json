@@ -1,9 +1,9 @@
 {
   "version2": [
     "overview",
-    "glossary",
     "architecture",
     "getting-started-with-kind-clusters",
+    "glossary",
     {
       "type": "category",
       "label": "Getting Started With Cloud Clusters",
