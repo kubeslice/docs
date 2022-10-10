@@ -175,6 +175,26 @@ your Project namespace.
    kubectl apply -f <cluster registration>.yaml -n <project namespace>
    ```
 
+## Validating the Registered Clusters
+Validate the registered clusters by using the following command:
+
+```
+kubectl get clusters -n kubeslice-<project name>
+```
+ 
+Example 
+```
+kubectl get clusters -n kubeslice-avesha
+```
+
+Expected Output
+
+```
+NAME           AGE
+aks-worker-2   17s
+gke-worker-1   17s
+```
+
 :::success
 You have successfully registered the Worker clusters with the KubeSlice Controller.
 :::

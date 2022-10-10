@@ -179,6 +179,26 @@ your Project namespace.
 You have successfully registered the Worker clusters with the KubeSlice Controller.
 :::
 
+## Validating the Registered Clusters
+Validate the registered clusters by using the following command:
+
+```
+kubectl get clusters -n kubeslice-<project name>
+```
+ 
+Example 
+```
+kubectl get clusters -n kubeslice-avesha
+```
+
+Expected Output
+
+```
+NAME           AGE
+aks-worker-2   17s
+gke-worker-1   17s
+```
+
 ## Installing the Slice Operator 
 
 Install the Slice Operator on the worker cluster that you just registered.Before installing the 
