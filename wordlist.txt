@@ -4,7 +4,7 @@ RFC1918
 https
 kubernetes
 DNS
-namespaces
+namespace
 namespaces
 programme
 mTLS
@@ -90,6 +90,7 @@ ClusterRole
 ClusterRoleBinding
 OpenShift
 BookInfo
+Bookinfo
 applicationNamespaces
 reachability
 projectcalico
