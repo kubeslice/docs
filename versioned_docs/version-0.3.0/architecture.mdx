@@ -15,7 +15,7 @@ KubeSlice can also be used to enable service discovery and reachability across c
 running in a cluster can be exported over the slice overlay network so that it is discovered and reached by 
 pods running in other clusters.
 
-The KubeSlice architecture consists of several components that interact with each other to manage the lifecycle 
+The KubeSlice architecture consists of several components that interact with each other to manage the life cycle 
 of the slice overlay network. The diagram below shows the primary components of KubeSlice and the connections 
 between them.
 ![alt](/img/Architecture-OS.png)
@@ -76,8 +76,8 @@ The Slice Operator performs the following functions:
 - Reconciliation of slice resources in the cluster KubeSlice Controller.
 - Creation of slice components required for Slice VPN Gateway connectivity and Service Discovery.
 - Auto insertion and deletion of slice components to accommodate topology changes.
-- Lifecycle management of slices, slice configurations, slice status, and slice telemetry.
-- Lifecycle management of network policies and monitoring of configuration drift to generate slice events and alerts.
+- Life Cycle management of slices, slice configurations, slice status, and slice telemetry.
+- Life Cycle management of network policies and monitoring of configuration drift to generate slice events and alerts.
 - Management of the association of slices with namespaces
 - Interaction with the KubeSlice Controller to:
   - Facilitate network policy and service discovery across the slice.
