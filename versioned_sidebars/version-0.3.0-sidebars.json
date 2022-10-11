@@ -66,7 +66,7 @@
             "id": "getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-kubeslice"
           },
           "items": [
-            "getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces",
+            "getting-started-with-cloud-clusters/uninstalling-kubeslice/off-boarding-namespaces",
             "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-slice",
             "getting-started-with-cloud-clusters/uninstalling-kubeslice/deregistering-the-worker-cluster",
             "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-project",

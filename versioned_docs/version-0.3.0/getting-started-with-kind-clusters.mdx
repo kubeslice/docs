@@ -861,7 +861,7 @@ information, see [Registering the Worker Cluster](#registering-the-worker-cluste
 
 ### Creating the Slice YAML File 
 After successfully registering the worker clusters with the KubeSlice Controller, create 
-a slice to onboard your application namespaces. You can create a slice across the 
+a slice to on-board your application namespaces. You can create a slice across the 
 multiple clusters or intra-cluster.
 
 #### Slice Configuration 
@@ -1019,7 +1019,7 @@ water-kind-worker-1-kind-worker-2   10.1.1.0/24   10.1.2.0/24     kind-worker-2
 
 ## Managing Namespaces 
 Namespaces that are created to run application deployments can be
-onboarded on a slice to form a micro network segment. To know more, see 
+on-boarded on a slice to form a micro network segment. To know more, see 
 [managing namespaces](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
 
 ## Isolating Namespaces 
@@ -1063,11 +1063,11 @@ To establish the connectivity between two worker clusters:
    kubectx <cluster name>
    ```
 
-2. Onboard the existing `iperf` namespace to the slice. To know more, see
-   [onboarding namespaces](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
+2. on-board the existing `iperf` namespace to the slice. To know more, see
+   [on-boarding namespaces](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
  
    :::caution
-   Ensure that you have onboarded the iperf namespace. If you create a namespace after 
+   Ensure that you have on-boarded the iperf namespace. If you create a namespace after 
    the slice creation, then you could face issues when you deploy the application as the 
    namespace creation takes some time.
    ::: 
@@ -1135,11 +1135,11 @@ the following command:
    kubectx <cluster name>
    ```
 
-7. Onboard the existing `iperf` namespace on the slice. To know more, see 
-   [onboarding namespaces](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
+7. on-board the existing `iperf` namespace on the slice. To know more, see 
+   [on-boarding namespaces](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
 
    :::caution
-   Ensure that you have onboarded the iperf namespace. If you create a
+   Ensure that you have on-boarded the iperf namespace. If you create a
    namespace after the slice creation, then you could face issues when you
    deploy the application as the namespace creation takes some time.
    :::

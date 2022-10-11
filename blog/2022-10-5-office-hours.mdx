@@ -70,7 +70,7 @@ available in the [kubeslice/examples](https://github.com/kubeslice/examples/tree
 The product page is deployed in the *worker cluster-1* and the book-info details, reviews, service exports, and 
 ratings pages are deployed in *worker cluster-2*. The NodePort service is used to expose the product page 
 deployed in worker cluster-1. Since the kind.sh script creates a book-info namespace created in each cluster, 
-the http application will be automatically onboarded onto the Slice once we deploy the yaml file. Once created, 
+the http application will be automatically on-boarded onto the Slice once we deploy the yaml file. Once created, 
 it can be accessed across the slice and isolated from the other namespaces within the cluster - solving the noisy/nosey 
 neighbor problem. Not only this, granular quotas can be set so as to avoid resource hogging by any particular application 
 thus ensuring equitable distribution of resources in a multi-cluster, multi-tenant setup.

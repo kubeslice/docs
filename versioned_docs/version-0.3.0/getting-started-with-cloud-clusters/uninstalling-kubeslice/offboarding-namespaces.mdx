@@ -1,9 +1,9 @@
-# Offboarding Namespaces
+# off-boarding Namespaces
 
 ## Introduction 
 
-Offboarding namespaces from slice is an easy and straightforward process. This topic
-describes the steps to offboard namespaces before you delete your slice.
+off-boarding namespaces from slice is an easy and straightforward process. This topic
+describes the steps to off-board namespaces before you delete your slice.
 
 :::caution
 If your application is installed on multiple clusters within a slice, you must complete these steps for each cluster.
@@ -39,9 +39,9 @@ Use the following command to delete the ServiceExport from the cluster:
 kubectl delete serviceexport <serviceexport name> -n <application namespace>
 ```
 
-## Offboarding Namespaces from the Slice Configuration 
+## off-boarding Namespaces from the Slice Configuration 
 
-To offboard the namespace from a slice, delete the `namespace` and the associated 
+To off-board the namespace from a slice, delete the `namespace` and the associated 
 `clusters` under the `applicationNamespaces` in the slice configuration file as 
 illustrated below.
 
@@ -56,7 +56,7 @@ illustrated below.
        - '*'
 ```
 
-For example, in the above slice configuration YAML file, if you want to offboard the 
+For example, in the above slice configuration YAML file, if you want to off-board the 
 Bookinfo namespace from all clusters, edit the slice configuration YAML file and remove it 
 from `applicationNamespaces` as illustrated below.
 
@@ -78,12 +78,12 @@ namespaceIsolationProfile:
     applicationNamespaces:
 ```
 
-Apply the slice configuration YAML to update the offboarded namespaces.
+Apply the slice configuration YAML to update the off-boarded namespaces.
 
 ``` 
 kubectl apply -f <slice configuration>.yaml -n <project namespace>
 ```
 
 :::success
-You have successfully offboarded the namespaces from the slice.
+You have successfully off-boarded the namespaces from the slice.
 :::

@@ -192,7 +192,7 @@ These parameters are related to the spec configured  in the
 | sliceIpamType | String | It is the type of the IP address management for the slice subnet. The value must be always set to `Local`. | Mandatory |
 | clusters | List of Strings | The names of the worker clusters that would be part of the slice. You can provide the list of worker clusters. | Mandatory |
 | [qosProfileDetails](#qos-profile-parameters) | Object | QoS profile for the slice inter cluster traffic. | Mandatory |
-| [namespaceIsolationProfile](#namespace-isolation-profile-parameters) | Object | It is the configuration to onboard namespaces and/or isolate namespaces with the network policy. | Mandatory |
+| [namespaceIsolationProfile](#namespace-isolation-profile-parameters) | Object | It is the configuration to on-board namespaces and/or isolate namespaces with the network policy. | Mandatory |
 | [externalGatewayConfig](#external-gateway-configuration-parameters) | Object | It is the slice ingress/egress gateway configuration. It is an optional configuration. | Mandatory |
 
 #### Slice Gateway Provider Parameters
@@ -219,24 +219,24 @@ configured in the [slice configuration YAML file](/versioned_docs/version-0.2.0/
 | dscpClass | Alphanumeric | DSCP marking code for the slice inter-cluster traffic. | Mandatory |
 
 #### Namespace Isolation Profile Parameters
-These parameters are related to onboarding namespaces, isolating the slice, and allowing 
+These parameters are related to on-boarding namespaces, isolating the slice, and allowing 
 external namespaces to communicate with the slice. They are configured in the 
 [slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-| [applicationNamespaces](#application-namespaces-parameters) | Array object | Defines the [namespaces that will be onboarded](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx) to the slice and their corresponding worker clusters. | Mandatory |
+| [applicationNamespaces](#application-namespaces-parameters) | Array object | Defines the [namespaces that will be on-boarded](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx) to the slice and their corresponding worker clusters. | Mandatory |
 | [allowedNamespaces](#allowed-namespaces-parameters) | Array object | Contains the list of namespaces from which the traffic flow is allowed to the slice. By default, native kubernetes namespaces such as `kube-system` are allowed. If `isolationEnabled ` is set to `true`, then you must include namespaces that you want to allow traffic from. | Optional |
 | isolationEnabled | Boolean | Defines if the namespace isolation is enabled. By default, it is set to `false`. The [isolation policy](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces.mdx) only applies to the traffic from the application and allowed namespaces to the same slice. | Optional |
 
 #### Application Namespaces Parameters
-These parameters are related to onboarding namespaces onto a slice, which are configured 
+These parameters are related to on-boarding namespaces onto a slice, which are configured 
 in the [slice configuration YAML file](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-| namespace | String | The namespace that you want to onboard to the slice. These namespaces can be isolated using the namespace isolation feature. | Mandatory |
-| clusters | List of Strings | Corresponding cluster names for the namespaces listed above. To onboard the namespace on all clusters, specify the asterisk `*` as this parameter\'s value. | Mandatory |
+| namespace | String | The namespace that you want to on-board to the slice. These namespaces can be isolated using the namespace isolation feature. | Mandatory |
+| clusters | List of Strings | Corresponding cluster names for the namespaces listed above. To on-board the namespace on all clusters, specify the asterisk `*` as this parameter\'s value. | Mandatory |
 
 #### Allowed Namespaces Parameters
 These parameters are related to allowing external namespaces to communicated with the slice, 
@@ -245,7 +245,7 @@ which are configured in the [slice configuration YAML file](/versioned_docs/vers
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
 | namespace | Strings | List of external namespaces that are not a part of the slice from which traffic is allowed into the slice. |Optional|
-| clusters | List of Strings | Corresponding cluster names for the namespaces listed above. To onboard the namespace on all clusters, specify the asterisk `*` as this parameter\'s value. | Optional |
+| clusters | List of Strings | Corresponding cluster names for the namespaces listed above. To on-board the namespace on all clusters, specify the asterisk `*` as this parameter\'s value. | Optional |
 
 #### External Gateway Configuration Parameters
 These parameters are related to external gateways, which are configured in the 

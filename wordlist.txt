@@ -73,6 +73,8 @@ ServiceExport
 serviceexports
 ServiceImport
 serviceimports
+ServiceExportconfig
+ServiceImportconfig
 deregister
 deregisterd
 deregistering
@@ -85,6 +87,7 @@ EKS
 AWS
 GKE
 nodepool
+nodepools
 UDP
 ClusterRole
 ClusterRoleBinding
@@ -101,3 +104,4 @@ allowPrivilegeEscalation
 args
 imagePullPolicy
 matchLabels
+Productpage
