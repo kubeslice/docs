@@ -389,18 +389,19 @@ helm repo update
 Validate the helm repo by using the following command:
 
 ```
-helm search repo kubeslice-oss
+helm search repo kubeslice
 ```
 
 Expected Output
 
 ```
-NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
-kubeslice-oss/cert-manager            v1.7.0           v1.7.0         A Helm chart for cert-manager                     
-kubeslice-oss/istio-base              1.13.3           1.13.3         Helm chart for deploying Istio cluster resource...
-kubeslice-oss/istio-discovery         1.13.3           1.13.3         Helm chart for istio control plane                
-kubeslice-oss/kubeslice-controller    0.4.0            0.5.5          A Helm chart for kubeslice-controller             
-kubeslice-oss/kubeslice-worker        0.4.0            0.11.0         KubeSlice Operator 
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION
+kubeslice/cert-manager          v1.7.0          v1.7.0          A Helm chart for cert-manager
+kubeslice/istio-base            1.13.3          1.13.3          Helm chart for deploying Istio cluster resource...
+kubeslice/istio-discovery       1.13.3          1.13.3          Helm chart for istio control plane
+kubeslice/kubeslice-controller  0.4.0           0.5.5           A Helm chart for kubeslice-controller
+kubeslice/kubeslice-worker      0.4.0           0.11.0          KubeSlice Operator
+kubeslice/prometheus            0.1.1           11.16.2         Prometheus for Avesha Mesh
 ```
 
 ## Installing the KubeSlice Controller 
