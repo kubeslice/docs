@@ -174,7 +174,25 @@ your Project namespace.
    ``` 
    kubectl apply -f <cluster registration>.yaml -n <project namespace>
    ```
+## Validating the Registered Clusters
+Validate the registered clusters by using the following command:
 
+```
+kubectl get clusters -n kubeslice-<project name>
+```
+ 
+Example 
+```
+kubectl get clusters -n kubeslice-avesha
+```
+
+Expected Output
+
+```
+NAME           AGE
+aks-worker-2   17s
+gke-worker-1   17s
+```
 :::success
 You have successfully registered the Worker clusters with the KubeSlice Controller.
 :::
@@ -194,7 +212,7 @@ communicate with the KubeSlice Controller.
 
 :::info
 Alternatively, you can use the script to create your values `.yaml` file.
-See [Script to get the secrets of the Workercluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+See [Script to get the secrets of the worker cluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
 :::
 
 1.  Switch the context to the controller cluster.

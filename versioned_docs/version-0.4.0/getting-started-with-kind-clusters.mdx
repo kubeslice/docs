@@ -6,7 +6,7 @@ This guide will walk you through successfully registering your kind
 clusters with the KubeSlice Controller and creating a slice across the
 clusters. We have worked to make this experience as seamless as
 possible. If you have any comments, questions, or issues, please feel
-free to join our [community](/versioned_docs/version-0.2.0/community.mdx).
+free to join our [community](/versioned_docs/version-0.4.0/community.mdx).
 
 The following sections help you to:
 
@@ -67,7 +67,7 @@ with the KubeSlice Controller.
 |                                         |                           |
 |-----------------------------------------|---------------------------|
 | **Cluster Requirements**                |     1 Kubernetes Cluster  |  
-| **Supported Kubernetes Versions**       |   [1.21](https://v1-21.docs.kubernetes.io/) and [1.22](https://v1-22.docs.kubernetes.io/) |
+| **Supported Kubernetes Versions**       |   [1.22](https://v1-22.docs.kubernetes.io/) and [1.23](https://v1-23.docs.kubernetes.io/) |
 | **Required Helm Version**               |  3.7.0  |
 
 
@@ -395,12 +395,13 @@ helm search repo kubeslice
 Expected Output
 
 ```
-NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
-kubeslice/cert-manager          v1.7.0          v1.7.0          A Helm chart for cert-manager                     
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION
+kubeslice/cert-manager          v1.7.0          v1.7.0          A Helm chart for cert-manager
 kubeslice/istio-base            1.13.3          1.13.3          Helm chart for deploying Istio cluster resource...
-kubeslice/istio-discovery       1.13.3          1.13.3          Helm chart for istio control plane                
-kubeslice/kubeslice-controller  0.2.0           0.3.6           A Helm chart for kubeslice-controller             
-kubeslice/kubeslice-worker      0.2.0           0.4.1           KubeSlice Operator
+kubeslice/istio-discovery       1.13.3          1.13.3          Helm chart for istio control plane
+kubeslice/kubeslice-controller  0.4.0           0.5.5           A Helm chart for kubeslice-controller
+kubeslice/kubeslice-worker      0.4.0           0.11.0          KubeSlice Operator
+kubeslice/prometheus            0.1.1           11.16.2         Prometheus for Avesha Mesh
 ```
 
 ## Installing the KubeSlice Controller 
@@ -446,7 +447,7 @@ The KubeSlice Controller uses the certificate manager to provision the certifica
 the webhook server. The certificate manager uses the Kubernetes API server that is 
 extended using a webhook server for providing dynamic admission control over the 
 certificate manager resources. This implies that the certificate manager benefits from 
-the same behaviour as the basic Kubernetes resources.
+the same behavior as the basic Kubernetes resources.
 
 Switch the context to the controller cluster using the following command: 
 
@@ -497,7 +498,7 @@ kind-controller-control-plane   Ready    control-plane,master   74m   v1.20.15  
 
 :::info
 To understand more about the configuration parameters, see [Controller
-Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#controller-configuration-parameters).
+Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#controller-configuration-parameters).
 :::
 
 Create the`values.yaml` file for the KubeSlice Controller.
@@ -573,7 +574,7 @@ Create a `project.yaml` file for the project namespace.
 
 :::info
 To understand more about the configuration parameters, see [Project
-Namespace Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#project-namespace-configuration-parameters).
+Namespace Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#project-namespace-configuration-parameters).
 :::
 
 ```
@@ -634,7 +635,7 @@ template.
 
 :::info
 To understand more about the configuration parameters, see [Cluster
-Registration Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#cluster-registration-configuration-parameters).
+Registration Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters).
 :::
 
 ```
@@ -668,7 +669,6 @@ Validate the registered clusters by using the following command:
 ```
 kubectl get clusters -n kubeslice-<project name>
 ```
-
 Example 
 ```
 kubectl get clusters -n kubeslice-avesha
@@ -692,7 +692,7 @@ Operator.
 
 :::info
 Alternatively, you can use the script to create your values.yaml file as described in 
-[Script to Get the Secrets of the Worker Cluster](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+[Script to Get the Secrets of the Worker Cluster](/versioned_docs/version-0.4.0/reference/script-to-get-the-secrets-of-the-worker-cluster.mdx).
 :::
 
 #### Getting the Secrets of the Registered Cluster from the Controller Cluster 
@@ -703,7 +703,7 @@ with the KubeSlice Controller.
 
 :::info
 You can also retrieve the secrets of the worker clusters using these 
-[scripts](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+[scripts](/versioned_docs/version-0.4.0/reference/script-to-get-the-secrets-of-the-worker-cluster.mdx).
 :::
 
 To get the secrets:
@@ -746,7 +746,7 @@ Create the`slice-operator.yaml` file using the following template.
 
 :::info
 To understand more about the configuration parameters, see [Slice
-Operator Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-operator-configuration-parameters).
+Operator Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#slice-operator-configuration-parameters).
 :::
 
 ```
@@ -873,8 +873,17 @@ multiple clusters or intra-cluster.
 Create the slice configuration .yaml file using the following template.
 
 :::info
+If you want to add a standard QoS profile configuration for multiple slices, 
+[create a standard QoS profile](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-a-qos-profile). 
+Add the name of the external QoS profile as the value of `standardQosProfileName` in the slice configuration YAML file. 
+
+In a slice configuration YAML file, the `standardQosProfileName` parameter and the `qosProfileDetails` 
+object are mutually exclusive.
+:::
+
+:::info
 To understand more about the configuration parameters, see [Slice
-Configuration Parameters](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-configuration-parameters).
+Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
 :::
 
 ```
@@ -885,6 +894,7 @@ metadata:
   namespace: kubeslice-<project name>
 spec:
   sliceSubnet: 10.1.0.0/16
+  maxClusters: <2 - 32>               #Ex: 5. By default, the maxClusters value is set to 16
   sliceType: Application
   sliceGatewayProvider:
     sliceGatewayType: OpenVPN
@@ -939,6 +949,14 @@ kubectl apply -f <slice-configuration>.yaml -n kubeslice-<project name>
 You have successfully created a slice with the registered clusters. All the slice 
 configuration are applied at the KubeSlice Controller level.
 :::
+
+### Creating a QoS Profile
+The slice configuration file contains a QoS profile object. To apply a QoS profile to 
+multiple slices, you can create a separate QOS profile YAML file and call it out 
+in other slice configuration. 
+
+
+
 
 ### Validating the Slice 
 Validate the slice configuration on the controller and worker clusters.
@@ -1008,11 +1026,11 @@ water-kind-worker-1-kind-worker-2   10.1.1.0/24   10.1.2.0/24     kind-worker-2
 ## Managing Namespaces 
 Namespaces that are created to run application deployments can be
 onboarded on a slice to form a micro network segment. To know more, see 
-[managing namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
+[managing namespaces](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
 
 ## Isolating Namespaces 
 You can isolate namespaces in a slice by using the namespace isolation
-feature. To know more, see [isolating namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces.mdx).
+feature. To know more, see [isolating namespaces](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces.mdx).
 
 ## Testing the Network Connectivity between the Worker Clusters
 iPerf is a tool commonly used to measure network performance, perform
@@ -1052,7 +1070,7 @@ To establish the connectivity between two worker clusters:
    ```
 
 2. Onboard the existing `iperf` namespace to the slice. To know more, see
-   [onboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
+   [onboarding namespaces](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
  
    :::caution
    Ensure that you have onboarded the iperf namespace. If you create a namespace after 
@@ -1124,7 +1142,7 @@ the following command:
    ```
 
 7. Onboard the existing `iperf` namespace on the slice. To know more, see 
-   [onboarding namespaces](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
+   [onboarding namespaces](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
 
    :::caution
    Ensure that you have onboarded the iperf namespace. If you create a
@@ -1200,6 +1218,7 @@ command:
 10. Validate the iPerf server by checking if the pods are running on the worker cluster 
 using the following command:
 
+   
    ```
    kubectl get pods -n iperf
    ```
@@ -1291,4 +1310,4 @@ the following command:
 
 
 ## Uninstalling KubeSlice 
-Refer to [Uninstalling KubeSlice](/versioned_docs/version-0.2.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-kubeslice.mdx).
+Refer to [Uninstalling KubeSlice](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-kubeslice.mdx).
