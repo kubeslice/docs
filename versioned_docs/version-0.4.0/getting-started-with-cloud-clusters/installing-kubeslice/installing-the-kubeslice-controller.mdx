@@ -13,10 +13,10 @@ This topic describes the steps to install the KubeSlice Controller in the cluste
 Before you begin, ensure the following prerequisites are met:
 
 - You have set up the environment to install the KubeSlice Controller in the cluster. For more information,
-see [Prerequisites](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
+see [Prerequisites](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
 - You have cluster administrator privileges to install the KubeSlice Controller.
 - You have added the helm repository to your local configuration. For more information, 
-see [Adding the Helm Repository](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx#adding-the-helm-repository).
+see [Adding the Helm Repository](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx#adding-the-helm-repository).
 
 ## Installing the KubeSlice Controller
 
@@ -87,7 +87,7 @@ add it as the cluster endpoint in the `values.yaml` file. For example,
 
 :::info
 To understand more about the configuration parameters, see 
-[Controller Configuration Parameters](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#controller-configuration-parameters)
+[Controller Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#controller-configuration-parameters)
 :::
 
 To install the KubeSlice Controller, create the `values.yaml` file using the following template.
@@ -160,7 +160,7 @@ project do not clash with the resources of another project.
 
 For example, a slice with the same name can exist across multiple projects but with different 
 configurations. Changes to the slice in one project will not affect the slice in another project. 
-For more information, see [The KubeSlice Architecture](/versioned_docs/version-0.3.0/architecture.mdx).
+For more information, see [The KubeSlice Architecture](/versioned_docs/version-0.4.0/architecture.mdx).
 
 
 ### Creating the Project YAML File
@@ -169,7 +169,7 @@ created. Create the Project name .yaml file using the following template.
 
 :::info 
 To understand more about the configuration parameters, 
-see [Project Namespace Configuration Parameters](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#project-namespace-configuration-parameters)
+see [Project Namespace Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#project-namespace-configuration-parameters)
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Project

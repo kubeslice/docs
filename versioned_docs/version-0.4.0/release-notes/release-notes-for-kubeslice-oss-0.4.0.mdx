@@ -1,0 +1,17 @@
+# Release Notes for KubeSlice OSS 0.4.0
+
+*Release date: 12th October 2022*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this by creating logical application ***slice*** boundaries which allow pods and services to communicate seamlessly across clusters, clouds, edges, and data centres. 
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New
+These release notes describe the new changes and enhancements in this version.
+
+### IP Address Management 
+For managing and monitoring IP addresses on a slice, a new parameter has been introduced 
+to configure the maximum number of clusters that can be connected to a slice. This parameter 
+is configurable only during slice creation. The value is immutable after the slice creation.   
+
+For more information, see the [slice configuration](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file).
