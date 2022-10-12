@@ -1,9 +1,9 @@
-# Deploying the Bookinfo Application
+# Deploying the BookInfo Application
 
 ## Introduction
-[Bookinfo](https://istio.io/latest/docs/examples/bookinfo/) is a sample application from Istio that is composed 
+[BookInfo](https://istio.io/latest/docs/examples/bookinfo/) is a sample application from Istio that is composed 
 of four separate microservices: productpage, details, reviews, and ratings. In this topic, we will use the 
-Bookinfo application to demonstrate inter-slice communication.
+BookInfo application to demonstrate inter-slice communication.
 
 ## Prerequisites
 Before you begin, ensure the following prerequisites are met:
@@ -24,8 +24,8 @@ see [Installing Istio](/versioned_docs/version-0.4.0/getting-started-with-cloud-
 - You have the slice created across the worker clusters. For more information, 
 see [Creating a Slice](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx).
 
-## Creating the Bookinfo Deployment YAML Files
-Using the templates below, create the necessary .yaml files to deploy the Bookinfo application.
+## Creating the BookInfo Deployment YAML Files
+Using the templates below, create the necessary .yaml files to deploy the BookInfo application.
 All fields in the template will remain the same except for the `slice name` which must be replaced with the 
 name of your slice.
 
@@ -461,7 +461,7 @@ Use the following command to apply the `details.yaml` file.
    serviceexport.networking.kubeslice.io/reviews created
    ```
 
-## Validating the Bookinfo Deployment
+## Validating the BookInfo Deployment
 ### Validating the Services
 
 Perform these steps:
@@ -501,7 +501,7 @@ Perform these steps:
    reviews   white   9080/TCP   1           READY
    ```
 3. Use the following command to check the exposed port for the product page service. In a moment, use this port to
-visit the Bookinfo webpage.
+visit the BookInfo webpage.
    ```
    kubectl get services -n bookinfo
    ```
@@ -514,7 +514,7 @@ visit the Bookinfo webpage.
    ```
 
 :::info
-To view the deployed Bookinfo product page, we need the external IP of an application node and the exposed 
+To view the deployed BookInfo product page, we need the external IP of an application node and the exposed 
 port we just retrieved.Take note of the external IP address of one of the application nodes to use it later.
 :::
 
@@ -532,7 +532,7 @@ port we just retrieved.Take note of the external IP address of one of the applic
    gke-preprod-knative--preprod-knative--d19d3a9f-c32x   Ready    <none>   28h   v1.20.15-gke.3600   10.6.0.3      104.196.200.27   Container-Optimized OS from Google   5.4.170+         containerd://1.4.8
    ```
 5. Combine the external IP address the command returns with the port you retrieved in the last step in the format below, 
-and visit the page in a browser to view your multi-cluster Bookinfo deployment.
+and visit the page in a browser to view your multi-cluster BookInfo deployment.
    ```
    http://<external ip>:<port>/productpage
    ```
@@ -587,9 +587,9 @@ The following is an example of the product page:
 ![alt](/img/Bookinfo-productpage-OS.png)
 
 :::success
-You have successfully deployed Bookinfo application on a KubeSlice configuration containing at least two clusters.
+You have successfully deployed BookInfo application on a KubeSlice configuration containing at least two clusters.
 :::
 
-## Uninstalling Istio Bookinfo
-To uninstall Bookinfo application from your KubeSlice configuration, follow the 
+## Uninstalling Istio BookInfo
+To uninstall BookInfo application from your KubeSlice configuration, follow the 
 instructions in [offboarding namespaces](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
