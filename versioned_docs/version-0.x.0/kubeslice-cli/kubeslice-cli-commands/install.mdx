@@ -1,0 +1,36 @@
+# install
+
+Use this command to install the required workloads to run KubeSlice Controller and KubeSlice Worker.
+
+## Syntax
+
+```
+kubeslice-cli <install/i> [global options] <command> <command-options>
+```
+
+## Options
+The following are the `kubeslice-cli install` command options.
+
+|Option|Shorthand|Description|Supported Values| 
+|----|----|----|----|
+|--profile |-p|It is the profile to install or uninstall KubeSlice.|**full-demo**: showcases the KubeSlice inter-cluster connectivity by spawning 3 kind Clusters, including 1 KubeSlice Controller and 2 KubeSlice Workers, and installing iPerf application to generate network traffic. **minimal-demo**: sets up 3 kind clusters, including 1 KubeSlice Controller and 2 worker clusters. Generates the Kubernetes manifests for user to manually apply, and verify the functionality.|
+|--skip|-s| It skips the installation steps (comma-separated) with `minimal-demo` and `full-demo` options. | **kind**: skips the creation of kind clusters. **calico**: skips the installation of Calico. **controller**: skips the installation of KubeSlice Controller. **worker-registration**: skips the registration of worker clusters with the KubeSlice Controller. **worker**: skips the installation of KubeSlice worker. **demo**: skips the installation of additional example applications.|
+|--config|-c|It is a **global** option. The path to the topology configuration YAML file.|
+|--help|-h|It provides information on the install command.|
+
+:::info
+The global option **--config** and install command option **--profile** are mutually exclusive and cannot be used together.
+:::
+
+## Examples
+The following are the example commands:
+
+1. Use the following command to create the kind clusters, install the KubeSlice Controller and worker clusters. 
+   ```
+   kubectl-cli install --profile=minimal-demo
+   ```
+
+2. To install the KubeSlice using topology file, use the following command:
+   ```
+   kubeslice-cli install --config <path-to-the-topology-configuration.yaml> 
+   ```

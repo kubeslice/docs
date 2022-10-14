@@ -1,0 +1,52 @@
+{
+    "versionx": [
+      "kubeslice-cli/kubeslice-cli-overview",
+      "kubeslice-cli/installing-kubeslice-cli",
+      {
+            "type": "category",
+            "label": "KubeSlice CLI Commands",
+            "collapsed": true,
+            "link": {
+              "type": "doc",
+              "id": "kubeslice-cli/kubeslice-cli-commands/kubeslice-cli-commands"
+            },
+            "items": [
+              "kubeslice-cli/kubeslice-cli-commands/create",
+              "kubeslice-cli/kubeslice-cli-commands/delete",
+              "kubeslice-cli/kubeslice-cli-commands/describe",
+              "kubeslice-cli/kubeslice-cli-commands/edit",
+              "kubeslice-cli/kubeslice-cli-commands/get",
+              "kubeslice-cli/kubeslice-cli-commands/install",
+              "kubeslice-cli/kubeslice-cli-commands/register",
+              "kubeslice-cli/kubeslice-cli-commands/uninstall"
+            ]
+          },
+        {
+        "type": "category",
+        "label": "Examples",
+        "collapsed": true,
+        "link": {
+          "type": "doc",
+          "id": "kubeslice-cli/example/examples"
+        },
+        "items": [
+          "kubeslice-cli/example/topology-template",
+          "kubeslice-cli/example/sample-configuration-file"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Reference",
+        "collapsed": true,
+        "link": {
+          "type": "doc",
+          "id": "kubeslice-cli/reference/reference"
+        },
+        "items": [
+          "kubeslice-cli/reference/configuration-parameters"
+        ]
+      },
+      "kubeslice-cli/kubeslice-cli-demo",
+      "kubeslice-cli/troubleshooting-guide"
+    ]
+}

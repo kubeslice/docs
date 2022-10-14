@@ -1,0 +1,90 @@
+# create
+
+Use this command to create one or more KubeSlice resources. For example, you can create a slice, project, or 
+service export using this command.
+
+## Syntax
+```
+kubeslice-cli create [global options] <command> <command-options>
+kubeslice-cli create project <project-name> --namespace <controller-namespace>
+kubeslice-cli create <sliceConfig/serviceExportConfig> --namespace <project namespace> --filename <path-to-the-file/configuration-yaml>
+```
+
+## Options
+The following are the `kubeslice-cli create` options.
+
+|Option|Shorthand|Description|
+|----|----|----|
+|--filename|-f|It is the filename, directory, or URL of the file used to create the resource.|
+|--namespace|-n| It is the name of the project namespace on the KubeSlice Controller.| 
+|--setWorker|-w|It is the list of worker clusters to be registered in the SliceConfig. |
+|--config|-c| It is a **global** option. The path to the topology configuration YAML file.|
+|--help|-h|It provides information on the create command.|
+
+## Resource Type
+The following are the resource types used with the create command:
+- **project**: It is used to create, edit, delete, describe, and get the project.
+- **sliceConfig**: It is used to create, edit, delete, describe, and get the slice.
+- **serviceExportConfig**: It is used to create, edit, delete, describe, and get the service export.
+
+For more information on resource configuration parameters, see 
+[Kubeslice Configuration Parameters](https://docs.avesha.io/documentation/open-source/0.4.0/reference/configuration-parameters). 
+
+## Examples
+
+The following are the example commands:
+
+1. To create a slice, use the following command:
+   ```
+   kubeslice-cli create sliceConfig -n kubeslice-demo -f <slice-configuration-yaml>
+   ```
+   
+   Example
+   ```
+   kubeslice-cli create sliceConfig -n kubeslice-demo -f slice-config.yaml
+   ```
+   
+   Example output
+   ```
+   🏃 Running command: /usr/local/bin/kubectl apply -f slice-config.yaml -n kubeslice-demo
+   sliceconfig.controller.kubeslice.io/slice-red created
+
+   Successfully Applied Slice Configuration.
+   ```
+
+2. To create a project, use the following command:
+   ```
+   Kubeslice-cli create project <project-namespace> -n <controller-namespace>
+   ```
+   Example
+   ```
+   kubeslice-cli create project kubeslice-avesha -n kubeslice-controller
+   ```
+   Example Output
+   ```
+   Creating KubeSlice Project...
+   ✔ Generated project manifest project.yaml
+   🏃 Running command: /usr/local/bin/kubectl apply -f kubeslice/project.yaml -n kubeslice-controller
+   ✔ Applied project.yaml
+   Created KubeSlice Project.
+   ```
+
+3. To create service export, use the following command:
+   :::info
+   You must switch the context to the worker cluster where you have deployed the iperf-server. 
+   Use this command to switch the context: `kubectx <worker-cluster>`.
+   :::
+   ```
+   kubeslice-cli create serviceExportConfig -f <path-to-the-service-export-yaml> -n <application-namespace>
+   ```
+   Example
+   ```
+   kubeslice-cli create serviceExportConfig -f kubeslice/iperf-server-service-export.yaml -n iperf
+   ```
+   Example Output
+   ```
+   🏃 Running command: /usr/local/bin/kubectl apply -f kubeslice/iperf-server-service-export.yaml -n iperf
+   serviceexport.networking.kubeslice.io/iperf-server configured
+
+   Successfully Applied Slice Configuration.
+   ```
