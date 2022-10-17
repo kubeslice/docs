@@ -47,6 +47,7 @@
         ]
       },
       "kubeslice-cli/kubeslice-cli-demo",
+      "kubeslice-cli/uninstalling-kubeslice",
       "kubeslice-cli/troubleshooting-guide"
     ]
 }

@@ -1,0 +1,54 @@
+# Uninstalling KubeSlice
+
+This topic describes the steps to uninstall the KubeSlice. To uninstall the KubeSlice Controller, follow these steps:
+
+- Offboard all namespaces from the slice
+- Delete the slice
+- Deregister your worker cluster
+- Delete the project
+- Uninstall the KubeSlice Controller
+
+:::info
+The order of operations in uninstalling the KubeSlice Controller is important to ensure all resources are cleaned up properly. Follow the 
+order of operations provided under this topic.
+:::
+
+## offboarding Namespaces
+To offboard the namespaces from slice, you must first delete the serviceexport for each application. For more information, see 
+[Offboarding Namespaces](https://docs.avesha.io/documentation/open-source/0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces).
+
+ 
+## Deleting the Slice
+You must Offboard all the namespaces from the slice before deleting it. Before uninstalling the Slice Operator, this step must be completed.
+Failure to do so may result in slices and resources not being properly cleaned up.
+
+To delete a slice, use the following command:
+   ```
+   kubeslice-cli delete sliceConfig <sliceConfig-name> -n <project namespace>
+   ```
+   
+## Deregistering the Worker Cluster
+   ::: caution
+   Before deregistering the worker cluster ensure you have offboarded the namespaces and deleted the slice.
+   :::
+   You must first uninstall the Slice Operator from the worker cluster before deregistering it from the controller cluster.
+
+
+## Deleting the Project
+   :::caution
+   Before deleting a project ensure you have offboarded the namespaces, deleted the slice(s), and deregistered the worker cluster.
+   :::
+   Deleting the project from the KubeSlice Controller deletes the service account, namespaces, clusters, secrets, certificates, and tokens.
+   
+   To delete a project, use the following command:
+   ```
+   kubeslice-cli delete project <project-name> -n <controller-namespace>
+   ```
+
+## Uninstalling the KubeSlice Controller
+  
+   After deleting all the projects, uninstall the KubeSlice Controller.
+   To uninstall the KuebSlice Controller, use the following command:
+   ```
+   kubeslice-cli uninstall --config=<topology-configuration-yaml>
+   ```
