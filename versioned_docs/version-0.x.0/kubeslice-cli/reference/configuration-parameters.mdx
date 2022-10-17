@@ -79,8 +79,7 @@ The following table describes the worker chart configuration parameters used to 
 |version|Numeric|It is the version of the chart. Leave this value blank for the latest version|Optional|
 
 :::note
-In the topology configuration, the `kube_config_path` parameter requires the absolute path to the kubeconfig 
-file. You must set the kube_config_path parameter at the top-level, under `cluster_configuration` or set the `kube_config_path` 
-under the controller and the workers configuration.
+The 'kube_config_path' parameter in the topology configuration requires the absolute path to the kubeconfig file. 
+The 'kube_config_path' parameter must be set at the top-level, i.e. under **cluster_configuration**,' or under 
+the **controller** and **workers** configuration.
 :::
-
