@@ -15,14 +15,17 @@ The Kubeslice Controller and worker clusters can be installed on your existing m
 
 ## Installing the KubeSlice Controller and Worker Clusters
 
-You must create a topology configuration file that includes the names of the clusters and cluster contexts
+You must create a topology configuration file that includes the names of the clusters, project name, and cluster contexts
 that hosts the KubeSlice Controller and the worker clusters. For more information, see sample 
-[Topology Configuration](versioned_docs\version-0.x.0\kubeslice-cli\example\sample-configuration-file.mdx) file.
+[Topology Configuration](/versioned_docs/version-0.x.0/kubeslice-cli/reference/sample-configuration-file.mdx) file.
 
-Use the following command to install the controller and worker clusters:
+Use the following command to install the controller and worker cluster:
 ```
 kubeslice-cli install --config=<topology-configuration-file>
 ```
+The above command installs the KubeSlice Controller, creates a project, and registers the worker cluster with a project by installing the Slice
+Operator on the worker cluster.
+
 
 ## Onboarding Namespaces
 
@@ -91,5 +94,6 @@ Successfully Applied Slice Configuration.
 If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application.
 :::
 
-## Deploying the Application 
+## Deploying the Application
+
 
