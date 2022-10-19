@@ -10,12 +10,12 @@ There are the five main steps for installing the KubeSlice:
 
 This topic describes the steps the add KubeSlice to your existing multi-cluster configuration.
 
-## Adding kubeslice to a multi-cluster configuration
-The Kubeslice Controller and the worker clusters can be installed by using topology configuration file. 
+## Adding KubeSlice to a multi-cluster configuration
+The Kubeslice Controller and worker clusters can be installed on your existing mutli-cluster configuration by using a topology configuration file. 
 
-## Installing the KubeSlice Controller and Worker clusters
+## Installing the KubeSlice Controller and Worker Clusters
 
-You must build you topology configuration file which includes the cluster names and cluster contexts
+You must create a topology configuration file that includes the names of the clusters and cluster contexts
 that hosts the KubeSlice Controller and the worker clusters. For more information, see sample 
 [Topology Configuration](versioned_docs\version-0.x.0\kubeslice-cli\example\sample-configuration-file.mdx) file.
 
@@ -26,10 +26,10 @@ kubeslice-cli install --config=<topology-configuration-file>
 
 ## Onboarding Namespaces
 
-To onboard your existing namespaces (and their applications) onto a slice:
-- Build your slice definition file (choose the namespaces, clusters, etc to be part of the slice)
-- Run kubeslice-cli create sliceConfig
+To onboard your existing namespaces (and their applications) onto a slice, follow these steps:
+- Create a slice definition file (choose the namespaces, clusters, etc to be part of the slice).
+- Use the `kubeslice-cli create sliceConfig` command to apply the slice configuration file.
 
 :::caution
-If your application is already deployed on a namespace you onboarded to a slide, re-deploy it (and specify ServiceExport in your deployment spec).
+If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application (specify ServiceExport in your deployment spec).
 :::
