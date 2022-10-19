@@ -70,21 +70,7 @@ The following are the example commands:
    ```
 
 3. To create service export, use the following command:
-   :::info
-   You must switch the context to the worker cluster where you have deployed the iperf-server. 
-   Use this command to switch the context: `kubectx <worker-cluster>`.
-   :::
+
    ```
    kubeslice-cli create serviceExportConfig -f <path-to-the-service-export-yaml> -n <application-namespace>
-   ```
-   Example
-   ```
-   kubeslice-cli create serviceExportConfig -f kubeslice/iperf-server-service-export.yaml -n iperf
-   ```
-   Example Output
-   ```
-   🏃 Running command: /usr/local/bin/kubectl apply -f kubeslice/iperf-server-service-export.yaml -n iperf
-   serviceexport.networking.kubeslice.io/iperf-server configured
-
-   Successfully Applied Slice Configuration.
    ```

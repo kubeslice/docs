@@ -95,4 +95,7 @@ Successfully Applied Slice Configuration.
 :::info
 If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application.
 :::
-
+To create a service export, use the following command:
+```
+kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <application-namespace>
+```
