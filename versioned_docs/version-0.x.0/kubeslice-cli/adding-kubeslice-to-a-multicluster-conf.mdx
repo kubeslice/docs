@@ -75,12 +75,12 @@ controlling and managing the slice may still be starting. Please wait for the sl
 
 To apply the slice configuration, use the following command:
 ```
-kubeslice-cli create sliceConfig -n kubeslice-demo -f <slice-configuration-yaml>
+kubeslice-cli create sliceConfig -n <project-namespace> -f <slice-configuration-yaml>
 ```
    
 Example
 ```
-kubeslice-cli create sliceConfig -n kubeslice-demo -f slice-config.yaml
+kubeslice-cli create sliceConfig -n kubeslice-avesha -f slice-config.yaml
 ```
    
 Example output
@@ -90,10 +90,9 @@ sliceconfig.controller.kubeslice.io/slice-red created
 
 Successfully Applied Slice Configuration.
 ```
+
+## Deploying the Application
 :::caution
 If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application.
 :::
-
-## Deploying the Application
-
 
