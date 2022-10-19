@@ -46,7 +46,7 @@
           "kubeslice-cli/reference/configuration-parameters"
         ]
       },
-      "kubeslice-cli/adding-kubeslice-to-a-mutlicluster-conf",
+      "kubeslice-cli/adding-kubeslice-to-a-multicluster-conf",
       "kubeslice-cli/kubeslice-cli-demo",
       "kubeslice-cli/uninstalling-kubeslice",
       "kubeslice-cli/troubleshooting-guide"
