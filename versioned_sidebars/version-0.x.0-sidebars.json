@@ -23,20 +23,7 @@
           },
       "kubeslice-cli/adding-kubeslice-to-a-multicluster-conf",
       "kubeslice-cli/uninstalling-kubeslice",
-        {
-        "type": "category",
-        "label": "Examples",
-        "collapsed": true,
-        "link": {
-          "type": "doc",
-          "id": "kubeslice-cli/example/examples"
-        },
-        "items": [
-          "kubeslice-cli/example/topology-template",
-          "kubeslice-cli/example/sample-configuration-file"
-        ]
-      },
-      {
+          {
         "type": "category",
         "label": "Reference",
         "collapsed": true,
@@ -45,7 +32,9 @@
           "id": "kubeslice-cli/reference/reference"
         },
         "items": [
-          "kubeslice-cli/reference/configuration-parameters"
+          "kubeslice-cli/reference/topology-template",
+          "kubeslice-cli/reference/configuration-parameters",
+          "kubeslice-cli/reference/sample-configuration-file"
         ]
       },
       "kubeslice-cli/kubeslice-cli-demo",
