@@ -17,7 +17,7 @@ The Kubeslice Controller and worker clusters can be installed on your existing m
 
 You must create a topology configuration file that includes the names of the clusters, project name, and cluster contexts
 that hosts the KubeSlice Controller and the worker clusters. For more information, see sample 
-[Topology Configuration](/versioned_docs/version-0.x.0/kubeslice-cli/reference/sample-configuration-file.mdx) file.
+[topology configuration](/versioned_docs/version-0.x.0/kubeslice-cli/reference/sample-configuration-file.mdx) file.
 
 Use the following command to install the controller and worker cluster:
 ```
@@ -68,7 +68,7 @@ spec:
 
 ### Applying the Slice Configuration YAML file
 
-:::warning
+:::caution
 The `kubeslice-cli create sliceConfig` command returns after the configuration is applied. However, in each cluster, the relevant pods for 
 controlling and managing the slice may still be starting. Please wait for the slice to complete initialization before deploying services to it.
 :::
@@ -92,7 +92,7 @@ Successfully Applied Slice Configuration.
 ```
 
 ## Deploying the Application
-:::caution
+:::info
 If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application.
 :::
 
