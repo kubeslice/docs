@@ -30,6 +30,66 @@ To onboard your existing namespaces (and their applications) onto a slice, follo
 - Create a slice definition file (choose the namespaces, clusters, etc to be part of the slice).
 - Use the `kubeslice-cli create sliceConfig` command to apply the slice configuration file.
 
-:::caution
-If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application (specify ServiceExport in your deployment spec).
+
+### Creating a Slice
+
+Use the following template to create a slice.
+:::info
+To understand more about the configuration parameters, see [Slice Configuration Parameters](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/configuration-parameters.mdx#slice-configuration-parameters).
 :::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: <slice-name>                #The name of the slice
+spec:  
+  sliceSubnet: <slice-subnet>        #The slice subnet
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+  - <worker-cluster-name1>           #The name of your worker cluster1
+  - <worker-cluster-name2>           #The name of your worker cluster2
+  qosProfileDetails:
+    queueType: HTB
+    priority: 0
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 30000
+    bandwidthGuaranteedKbps: 20000
+    dscpClass: AF11
+
+```
+
+### Applying the Slice Configuration YAML file
+
+:::warning
+The `kubeslice-cli create sliceConfig` command returns after the configuration is applied. However, in each cluster, the relevant pods for 
+controlling and managing the slice may still be starting. Please wait for the slice to complete initialization before deploying services to it.
+:::
+
+To apply the slice configuration, use the following command:
+```
+kubeslice-cli create sliceConfig -n kubeslice-demo -f <slice-configuration-yaml>
+```
+   
+Example
+```
+kubeslice-cli create sliceConfig -n kubeslice-demo -f slice-config.yaml
+```
+   
+Example output
+```
+🏃 Running command: /usr/local/bin/kubectl apply -f slice-config.yaml -n kubeslice-demo
+sliceconfig.controller.kubeslice.io/slice-red created
+
+Successfully Applied Slice Configuration.
+```
+:::caution
+If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application.
+:::
+
+## Deploying the Application 
+
