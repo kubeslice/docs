@@ -99,3 +99,29 @@ To create a service export, use the following command:
 ```
 kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <application-namespace>
 ```
+
+## Registering a Worker Cluster
+
+The kubeslice-cli allows you to add a new worker cluster with the existing KubeSlice Configuration. To add or register the worker
+cluster with the KubeSlice Controller, use the following command:
+
+```
+kubeslice-cli --config <topology-configuration.yaml> -s controller install
+```
+
+Below is sample topology configuration file to add new worker cluster.
+```
+configuration:
+  cluster_configuration:
+    kube_config_path: <kubeconfig-file>
+    controller:
+      name: <controller-cluster-name>
+      context_name: <controller-cluster-context>
+    workers:
+      - name: <new-worker-cluster-name>
+        context_name: <new-worker-cluster-context>     
+  kubeslice_configuration:
+    project_name: <project-namespace>
+```
+
+
