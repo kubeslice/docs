@@ -134,7 +134,7 @@ Example
 ```
 kubeslice-cli describe serviceExportConfig iperf-server-iperf-kind-ks-w-1 -n kubeslice-demo
 ```
-Example Output
+
 The below output shows the ServiceExportConfig for iperf-server application is present on the controller cluster.
 ```
 Describe KubeSlice serviceExportConfig...
@@ -184,12 +184,6 @@ Editing KubeSlice serviceExportConfig...
 
 The kubeslice-cli allows you to add a new worker cluster to the existing KubeSlice Configuration.
 
-To register a worker cluster with the KubeSlice Controller, use the following command:
-
-```
-kubeslice-cli install --config=<new-worker-topology-yaml> -s kind -s controller -s enterprise -s demo
-```
-
 Use the following template to add a new worker cluster.
 
 ```
@@ -204,6 +198,21 @@ configuration:
         context_name: <new-worker-cluster-context>
   kubeslice_configuration:
     project_name: <project-namespace>
+```
+
+To register a new worker cluster with a KubeSlice Controller in a demo setup, use the following command:
+:::note
+As the KubeSlice Controller is already installed, the following command skips both creating Kind Cluster and installing the KubeSlice Controller.
+:::
+```
+kubeslice-cli install --config=<new-worker-topology-yaml> -s kind -s controller -s enterprise -s demo
+```
+To register a new worker cluster with the KubeSlice Controller in existing mutli-cluster, use the following command:
+:::note
+As the KubeSlice Controller is already installed, the following command skips installing the KubeSlice Controller.
+:::
+```
+kubeslice-cli install --config-<new-worker-topology-yaml> -s controller
 ```
 
 
