@@ -177,7 +177,7 @@ Example Output
 Editing KubeSlice serviceExportConfig...
 🏃 Running command: /usr/local/bin/kubectl edit serviceexportconfigs.controller.kubeslice.io iperf-server-iperf-kind-ks-w-1 -n kubeslice-genos
 ...
-
+```
 
 
 ## Registering a Worker Cluster
@@ -191,6 +191,7 @@ kubeslice-cli install --config=<new-worker-topology-yaml> -s kind -s controller 
 ```
 
 Use the following template to add a new worker cluster.
+
 ```
 configuration:
   cluster_configuration:
@@ -200,7 +201,7 @@ configuration:
       context_name: <controller-cluster-context>
     workers:
       - name: <new-worker-cluster-name>
-        context_name: <new-worker-cluster-context>     
+        context_name: <new-worker-cluster-context>
   kubeslice_configuration:
     project_name: <project-namespace>
 ```
