@@ -21,7 +21,7 @@
               "kubeslice-cli/kubeslice-cli-commands/uninstall"
             ]
           },
-      "kubeslice-cli/adding-kubeslice-to-a-multicluster-conf",
+      "kubeslice-cli/installing-kubeslice",
       "kubeslice-cli/uninstalling-kubeslice",
           {
         "type": "category",
