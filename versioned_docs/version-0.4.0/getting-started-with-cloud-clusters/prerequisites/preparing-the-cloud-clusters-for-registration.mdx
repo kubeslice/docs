@@ -1,0 +1,194 @@
+# Preparing the Cloud Clusters for Registration
+
+## Introduction
+
+This topic describes how to prepare your clusters to register with KubeSlice Controller.
+
+## Authenticating Clusters 
+
+:::info
+If you have already retrieved your credentials to log in to your clusters, continue to 
+[Labeling KubeSlice Nodes](#labeling-kubeslice-gateway-nodes) below.
+:::
+:::info 
+Perform these steps on each cluster that you want to register with the KubeSlice Controller.
+:::
+
+Before registering your clusters with KubeSlice Controller, you must authenticate with each cloud provider 
+that is used in your installation. Each of the following commands retrieves the relevant `kubeconfig` and 
+add it to your default `kubeconfig` path.
+
+### Azure Kubernetes Service 
+For information on prerequisites and authentication, see [Microsoft AKS Docs](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-credentials).
+The following information is required to retrieve your Microsoft Azure
+Kubernetes Service (AKS) `kubeconfig`.
+
+| **Variable**      |        **Description** |
+|-----|-----|
+| <resource group name\> |  The name of the resource group the cluster belongs to.
+  <cluster name\>         | The name of the cluster you would like to get credentials for.|
+
+The following command retrieves your AKS cluster `kubeconfig` and add it to your default `kubeconfig` path. Complete this step for each
+AKS cluster that you want to work with.
+
+``` 
+az aks get-credentials --resource-group <resource group name> --name <cluster name>
+```
+
+### Elastic Kubernetes Service 
+For information on prerequisites and other required details, see the [Amazon EKS documentation](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html).
+
+The following information is required to retrieve your Elastic Kubernetes
+Service (EKS) `kubeconfig`.
+
+| **Variable**  |     **Description** |
+|-----|----|
+|<cluster name\>  | The name of the cluster you want to get credentials for.|
+|  <cluster region\>       |  The AWS region the cluster belongs to.|
+
+The following command retrieves your EKS cluster `kubeconfig` and adds
+it to your default `kubeconfig` path. Complete this step for each EKS
+cluster that you want to work with.
+
+``` 
+aws eks update-kubeconfig --name <cluster-name> --region <cluster-region>  
+```
+
+### Google Kubernetes Engine
+For information on the prerequisites and other required details, see [Google Cloud CLI Docs](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials).
+
+The following information is required to retrieve your Google Kubernetes
+Engine (GKE) `kubeconfig`.
+
+| **Variable**  |     **Description** |
+|-----|----|
+|<cluster name\>  | The name of the cluster you want to get credentials for.|
+|  <region\>       |  The region the cluster belongs to.|
+| <project id\>    | The project ID that the cluster belongs to.|
+ 
+
+The following command retrieves your GKE cluster `kubeconfig` and adds
+it to your default `kubeconfig` path. Complete this step for each GKE
+cluster that you want to work with.
+
+``` 
+gcloud container clusters get-credentials <cluster name> --region <region> --project <project id>
+```
+
+Expected Output
+
+``` 
+Fetching cluster endpoint and auth data.
+kubeconfig entry generated for <cluster name>
+```
+
+## Labeling KubeSlice Gateway Nodes
+
+:::info
+Labeling gateway nodes only applies to the worker cluster.
+:::
+
+:::caution
+We recommend using a dedicated nodepool and follow the above instructions for labeling.
+:::
+
+If you have multiple node pools on your worker cluster, then you can add a
+label to each node pool. Labels are useful in managing scheduling rules
+for nodes.
+
+Perform these steps in each worker cluster that you want to register with 
+the KubeSlice Controller. If you have to use a single node pool, then perform the
+following steps.
+
+### Azure Kubernetes Service
+AKS nodepools can only be set during nodepool creation. The nodepool
+must contain the `kubeslice.io/node-type=gateway` label. For instructions on creating
+a labeled nodepool, visit the [AKS documentation](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#setting-nodepool-labels).
+
+### Elastic Kubernetes Service  
+Nodepools are called node groups in EKS clusters. The node group must contain 
+the `kubeslice.io/node-type=gateway` label. You can add or remove the Kubernetes 
+labels by editing a node group configuration as described in 
+[updating managed node groups](https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html).
+
+### Google Kubernetes Engine
+The following information is required to label the GKE cluster nodepools.
+
+|**Variable** |       **Description** |
+|-----|----|
+|<nodepool name\>|   The name of the nodepool being labeled.|
+|<cluster name\>  |  The name of the cluster the nodepool being labeled belongs to.|
+|  <region\>      |    The Compute Engine region for the cluster the nodepool belongs to.|
+|  <zone\>         |   The Compute Engine zone for the cluster the nodepool belongs to.|
+ 
+The following command labels the GKE cluster nodepool: 
+
+``` 
+gcloud container node-pools update <nodepool name> \
+    --node-labels=kubeslice.io/node-type=gateway \
+    --cluster=<cluster name> \
+    [--region=<region> | --zone=<zone>]
+```
+
+## Verifying Your Labels
+:::info
+Perform these steps on each cluster that you want to register with the KubeSlice.
+:::
+
+Perform these steps to verify your cluster labels:
+
+1.  To verify the label, switch to the context that you want to verify.
+    
+    ``` 
+    kubectx <cluster name>
+    ``` 
+2.  Use the following command to get all nodes with the `kubeslice.io/node-type=gateway` label.
+    ```
+    kubectl get no -l kubeslice.io/node-type=gateway
+    ```    
+3.  If you successfully set your labels, you  get a list of the labeled nodes in the cluster. Use the following command to verify if
+    each gateway node has an external IP address configured:
+    ```
+    kubectl get no -o wide
+    ```
+  
+## Adding the Helm Repository
+To add the helm repository:
+
+1. Add the helm repository information to your local system.
+   ```
+   helm repo add kubeslice https://kubeslice.github.io/kubeslice/
+   ```
+   Expected Output
+   ``` 
+   "kubeslice" has been added to your repositories
+   ```
+2. Update the repositories on your system with the following command:
+   ``` 
+   helm repo update
+   ```
+   Expected Output
+   ``` 
+   Hang tight while we grab the latest from your chart repositories...
+   ...Successfully got an update from the "kubeslice" chart repository
+   Update Complete. ⎈Happy Helming!⎈
+   ```
+3. To verify the repository was added successfully, view the KubeSlice
+charts using the following command:
+   ``` 
+   helm search repo kubeslice
+   ```
+   Expected Output
+   ```
+   NAME                            CHART VERSION   APP VERSION     DESCRIPTION
+   kubeslice/cert-manager          v1.7.0          v1.7.0          A Helm chart for cert-manager
+   kubeslice/istio-base            1.13.3          1.13.3          Helm chart for deploying Istio cluster resource...
+   kubeslice/istio-discovery       1.13.3          1.13.3          Helm chart for istio control plane
+   kubeslice/kubeslice-controller  0.4.0           0.5.5           A Helm chart for kubeslice-controller
+   kubeslice/kubeslice-worker      0.4.0           0.11.0          KubeSlice Operator
+   kubeslice/prometheus            0.1.1           11.16.2         Prometheus for Avesha Mesh
+   ```
+ 
+:::success
+You have successfully prepared your clusters to install the KubeSlice.
+:::

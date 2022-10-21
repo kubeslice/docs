@@ -32,7 +32,7 @@ clusters. If you still face issues, see [errors due to too many open files](http
 
 :::caution 
 Currently, you can only upgrade to a software patch version that does not contain schema 
-changes and not a software patch/complete version upgrade that contains schema changes. 
+changes. You cannot upgrade to a software patch/complete version that contains schema changes.
 :::
 
 When you try to upgrade the controller using the `helm upgrade` command,
@@ -166,7 +166,7 @@ example.)
 
 2. Uninstall and reinstall the KubeSlice Controller.
 
-# Onboarded Application Namespace Issues
+## Onboarded Application Namespace Issues
 
 ### NSM containers are not injected in pods during deployments in the application namespace. 
 
