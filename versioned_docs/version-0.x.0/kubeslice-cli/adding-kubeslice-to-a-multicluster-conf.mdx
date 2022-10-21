@@ -95,10 +95,87 @@ Successfully Applied Slice Configuration.
 :::info
 If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application.
 :::
+
+### Creating a Service Export
 To create a service export, use the following command:
 ```
 kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <application-namespace>
 ```
+
+
+### Validating the Service Export
+If an application service is running  on of the Slice's worker clusters, the worker automatically generates ServiceExport 
+for the application and propagates it to the controller.
+
+To verify the service export, use the following command on the controller cluster:
+```
+kubeslice-cli get serviceExportConfig -n <project-namespace>
+```
+Example
+```
+kubeslice-cli get serviceExportConfig -n kubeslice-demo
+```
+Example Output
+```
+Fetching KubeSlice serviceExportConfig...
+🏃 Running command: /usr/local/bin/kubectl get serviceexportconfigs.controller.kubeslice.io -n kubeslice-demo
+NAME                             AGE
+iperf-server-iperf-kind-ks-w-1   43s
+```
+
+To view the details of the service export configuration, use the following command:
+```
+kubeslice-cli describe serviceExportConfig <resource-name> -n <project-namespace>
+```
+Example
+```
+kubeslice-cli describe serviceExportConfig iperf-server-iperf-kind-ks-w-1 -n kubeslice-demo
+```
+Example Output
+The below output shows the ServiceExportConfig for iperf-server application is present on the controller cluster.
+```
+Describe KubeSlice serviceExportConfig...
+🏃 Running command: /usr/local/bin/kubectl describe serviceexportconfigs.controller.kubeslice.io iperf-server-iperf-kind-ks-w-1 -n kubeslice-demo
+Name:         iperf-server-iperf-kind-ks-w-1
+Namespace:    kubeslice-demo
+Labels:       original-slice-name=slice-red
+              service-name=iperf-server
+              service-namespace=iperf
+              worker-cluster=kind-ks-w-1
+Annotations:  <none>
+API Version:  controller.kubeslice.io/v1alpha1
+Kind:         ServiceExportConfig
+Spec:
+  Service Discovery Ports:
+    Name:             tcp
+    Port:             5201
+    Protocol:         TCP
+  Service Name:       iperf-server
+  Service Namespace:  iperf
+  Slice Name:         slice-red
+  Source Cluster:     kind-ks-w-1
+
+```
+
+### Modifying the Service Discovery Configuration
+kubeslice-cli enables you to modify the service discovery parameters. For example, to modify the port on which the service is running edit 
+the value and save. This updates the ServiceExportConfig. The ServiceExportConfig will again be propagated to all the worker clusters.
+
+To edit the service export configuration, use the following command:
+```
+kubeslice-cli edit serviceExportConfig <resource-name> -n <project-namespace>
+```
+Example
+```
+kubeslice-cli edit serviceExportConfig iperf-server-iperf-kind-ks-w-1 -n kubeslice-demo
+```
+Example Output
+```
+Editing KubeSlice serviceExportConfig...
+🏃 Running command: /usr/local/bin/kubectl edit serviceexportconfigs.controller.kubeslice.io iperf-server-iperf-kind-ks-w-1 -n kubeslice-genos
+...
+
+
 
 ## Registering a Worker Cluster
 
