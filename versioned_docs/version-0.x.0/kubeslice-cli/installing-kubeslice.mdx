@@ -199,6 +199,20 @@ configuration:
   kubeslice_configuration:
     project_name: <project-namespace>
 ```
+The following is the example topology file to register a new worker cluster.
+```
+configuration:
+  cluster_configuration:
+    kube_config_path: <PATH-TO-KUBECONFIG>
+    controller:
+      name: controller
+      context_name: kind-controller
+    workers:
+      - name: worker-3
+        context_name: ks-w-3      
+  kubeslice_configuration:
+    project_name: demo
+  ```
 
 To register a new worker cluster with a KubeSlice Controller in a demo setup, use the following command:
 :::note
