@@ -8,7 +8,7 @@ There are the five main steps for installing the KubeSlice:
 - Creating the slices
 - Onboarding namespaces onto the slices
 
-This topic describes the steps the add KubeSlice to your existing multi-cluster configuration.
+This topic describes the steps to install KubeSlice in your existing multi-cluster configuration.
 
 ## Installing KubeSlice in a Multi-Cluster Configuration
 
@@ -67,16 +67,18 @@ configuration:
     project_name: demo
   ```
 
-To register a new worker cluster with a KubeSlice Controller in a demo setup, use the following command:
+In a demo setup, use the following command to register a new worker cluster with the KubeSlice Controller:
 :::note
-As the KubeSlice Controller is already installed, the following command skips both creating Kind Cluster and installing the KubeSlice Controller.
+As the KubeSlice Controller is already installed, the following command skips both creating the new kind cluster 
+and installing the KubeSlice Controller.
 :::
 ```
 kubeslice-cli install --config=<new-worker-topology-yaml> -s kind -s controller -s enterprise -s demo
 ```
-To register a new worker cluster with the KubeSlice Controller in existing multi-cluster configuration, use the following command:
+In an existing multi-cluster configuration, use the following command to register a new worker cluster with the KubeSlice Controller:
 :::note
-As the KubeSlice Controller is already installed, the following command skips installing the KubeSlice Controller.
+As the KubeSlice Controller is already installed, the **--skip controller** or  **-s controller** option skips the installation of 
+the Kubeslice Controller.
 :::
 ```
 kubeslice-cli install --config-<new-worker-topology-yaml> -s controller
@@ -93,7 +95,8 @@ To onboard your existing namespaces (and their applications) onto a slice, follo
 
 Use the following template to create a slice.
 :::info
-To understand more about the configuration parameters, see [Slice Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
+To understand more about the configuration parameters, see 
+[Slice Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
 :::
 
 ```
@@ -165,7 +168,7 @@ for the application and propagates it to the controller.
 To verify the service export, use the following command on the controller cluster:
 ```
 kubeslice-cli get serviceExportConfig -n <project-namespace>
-```
+``` 
 Example
 ```
 kubeslice-cli get serviceExportConfig -n kubeslice-demo
