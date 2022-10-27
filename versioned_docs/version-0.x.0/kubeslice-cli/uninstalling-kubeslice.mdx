@@ -19,7 +19,7 @@ To offboard the namespaces from slice, you must first delete the serviceexport f
 
  
 ## Deleting a Slice
-Before deleting the slice, you must offboard all of its namespaces. Failure to do so may result in slices and resources not being properly cleaned up.
+Before deleting the slice, you must offboard all namespaces. Failure to do so may result in slices and resources not being properly cleaned up.
 
 Use the following command to delete the slice:
 ```
@@ -28,7 +28,7 @@ kubeslice-cli delete sliceConfig <sliceConfig-name> -n <project namespace>
    
 ## Deregistering the Worker Cluster
 :::caution
-Before deregistering the worker cluster ensure you have offboarded the namespaces and deleted the slice.
+Before deregistering the worker cluster ensure you have offboarded all namespaces and deleted the slice.
 ::: 
 
 You must first uninstall the Slice Operator from the worker cluster before deregistering it from the controller cluster.
@@ -40,7 +40,7 @@ kubeslice-cli delete worker <worker-name> -n <project-namespace>
 
 ## Deleting a Project
 :::caution
-Before deleting a project, ensure that the namespaces have been offboarded and the slice has been deleted.
+Before deleting a project, ensure all namespaces have been offboarded and the slice has been deleted.
 :::
 
 Delete a project after deregistering the worker cluster. The service account, namespaces, clusters, secrets, certificates, and tokens 
