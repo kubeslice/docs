@@ -15,7 +15,7 @@ order of operations provided under this topic.
 
 ## Offboarding Namespaces
 To offboard the namespaces from slice, you must first delete the serviceexport for each application. For more information, see 
-[offboarding Namespaces](https://docs.avesha.io/documentation/open-source/0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces).
+[offboarding Namespaces](/versioned_docs/0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
 
  
 ## Deleting a Slice
@@ -31,7 +31,9 @@ kubeslice-cli delete sliceConfig <sliceConfig-name> -n <project namespace>
 Before deregistering the worker cluster, ensure you have offboarded all namespaces and deleted the slice.
 ::: 
 
-You must first uninstall the Slice Operator from the worker cluster before deregistering it from the controller cluster.
+You must first uninstall the Slice Operator from the worker cluster before deregistering it from the KubeSlice Controller. To uninstall
+the Slice Operator, follow the instructions in the [uninstalling the Slice operator](/versioned_docs/0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/deregistering-the-worker-cluster.mdx#uninstalling-the-slice-operator) 
+section.
 
 Use the following command to delete a registered worker cluster:
 ```
@@ -57,4 +59,4 @@ Before deleting a project, ensure all namespaces have been offboarded, the slice
 :::
   
 After deleting all the projects, uninstall the KubeSlice Controller. To uninstall the KubeSlice Controller, see
-[uninstalling the KubeSlice Controller](https://docs.avesha.io/documentation/open-source/0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-the-kubeslice-controller).
+[uninstalling the KubeSlice Controller](/versioned_docs/0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-the-kubeslice-controller).
