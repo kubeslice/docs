@@ -1,10 +1,10 @@
 # Uninstalling KubeSlice
 
-This topic describes the steps to uninstall the KubeSlice. To uninstall the KubeSlice Controller, follow these steps:
+This topic describes how to uninstall KubeSlice. Follow these steps to uninstall the KubeSlice Controller:
 
 - Offboard all namespaces from the slice
 - Delete a slice
-- Deregister your worker cluster
+- Deregister the worker cluster
 - Delete a project
 - Uninstall the KubeSlice Controller
 
@@ -19,10 +19,9 @@ To offboard the namespaces from slice, you must first delete the serviceexport f
 
  
 ## Deleting a Slice
-You must offboard all the namespaces from the slice before deleting it. Before uninstalling the Slice Operator, this step must be completed.
-Failure to do so may result in slices and resources not being properly cleaned up.
+Before deleting the slice, you must offboard all of its namespaces. Failure to do so may result in slices and resources not being properly cleaned up.
 
-To delete a slice, use the following command:
+Use the following command to delete the slice:
 ```
 kubeslice-cli delete sliceConfig <sliceConfig-name> -n <project namespace>
 ```
@@ -34,26 +33,27 @@ Before deregistering the worker cluster ensure you have offboarded the namespace
 
 You must first uninstall the Slice Operator from the worker cluster before deregistering it from the controller cluster.
 
-To delete a registered worker cluster, use the following command:
+Use the following command to delete a registered worker cluster:
 ```
 kubeslice-cli delete worker <worker-name> -n <project-namespace>
 ```
 
 ## Deleting a Project
 :::caution
-Before deleting a project ensure you have offboarded the namespaces and deleted the slice(s).
+Before deleting a project, ensure that the namespaces have been offboarded and the slice has been deleted.
 :::
-After deregistered the worker cluster, delete a project. Deleting a project from the KubeSlice Controller
-deletes the service account, namespaces, clusters, secrets, certificates, and tokens.
+
+Delete a project after deregistering the worker cluster. The service account, namespaces, clusters, secrets, certificates, and tokens 
+are all deleted when the project is deleted from the KubeSlice Controller.
    
-To delete a project, use the following command:
+Use the following command to delete the project:
 ```
 kubeslice-cli delete project <project-name> -n <controller-namespace>
 ```
 
 ## Uninstalling the KubeSlice Controller
 :::caution
-Before deleting a project ensure you have offboarded the namespaces, deleted the slice(s), and deregistered the worker cluster.
+Before deleting a project, ensure all namespaces have been offboarded, the slice(s) have been deleted, and the worker cluster has been deregistered.
 :::
   
 After deleting all the projects, uninstall the KubeSlice Controller. To uninstall the KubeSlice Controller, see

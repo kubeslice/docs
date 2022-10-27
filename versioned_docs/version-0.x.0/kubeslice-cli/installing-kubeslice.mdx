@@ -3,9 +3,9 @@
 There are the five main steps for installing the KubeSlice:
 
 - Installing the KubeSlice Controller
-- Creating the project
+- Creating a project
 - Registering the worker clusters
-- Creating the slices
+- Creating a slice
 - Onboarding namespaces onto the slices
 
 This topic describes the steps to install KubeSlice in your existing multi-cluster configuration.
@@ -22,20 +22,20 @@ For demonstration purposes, to set up a three-cluster topology of kind clusters 
 
 ## Installing the KubeSlice Controller and Worker Clusters
 
-You must create a topology configuration file that includes the names of the clusters, project name, and cluster contexts
-that hosts the KubeSlice Controller and the worker clusters. For more information, see sample 
+You must create a topology configuration file that includes the names of the clusters, the project name, and the cluster contexts
+that host the KubeSlice Controller and the worker clusters. For more information, see sample 
 [topology configuration](/versioned_docs/version-0.x.0/kubeslice-cli/reference/sample-configuration-file.mdx) file.
 
 Use the following command to install the controller and worker cluster:
 ```
 kubeslice-cli --config=<topology-configuration-file> install
 ```
-The above command installs the KubeSlice Controller, creates a project, and registers the worker cluster with a project by installing the Slice
+The above command installs the KubeSlice Controller, creates a project, and registers the worker cluster with the project by installing the Slice
 Operator on the worker cluster.
 
 ## Registering a Worker Cluster
 
-The kubeslice-cli allows you to add a new worker cluster to the existing KubeSlice Configuration.
+The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration.
 
 Use the following template to add a new worker cluster.
 
@@ -52,7 +52,7 @@ configuration:
   kubeslice_configuration:
     project_name: <project-namespace>
 ```
-The following is an example topology file for register a new worker cluster.
+The following is an example topology file for registering a new worker cluster.
 ```
 configuration:
   cluster_configuration:
@@ -68,8 +68,8 @@ configuration:
   ```
 
 :::note
-If the KubeSlice Controller is already installed, the `-s controller` option skips installing it. The `-s kind` option skips creating new kind 
-clusters; the `-s enterprise` option skips using enterprise installation; and the `-s demo` option skips creating a demo set up.
+If the KubeSlice Controller is already installed, the `-s controller` option skips installing it. The `-s kind` option skips creating a new kind 
+clusters. The `-s enterprise` option skips using enterprise installation, while the `-s demo` option skips creating a demo set up.
 :::
 
 In a demo setup, use the following command to register a new worker cluster with the KubeSlice Controller:
@@ -90,7 +90,7 @@ To onboard your existing namespaces (and their applications) onto a slice, follo
 
 ### Creating a Slice
 
-Use the following template to create a slice.
+Use the following template to create a slice configuration YAML file.
 :::info
 To understand more about the configuration parameters, see 
 [Slice Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
@@ -159,10 +159,10 @@ kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <applicatio
 
 
 ### Validating the Service Export
-If an application service is running  on of the Slice's worker clusters, the worker automatically generates ServiceExport 
-for the application and propagates it to the controller.
+When an application service runs on one of the worker clusters that are onboarded to a slice, the worker generates a ServiceExport 
+for the application and propagates it to the KubeSlice Controller.
 
-To verify the service export, use the following command on the controller cluster:
+To verify the service export on the controller cluster, use the following command:
 ```
 kubeslice-cli get serviceExportConfig -n <project-namespace>
 ``` 
