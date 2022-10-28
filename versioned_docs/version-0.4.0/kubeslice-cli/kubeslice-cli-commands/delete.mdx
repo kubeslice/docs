@@ -1,0 +1,82 @@
+# delete
+
+Use this command to delete the KubeSlice resources. For example, use the delete command to  delete a slice, project, or 
+service export. The delete command can also be used to unregister the registered worker cluster. 
+You must offboard the namespaces and delete the slice before unregistering the worker cluster. For more information, 
+see [Uninstalling KubeSlice](/versioned_docs/version-0.x.0/kubeslice-cli/uninstalling-kubeslice.mdx).
+
+## Syntax
+```
+kubeslice-cli delete [global options] <command> <command-options>
+kubeslice-cli <remove/d> [global options] <command> <command-options>
+kubeslice-cli delete project <project-name> --namespace <controller-namespace>
+kubeslice-cli delete <sliceConfig/serviceExportConfig> <resource-name> --namespace <project namespace>
+```
+
+## Options
+The following are the `kubeslice-cli delete` command options.
+
+|Name|Shorthand|Usage|
+|----|----|----|
+|--namespace|-n|It is the name of the project namespace on the KubeSlice Controller.| 
+|--config|-c|It is a **global** option. The path to the topology configuration YAML file.|
+|--help|-h|It provides information on the delete command.|
+
+## Resource Type
+The following are the resource types used with the create command:
+- **project**: It is used to create, edit, delete, describe, and get the project.
+- **sliceConfig**: It is used to create, edit, delete, describe, and get the slice.
+- **serviceExportConfig**: It is used to create, edit, delete, describe, and get the service export.
+
+For more information on resource configuration parameters, see 
+[Kubeslice Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters).
+
+
+
+## Examples
+The following are the example commands:
+
+1. To delete the slice configuration, use the following command:
+   ```
+   kubeslice-cli delete sliceConfig <sliceConfig-name> -n <project namespace>
+   ```
+   Example
+   ```
+   kubeslice-cli delete sliceConfig blue -n kubeslice-demo
+   ```
+
+   Example Output
+   ```
+   Deleting KubeSlice SliceConfig...
+   🏃 Running command: /usr/local/bin/kubectl delete sliceconfigs.controller.kubeslice.io blue -n kubeslice-demo
+   sliceconfig.controller.kubeslice.io "blue" deleted
+   ```
+2. To delete a project, use the following command:
+   ```
+   kubeslice-cli delete project <project-name> -n <controller-namespace>
+   ```
+   Example
+   ```
+   kubeslice-cli delete project rainbow -n kubeslice-controller
+   ```
+
+   Example Output
+   ```
+   Deleting KubeSlice Project...
+   🏃 Running command: /usr/local/bin/kubectl delete projects.controller.kubeslice.io uma -n kubeslice-controller
+   project.controller.kubeslice.io "rainbow" deleted
+   ```
+3. To delete a registered worker cluster, use the following command:
+   ```
+   kubeslice-cli delete worker <worker-name> -n <project-namespace>
+   ```
+   Example:
+   ```
+   kubeslice-cli delete worker kind-ks-w-4 -n kubeslice-demo
+   ```
+   Example Output
+   ```
+   Deleting KubeSlice Worker...
+   🏃 Running command: /usr/local/bin/kubectl delete clusters.controller.kubeslice.io kind-ks-w-4 -n kubeslice-demo
+   cluster.controller.kubeslice.io "kind-ks-w-4" deleted
+   ```

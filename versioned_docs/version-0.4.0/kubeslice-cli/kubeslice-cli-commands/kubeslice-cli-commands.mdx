@@ -1,0 +1,54 @@
+# kubeslice-cli Commands
+
+This section contains information about KubeSlice commands, syntax, options, a resource type, and a few examples of command usage.
+
+## Syntax
+Use the following syntax to run the kubeslice-cli tool:
+
+```
+kubeslice-cli [global options] <command> <command-options>
+```
+
+## Commands
+
+The following table describes the syntax and descriptions for all the `kubeslice-cli` commands.
+
+|Operations|Syntax|Description|
+|----|----|---|
+| create | `kubeslice-cli create [options]` | Creates one or more resources from a file. |
+| delete | `kubeslice-cli delete [options]` | Delete resources from a file.|
+| describe | `kubeslice-cli describe [options]` | Describe the KubeSlice resources.|
+| edit | `kubeslice-cli edit [options]` | Edit and update the definition of one or more kubeSlice resources.|
+| get | `kubeslice-cli get [options]` | List one or more kubeSlice resources.|
+| install | `kubeslice-cli install [options]` | Install kubeSlice resources.|
+| uninstall | `kubeslice-cli uninstall [options]` | Uninstall kubeSlice resources.|
+| help | `kubeslice-cli help` | Get more information on any command.|
+
+## Options
+The following are the kubeslice-cli options.
+
+|Options|Shorthand|Description|
+|----|----|----|
+|--help|-h|It provides more information on the kubeslice-cli.|
+|--config|-c| It is a **global** option. The path to the topology configuration YAML file.|
+|--version|-v|It is the version of the `kubeslice-cli` tool.|
+
+:::note
+The kubeslice-cli tool must have access to the clusters you want it to manage. To grant it access, set the KUBECONFIG environment variable to 
+a path to the kubeconfig file containing the necessary keys to access those clusters.
+To set the KUBECONFIG environment varible, use these commands:
+  - On Linux/macOS: `export KUBECONFIG=<path to kubeconfig file>`
+  - On Windows: `set KUBECONFIG=<path to kubeconfig file>`
+::: 
+
+:::caution
+- If the global **—config** option is not specified, kubeslice-cli attempts to execute against the current cluster context. Run the 
+following command to determine which context you are currently in: `kubectx -c`.
+- The currently supported operations are all controller cluster specific. You must run the kubeslice-cli commands on the controller cluster. 
+use this command to switch the cluster context: `kubectx <controller-cluster>`.
+:::
+
+:::info
+Currently, kubeslice-cli does not support ServiceExport. For information on how to deploy an application on a slice, see 
+[Managing Namespaces](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
+:::
