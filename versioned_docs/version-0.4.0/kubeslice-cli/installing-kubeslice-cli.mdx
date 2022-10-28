@@ -1,0 +1,50 @@
+# Installing the kubeslice-cli Tool
+
+This topic describes the steps to install the `kubeslice-cli` tool on different operating systems.
+
+## Installing kubeslice-cli on Windows
+
+To install kubeslice-cli on Windows:
+
+1. Download the latest Windows version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+   After downloading, you can rename the executable file to **kubeslice-cli**.
+
+2. Navigate to the directory where you have downloaded the executable file or provide the absolute path to run the `kubeslice-cli` command.
+
+3. Ensure the downloaded version is up-to-date using the following command:
+   ```
+   .\kubeslice-cli.exe --version
+   ```
+## Installing kubeslice-cli on Linux
+
+To install kubeslice-cli on Linux, macOS, or Ubuntu:
+
+1. Download the latest Linux version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+2. Create a symlink to access the file:
+   :::info
+   A symlink is a symbolic Linux/ UNIX link that points to another file or folder on your computer, or a connected file system.
+   :::
+   ```
+   ln -s <downloaded-binary>  ~/bin/kubeslice-cli
+   ```
+3. Ensure the downloaded version is up-to-date using the following command:
+   ```
+   kubeslice-cli --version
+   ```
+## Downloading kubeslice-cli using Wget
+
+To download the latest binary (~6 MB), use the following command:
+```
+sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.3.1/kubeslice-cli-linux-amd64 -o /usr/local/bin/kubeslice-cli
+```
+Make the binary executable using the following command:
+```
+sudo chmod a+x /usr/local/bin/kubeslice-cli
+```
+Ensure the downloaded version is up-to-date using the following command:
+```
+kubeslice-cli -v
+```
+
+

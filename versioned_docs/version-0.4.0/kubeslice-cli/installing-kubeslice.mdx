@@ -1,0 +1,235 @@
+# Installing KubeSlice
+
+There are the five main steps for installing the KubeSlice:
+
+- Installing the KubeSlice Controller
+- Creating a project
+- Registering the worker clusters
+- Creating a slice
+- Onboarding namespaces onto the slices
+
+This topic describes the steps to install KubeSlice in your existing multi-cluster configuration.
+
+## Installing KubeSlice in a Multi-Cluster Configuration
+
+kubeslice-cli is a tool that makes it simple to install Kubeslice into your existing clusters. The primary purpose of the tool is to install 
+KubeSlice into your already existing clusters using the description of those clusters that you provide in a **custom topology** YAML file.
+Depending on the requirements, the KubeSlice Controller and/or worker components can be installed either incrementally (one cluster at a time) 
+or across all the clusters in your topology.
+
+For demonstration purposes, to set up a three-cluster topology of kind clusters in your local environment, use the 
+**—profile <minimal-demo | full-demo>** option instead of the **—config** option.
+
+## Installing the KubeSlice Controller and Worker Clusters
+
+You must create a topology configuration file that includes the names of the clusters, the project name, and the cluster contexts
+that host the KubeSlice Controller and the worker clusters. For more information, see sample 
+[topology configuration](/versioned_docs/version-0.x.0/kubeslice-cli/reference/sample-configuration-file.mdx) file.
+
+Use the following command to install the controller and worker cluster:
+```
+kubeslice-cli --config=<topology-configuration-file> install
+```
+The above command installs the KubeSlice Controller, creates a project, and registers the worker cluster with the project by installing the Slice
+Operator on the worker cluster.
+
+## Registering a Worker Cluster
+
+The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration.
+
+Use the following template to add a new worker cluster.
+
+```
+configuration:
+  cluster_configuration:
+    kube_config_path: <kubeconfig-file>
+    controller:
+      name: <controller-cluster-name>
+      context_name: <controller-cluster-context>
+    workers:
+      - name: <new-worker-cluster-name>
+        context_name: <new-worker-cluster-context>
+  kubeslice_configuration:
+    project_name: <project-namespace>
+```
+The following is an example topology file for registering a new worker cluster.
+```
+configuration:
+  cluster_configuration:
+    kube_config_path: <PATH-TO-KUBECONFIG>
+    controller:
+      name: controller
+      context_name: kind-controller
+    workers:
+      - name: worker-3
+        context_name: ks-w-3      
+  kubeslice_configuration:
+    project_name: demo
+  ```
+
+:::note
+If the KubeSlice Controller is already installed, the `-s controller` option skips installing it. The `-s kind` option skips creating a new kind 
+cluster. The `-s enterprise` option skips using enterprise installation, while the `-s demo` option skips creating a demo set up.
+:::
+
+In a demo setup, use the following command to register a new worker cluster with the KubeSlice Controller:
+```
+kubeslice-cli install --config=<new-worker-topology-yaml> -s kind -s controller -s enterprise -s demo
+```
+In an existing multi-cluster configuration, use the following command to register a new worker cluster with the KubeSlice Controller:
+```
+kubeslice-cli install --config-<new-worker-topology-yaml> -s controller
+```
+
+## Onboarding Namespaces
+
+To onboard your existing namespaces (and their applications) onto a slice, follow these steps:
+
+1. Create a slice configuration YAML file (choose the namespaces, clusters, so on to be part of the slice).
+2. Use the `kubeslice-cli create sliceConfig` command to apply the slice configuration YAML file.
+
+
+### Creating a Slice
+
+Use the following template to create a slice configuration YAML file.
+:::info
+To understand more about the configuration parameters, see 
+[Slice Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: <slice-name>                #The name of the slice
+spec:  
+  sliceSubnet: <slice-subnet>        #The slice subnet
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+  - <worker-cluster-name1>           #The name of your worker cluster1
+  - <worker-cluster-name2>           #The name of your worker cluster2
+  qosProfileDetails:
+    queueType: HTB
+    priority: 0
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 30000
+    bandwidthGuaranteedKbps: 20000
+    dscpClass: AF11
+
+```
+
+### Applying the Slice Configuration YAML file
+
+:::caution
+The `kubeslice-cli create sliceConfig` command returns after the configuration is applied. However, in each cluster, the relevant pods for 
+controlling and managing the slice may still be starting. Ensure to wait for the slice to complete initialization before deploying services to it.
+:::
+
+To apply the slice configuration, use the following command:
+```
+kubeslice-cli create sliceConfig -n <project-namespace> -f <slice-configuration-yaml>
+```
+   
+Example
+```
+kubeslice-cli create sliceConfig -n kubeslice-demo -f slice-config.yaml
+```
+   
+Example output
+```
+🏃 Running command: /usr/local/bin/kubectl apply -f slice-config.yaml -n kubeslice-demo
+sliceconfig.controller.kubeslice.io/slice-red created
+
+Successfully Applied Slice Configuration.
+```
+
+## Deploying the Application
+:::info
+If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application.
+:::
+
+### Creating a Service Export
+To create a service export, use the following command:
+```
+kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <application-namespace>
+```
+
+
+### Validating the Service Export
+When an application service runs on one of the worker clusters that are onboarded to a slice, the worker generates a ServiceExport 
+for the application and propagates it to the KubeSlice Controller.
+
+To verify the service export on the controller cluster, use the following command:
+```
+kubeslice-cli get serviceExportConfig -n <project-namespace>
+``` 
+Example
+```
+kubeslice-cli get serviceExportConfig -n kubeslice-demo
+```
+Example Output
+```
+Fetching KubeSlice serviceExportConfig...
+🏃 Running command: /usr/local/bin/kubectl get serviceexportconfigs.controller.kubeslice.io -n kubeslice-demo
+NAME                             AGE
+iperf-server-iperf-kind-ks-w-1   43s
+```
+
+To view the details of the service export configuration, use the following command:
+```
+kubeslice-cli describe serviceExportConfig <resource-name> -n <project-namespace>
+```
+Example
+```
+kubeslice-cli describe serviceExportConfig iperf-server-iperf-kind-ks-w-1 -n kubeslice-demo
+```
+
+The following output shows the ServiceExportConfig for iperf-server application is present on the controller cluster.
+```
+Describe KubeSlice serviceExportConfig...
+🏃 Running command: /usr/local/bin/kubectl describe serviceexportconfigs.controller.kubeslice.io iperf-server-iperf-kind-ks-w-1 -n kubeslice-demo
+Name:         iperf-server-iperf-kind-ks-w-1
+Namespace:    kubeslice-demo
+Labels:       original-slice-name=slice-red
+              service-name=iperf-server
+              service-namespace=iperf
+              worker-cluster=kind-ks-w-1
+Annotations:  <none>
+API Version:  controller.kubeslice.io/v1alpha1
+Kind:         ServiceExportConfig
+Spec:
+  Service Discovery Ports:
+    Name:             tcp
+    Port:             5201
+    Protocol:         TCP
+  Service Name:       iperf-server
+  Service Namespace:  iperf
+  Slice Name:         slice-red
+  Source Cluster:     kind-ks-w-1
+
+```
+
+### Modifying the Service Discovery Configuration
+kubeslice-cli enables you to modify the service discovery parameters. For example, to modify the port on which the service is running, edit 
+the value and save. This updates the ServiceExportConfig. The ServiceExportConfig will again be propagated to all the worker clusters.
+
+To edit the service export configuration, use the following command:
+```
+kubeslice-cli edit serviceExportConfig <resource-name> -n <project-namespace>
+```
+Example
+```
+kubeslice-cli edit serviceExportConfig iperf-server-iperf-kind-ks-w-1 -n kubeslice-demo
+```
+Example Output
+```
+Editing KubeSlice serviceExportConfig...
+🏃 Running command: /usr/local/bin/kubectl edit serviceexportconfigs.controller.kubeslice.io iperf-server-iperf-kind-ks-w-1 -n kubeslice-genos
+...
+```
+
+

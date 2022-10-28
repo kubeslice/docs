@@ -1,0 +1,120 @@
+# describe
+
+Use this command to describe KubeSlice resources. This shows the details of a specific KubeSlice resource.
+
+## Syntax
+```
+kubeslice-cli describe [global options] <command> <command-options>
+kubeslice-cli describe project <project-name> --namespace <controller-namespace>
+kubeslice-cli describe <sliceConfig/serviceExportConfig> --namespace <project namespace>
+```
+
+## Options
+The following are the `kubeslice-cli describe` command options.
+
+|Option|Shorthand|Description|
+|----|----|----|
+|--namespace|-n|It is the name of the project namespace on the KubeSlice Controller.|
+|--config|-c|It is a **global** option. The path to the topology configuration YAML file.|
+|--help|-h|It provides information on the describe command.|
+
+## Resource Type
+The following are the resource types used with the describe command:
+- **project**: It is used to create, edit, delete, describe, and get the project.
+- **sliceConfig**: It is used to create, edit, delete, describe, and get the slice.
+- **serviceExportConfig**: It is used to create, edit, delete, describe, and get the service export.
+
+For more information on resource configuration parameters, see 
+[Kubeslice Configuration Parameters](https://docs.avesha.io/documentation/open-source/0.4.0/reference/configuration-parameters).
+
+## Examples
+The following are the example commands:
+
+1. To describe the slice configuration, use the following command:
+
+   ```
+   kubeslice-cli describe sliceConfig <slice-name> -n <project-namespace>
+   ```
+ 
+   Example
+   ```
+   kubeslice-cli describe sliceConfig slice-red -n kubeslice-demo
+   ```
+ 
+   Example Output
+   ```
+   Describing KubeSlice SliceConfig...
+   🏃 Running command: /usr/local/bin/kubectl describe sliceconfigs.controller.kubeslice.io slice-red -n kubeslice-demo
+   Name:         slice-red
+   Namespace:    kubeslice-demo
+   Labels:       <none>
+   Annotations:  <none>
+   API Version:  controller.kubeslice.io/v1alpha1
+   Kind:         SliceConfig
+   Metadata:
+     Creation Timestamp:  2022-10-04T12:35:54Z
+     Finalizers:
+       controller.kubeslice.io/slice-configuration-finalizer
+     Generation:  1
+     Managed Fields:
+       API Version:  controller.kubeslice.io/v1alpha1
+       Fields Type:  FieldsV1
+       fieldsV1:
+         f:metadata:
+           f:annotations:
+              .:
+             f:kubectl.kubernetes.io/last-applied-configuration:
+         f:spec:
+            .:
+            f:clusters:
+            f:qosProfileDetails:
+              .:
+             f:bandwidthCeilingKbps:
+             f:bandwidthGuaranteedKbps:
+             f:dscpClass:
+             f:priority:
+             f:queueType:
+             f:tcType:
+           f:sliceGatewayProvider:
+              .:
+              f:sliceCaType:
+              f:sliceGatewayType:
+            f:sliceIpamType:
+           f:sliceSubnet:
+           f:sliceType:
+       Manager:      kubectl-client-side-apply
+       Operation:    Update
+       Time:         2022-10-04T12:35:54Z
+       API Version:  controller.kubeslice.io/v1alpha1
+       Fields Type:  FieldsV1
+       fieldsV1:
+         f:metadata:
+           f:finalizers:
+             .:
+             v:"controller.kubeslice.io/slice-configuration-finalizer":
+       Manager:         manager
+       Operation:       Update
+       Time:            2022-10-04T12:35:54Z
+     Resource Version:  60976
+     UID:               d7fa839e-9b05-4264-adc6-a061850d54d5
+   Spec:
+     Clusters:
+       ks-w-1
+       ks-w-2
+     Namespace Isolation Profile:
+       Isolation Enabled:  false
+     Qos Profile Details:
+       Bandwidth Ceiling Kbps:     30000
+       Bandwidth Guaranteed Kbps:  20000
+       Dscp Class:                 AF11
+       Priority:                   0
+       Queue Type:                 HTB
+       Tc Type:                    BANDWIDTH_CONTROL
+     Slice Gateway Provider:
+       Slice Ca Type:       Local
+       Slice Gateway Type:  OpenVPN
+     Slice Ipam Type:       Local
+     Slice Subnet:          10.190.0.0/16
+     Slice Type:            Application
+   Events:                  <none>
+   ```
