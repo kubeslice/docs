@@ -1,5 +1,5 @@
 # KubeSlice CLI Demo
-This topic describes the steps to install the KubeSlice Controller and its components using kind for non-production use. To 
+This topic describes the steps to install the KubeSlice Controller and its components using kind clusters for non-production use. To 
 install KubeSlice on a locally configured kind cluster, use the `kubeslice-cli install` command.
 
 ## Prerequisites
@@ -273,7 +273,7 @@ NAME           SLICE       INGRESS   PORT(S)    ENDPOINTS   STATUS
 iperf-server   slice-red             5201/TCP   1           READY
 ```
 
-To validate the service imports on the workers clusters, use the below commands.
+To validate the service imports on the workers clusters, use the following commands:
 
 ```
 /usr/local/bin/kubectl --context=kind-ks-w-1 --kubeconfig=kubeslice/kubeconfig.yaml get serviceimport -n iperf

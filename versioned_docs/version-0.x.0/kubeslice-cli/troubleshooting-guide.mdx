@@ -15,14 +15,13 @@ ERROR: failed to create cluster: failed to init node with kubeadm: command "dock
 Command Output:
 2022/10/04 06:12:21 Process failed exit status 1
 ```
+There could be a memory/disk space issue.
 **To resolve**:
-
-There could be a memory/disk space issue. 
 - Remove unused clusters (other than the ones used in the demo).
 - Increase disk space/memory resources.
 
 ### Unable to run the kubeslice-cli commands
-After successful installation of KubeSlice using kubeslice-cli, you are unable to use the commands:
+After successfully installing KubeSlice using kubeslice-cli, if you are unable to use the commands:
 
 ```
 kubeslice-cli get sliceConfig -n kubeslice-demo
