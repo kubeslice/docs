@@ -1,20 +1,20 @@
 # kubeslice-cli Overview
 
 ## Introduction 
-kubeslice-cli is a command-line tool that allows you to perform KubeSlice operations on Kubernetes clusters. It simplifies the work need to 
-install and uninstall the workloads required to run KubeSlice Controller and Slice Operator in the specified clusters. This tool registers those 
-clusters as part of a KubeSlice multi-cluster, and administer slices across those clusters.
+kubeslice-cli is a command-line tool that allows you to perform KubeSlice operations on Kubernetes clusters. It simplifies the process
+to install and uninstall the workloads needed to run KubeSlice Controller and Slice Operator in the specified clusters. 
+This tool registers those clusters as part of a KubeSlice multi-cluster, and administer slices across those clusters.
 
-The tool takes input in the form of .yaml files that describe the membership of clusters in the multi-cluster (the `topology` yaml file) 
-as well as the definition of slices across those clusters (the `slice configuration` yaml file). Given those yaml files, it simplifies installation 
-of KubeSlice by performing all of the necessary configuration steps to apply the appropriate config to each cluster. You can install KubeSlice 
-on your existing kind or cloud clusters. 
+The tool takes input in the form of YAML files that describe the membership of clusters in the multi-cluster (the `topology` yaml file) 
+as well as the definition of slices across those clusters (the `slice configuration` yaml file). Given those yaml files, it simplifies 
+installation of KubeSlice by performing all of the necessary configuration steps to apply the appropriate config to each cluster. 
+You can install KubeSlice on your existing kind or cloud clusters. 
 
 Alternatively, as a shortcut to create a multicluster of kind clusters to get familiar with KubeSlice, you can use the 
 `kubeslice-cli install —profile` option. It will create a demo topology with one controller and two worker clusters.
 
 
 ## Installing kubeslice-cli
-Download a version of the executable from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+Download an executable version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
 For installation instructions, see [Installing kubeslice-cli](/versioned_docs/version-0.4.0/kubeslice-cli/installing-kubeslice-cli.mdx).
 
