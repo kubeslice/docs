@@ -117,7 +117,7 @@
     "kubeslice-cli/installing-kubeslice-cli",
     {
             "type": "category",
-            "label": "KubeSlice CLI Commands",
+            "label": "kubeslice-cli Commands",
             "collapsed": true,
             "link": {
               "type": "doc",
