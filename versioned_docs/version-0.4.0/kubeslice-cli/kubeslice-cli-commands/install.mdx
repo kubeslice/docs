@@ -5,7 +5,9 @@ Use this command to install the required workloads to run KubeSlice Controller a
 ## Syntax
 
 ```
-kubeslice-cli <install/i> [global options] <command> <command-options>
+kubeslice-cli --config <path-to-the-file/configuration-yaml> <install|i>
+kubeslice-cli install <command-options>
+kubeslice-cli install --profile=<minimal-demo|full-demo>
 ```
 
 ## Options
@@ -32,5 +34,5 @@ The following are the example commands:
 
 2. To install the KubeSlice using topology file, use the following command:
    ```
-   kubeslice-cli install --config <path-to-the-topology-configuration.yaml> 
+   kubeslice-cli --config <path-to-the-topology-configuration.yaml> install
    ```

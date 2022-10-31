@@ -5,9 +5,8 @@ service export.
 
 ## Syntax
 ```
-kubeslice-cli create [global options] <command> <command-options>
-kubeslice-cli create project <project-name> --namespace <controller-namespace>
-kubeslice-cli create <sliceConfig/serviceExportConfig> --namespace <project namespace> --filename <path-to-the-file/configuration-yaml>
+kubeslice-cli --config <config-yaml-file> create project <project-name> --namespace <controller-namespace>
+kubeslice-cli create <sliceConfig|serviceExportConfig> --namespace <project-namespace> --filename <path-to-the-file/configuration-yaml>
 ```
 
 ## Options
