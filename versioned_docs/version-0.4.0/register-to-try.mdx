@@ -21,7 +21,7 @@ To register:
 
 You will receive an email confirming your registration. 
 
-## Accessing the KubeSlice on the Provisioned Playground 
+## Accessing the Provisioned Playground to Try Out KubeSlice
 The response email that you receive after you register contains the details about 
 how to access the KubeSlice on the provisioned playground. 
 
@@ -31,6 +31,20 @@ playground contains three kind clusters.
 :::info
 You will receive an expiration-reminder email an hour (60 minutes) before your access expires. 
 :::
+
+Now with the access to your sandbox virtual machine (VM), a few tasks that you can do are:
+
+* Run `kubeslice-cli install --profile=full-demo` to get a full environment setup for you. 
+  You can use that to explore and learn about KubeSlice without installing anything.
+* If you want to practice installing Kubeslice, you can do the 
+  [minimal-demo](/versioned_docs/version-0.4.0/kubeslice-cli/kubeslice-cli-demo.mdx).    
+* If you are a contributor, you can install a topology, clone your repo to the sandbox VM, and 
+  try out your modifications.
+
+  :::warning
+  Remember that the sandbox environment expires in **four hours**, which will erase all the local content if you don't save it. 
+  Be sure to save your work on your local system.
+  :::
 
 For any support/feedback, write to us at support@avesha.io or join the **KubeSlice Community** (#kubeslice) channel
 on the **Kubernetes Slack** (kubernetes.slack.com) workspace. 
