@@ -23,7 +23,8 @@ The `kubeslice-cli install` command with the `--profile=minimal-demo` option doe
 5. Creates a `kubeslice-demo` project namespace on a controller cluster.
 6. Registers the `ks-w-1` and `ks-w-2` worker clusters with a project.
 7. Installs Slice Operator on the worker clusters.
-8. Creates the `iperf` namespace for application deployment.
+8. Creates a slice called `demo`. 
+9. Creates the `iperf` namespace for application deployment.
 
 
 To setup the KubeSlice demo, use the following command:
@@ -78,9 +79,22 @@ ks-w-2   54m
 You have successfully installed the KubeSlice Controller on the controller cluster and Slice Operator on the worker cluster.
 :::
 
-## Creating a Slice
 
-After successfully installing the KubeSlice Controller and KubeSlice Worker, you can create a slice to onboard your application.
+After successfully installing KubeSlice Controller and the Slice Operator on the worker clusters. The `kubeslice-cli install --profile=minimal-demo` 
+command creates a slice called `demo`. To validate the demo slice, see [Validating the Slice](#validating-the-slice).
+
+On the `demo` slice, you can now onboard the iperf application. To onboard the application on the slice, see
+[Deploying the iPerf Application](#deploying-the-iperf-application). 
+
+You can also use the kubeslice-cli command to create a new slice where you can onboard application. To create a slice on your demo setup, 
+follow these steps.
+
+
+## Creating a Slice
+:::info
+Skips this step if you do not want to create a new slice and continue onboarding the application on the `demo` slice.
+:::
+Create a slice configuration YAML file using the following template and apply it to the project namespace.
 
 ### Creating the Slice Configuration YAML File
 :::info
