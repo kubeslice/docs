@@ -1,0 +1,103 @@
+# KubeSlice Components
+KubeSlice consists of the following main components deployed in one 
+or more gateway nodes that work in conjunction to securely connect 
+workloads across multiple Kubernetes clusters located in data centers, 
+public clouds, or edge locations:
+
+* [KubeSlice Controller](#kubeslice-controller)
+* [Slice Operator](#slice-operator)
+* [Slice VPN Gateways](#slice-vpn-gateways)
+* [Slice Router](#slice-router)
+* [Slice Istio Components](#slice-istio-components)
+* [KubeSlice DNS](#kubeslice-dns)
+* [Network Service Mesh Control and Data Plane](#network-service-mesh-control-and-data-plane)
+* [NetOps](#netops)
+
+## KubeSlice Controller
+The KubeSlice Controller is installed in one of the clusters and 
+provides a central configuration management system, for slices across multiple clusters. 
+
+We recommend that you install the KubeSlice Controller on a separate cluster.
+
+The KubeSlice Controller provides:
+
+A communication interface through which Slice Operators on multiple clusters can connect to 
+it. The slice configuration that includes slice VPN gateway, service discovery with service 
+import/export, and ingress/egress gateway related parameters are relayed to the Slice 
+Operators on registered clusters.
+
+Creation and management of cryptographic certificates for secure slice VPN gateways.
+
+APIs through the API Gateway for the KubeSlice Manager to create and manage the application slices. 
+
+## Slice Operator
+The Slice Operator, also known as a Worker Operator is a Kubernetes Operator component 
+that manages the life-cycle of the KubeSlice related Custom Resource Definitions (CRDs).
+
+The Slice Operator performs the following functions:
+
+- Interacts with the KubeSlice controller to receive slice configuration updates.
+- Reconciliation of slice resources in the cluster KubeSlice Controller.
+- Creation of slice components required for Slice VPN Gateway connectivity and Service Discovery.
+- Auto insertion and deletion of slice components to accommodate topology changes.
+- Lifecycle management of slices, slice configurations, slice status, and slice telemetry.
+- Lifecycle management of network policies and monitoring of configuration drift to generate slice events and alerts.
+- Management of the association of slices with namespaces
+- Interaction with the KubeSlice Controller to:
+  - Facilitate network policy and service discovery across the slice.
+  - Import/export Istio services to/from the other clusters attached to the slice.
+  - Implement Role-Based Access Control (RBAC) for managing the slice components.
+
+## Slice VPN Gateways
+The Slice VPN Gateway is a slice network service component that provides a secure VPN 
+tunnel between multiple clusters that are a part of the slice configuration.
+
+The Slice Operator performs the following life-cycle functions for Slice VPN Gateways:
+
+- Interacts with the KubeSlice controller to receive configuration related to slice gateways.
+- Maintains cryptographic keys and certificates needed for secure VPN tunnels.
+- Deploys and reconciles slice VPN gateway pods.
+- Periodically monitors the status of the gateway pods.
+- Continuously interacts with Slice VPN Gateways for status, keys/certificates, and configuration changes.
+
+KubeSlice Controller manages the VPN gateway pairs for the attached clusters, and creates the 
+keys & configurations required for the operation. 
+
+## Slice Router
+A slice router is a virtual layer 3 device that sets up the routing and forwarding rules 
+in the slice overlay network. A minimum of one slice router pod is provisioned per slice 
+on a cluster.
+
+The slice operator manages the life cycle of the slice router deployment and monitors its 
+status periodically.
+
+## Slice Istio Components
+KubeSlice provides the option of setting up ingress and egress gateways for a slice using 
+Istio Service Mesh resources. Ingress/Egress gateway is not a core component of KubeSlice, 
+it is an add-on feature that users can activate if needed. The Istio components must be 
+installed in the cluster before the KubeSlice components are installed or they can be 
+installed as a part of the KubeSlice installation itself.
+
+Slice Ingress/Egress Gateways are used for internal East-West traffic (inter-cluster, egress from one cluster, and ingress into another cluster) and Slice North-South Ingress Gateway for external traffic. 
+
+## KubeSlice DNS
+KubeSlice DNS is a DNS server that is used to resolve service names exposed on application slices.
+
+The Slice Operator manages the DNS entries for all the services exposed on the slice overlay network(s).
+
+When a service is exported on the slice by installing a ServiceExport object, a DNS entry 
+is created in the KubeSlice DNS server in all the clusters that are part of the slice.
+
+## Network Service Mesh Control and Data Plane
+The Network Service Mesh (NSM) component sets up the Kubeslice data plane and connects application pods to the 
+slice overlay network. It consists of:
+
+- NSM Control plane daemon set
+- NSM Data plane daemon set
+- NSM admission webhook controller pod
+- NSM CRD objects that facilitate setting up the slice overlay network
+
+## NetOps
+Each slice in a cluster is associated with a QoS profile for bandwidth control across the 
+clusters. The QoS profile is applied to the external interface of the VPN gateway nodes. 
+NetOps pods configure and enforce the QoS profile for a slice on a cluster. 
