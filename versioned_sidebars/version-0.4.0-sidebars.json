@@ -1,11 +1,61 @@
 {
   "version2": [
     "overview",
-    "architecture",
+    "register-to-try",
+    {
+      "type": "category",
+      "label": "kubeslice-cli",
+      "collapsed": true,
+      "link": {
+         "type": "doc",
+         "id": "kubeslice-cli/kubeslice-cli"
+         },
+     "items": [ 
+        "kubeslice-cli/kubeslice-cli-overview",
+        "kubeslice-cli/installing-kubeslice-cli",
+         {
+           "type": "category",
+           "label": "kubeslice-cli Commands",
+           "collapsed": true,
+           "link": {
+             "type": "doc",
+             "id": "kubeslice-cli/kubeslice-cli-commands/kubeslice-cli-commands"
+           },
+           "items": [
+             "kubeslice-cli/kubeslice-cli-commands/create",
+             "kubeslice-cli/kubeslice-cli-commands/delete",
+             "kubeslice-cli/kubeslice-cli-commands/describe",
+             "kubeslice-cli/kubeslice-cli-commands/edit",
+             "kubeslice-cli/kubeslice-cli-commands/get",
+             "kubeslice-cli/kubeslice-cli-commands/install",
+             "kubeslice-cli/kubeslice-cli-commands/register",
+             "kubeslice-cli/kubeslice-cli-commands/uninstall"
+           ]
+        },
+       "kubeslice-cli/installing-kubeslice",
+       "kubeslice-cli/uninstalling-kubeslice",
+       {
+         "type": "category",
+         "label": "Reference",
+         "collapsed": true,
+         "link": {
+           "type": "doc",
+           "id": "kubeslice-cli/reference/reference"
+         },
+         "items": [
+           "kubeslice-cli/reference/topology-template",
+           "kubeslice-cli/reference/configuration-parameters",
+           "kubeslice-cli/reference/sample-configuration-file"
+         ]
+       },
+       "kubeslice-cli/kubeslice-cli-demo",
+       "kubeslice-cli/troubleshooting-guide"
+     ]
+   },
     "getting-started-with-kind-clusters",
     {
       "type": "category",
-      "label": "Getting Started With Cloud Clusters",
+      "label": "Cloud Clusters",
       "collapsed": true,
       "link": {
         "type": "doc",
@@ -73,20 +123,8 @@
         }
       ]
     },
+    "architecture",
     "troubleshooting-guide",
-    {
-      "type": "category",
-      "label": "Reference",
-      "collapsed": true,
-      "link": {
-        "type": "doc",
-        "id": "reference/reference"
-      },
-      "items": [
-        "reference/configuration-parameters",
-        "reference/script-to-get-the-secrets-of-the-worker-cluster"
-      ]
-    },
     {
       "type": "category",
       "label": "Release Notes",
@@ -102,58 +140,18 @@
         "release-notes/release-notes-for-kubeslice-oss-0.1.0"
       ]
     },
-    "register-to-try",
-    "community",
-    "contribute-to-kubeslice-docs",
     {
-       "type": "category",
-       "label": "kubeslice-cli",
-       "collapsed": true,
-       "link": {
-          "type": "doc",
-          "id": "kubeslice-cli/kubeslice-cli"
-          },
-      "items": [ 
-    "kubeslice-cli/kubeslice-cli-overview",
-    "kubeslice-cli/installing-kubeslice-cli",
-    {
-            "type": "category",
-            "label": "kubeslice-cli Commands",
-            "collapsed": true,
-            "link": {
-              "type": "doc",
-              "id": "kubeslice-cli/kubeslice-cli-commands/kubeslice-cli-commands"
-            },
-            "items": [
-              "kubeslice-cli/kubeslice-cli-commands/create",
-              "kubeslice-cli/kubeslice-cli-commands/delete",
-              "kubeslice-cli/kubeslice-cli-commands/describe",
-              "kubeslice-cli/kubeslice-cli-commands/edit",
-              "kubeslice-cli/kubeslice-cli-commands/get",
-              "kubeslice-cli/kubeslice-cli-commands/install",
-              "kubeslice-cli/kubeslice-cli-commands/register",
-              "kubeslice-cli/kubeslice-cli-commands/uninstall"
-            ]
-     },
-     "kubeslice-cli/installing-kubeslice",
-     "kubeslice-cli/uninstalling-kubeslice",
-      {
-        "type": "category",
-        "label": "Reference",
-        "collapsed": true,
-        "link": {
-          "type": "doc",
-          "id": "kubeslice-cli/reference/reference"
-        },
-        "items": [
-          "kubeslice-cli/reference/topology-template",
-          "kubeslice-cli/reference/configuration-parameters",
-          "kubeslice-cli/reference/sample-configuration-file"
-        ]
+      "type": "category",
+      "label": "Reference",
+      "collapsed": true,
+      "link": {
+        "type": "doc",
+        "id": "reference/reference"
       },
-      "kubeslice-cli/kubeslice-cli-demo",
-      "kubeslice-cli/troubleshooting-guide"
-    ]
-  }
+      "items": [
+        "reference/configuration-parameters",
+        "reference/script-to-get-the-secrets-of-the-worker-cluster"
+      ]
+    }
   ]
 }
