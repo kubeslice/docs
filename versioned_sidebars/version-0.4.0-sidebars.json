@@ -3,143 +3,150 @@
     "overview",
     {
       "type": "category",
-      "label": "Quick Start",
+      "label": "GETTING STARTED",
       "collapsed": false,
-      "items": [
-        "register-to-try"
-      ]
-    }, 
+      "items": [    
+      {
+        "type": "category",
+        "label": "Quick Start",
+        "collapsed": true,
+        "items": [
+          "register-to-try"
+        ]
+      }, 
+      {
+        "type": "category",
+        "label": "Full Installation",
+        "collapsed": true,
+        "items": [ 
+          {
+            "type": "category",
+            "label": "kubeslice-cli",
+            "collapsed": true,
+            "link": {
+              "type": "doc",
+              "id": "kubeslice-cli/kubeslice-cli"
+            },
+            "items": [ 
+              "kubeslice-cli/kubeslice-cli-overview",
+              "kubeslice-cli/installing-kubeslice-cli",
+              {
+                "type": "category",
+                "label": "kubeslice-cli Commands",
+                "collapsed": true,
+                "link": {
+                  "type": "doc",
+                  "id": "kubeslice-cli/kubeslice-cli-commands/kubeslice-cli-commands"
+                },
+                "items": [
+                  "kubeslice-cli/kubeslice-cli-commands/create",
+                  "kubeslice-cli/kubeslice-cli-commands/delete",
+                  "kubeslice-cli/kubeslice-cli-commands/describe",
+                  "kubeslice-cli/kubeslice-cli-commands/edit",
+                  "kubeslice-cli/kubeslice-cli-commands/get",
+                  "kubeslice-cli/kubeslice-cli-commands/install",
+                  "kubeslice-cli/kubeslice-cli-commands/register",
+                  "kubeslice-cli/kubeslice-cli-commands/uninstall"
+                ]
+              },
+              "kubeslice-cli/installing-kubeslice",
+              "kubeslice-cli/uninstalling-kubeslice",
+              {
+                "type": "category",
+                "label": "Reference",
+                "collapsed": true,
+                "link": {
+                  "type": "doc",
+                  "id": "kubeslice-cli/reference/reference"
+                },
+                "items": [
+                  "kubeslice-cli/reference/topology-template",
+                  "kubeslice-cli/reference/configuration-parameters",
+                  "kubeslice-cli/reference/sample-configuration-file"
+                ]
+              },
+              "kubeslice-cli/kubeslice-cli-demo",
+              "kubeslice-cli/troubleshooting-guide"
+            ]
+          },
+          "getting-started-with-kind-clusters",
+          {
+            "type": "category",
+            "label": "Cloud Clusters",
+            "collapsed": true,
+            "link": {
+              "type": "doc",
+              "id": "getting-started-with-cloud-clusters/getting-started-with-cloud-clusters"
+            },
+            "items": [
+              {
+                "type": "category",
+                "label": "Prerequisites",
+                "collapsed": true,
+                "link": {
+                  "type": "doc",
+                  "id": "getting-started-with-cloud-clusters/prerequisites/prerequisites"
+                },
+                "items": [
+                  "getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration"
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Installing KubeSlice",
+                "collapsed": true,
+                "link": {
+                  "type": "doc",
+                  "id": "getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice"
+                },
+                "items": [
+                  "getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller",
+                  "getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster",
+                  "getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice",
+                  "getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces",
+                  "getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces"
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Tutorials",
+                "collapsed": true,
+                "link": {
+                  "type": "doc",
+                  "id": "getting-started-with-cloud-clusters/tutorials/tutorials"
+                },
+                "items": [
+                  "getting-started-with-cloud-clusters/tutorials/deploying-the-iperf-application",
+                  "getting-started-with-cloud-clusters/tutorials/deploying-the-bookinfo-application",
+                  "getting-started-with-cloud-clusters/tutorials/deploying-the-iperf-application-on-an-intra-cluster-slice",
+                  "getting-started-with-cloud-clusters/tutorials/deploying-the-bookinfo-application-on-an-intra-cluster-slice"
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Uninstalling KubeSlice",
+                "collapsed": true,
+                "link": {
+                  "type": "doc",
+                  "id": "getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-kubeslice"
+                },
+                "items": [
+                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces",
+                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-slice",
+                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/deregistering-the-worker-cluster",
+                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-project",
+                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-the-kubeslice-controller"
+                ]
+              }
+            ]
+          }
+        ]  
+      }
+    ]
+   }, 
     {
       "type": "category",
-      "label": "Full Installation",
-      "collapsed": false,
-      "items": [ 
-         {
-          "type": "category",
-          "label": "kubeslice-cli",
-          "collapsed": true,
-          "link": {
-            "type": "doc",
-            "id": "kubeslice-cli/kubeslice-cli"
-          },
-          "items": [ 
-            "kubeslice-cli/kubeslice-cli-overview",
-            "kubeslice-cli/installing-kubeslice-cli",
-            {
-              "type": "category",
-              "label": "kubeslice-cli Commands",
-              "collapsed": true,
-              "link": {
-                "type": "doc",
-                "id": "kubeslice-cli/kubeslice-cli-commands/kubeslice-cli-commands"
-              },
-              "items": [
-                "kubeslice-cli/kubeslice-cli-commands/create",
-                "kubeslice-cli/kubeslice-cli-commands/delete",
-                "kubeslice-cli/kubeslice-cli-commands/describe",
-                "kubeslice-cli/kubeslice-cli-commands/edit",
-                "kubeslice-cli/kubeslice-cli-commands/get",
-                "kubeslice-cli/kubeslice-cli-commands/install",
-                "kubeslice-cli/kubeslice-cli-commands/register",
-                "kubeslice-cli/kubeslice-cli-commands/uninstall"
-              ]
-            },
-            "kubeslice-cli/installing-kubeslice",
-            "kubeslice-cli/uninstalling-kubeslice",
-            {
-              "type": "category",
-              "label": "Reference",
-              "collapsed": true,
-              "link": {
-                "type": "doc",
-                "id": "kubeslice-cli/reference/reference"
-              },
-              "items": [
-                "kubeslice-cli/reference/topology-template",
-                "kubeslice-cli/reference/configuration-parameters",
-                "kubeslice-cli/reference/sample-configuration-file"
-              ]
-            },
-            "kubeslice-cli/kubeslice-cli-demo",
-            "kubeslice-cli/troubleshooting-guide"
-          ]
-        },
-        "getting-started-with-kind-clusters",
-        {
-          "type": "category",
-          "label": "Cloud Clusters",
-          "collapsed": true,
-          "link": {
-            "type": "doc",
-            "id": "getting-started-with-cloud-clusters/getting-started-with-cloud-clusters"
-          },
-          "items": [
-            {
-              "type": "category",
-              "label": "Prerequisites",
-              "collapsed": true,
-              "link": {
-                "type": "doc",
-                "id": "getting-started-with-cloud-clusters/prerequisites/prerequisites"
-              },
-              "items": [
-                "getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration"
-              ]
-            },
-            {
-              "type": "category",
-              "label": "Installing KubeSlice",
-              "collapsed": true,
-              "link": {
-                "type": "doc",
-                "id": "getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice"
-              },
-              "items": [
-                "getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller",
-                "getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster",
-                "getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice",
-                "getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces",
-                "getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces"
-              ]
-            },
-            {
-              "type": "category",
-              "label": "Tutorials",
-              "collapsed": true,
-              "link": {
-                "type": "doc",
-                "id": "getting-started-with-cloud-clusters/tutorials/tutorials"
-              },
-              "items": [
-                "getting-started-with-cloud-clusters/tutorials/deploying-the-iperf-application",
-                "getting-started-with-cloud-clusters/tutorials/deploying-the-bookinfo-application",
-                "getting-started-with-cloud-clusters/tutorials/deploying-the-iperf-application-on-an-intra-cluster-slice",
-                "getting-started-with-cloud-clusters/tutorials/deploying-the-bookinfo-application-on-an-intra-cluster-slice"
-              ]
-            },
-            {
-              "type": "category",
-              "label": "Uninstalling KubeSlice",
-              "collapsed": true,
-              "link": {
-                "type": "doc",
-                "id": "getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-kubeslice"
-              },
-              "items": [
-                "getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces",
-                "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-slice",
-                "getting-started-with-cloud-clusters/uninstalling-kubeslice/deregistering-the-worker-cluster",
-                "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-project",
-                "getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-the-kubeslice-controller"
-              ]
-            }
-          ]
-        }
-      ]  
-    },  
-    {
-      "type": "category",
-      "label": "Architecture",
+      "label": "ARCHITECTURE",
       "collapsed": false,
       "items": [
           "architecture",
