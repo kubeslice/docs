@@ -12,6 +12,10 @@ Before you begin, ensure the following prerequisites are met:
 
 ## Installing KubeSlice
 
+The `kubeslice-cli install —profile=<minimal-demo|full-demo>` command creates a demo topology consisting of one controller and 
+two worker clusters. The **full-demo** deploys the application on the `demo` slice, whereas the **minimal-demo** requires that an application 
+be deployed on the `demo` slice.
+
 In this demonstration, install KubeSlice on kind clusters using kubeslice-cli, using the `--profile=minimal-demo` option.
 
 The `kubeslice-cli install` command with the `--profile=minimal-demo` option does the following:
@@ -29,7 +33,7 @@ The `kubeslice-cli install` command with the `--profile=minimal-demo` option doe
 
 To setup the KubeSlice demo, use the following command:
 ```
-kubectl-cli install --profile=minimal-demo
+kubeslice-cli install --profile=minimal-demo
 ```
 
 :::caution
@@ -80,13 +84,13 @@ You have successfully installed the KubeSlice Controller on the controller clust
 :::
 
 
-After successfully installing KubeSlice Controller and the Slice Operator on the worker clusters. The `kubeslice-cli install --profile=minimal-demo` 
-command creates a slice called `demo`. To validate the demo slice, see [Validating the Slice](#validating-the-slice).
+The `kubeslice-cli install —profile=minimal-demo` command creates a slice called 'demo' after successfully installing KubeSlice Controller 
+and the Slice Operator on the worker clusters. To validate the demo slice, see [Validating the Slice](#validating-the-slice).
 
-On the `demo` slice, you can now onboard the iperf application. To onboard the application on the slice, see
+You can now onboard the iperf application on the `demo` slice. To onboard the application on the slice, see
 [Deploying the iPerf Application](#deploying-the-iperf-application). 
 
-You can also use the kubeslice-cli command to create a new slice where you can onboard application. To create a slice on your demo setup, 
+You can also use the kubeslice-cli command to create a new slice for application onboarding. To create a slice on your demo setup, 
 follow these steps.
 
 
