@@ -1,6 +1,5 @@
 {
   "version2": [
-    "overview",
     {
       "type": "category",
       "label": "GETTING STARTED",
@@ -146,9 +145,10 @@
    }, 
     {
       "type": "category",
-      "label": "ARCHITECTURE",
+      "label": "OVERVIEW",
       "collapsed": false,
       "items": [
+          "overview",
           "architecture",
           "components"
       ]
@@ -156,7 +156,7 @@
     "troubleshooting-guide",
     {
       "type": "category",
-      "label": "Release Notes",
+      "label": "RELEASE NOTES",
       "collapsed": true,
       "link": {
         "type": "doc",
@@ -171,7 +171,7 @@
     },
     {
       "type": "category",
-      "label": "Reference",
+      "label": "REFERENCE",
       "collapsed": true,
       "link": {
         "type": "doc",
