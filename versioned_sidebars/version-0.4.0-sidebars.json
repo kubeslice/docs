@@ -144,7 +144,11 @@
       },
       "items": [
         "reference/configuration-parameters",
-        "reference/script-to-get-the-secrets-of-the-worker-cluster"
+        "reference/kubeslice-cli-configuration-parameters",
+        "reference/script-to-get-the-secrets-of-the-worker-cluster",
+        "reference/topology-template",
+        "reference/sample-configuration-file"
+
       ]
     }
   ]
