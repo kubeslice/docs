@@ -1,0 +1,125 @@
+# Getting Started
+
+## Introduction 
+kubeslice-cli is a command-line tool that allows you to perform KubeSlice operations on Kubernetes clusters. It simplifies the process
+to install and uninstall the workloads needed to run KubeSlice Controller and Slice Operator in the specified clusters. 
+This tool registers those clusters as part of a KubeSlice multi-cluster, and administer slices across those clusters.
+
+The tool takes input in the form of YAML files that describe the membership of clusters in the multi-cluster (the `topology` yaml file) 
+as well as the definition of slices across those clusters (the `slice configuration` yaml file). Given those yaml files, it simplifies 
+installation of KubeSlice by performing all of the necessary configuration steps to apply the appropriate config to each cluster. 
+You can install KubeSlice on your existing kind or cloud clusters. 
+
+Alternatively, as a shortcut to create a multicluster of kind clusters to get familiar with KubeSlice, you can use the 
+`kubeslice-cli install —profile` option. It will create a demo topology with one controller and two worker clusters.
+
+
+## Installing kubeslice-cli Tool
+Download an executable version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+
+This topic describes the steps to install the `kubeslice-cli` tool on different operating systems.
+
+### Installing kubeslice-cli on Windows
+
+To install kubeslice-cli on Windows:
+
+1. Download the latest Windows version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+   After downloading, you can rename the executable file to **kubeslice-cli**.
+
+2. Navigate to the directory where you have downloaded the executable file or provide the absolute path to run the `kubeslice-cli` command.
+
+3. Ensure the downloaded version is up-to-date using the following command:
+   ```
+   .\kubeslice-cli.exe --version
+   ```
+### Installing kubeslice-cli on Linux
+
+To install kubeslice-cli on Linux, macOS, or Ubuntu:
+
+1. Download the latest Linux version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+2. Create a symlink to access the file:
+   :::info
+   A symlink is a symbolic Linux/ UNIX link that points to another file or folder on your computer, or a connected file system.
+   :::
+   ```
+   ln -s <downloaded-binary>  ~/bin/kubeslice-cli
+   ```
+3. Ensure the downloaded version is up-to-date using the following command:
+   ```
+   kubeslice-cli --version
+   ```
+### Downloading kubeslice-cli using Wget
+
+See the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page for the latest version. Use the following command to 
+download the latest binary (~6 MB):
+
+```
+sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/<latest-version>/kubeslice-cli-linux-amd64 -o /usr/local/bin/kubeslice-cli
+```
+
+Example
+```
+sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.3.2/kubeslice-cli-linux-amd64 -o /usr/local/bin/kubeslice-cli
+```
+Make the binary executable using the following command:
+```
+sudo chmod a+x /usr/local/bin/kubeslice-cli
+```
+Ensure the downloaded version is up-to-date using the following command:
+```
+kubeslice-cli -v
+```
+
+## kubeslice-cli Commands
+# kubeslice-cli Commands
+
+This section contains information about KubeSlice commands, syntax, options, a resource type, and a few examples of command usage.
+
+## Syntax
+Use the following syntax to run the kubeslice-cli tool:
+
+```
+kubeslice-cli [global-options] <command> [<command-arguments>] [command-options]
+```
+
+## Commands
+
+The following table describes the syntax and descriptions for all the `kubeslice-cli` commands.
+
+|Operations|Syntax|Description|
+|----|----|---|
+| create | `kubeslice-cli create [options]` | Creates one or more resources from a file. |
+| delete | `kubeslice-cli delete [options]` | Delete resources from a file.|
+| describe | `kubeslice-cli describe [options]` | Describe the KubeSlice resources.|
+| edit | `kubeslice-cli edit [options]` | Edit and update the definition of one or more kubeSlice resources.|
+| get | `kubeslice-cli get [options]` | List one or more kubeSlice resources.|
+| install | `kubeslice-cli install [options]` | Install kubeSlice resources.|
+| uninstall | `kubeslice-cli uninstall [options]` | Uninstall kubeSlice resources.|
+| help | `kubeslice-cli help` | Get more information on any command.|
+
+## Options
+The following are the kubeslice-cli options.
+
+|Options|Shorthand|Description|
+|----|----|----|
+|--help|-h|It provides more information on the kubeslice-cli.|
+|--config|-c| It is a **global** option. The path to the topology configuration YAML file.|
+|--version|-v|It is the version of the `kubeslice-cli` tool.|
+
+:::note
+The kubeslice-cli tool must have access to the clusters you want it to manage. To grant it access, set the KUBECONFIG environment variable to 
+a path to the kubeconfig file containing the necessary keys to access those clusters.
+To set the KUBECONFIG environment varible, use these commands:
+  - On Linux/macOS: `export KUBECONFIG=<path to kubeconfig file>`
+  - On Windows: `set KUBECONFIG=<path to kubeconfig file>`
+::: 
+
+:::caution
+- If the global **—config** option is not specified, kubeslice-cli attempts to execute against the current cluster context. Run the 
+following command to determine which context you are currently in: `kubectx -c`.
+- The currently supported operations are all controller cluster specific. You must run the kubeslice-cli commands on the controller cluster. 
+use this command to switch the cluster context: `kubectx <controller-cluster>`.
+:::
+
