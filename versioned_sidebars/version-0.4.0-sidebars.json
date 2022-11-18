@@ -27,9 +27,9 @@
               "id": "kubeslice-cli/kubeslice-cli"
             },
             "items": [ 
-              "kubeslice-cli/getting-started,
+              "kubeslice-cli/getting-started",
               "kubeslice-cli/create-slice",
-              "kubeslice-cli/delete-slice,
+              "kubeslice-cli/delete-slice"
               
             ]
           },
