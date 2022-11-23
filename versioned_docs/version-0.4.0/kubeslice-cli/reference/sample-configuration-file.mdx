@@ -4,7 +4,7 @@ The following is the sample configuration YAML to install KubeSlice using openso
 In this demonstration, we use a controller cluster with name `controller`, as well as two worker clusters with the 
 names `worker-1`and `worker-2`. Add the path to the relavant `kubeconfig` file. `kubeslice-avesha` serves as an example of a project namespace.
 The defined cluster context  are `kind-contoller`, `kind-worker-1`, and `kind-worker-2`.
-The opensource KubeSlice repo charts URL is https://kubeslice.github.io/charts/.
+The opensource KubeSlice repo charts URL is `https://kubeslice.github.io/kubeslice/`.
 
 Create the topology YAML file using the following template:
 
@@ -26,7 +26,7 @@ configuration:
     project_name: kubeslice-avesha
   helm_chart_configuration:
     repo_alias: kubeslice
-    repo_url: https://kubeslice.github.io/charts/
+    repo_url: https://kubeslice.github.io/kubeslice/
     cert_manager_chart:
       chart_name: cert-manager
     controller_chart:
