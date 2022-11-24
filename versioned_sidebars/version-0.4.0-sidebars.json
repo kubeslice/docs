@@ -15,7 +15,7 @@
       }, 
       {
         "type": "category",
-        "label": "Full Installation",
+        "label": "CONFIGURE KUBESLICE",
         "collapsed": true,
         "items": [ 
           {
@@ -29,10 +29,15 @@
             "items": [ 
               "kubeslice-cli/getting-started",
               "kubeslice-cli/create-slice",
-              "kubeslice-cli/delete-slice"
-              
+              "kubeslice-cli/delete-slice"     
             ]
           },
+          {
+            "type": "category",
+            "label": "Configure using YAML",
+            "collapsed": true,
+            "items": [ 
+
           "getting-started-with-kind-clusters",
           {
             "type": "category",
@@ -73,21 +78,6 @@
               },
               {
                 "type": "category",
-                "label": "Tutorials",
-                "collapsed": true,
-                "link": {
-                  "type": "doc",
-                  "id": "getting-started-with-cloud-clusters/tutorials/tutorials"
-                },
-                "items": [
-                  "getting-started-with-cloud-clusters/tutorials/deploying-the-iperf-application",
-                  "getting-started-with-cloud-clusters/tutorials/deploying-the-bookinfo-application",
-                  "getting-started-with-cloud-clusters/tutorials/deploying-the-iperf-application-on-an-intra-cluster-slice",
-                  "getting-started-with-cloud-clusters/tutorials/deploying-the-bookinfo-application-on-an-intra-cluster-slice"
-                ]
-              },
-              {
-                "type": "category",
                 "label": "Uninstalling KubeSlice",
                 "collapsed": true,
                 "link": {
@@ -106,12 +96,27 @@
           }
         ]  
       }
-    ]
+     ]
    }, 
+   {
+    "type": "category",
+    "label": "TUTORIALS",
+    "collapsed": true,
+    "link": {
+      "type": "doc",
+      "id": "tutorials/tutorials"
+    },
+    "items": [
+      "tutorials/deploying-the-iperf-application",
+      "tutorials/deploying-the-bookinfo-application",
+      "tutorials/deploying-the-iperf-application-on-an-intra-cluster-slice",
+      "tutorials/deploying-the-bookinfo-application-on-an-intra-cluster-slice"
+    ]
+  },
     {
       "type": "category",
       "label": "OVERVIEW",
-      "collapsed": false,
+      "collapsed": true,
       "items": [
           "overview",
           "architecture",
@@ -149,7 +154,9 @@
         "reference/topology-template",
         "reference/sample-configuration-file"
 
-      ]
-    }
-  ]
+       ]
+     }
+   ]
+ }
+]
 }
