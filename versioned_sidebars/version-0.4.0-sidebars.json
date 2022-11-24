@@ -16,7 +16,7 @@
       {
         "type": "category",
         "label": "CONFIGURE KUBESLICE",
-        "collapsed": true,
+        "collapsed": false,
         "items": [ 
           {
             "type": "category",
