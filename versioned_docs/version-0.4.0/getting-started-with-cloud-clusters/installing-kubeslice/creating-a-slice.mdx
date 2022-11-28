@@ -13,7 +13,7 @@ see [Installing the KubeSlice Controller](/versioned_docs/version-0.4.0/getting-
 - You have registered two or more worker clusters with the KubeSlice Controller. For more information, 
 see [Registering the Worker Cluster](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx).
 - You have installed Istio in the worker clusters to configure the external gateways. For more information, 
-see [Installing Istio](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#installing-istio).
+see [Installing Istio](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#install-istio).
 
 ## Creating the Slice YAML File
 
@@ -290,7 +290,7 @@ spec:
         - <cluster-name-2>
 ```
 
-## Applying the Slice Configuration 
+## Apply the Slice Configuration 
 
 The following information is required.
 
@@ -316,12 +316,12 @@ Perform these steps:
    You have successfully created the Slice on the worker clusters.
    :::
 
-### Creating a Standard QoS Profile
+### Create a Standard QoS Profile
 The slice configuration file contains a QoS profile object. To apply a QoS profile to 
 multiple slices, you can create a separate QOS profile YAML file and call it out 
 in other slice configuration. 
 
-#### Creating a Standard QoS Profile YAML File
+#### Create a Standard QoS Profile YAML File
 Use the following template to create a standard `sliceqosconfig` file. 
 
 :::info
@@ -342,7 +342,7 @@ spec:
   bandwidthGuaranteedKbps: 2562
   dscpClass: AF11
 ```
-#### Applying the Standard QOS Profile YAML File
+#### Apply the Standard QOS Profile YAML File
 Apply the `slice-qos-config` file using the following command. 
 
 ```
@@ -357,7 +357,7 @@ You can only add the filename if you are on the project namespace using the foll
 kubectl apply slice-qos-config.yaml -n project-namespace
 ```
 
-### Validating the Standard QoS Profile 
+### Validate the Standard QoS Profile 
 To validate the standard QoS profile that you created, use the following command: 
 
 ```
@@ -437,10 +437,10 @@ spec:
         - cluster-2
 ```
 
-## Validating the Installation
+## Validate the Installation
 Validate the slice configuration on the KubeSlice Controller and the worker clusters.
 
-### Validating the Slice on the Controller Cluster
+### Validate the Slice on the Controller Cluster
 
 Perform these steps:
 
@@ -477,7 +477,7 @@ Perform these steps:
    red-dev-worker-cluster-2-dev-worker-cluster-1   45s
    ```
 
-### Validating the Slice on the Worker Clusters
+### Validate the Slice on the Worker Clusters
 
 Perform these steps:
 
