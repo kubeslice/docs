@@ -10,8 +10,8 @@ Namespaces that are created to run application deployments can be onboarded on a
 form a micro-network segment. After a namespace is bound to a slice, all the pods that get 
 scheduled in the namespace would get connected to the slice. 
 
-## Onboarding Namespaces
-To onboard namespaces, you must add them as part of applicationNamespaces in the [slice configuration](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file) YAML file.
+## Onboard Namespaces
+To onboard namespaces, you must add them as part of applicationNamespaces in the [slice configuration](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file) YAML file.
 You can add namespaces in the following ways in the slice configuration YAML file:
 
 - Add namespaces for each worker cluster.
@@ -41,9 +41,9 @@ To know more on parameters, see [namespace isolation profile parameters](/versio
 This configuration ensures that all the application deployments from that namespace are 
 onboarded automatically on to the slice.
 
-## Offboarding Namespaces
+## Offboard Namespaces
 You can offboard namespaces from the slice and prevent the applications on the slice 
-from accessing them. To know more, see [offboarding namespaces](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
+from accessing them. To know more, see [offboard namespaces](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
 
 ## ServiceExports and ServiceImports
 The Service Discovery is implemented using the CRDs ServiceExport and ServiceImport.
@@ -58,7 +58,7 @@ to reach the correct clusters and endpoint.
 If you want the service discoverable across the KubeSlice DNS, you must create a ServiceExport.
 :::
 
-### Creating a ServiceExport
+### Create a ServiceExport
 To export a service, you must create a service export .yaml file using the following template.
 
 :::info
@@ -81,7 +81,7 @@ spec:
      protocol: <protocol>
 ```
 
-### Applying the ServiceExport YAML File
+### Apply the ServiceExport YAML File
 To apply the service export to the service deployed in the previous section, use the following command targeting
 the newly created service export .yaml file:
 ```

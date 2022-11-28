@@ -15,7 +15,7 @@ see [Prerequisites](/versioned_docs/version-0.4.0/getting-started-with-cloud-clu
 see [Preparing the clusters for registration](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
 - You have cluster administrator privileges to install the Slice Operator.
 
-## Installing Istio
+## Install Istio
 
 [Istio](http://istio.io/) is an open source service mesh that is used frequently to connect and secure 
 microservices within a cluster. The below instructions will install istio from the helm repository chart. 
@@ -46,7 +46,7 @@ Perform these steps:
    Repeat these steps to install Istio on other worker clusters.
    :::
 
-## Validating the Installation of Istio 
+## Validate the Installation of Istio 
 
 Validate the installation by checking the pods  status belonging to the `istio-system` namespace.
 ``` 
@@ -59,7 +59,7 @@ NAME                          READY   STATUS    RESTARTS   AGE
 istiod-66f576dd98-jtshj       1/1     Running   0          100s
 ```
 
-## Creating the Cluster Registration YAML File
+## Create the Cluster Registration YAML File
 
 The following information is required to create your cluster registration **.yaml** file.
 
@@ -79,7 +79,7 @@ Create the cluster registration YAML file using the following template.
 
 :::info
 To understand more about the configuration parameters, 
-see [Cluster Registration ConfigurationParameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters)
+see [Cluster Registration Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters)
 :::
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
@@ -175,7 +175,7 @@ your Project namespace.
    kubectl apply -f <cluster registration>.yaml -n <project namespace>
    ```
 
-## Validating the Registered Clusters
+## Validate the Registered Clusters
 Validate the registered clusters by using the following command:
 
 ```
@@ -199,14 +199,14 @@ gke-worker-1   17s
 You have successfully registered the Worker clusters with the KubeSlice Controller.
 :::
 
-## Installing the Slice Operator 
+## Install the Slice Operator 
 
 Install the Slice Operator on the worker cluster that you just registered.Before installing the 
 Slice Operator in your registered cluster, you must get the secrets and the endpoints from the KubeSlice 
 Controller.
 
 
-### Getting the Secrets of the Registered Cluster 
+### Get the Secrets of the Registered Cluster 
 
 After registering the worker cluster with the KubeSlice Controller, you will get a secret listed under the 
 project namespace. The secret contains access information for the Slice Operator on the worker cluster to 
@@ -308,7 +308,7 @@ See [Script to get the secrets of the worker cluster](/versioned_docs/version-0.
     type: kubernetes.io/service-account-token
     ```
 
-### Getting the Worker Network Interface
+### Get the Worker Network Interface
 Get the name of the network interface on the gateway nodes that is the egress interface for external traffic.
 
 :::warning
@@ -327,7 +327,7 @@ Example Output
 ```
 eth0
 ```
-## Creating the Slice Operator YAML File
+## Create the Slice Operator YAML File
 
 Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `token` from the above secrets 
 to create your `values.yaml` file.
@@ -370,14 +370,14 @@ netop:
   networkInterface: eth0
 ```
 
-## Applying the Values File
+## Apply the Values File
 
 The following information is required to apply the YAML file.
 
 |Parameter|Description|
 |----|----|
-|<cluster name\>|The name of the cluster.|
-|<values\>|The file name with the values.|
+|`<cluster name\>`|The name of the cluster.|
+|`<values\>`|The file name with the values.|
 
 Perform these steps:
 
@@ -389,7 +389,7 @@ Perform these steps:
    ```
    helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of secrets file>.yaml -n kubeslice-system  --create-namespace
    ```
-## Validating the Slice Operator Installation 
+## Validate the Slice Operator Installation 
 
 To validate the Slice Operator installation in the registered cluster,check the pods belonging to the 
 `kubeslice-system` namespace by running the following command:

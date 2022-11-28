@@ -1,4 +1,4 @@
-# Deploying the BookInfo Application
+# Deploy the BookInfo Application
 
 ## Introduction
 [BookInfo](https://istio.io/latest/docs/examples/bookinfo/) is a sample application from Istio that is composed 
@@ -11,7 +11,7 @@ Before you begin, ensure the following prerequisites are met:
 - You have a KubeSlice configuration with two or more clusters registered. For more information, 
 see [Installing KubeSlice](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
 - You have Istio installed in all registered worker clusters. For more information, 
-see [Installing Istio](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#installing-istio).
+see [Installing Istio](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#install-istio).
 - Before creating a slice, create the `bookinfo` namespace in all the participating worker clusters.
   Use the following command to create the `bookinfo` namespace:
   ```
@@ -24,7 +24,7 @@ see [Installing Istio](/versioned_docs/version-0.4.0/getting-started-with-cloud-
 - You have the slice created across the worker clusters. For more information, 
 see [Creating a Slice](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx).
 
-## Creating the BookInfo Deployment YAML Files
+## Create the BookInfo Deployment YAML Files
 Using the templates below, create the necessary .yaml files to deploy the BookInfo application.
 All fields in the template will remain the same except for the `slice name` which must be replaced with the 
 name of your slice.
@@ -366,7 +366,7 @@ spec:
    containerPort: 9080
    protocol: TCP
 ```
-## Deploying to the Productpage Cluster
+## Deploy to the Productpage Cluster
 
 Perform these steps:
 1. Use the following command to ensure we are targeting the cluster we will be deploying the product page to:
@@ -393,7 +393,7 @@ Perform these steps:
    productpage-v1-5cc46fc6dc-drd8b   5/5     Running   0          26h
    ```
 
-## Deploying to the Service Cluster
+## Deploy to the Service Cluster
 
 Perform these steps:
 
@@ -461,8 +461,8 @@ Use the following command to apply the `details.yaml` file.
    serviceexport.networking.kubeslice.io/reviews created
    ```
 
-## Validating the BookInfo Deployment
-### Validating the Services
+## Validate the BookInfo Deployment
+### Validate the Services
 
 Perform these steps:
 
@@ -482,7 +482,7 @@ KubeSlice configuration:
    details   white   true      9080/TCP   1           READY
    reviews   white   true      9080/TCP   1           READY
    ```
-### Validating the Productpage on the Cloud Cluster
+### Validate the Productpage on the Cloud Cluster
 
 Perform these steps:
 
@@ -539,8 +539,8 @@ and visit the page in a browser to view your multi-cluster BookInfo deployment.
    Example
    ![alt](/img/Bookinfo-productpage-OS.png)
 
-## Validating the Productpage on the Kind Cluster
-### Accessing the Productpage from the Local Machine
+## Validate the Productpage on the Kind Cluster
+### Access the Productpage from the Local Machine
 If the kind clusters are on a local machine, perform these steps:
 
 1. Set up port-forwarding from a local machine using the following command:
@@ -563,7 +563,7 @@ If the kind clusters are on a local machine, perform these steps:
 The following is an example of the product page:
 ![alt](/img/Bookinfo-productpage-OS.png)
 
-### Accessing the Productpage from the Cloud EC2 Machine
+### Access the Productpage from the Cloud EC2 Machine
 If the kind clusters are on Cloud EC2 Machine, perform these steps:
 
 1. Connect to your EC2 machine using SSH from your local machine using the following command:
@@ -590,6 +590,6 @@ The following is an example of the product page:
 You have successfully deployed BookInfo application on a KubeSlice configuration containing at least two clusters.
 :::
 
-## Uninstalling Istio BookInfo
+## Uninstall Istio BookInfo
 To uninstall BookInfo application from your KubeSlice configuration, follow the 
 instructions in [offboarding namespaces](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
