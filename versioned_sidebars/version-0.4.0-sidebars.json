@@ -28,8 +28,8 @@
             },
             "items": [ 
               "kubeslice-cli/getting-started",
-              "kubeslice-cli/create-slice",
-              "kubeslice-cli/delete-slice"     
+              "kubeslice-cli/installing-kubeslice",
+              "kubeslice-cli/uninstalling-kubeslice"     
             ]
           },
           {
