@@ -165,9 +165,27 @@
         "id": "reference/reference"
       },
       "items": [
-        "reference/configuration-parameters",
-        "reference/kubeslice-cli-configuration-parameters",
-        "reference/script-to-get-the-secrets-of-the-worker-cluster"
+        {
+          "type": "category",
+          "label": "KubeSlice",
+          "collapsed": true,
+          "items": [
+            "reference/configuration-parameters",
+            "reference/script-to-get-the-secrets-of-the-worker-cluster"
+          ]
+         },
+       
+        {
+          "type": "category",
+          "label": "kubeslice-cli",
+          "collapsed": true,
+          "items": [
+            "reference/kubeslice-cli-configuration-parameters",
+            "reference/kubeslice-cli-demo"
+          ]
+         }
+
+
        ]
      }
    ]
