@@ -117,7 +117,17 @@
       "tutorials/deploying-the-iperf-application-on-an-intra-cluster-slice",
       "tutorials/deploying-the-bookinfo-application-on-an-intra-cluster-slice"
     ]
+   },
+   {
+    "type": "category",
+    "label": "kubeslice-cli",
+    "collapsed": true,
+    "items": [
+      "tutorials/topology-template",
+      "tutorials/sample-configuration-file"
+    ]
    }
+
   ]
  },
   {
@@ -157,10 +167,7 @@
       "items": [
         "reference/configuration-parameters",
         "reference/kubeslice-cli-configuration-parameters",
-        "reference/script-to-get-the-secrets-of-the-worker-cluster",
-        "reference/topology-template",
-        "reference/sample-configuration-file"
-
+        "reference/script-to-get-the-secrets-of-the-worker-cluster"
        ]
      }
    ]
