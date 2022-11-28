@@ -1,14 +1,14 @@
-# Preparing the Cloud Clusters for Registration
+# Prepare the Cloud Clusters for Registration
 
 ## Introduction
 
 This topic describes how to prepare your clusters to register with KubeSlice Controller.
 
-## Authenticating Clusters 
+## Authenticate Clusters 
 
 :::info
 If you have already retrieved your credentials to log in to your clusters, continue to 
-[Labeling KubeSlice Nodes](#labeling-kubeslice-gateway-nodes) below.
+[Label KubeSlice Nodes](#label-kubeslice-gateway-nodes) below.
 :::
 :::info 
 Perform these steps on each cluster that you want to register with the KubeSlice Controller.
@@ -82,7 +82,7 @@ Fetching cluster endpoint and auth data.
 kubeconfig entry generated for <cluster name>
 ```
 
-## Labeling KubeSlice Gateway Nodes
+## Label KubeSlice Gateway Nodes
 
 :::info
 Labeling gateway nodes only applies to the worker cluster.
@@ -130,7 +130,7 @@ gcloud container node-pools update <nodepool name> \
     [--region=<region> | --zone=<zone>]
 ```
 
-## Verifying Your Labels
+## Verify Your Labels
 :::info
 Perform these steps on each cluster that you want to register with the KubeSlice.
 :::
@@ -152,7 +152,7 @@ Perform these steps to verify your cluster labels:
     kubectl get no -o wide
     ```
   
-## Adding the Helm Repository
+## Add the Helm Repository
 To add the helm repository:
 
 1. Add the helm repository information to your local system.

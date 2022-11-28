@@ -1,0 +1,294 @@
+# Prepare Kind Clusters for Registration
+
+## Prepare the Controller Cluster for Registration
+
+Create a YAML file to prepare the controller cluster for registration by using the 
+following template:
+
+:::info
+The `networking` property is required for the namespace isolation
+feature. By default, the kind cluster has the kindnet CNI setting, but it needs to be 
+disabled for the namespace isolation feature to work. We install Calico instead for the
+CNI network.
+:::
+
+:::info
+To understand more about the configuration parameters, see
+[kind – Configuration](https://kind.sigs.k8s.io/docs/user/configuration/).
+:::
+
+:::caution
+If you face memory issues with a **two-nodes** kind cluster, then use a
+**single-node** kind cluster.
+:::
+
+```
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "127.0.0.1"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 6443
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+  - role: worker
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"
+```
+
+ Use the following template to create a single-node controller cluster. 
+
+ ```
+ kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "127.0.0.1"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 6443
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"
+ ```
+
+### Apply the YAML File to Create the Controller Cluster 
+Apply the YAML File to  create the controller cluster by running this command:
+
+```
+kind create cluster --name <Controller-Cluster-Name> --config kind-controller-cluster.yaml
+```
+
+
+### Prepare the Worker Cluster for Registration
+Create a YAML file to prepare the worker cluster for registration by using the 
+following template:
+
+:::info
+The `networking` property is required for the namespace isolation
+feature. By default, the kind cluster has the kindnet CNI setting, but it needs to be 
+disabled for the namespace isolation feature to work. We install Calico instead for the
+CNI network.
+:::
+
+:::info
+To understand more about the configuration parameters, see
+[kind – Configuration](https://kind.sigs.k8s.io/docs/user/configuration/).
+:::
+
+:::caution
+If you face memory issues with a **two-nodes** kind cluster, then use a
+**single-node** kind cluster.
+:::
+
+```
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking: 
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+  - role: worker
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c  
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"    
+```
+
+Use the following template to create a single-node worker cluster.
+
+```
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking: 
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"
+```
+
+### Applying the YAML File to Create the Worker Cluster
+Apply the YAML File to create the worker cluster by running this
+command:
+
+**For worker cluster 1**
+
+``` 
+kind create cluster --name <Worker-Cluster-Name-1> --config kind-Worker-cluster.yaml
+```
+
+**For worker cluster 2**
+
+```
+kind create cluster --name <Worker-Cluster-Name-2> --config kind-Worker-cluster.yaml
+```
+
+### Install Calico Networking and Network Security
+Install
+[Calico](https://projectcalico.docs.tigera.io/about/about-calico) to provide networking and
+network security for kind clusters.
+
+:::info
+Install Calico only after creating the clusters.
+:::
+
+To install Calico on a kind cluster:
+1. Install the operator on your cluster by using the following command:
+
+```
+kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
+```
+
+2. Download the custom resources required to configure Calico by using
+the following command:
+
+```
+curl https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml -O
+```
+
+Running the above command downloads a file, which contains the following
+content.
+
+```
+# This section includes base Calico installation configuration.
+# For more information, see: https://projectcalico.docs.tigera.io/v3.23/reference/installation/api#operator.tigera.io/v1.Installation
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  # Configures Calico networking.
+  calicoNetwork:
+    # Note: The ipPools section cannot be modified post-install.
+    ipPools:
+    - blockSize: 26
+      cidr: 192.168.0.0/16
+      encapsulation: VXLANCrossSubnet
+      natOutgoing: Enabled
+      nodeSelector: all()
+
+---
+
+# This section configures the Calico API server.
+# For more information, see: https://projectcalico.docs.tigera.io/v3.23/reference/installation/api#operator.tigera.io/v1.APIServer
+apiVersion: operator.tigera.io/v1
+kind: APIServer
+metadata:
+  name: default
+spec: {}
+```
+
+3. Create the manifest to install Calico by using the following
+command:
+
+```
+kubectl create -f custom-resources.yaml
+```
+
+4. Validate namespaces related to Calico by using the following
+command:
+
+```
+kubectl get ns
+```
+
+Expected Output
+
+```
+NAME                   STATUS   AGE
+calico-apiserver       Active   3d
+calico-system          Active   3d
+default                Active   3d
+kube-node-lease        Active   3d
+kube-public            Active   3d
+kube-system            Active   3d
+local-path-storage     Active   3d
+tigera-operator        Active   3d
+```
+
+5. Validate the Calico pods by using the following command: 
+
+```
+kubectl get pods -n calico-system
+```
+
+Expected Output
+
+```
+NAME                                       READY   STATUS    RESTARTS   AGE
+calico-kube-controllers-59f859b79d-vbmqh   1/1     Running   1          30s
+calico-node-nq7sp                          1/1     Running   0          30s
+calico-node-rhw7h                          1/1     Running   0          30s
+calico-node-tfqzp                          1/1     Running   0          30s
+calico-typha-8b888f7d8-fx62t               1/1     Running   0          30s
+calico-typha-8b888f7d8-vnb67               1/1     Running   0          30s
+```
+
+:::success
+Calico networking is installed successfully. 
+:::
+
+### Add the Helm Repo 
+Add the KubeSlice helm repo in your machine where kind clusters are running using the following commands:
+
+```
+helm repo add kubeslice https://kubeslice.github.io/kubeslice/
+helm repo update
+```
+
+### Validate the Helm Repo 
+Validate the helm repo by using the following command:
+
+```
+helm search repo kubeslice
+```
+
+Expected Output
+
+```
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION
+kubeslice/cert-manager          v1.7.0          v1.7.0          A Helm chart for cert-manager
+kubeslice/istio-base            1.13.3          1.13.3          Helm chart for deploying Istio cluster resource...
+kubeslice/istio-discovery       1.13.3          1.13.3          Helm chart for istio control plane
+kubeslice/kubeslice-controller  0.4.0           0.5.5           A Helm chart for kubeslice-controller
+kubeslice/kubeslice-worker      0.4.0           0.11.0          KubeSlice Operator
+kubeslice/prometheus            0.1.1           11.16.2         Prometheus for Avesha Mesh
+```
