@@ -101,7 +101,8 @@
     "items": [
       "tutorials/kind-install-kubeslice-controller",
       "tutorials/kind-worker-cluster-registration",
-      "tutorials/kind-create-slice"
+      "tutorials/kind-create-slice",
+      "tutorials/test-network-connectivity-kind"
     ]
    },
    {
