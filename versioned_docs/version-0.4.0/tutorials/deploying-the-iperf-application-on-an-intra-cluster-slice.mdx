@@ -1,4 +1,4 @@
-# Deploy the iPerf Application on an Intra-cluster Slice
+# Deploy the iPerf Application on an Intra-Cluster Slice
 
 ## Introduction
 iPerf is a tool commonly used to measure network performance, perform network tuning, and more. The iPerf 
@@ -12,7 +12,8 @@ This tutorial provides the steps to:
 Before you begin, ensure the following prerequisites are met:
 
 - You have the KubeSlice Controller components and worker cluster components on the same cluster. For more information, 
-see [Installing KubeSlice](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-kubeslice.mdx).
+see [Installing KubeSlice](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx) 
+and [Registering the Worker Cluster](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx).
 - Before creating a slice, create the `iperf` namespace in all the participating worker clusters.
 Use the following command to create the `iperf` namespace:
   ```
