@@ -54,10 +54,12 @@ cert-manager v1.7.0 has been deployed successfully!
 ```
 
 ## Create the Values File
-
 The following information is required to create the `values.yaml` file.
 The values file will be used to install the KubeSlice Controller in one of the clusters.
 
+:::info
+For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.4.0/tutorials/kind-install-kubeslice-controller.mdx).
+:::
 
 ### Get the Cluster Endpoint
 
@@ -160,10 +162,13 @@ For example, a slice with the same name can exist across multiple projects but w
 configurations. Changes to the slice in one project will not affect the slice in another project. 
 For more information, see [The KubeSlice Architecture](/versioned_docs/version-0.4.0/architecture.mdx).
 
-
 ### Create the Project YAML File
 Create a project by applying the manifest file.After deploying the manifest, the project namespace is 
 created. Create the Project name .yaml file using the following template.
+
+:::info
+For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.4.0/tutorials/kind-install-kubeslice-controller.mdx#create-a-project-yaml-file).
+:::
 
 :::info 
 To understand more about the configuration parameters, 

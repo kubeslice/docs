@@ -96,6 +96,16 @@
    },
    {
     "type": "category",
+    "label": "Kind Clusters",
+    "collapsed": true,
+    "items": [
+      "tutorials/kind-install-kubeslice-controller",
+      "tutorials/kind-worker-cluster-registration",
+      "tutorials/kind-create-slice"
+    ]
+   },
+   {
+    "type": "category",
     "label": "kubeslice-cli",
     "collapsed": true,
     "items": [

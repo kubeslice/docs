@@ -1,0 +1,118 @@
+# Install the KubeSlice Controller 
+The YAML files to install the KubeSlice Controller and create a project namespace are described 
+in this topic. 
+
+## Create the Controller YAML File
+
+:::info
+To understand more about the configuration parameters, see [Controller Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#controller-configuration-parameters).
+:::
+
+Create the`values.yaml` file for the KubeSlice Controller.
+
+:::info
+Use the `kubectl get nodes -o wide | grep master | awk '{ print $6 }'` command
+to get the control plane IP address.
+
+The `grep` and `awk` commands do not work on Windows. Use Gitbash to use
+grep and awk commands if you are on Windows.
+:::
+
+``` 
+kubeslice:
+  controller:
+    loglevel: info
+    rbacResourcePrefix: kubeslice-rbac
+    projectnsPrefix: kubeslice
+    endpoint: <internal IP address of the Kubernetes control plane node> # https://<INTERNAL IP>:6443
+```
+
+## Apply the Controller YAML File 
+Apply the KubeSlice Controller YAML file by using the following command:
+
+```
+helm install kubeslice-controller kubeslice/kubeslice-controller -f <full path of the config yaml file> --namespace kubeslice-controller --create-namespace
+```
+
+Expected Output
+
+```
+NAME: kubeslice-controller
+LAST DEPLOYED: Fri Jun 10 18:42:23 2022
+NAMESPACE: kubeslice-controller
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+kubeslice controller installation successful!
+```
+
+## Validate the Controller Installation
+Perform these steps to validate the installation on the controller
+cluster where the KubeSlice Controller is installed:
+
+Validate the installation of the KubeSlice Controller by checking the
+pods that belong to the `kubeslice-controller` namespace using the
+following command:
+
+```
+kubectl get pods -n kubeslice-controller
+```
+
+Expected Output
+
+```
+NAME                                            READY   STATUS      RESTARTS   AGE
+kubeslice-controller-manager-64c9d599d6-qjst4   2/2   Running       0          14s
+```
+
+
+## Create a Project YAML File
+Create a `project.yaml` file for the project namespace.
+
+:::info
+To understand more about the configuration parameters, see [Project
+Namespace Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#project-namespace-configuration-parameters).
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Project
+metadata:
+  name: avesha
+  namespace: kubeslice-controller
+spec:
+  serviceAccount:
+    readOnly:
+      - <readonly user1>
+      - <readonly user2>
+      - <readonly user3>
+    readWrite:
+      - <readwrite user1>
+      - <readwrite user2>
+      - <readwrite user3>
+```
+
+## Apply the Project YAML File
+
+Apply the project in the controller cluster by running the following
+command:
+
+```
+kubectl apply -f project.yaml -n kubeslice-controller
+```
+
+## Validate the Project
+
+Check the project by using the following command:
+
+```
+kubectl get project -n kubeslice-controller
+```
+
+Expected Output
+
+```
+NAME     AGE
+avesha   30s
+```

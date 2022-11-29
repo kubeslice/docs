@@ -20,6 +20,10 @@ see [Preparing the clusters for registration](/versioned_docs/version-0.4.0/gett
 [Istio](http://istio.io/) is an open source service mesh that is used frequently to connect and secure 
 microservices within a cluster. The below instructions will install istio from the helm repository chart. 
 
+:::warning
+Istio does not work with kind clusters. 
+:::
+
 :::caution
 You can skip these steps if you have already installed the recommended Istio version in the cluster.
 :::
@@ -60,11 +64,10 @@ istiod-66f576dd98-jtshj       1/1     Running   0          100s
 ```
 
 ## Create the Cluster Registration YAML File
-
 The following information is required to create your cluster registration **.yaml** file.
 
 :::info
-Currently, only Azure Kubernetes Service (AKS) and Google Kubernetes Engine (GKE) are supported.
+For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.4.0/tutorials/kind-worker-cluster-registration.mdx).
 :::
 
 :::info
@@ -331,6 +334,10 @@ eth0
 
 Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `token` from the above secrets 
 to create your `values.yaml` file.
+
+:::info
+For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.4.0/tutorials/kind-worker-cluster-registration.mdx#create-the-slice-operator-yaml-file).
+:::
 
 Create the `values.yaml` file using the following template.
 
