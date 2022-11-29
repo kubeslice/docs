@@ -7,7 +7,7 @@ Before you begin, ensure the following prerequisites are met:
 - You have installed kind to create a demo clusters. For more information, see [kind](https://kind.sigs.k8s.io/docs/user/quick-start/).
 - You have installed helm to add the KubeSlice repo. For more information, see helm [Releases](https://github.com/helm/helm/releases) page.
 - You have installed kubectl to access clusters. For more information, see [Installing Tools](https://kubernetes.io/docs/tasks/tools/).
-- You have installed kubectx which required to switch cluster contexts. For more information, see [Installing Kubectx](https://github.com/ahmetb/kubectx).
+- You have installed kubectx which is required to switch cluster contexts. For more information, see [Installing Kubectx](https://github.com/ahmetb/kubectx).
 - You have installed Docker. For more information, see [Install Docker Engine](https://docs.docker.com/engine/install/).
 
 ## Installing KubeSlice
@@ -84,7 +84,7 @@ You have successfully installed the KubeSlice Controller on the controller clust
 :::
 
 
-The `kubeslice-cli install —profile=minimal-demo` command creates a slice called 'demo' after successfully installing KubeSlice Controller 
+The `kubeslice-cli install —profile=minimal-demo` command creates a slice called `demo` after successfully installing KubeSlice Controller 
 and the Slice Operator on the worker clusters. To validate the demo slice, see [Validating the Slice](#validating-the-slice).
 
 You can now onboard the iperf application on the `demo` slice. To onboard the application on the slice, see
