@@ -99,8 +99,7 @@
     "label": "kubeslice-cli",
     "collapsed": true,
     "items": [
-      "tutorials/topology-template",
-      "tutorials/sample-configuration-file"
+      "tutorials/kubeslice-cli-demo"
     ]
    }
 
@@ -157,7 +156,8 @@
           "collapsed": true,
           "items": [
             "reference/kubeslice-cli-configuration-parameters",
-            "reference/kubeslice-cli-demo"
+            "reference/topology-template",
+            "reference/sample-configuration-file"
           ]
          }
 
