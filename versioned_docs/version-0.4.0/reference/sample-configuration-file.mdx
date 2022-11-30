@@ -1,16 +1,17 @@
-# Topology Configuration File
-In the topology configuration file specify the controller cluster name and the worker clusters name along with other details
-as described in the below sample configuration file.
+# Sample Configuration File
+
+This topic describes how to create a topology configuration file that is used to install KubeSlice. In the topology configuration file,
+specify the controller cluster and the worker clusters names and other details as described in the below sample configuration file.
 
 ## Create a Topology Configuration File for Kind Clusters
-The following is the sample configuration YAML to install KubeSlice on kind clusters using opensource charts:
+The following is the sample configuration file to install KubeSlice on kind clusters using opensource charts:
 
 In this demonstration, we use a controller cluster with name `controller`, as well as two worker clusters with the 
 names `worker-1`and `worker-2`. Add the path to the relevant `kubeconfig` file. `kubeslice-avesha` serves as an example of a 
 project namespace. The defined cluster context  are `kind-controller`, `kind-worker-1`, and `kind-worker-2`. The opensource 
 KubeSlice repo charts URL is `https://kubeslice.github.io/kubeslice/`.
 
-Create the topology YAML file using the following template:
+Create the topology configuration file using the following template:
 :::info
 For more information on topology configuration parameters, 
 see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.4.0/reference/kubeslice-cli-configuration-parameters.mdx).
@@ -64,8 +65,8 @@ see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.4.0/refer
     kube_config_path: #{specify the kube config file to use for topology setup; for topology only}
     controller:
       name: controller
-      context_name: arn:aws:eks:us-east-1:776106081964:cluster/dev-richie-eks-1
-      kube_config_path: /home/richie/kubeslice-cli/dev-richie-eks-1.config
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/controller-eks-1
+      kube_config_path: /home/user/kuebconfig-eks-1.config
                         #{This takes precedence over configuration.cluster_configuration.kube_config_path}
       control_plane_address: #{the address of the control plane kube-apiserver. slicectl determines the address from kubeconfig}
                              #{Override this flag if the address in kubeconfig is not reachable by other clusters in topology}
@@ -74,7 +75,7 @@ see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.4.0/refer
     workers: #{specify the list of worker clusters}
     - name: worker-1
       context_name: arn:aws:eks:us-east-1:776106081964:cluster/dev-richie-eks-1
-      kube_config_path: /home/richie/kubeslice-cli/dev-richie-eks-1.config
+      kube_config_path: /home/user/kuebconfig-eks-1.config
                         #{This takes precedence over configuration.cluster_configuration.kube_config_path}
       control_plane_address: #{the address of the control plane kube-apiserver. slicectl determines the address from kubeconfig}
                              #{Override this flag if the address in kubeconfig is not reachable by other clusters in topology}
@@ -82,7 +83,7 @@ see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.4.0/refer
                #{Override this flag to an address which is discoverable by other clusters in the topology}
     - name: worker-2
       context_name: gke_avesha-dev_us-central1-a_dev-richie-gke-2
-      kube_config_path: /home/richie/kubeslice-cli/dev-richie-gke-2.config
+      kube_config_path: /home/user/kuebconfig-gke-2.config
                         #{This takes precedence over configuration.cluster_configuration.kube_config_path}
       control_plane_address: #{the address of the control plane kube-apiserver. slicectl determines the address from kubeconfig}
                              #{Override this flag if the address in kubeconfig is not reachable by other clusters in topology}
@@ -92,7 +93,7 @@ see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.4.0/refer
     project_name: avesha
   helm_chart_configuration:
     repo_alias: kubeslice
-    repo_url: https://kubeslice.aveshalabs.io/repository/kubeslice-helm-ent-prod/
+    repo_url: https://kubeslice.github.io/kubeslice/
     cert_manager_chart:
       chart_name: cert-manager
       version: 
