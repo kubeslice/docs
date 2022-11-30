@@ -2,7 +2,7 @@
   "version2": [    
       {
         "type": "category",
-      "label": "GETTING STARTED",
+      "label": "GET STARTED",
       "collapsed": false,
       "items": [    
       {
@@ -92,6 +92,17 @@
       "tutorials/deploying-the-bookinfo-application",
       "tutorials/deploying-the-iperf-application-on-an-intra-cluster-slice",
       "tutorials/deploying-the-bookinfo-application-on-an-intra-cluster-slice"
+    ]
+   },
+   {
+    "type": "category",
+    "label": "Kind Clusters",
+    "collapsed": true,
+    "items": [
+      "tutorials/kind-install-kubeslice-controller",
+      "tutorials/kind-worker-cluster-registration",
+      "tutorials/kind-create-slice",
+      "tutorials/test-network-connectivity-kind"
     ]
    },
    {
