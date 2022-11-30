@@ -99,7 +99,8 @@
     "label": "kubeslice-cli",
     "collapsed": true,
     "items": [
-      "tutorials/kubeslice-cli-demo"
+      "tutorials/kubeslice-cli-demo",
+      "tutorials/kubeslice-cli-demo-on-cloud-clusters"
     ]
    }
 

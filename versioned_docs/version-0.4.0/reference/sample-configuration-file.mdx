@@ -1,14 +1,19 @@
-# Sample Configuration File
-The following is the sample configuration YAML to install KubeSlice using opensource charts:
+# Sample Topology Configuration File
+In the topology configuration file specify the controller cluster name and the worker clusters name along with other details
+as described in the below sample configuration file.
+
+## Create a Topology Configuration File for Kind Clusters
+The following is the sample configuration YAML to install KubeSlice on kind clusters using opensource charts:
 
 In this demonstration, we use a controller cluster with name `controller`, as well as two worker clusters with the 
-names `worker-1`and `worker-2`. Add the path to the relavant `kubeconfig` file. `kubeslice-avesha` serves as an example of a project namespace.
-The defined cluster context  are `kind-contoller`, `kind-worker-1`, and `kind-worker-2`.
-The opensource KubeSlice repo charts URL is `https://kubeslice.github.io/kubeslice/`.
+names `worker-1`and `worker-2`. Add the path to the relevant `kubeconfig` file. `kubeslice-avesha` serves as an example of a 
+project namespace. The defined cluster context  are `kind-controller`, `kind-worker-1`, and `kind-worker-2`. The opensource 
+KubeSlice repo charts URL is `https://kubeslice.github.io/kubeslice/`.
 
 Create the topology YAML file using the following template:
 :::info
-For more information on topology configuration parameters, see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.4.0/reference/kubeslice-cli-configuration-parameters.mdx).
+For more information on topology configuration parameters, 
+see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.4.0/reference/kubeslice-cli-configuration-parameters.mdx).
 :::
 
 ```
@@ -37,6 +42,69 @@ configuration:
     worker_chart:
       chart_name: kubeslice-worker
 ```
+
+
+## Create a Topology Configuration File for Cloud Clusters
+
+The following is the sample configuration YAML to install KubeSlice on cloud clusters using opensource charts.
+
+In this demonstration, we use a controller cluster with name `controller`, as well as two worker clusters with the names `worker-1` 
+and `worker-2`. Add the path to the relevant `kubeconfig` file. `avesha` serves as an example of a project namespace. The defined 
+cluster context  are `controller`, `worker-1`, and `worker-2`. The opensource KubeSlice repo charts 
+URL is `https://kubeslice.github.io/kubeslice/`.
+
+Create the topology YAML file using the following template:
+:::info
+For more information on topology configuration parameters, 
+see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.4.0/reference/kubeslice-cli-configuration-parameters.mdx).
+:::
+```
+ configuration: 
+  cluster_configuration:
+    kube_config_path: #{specify the kube config file to use for topology setup; for topology only}
+    controller:
+      name: controller
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/dev-richie-eks-1
+      kube_config_path: /home/richie/kubeslice-cli/dev-richie-eks-1.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+      control_plane_address: #{the address of the control plane kube-apiserver. slicectl determines the address from kubeconfig}
+                             #{Override this flag if the address in kubeconfig is not reachable by other clusters in topology}
+      node_ip: #{the IP address of one of the node in this cluster. slicectl determines this address from kubectl get nodes}
+               #{Override this flag to an address which is discoverable by other clusters in the topology}
+    workers: #{specify the list of worker clusters}
+    - name: worker-1
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/dev-richie-eks-1
+      kube_config_path: /home/richie/kubeslice-cli/dev-richie-eks-1.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+      control_plane_address: #{the address of the control plane kube-apiserver. slicectl determines the address from kubeconfig}
+                             #{Override this flag if the address in kubeconfig is not reachable by other clusters in topology}
+      node_ip: #{the IP address of one of the node in this cluster. slicectl determines this address from kubectl get nodes}
+               #{Override this flag to an address which is discoverable by other clusters in the topology}
+    - name: worker-2
+      context_name: gke_avesha-dev_us-central1-a_dev-richie-gke-2
+      kube_config_path: /home/richie/kubeslice-cli/dev-richie-gke-2.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+      control_plane_address: #{the address of the control plane kube-apiserver. slicectl determines the address from kubeconfig}
+                             #{Override this flag if the address in kubeconfig is not reachable by other clusters in topology}
+      node_ip: #{the IP address of one of the node in this cluster. slicectl determines this address from kubectl get nodes}
+               #{Override this flag to an address which is discoverable by other clusters in the topology}
+  kubeslice_configuration:
+    project_name: avesha
+  helm_chart_configuration:
+    repo_alias: kubeslice
+    repo_url: https://kubeslice.aveshalabs.io/repository/kubeslice-helm-ent-prod/
+    cert_manager_chart:
+      chart_name: cert-manager
+      version: 
+    controller_chart:
+      chart_name: kubeslice-controller
+      version: #{The version of the chart to use. Leave blank for latest version}
+    worker_chart:
+      chart_name: kubeslice-worker
+      version: #{The version of the chart to use. Leave blank for latest version}
+```
+
+## Apply the Topology Configuration YAML
 To install KubeSlice using the topology YAML file, use the following command:
 ```
 kubeslice-cli --config <path-to-the-topology.yaml> install
