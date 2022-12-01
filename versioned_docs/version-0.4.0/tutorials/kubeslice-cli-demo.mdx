@@ -10,7 +10,7 @@ Before you begin, ensure the following prerequisites are met:
 - You have installed kubectx which is required to switch cluster contexts. For more information, see [Installing Kubectx](https://github.com/ahmetb/kubectx).
 - You have installed Docker. For more information, see [Install Docker Engine](https://docs.docker.com/engine/install/).
 
-## Installing KubeSlice
+## Install KubeSlice
 
 The `kubeslice-cli install —profile=<minimal-demo|full-demo>` command creates a demo topology consisting of one controller and 
 two worker clusters. The **full-demo** deploys the application on the `demo` slice, whereas the **minimal-demo** requires that an application 
@@ -41,7 +41,7 @@ kubeslice-cli install --profile=minimal-demo
 - Export the kubeconfig file before you run any kubeslice-cli command using this command: `export KUBECONFIG=kubeslice/kubeconfig.yaml`.
 :::
 
-## Switching the Cluster Context
+## Switch the Cluster Context
 Use the following command to switch the context of the cluster:
 ```
 kubectx kind-ks-ctrl
@@ -51,7 +51,7 @@ Expected Output
 ✔ Switched to context "kind-ks-ctrl".
 ```
 
-## Validating the Installation
+## Validate the Installation
 
 To validate a project, use the following command on the `kubeslice-controller` namespace to get the list of project:
 ```
@@ -94,13 +94,13 @@ You can also use the kubeslice-cli command to create a new slice for application
 follow these steps.
 
 
-## Creating a Slice
+## Create a Slice
 :::info
 Skips this step if you do not want to create a new slice and continue onboarding the application on the `demo` slice.
 :::
 Create a slice configuration YAML file using the following template and apply it to the project namespace.
 
-### Creating the Slice Configuration YAML File
+### Create the Slice Configuration YAML File
 :::info
 To understand more about the configuration parameters, see [Slice Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
 :::
@@ -157,7 +157,7 @@ spec:
     dscpClass: AF11
 ```
 
-### Applying the Slice Configuration YAML File
+### Apply the Slice Configuration YAML File
 Use the following command to create a slice.
 ```
 kubeslice-cli create sliceConfig -n kubeslice-demo -f <slice-configuration-yaml>
@@ -173,7 +173,7 @@ sliceconfig.controller.kubeslice.io/slice-red created
 
 Successfully Applied Slice Configuration.
 ```
-### Validating the Slice
+### Validate the Slice
 Use the following command to get a slice:
 ```
 kubeslice-cli get sliceConfig -n kubeslice-demo
@@ -187,7 +187,7 @@ NAME        AGE
 slice-red   110s
 ```
 
-### Validating the Slice on the Controller Cluster
+### Validate the Slice on the Controller Cluster
 To validate the slice configuration on the controller cluster, use the following command:
 ```
 /usr/local/bin/kubectl --context=kind-ks-ctrl --kubeconfig=kubeslice/kubeconfig.yaml get workersliceconfig -n kubeslice-demo
@@ -210,7 +210,7 @@ slice-red-ks-w-1-ks-w-2   19h
 slice-red-ks-w-2-ks-w-1   19h
 ```
 
-### Validating the Slice on the Worker Cluster
+### Validate the Slice on the Worker Cluster
 
 To validate the slice creation on each worker cluster, use the following command:
 ```
@@ -233,7 +233,7 @@ NAME                      SUBNET          REMOTE SUBNET   REMOTE CLUSTER   GW ST
 slice-red-ks-w-1-ks-w-2   10.190.1.0/24   10.190.2.0/24   ks-w-2
 ```
 
-## Deploying the iPerf Application
+## Deploy the iPerf Application
 
 The `kubeslice-cli` tool sets up the iPerf demo application on the `iperf` namespace. The `iperf-server` is deployed on the `ks-w-1` worker 
 cluster and the `iperf-sleep` is deployed on the `ks-w-2` worker cluster. You need to restart the iPerf deployment to onboard the
@@ -257,7 +257,7 @@ Expected Output
 deployment.apps/iperf-sleep restarted
 ```
 
-## Validating the iPerf Installation
+## Validate the iPerf Installation
 
 To validate the iperf-server installation, use the following command:
 ```
@@ -311,7 +311,7 @@ NAME           SLICE       PORT(S)    ENDPOINTS   STATUS
 iperf-server   slice-red   5201/TCP   1           READY
 ```
 
-### Verifying the Inter-Cluster Communication
+### Verify the Inter-Cluster Communication
 
 Use the following command to describe the iperf-server service and retrieve the short and full DNS names for the service. 
 ```
@@ -355,7 +355,7 @@ TCP window size: 45.0 KByte (default)
 [  1] 0.00-10.12 sec  5.88 MBytes  4.87 Mbits/sec
 ```
 
-## Uninstalling KubeSlice
+## Uninstall KubeSlice
 
 :::info
 The `kubeslic-cli uninstall` command deletes the kind clusters created for the demo, uninstalling the KubeSlice Controller and the registered worker clusters.
