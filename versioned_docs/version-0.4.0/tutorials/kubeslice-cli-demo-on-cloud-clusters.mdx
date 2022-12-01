@@ -15,11 +15,11 @@ see [Preparing the clusters for registration](/versioned_docs/version-0.4.0/gett
 see [Installing Istio](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#install-istio).
 - You have cluster administrator privileges to install the KubeSlice Controller on controller cluster and Slice Operator on worker clusters.
 
-## Installing KubeSlice
+## Install KubeSlice
 
 In this demonstration install KubeSlice on cloud clusters, using the custom topology configuration YAML.
 
-## Installing the KubeSlice Controller and Worker Clusters
+## Install the KubeSlice Controller and Worker Clusters
 
 You must create a topology configuration file that includes the names of the clusters, the project name, and the cluster contexts
 that host the KubeSlice Controller and the worker clusters. For more information, see sample 
@@ -32,7 +32,7 @@ kubeslice-cli --config=<topology-configuration-file> install
 The above command installs the KubeSlice Controller, creates a project, and registers the worker cluster with the project by 
 installing the Slice Operator on the worker cluster.
 
-## Registering a Worker Cluster
+## Register a Worker Cluster
 
 The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration.
 
@@ -72,7 +72,7 @@ Use the following command to register a new worker cluster with the KubeSlice Co
 kubeslice-cli install --config=<new-worker-topology-yaml> -s controller
 ```
 
-## Onboarding Namespaces
+## Onboard Namespaces
 
 To onboard your existing namespaces (and their applications) onto a slice, follow these steps:
 
@@ -80,7 +80,7 @@ To onboard your existing namespaces (and their applications) onto a slice, follo
 2. Use the `kubeslice-cli create sliceConfig` command to apply the slice configuration YAML file.
 
 
-### Creating a Slice
+### Create a Slice
 
 Use the following template to create a slice configuration YAML file.
 :::info
@@ -113,7 +113,7 @@ spec:
 
 ```
 
-### Applying the Slice Configuration YAML file
+### Apply the Slice Configuration YAML file
 
 :::caution
 The `kubeslice-cli create sliceConfig` command returns after the configuration is applied. However, in each cluster, the relevant pods for 
@@ -138,18 +138,18 @@ sliceconfig.controller.kubeslice.io/slice-red created
 Successfully Applied Slice Configuration.
 ```
 
-## Deploying the Application
+## Deploy the Application
 :::info
 If the application is already deployed on a namespace that is onboarded to a slice, then re-deploy the application.
 :::
 
-## Creating a Service Export
+## Create a Service Export
 To create a service export, use the following command:
 ```
 kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <project-namespace>
 ```
 
-### Validating the Service Export
+### Validate the Service Export
 When an application service runs on one of the worker clusters that are onboarded to a slice, the worker generates a ServiceExport 
 for the application and propagates it to the KubeSlice Controller.
 
@@ -203,7 +203,7 @@ Spec:
 
 ```
 
-## Modifying the Service Discovery Configuration
+## Modify the Service Discovery Configuration
 kubeslice-cli enables you to modify the service discovery parameters. For example, to modify the port on which the service is running, edit 
 the value and save. This updates the ServiceExportConfig. The ServiceExportConfig will again be propagated to all the worker clusters.
 
@@ -222,6 +222,6 @@ Editing KubeSlice serviceExportConfig...
 ...
 ```
 
-## Uninstalling KubeSlice
+## Uninstall KubeSlice
 
-To uninstall KubeSlice from your cloud clusters, see [Uninstalling KubeSlice](/versioned_docs/version-0.4.0/kubeslice-cli/uninstalling-kubeslice.mdx).
+To uninstall KubeSlice from your cloud clusters, see [Uninstall KubeSlice](/versioned_docs/version-0.4.0/kubeslice-cli/uninstalling-kubeslice.mdx).

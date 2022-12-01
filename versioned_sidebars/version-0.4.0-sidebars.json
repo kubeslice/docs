@@ -25,11 +25,7 @@
             "type": "category",
             "label": "kubeslice-cli",
             "collapsed": true,
-            "link": {
-              "type": "doc",
-              "id": "kubeslice-cli/kubeslice-cli"
-            },
-            "items": [ 
+            "items": [
               "kubeslice-cli/getting-started",
               "kubeslice-cli/installing-kubeslice",
               "kubeslice-cli/uninstalling-kubeslice"     
