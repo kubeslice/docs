@@ -10,7 +10,8 @@
         "label": "Quick Start",
         "collapsed": true,
         "items": [
-          "register-to-try"
+          "register-to-try",
+          "cloud-cluster-quick-start"
         ]
       }
     ]
