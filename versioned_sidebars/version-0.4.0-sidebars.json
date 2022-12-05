@@ -16,7 +16,7 @@
         "items": [ 
           {
             "type": "category",
-            "label": "Configure using kubeslice-cli",
+            "label": "With kubeslice-cli",
             "collapsed": true,
             "items": [
               "kubeslice-cli/getting-started",
@@ -26,7 +26,7 @@
           },
           {
             "type": "category",
-            "label": "Configure using YAML",
+            "label": "With YAML",
             "collapsed": true,
             "items": [
               {
