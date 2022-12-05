@@ -39,7 +39,7 @@ The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlic
 
 Use the following template to add a new worker cluster.
 
-```
+```yaml
 configuration:
   cluster_configuration:
     kube_config_path: <kubeconfig-file>
@@ -53,7 +53,7 @@ configuration:
     project_name: <project-namespace>
 ```
 The following is an example topology file for registering a new worker cluster.
-```
+```yaml
 configuration:
   cluster_configuration:
     kube_config_path: <PATH-TO-KUBECONFIG>
@@ -97,7 +97,7 @@ To understand more about the configuration parameters, see
 [Slice Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
 :::
 
-```
+```yaml
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: SliceConfig
 metadata:
