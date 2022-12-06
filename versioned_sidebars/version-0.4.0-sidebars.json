@@ -31,13 +31,11 @@
             "items": [
               {
                 "type": "category",
-                "label": "Prerequisites",
+                "label": "Prepare to Install",
                 "collapsed": true,
                 "items": [
                   "getting-started-with-cloud-clusters/prerequisites/prerequisites",
-                  "getting-started-with-cloud-clusters/prerequisites/prerequisites-kind",
-                  "getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration",
-                  "getting-started-with-cloud-clusters/prerequisites/preparing-kind-clusters"
+                  "getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration"
                 ]
               },
               {
