@@ -14,6 +14,15 @@
         "label": "CONFIGURE KUBESLICE",
         "collapsed": true,
         "items": [ 
+                        {
+                "type": "category",
+                "label": "Prepare to Install",
+                "collapsed": true,
+                "items": [
+                  "getting-started-with-cloud-clusters/prerequisites/prerequisites",
+                  "getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration"
+                ]
+              },
           {
             "type": "category",
             "label": "With kubeslice-cli",
@@ -29,15 +38,6 @@
             "label": "With YAML",
             "collapsed": true,
             "items": [
-              {
-                "type": "category",
-                "label": "Prepare to Install",
-                "collapsed": true,
-                "items": [
-                  "getting-started-with-cloud-clusters/prerequisites/prerequisites",
-                  "getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration"
-                ]
-              },
               {
                 "type": "category",
                 "label": "Install KubeSlice",
