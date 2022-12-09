@@ -38,6 +38,7 @@
             "label": "With YAML",
             "collapsed": true,
             "items": [
+              "getting-started-with-cloud-clusters/prerequisites/prepare-to-register",
               {
                 "type": "category",
                 "label": "Install KubeSlice",
