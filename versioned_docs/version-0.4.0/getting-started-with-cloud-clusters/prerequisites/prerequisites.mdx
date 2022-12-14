@@ -4,11 +4,12 @@
 This topic describes the prerequisites for installing KubeSlice. Ensure that you have the following environment set up that is required to
 install KubeSlice. In this environment, you must install the KubeSlice Controller and register clusters with it. You need: 
 
-* Kubernetes clusters
+* Kubernetes clusters.
 * You need clusters to reach each other (that is, for each cluster, there must be an IP address 
   that is routable from other clusters that want to reach it) whether through a public or 
   private network.
 * Ports exposed on the clusters so that the tunneling service can connect.
+* A kubeconfig file retrieved from the clusters for authentication. 
 
 ## Command Line Tools
 You need the following command line tools to install the KubeSlice.
