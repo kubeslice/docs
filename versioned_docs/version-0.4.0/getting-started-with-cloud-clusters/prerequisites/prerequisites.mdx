@@ -28,6 +28,13 @@ You need the following command line tools to install the KubeSlice.
 The following are the infrastructure requirements to install KubeSlice
 components.
 
+:::info
+If you are on Ubuntu OS, then it is recommended to increase the `ulimit`
+to 2048 or unlimited.
+
+If you still face issues, see [errors due to too many open files](https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files).
+:::
+
 |                                         |                           |
 |-----------------------------------------|---------------------------|
 | **Host Requirements**               | Minimum of 8vCPUs and 8GB of RAM  |
