@@ -5,7 +5,7 @@ This topic describes the prerequisites for installing KubeSlice. Ensure that you
 install KubeSlice. In this environment, you must install the KubeSlice Controller and register clusters with it. You need: 
 
 * Kubernetes clusters.
-* Clusters to reach each other (that is, for each cluster, there must be an IP address 
+* Clusters to be able to reach each other (that is, for each cluster, there must be an IP address 
   that is routable from other clusters that want to reach it) whether through a public or 
   a private network.
 * Ports exposed on the clusters so that the tunneling service can connect.
@@ -27,11 +27,6 @@ You need the following command line tools to install the KubeSlice.
 ### Kind Clusters 
 The following are the infrastructure requirements to install KubeSlice
 components.
-
-:::info
-If you are on Ubuntu OS, then it is recommended to increase the `ulimit`
-to 2048 or unlimited.
-:::
 
 |                                         |                           |
 |-----------------------------------------|---------------------------|
