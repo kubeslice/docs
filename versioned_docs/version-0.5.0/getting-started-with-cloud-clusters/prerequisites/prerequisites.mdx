@@ -1,0 +1,150 @@
+# Prerequisites 
+
+## Introduction
+This topic describes the prerequisites for installing KubeSlice. Ensure that you have the following environment set up that is required to
+install KubeSlice. In this environment, you must install the KubeSlice Controller and register clusters with it. You need: 
+
+* Kubernetes clusters.
+* Clusters to be able to reach each other (that is, for each cluster, there must be an IP address 
+  that is routable from other clusters that want to reach it) whether through a public or 
+  a private network.
+* Ports exposed on the clusters so that the tunneling service can connect.
+* A kubeconfig file retrieved from the clusters for authentication. 
+
+## Command Line Tools
+You need the following command line tools to install the KubeSlice.
+
+|Package Required|Installation Instructions| 
+|----|----| 
+|[Helm](https://helm.sh) - The Package Manager for Kubernetes| [Installing Helm](https://helm.sh/docs/intro/install/)|
+|[kubectl](https://kubernetes.io/docs/reference/kubectl/overview) - Kubernetes CLI | [Installing Tools](https://kubernetes.io/docs/tasks/tools/)|
+|[kubectx and kubens](https://github.com/ahmetb/kubectx) | [Installing Kubectx](https://github.com/ahmetb/kubectx#installation)
+| [Docker](https://docs.docker.com/get-docker/) | https://docs.docker.com/engine/install/  
+| Kind CLI | https://kind.sigs.k8s.io/docs/user/quick-start/#installation (for kind clusters)
+
+## Infrastructure Requirements
+
+### Kind Clusters 
+The following are the infrastructure requirements to install KubeSlice
+components.
+
+:::info
+If you are on Ubuntu OS, then it is recommended to increase the `ulimit`
+to 2048 or unlimited.
+
+If you still face issues, see [errors due to too many open files](https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files).
+:::
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Host Requirements**               | Minimum of 8vCPUs and 8GB of RAM  |
+
+:::info
+Ensure to modify the memory and CPU usage allowed to docker as described in           
+https://docs.docker.com/desktop/windows/#resources. 
+::: 
+
+#### Requirements for Hosting KubeSlice Controller
+   
+:::info
+You can install the KubeSlice Controller on a cluster and also register the same cluster 
+with the KubeSlice Controller.
+:::
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Cluster Requirements**                |     1 Kubernetes Cluster  |  
+| **Supported Kubernetes Versions**       |   [1.22](https://v1-22.docs.kubernetes.io/) and [1.23](https://v1-23.docs.kubernetes.io/) |
+| **Required Helm Version**               |  3.7.0  |
+
+
+#### Requirements for Worker Clusters
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Minimum Clusters Required**           | 2 Kubernetes Clusters    |
+|  **Nodes Reserved for KubeSlice Components** |   1 Node per cluster |
+| **Supported Kubernetes Versions**       |   [1.22](https://v1-22.docs.kubernetes.io/) and [1.23](https://v1-23.docs.kubernetes.io/) |
+| **Required Helm Version**               |  3.7.0  |
+
+### Cloud Clusters 
+The following are the infrastructure requirements to install KubeSlice components on 
+cloud clusters.
+
+#### Requirements for Hosting KubeSlice Controller
+
+:::info
+You can install the KubeSlice Controller on a cluster and also register the same cluster with the 
+KubeSlice Controller.
+:::
+
+| | |
+|----|----|
+| **Cluster Requirements** |1 Kubernetes Cluster|
+| **Supported Kubernetes Versions** | [1.22](https://v1-22.docs.kubernetes.io/) and [1.23](https://v1-23.docs.kubernetes.io/) |
+| **Supported Kubernetes Services** | Azure Kubernetes Service (AKS),  Elastic Kubernetes Service (EKS), and Google Kubernetes Engine (GKE) |
+| **Required Helm Version** | 3.7.0 |
+
+:::info
+Kubeslice has been tested on AKS, GKE, and EKS, but it should run in any Kubernetes 
+environment with the supported Kubernetes versions.
+:::
+
+#### Requirements for Worker Clusters
+
+| | |
+|-----|-----|
+| **Minimum Clusters Required** | 1 Kubernetes Clusters |
+| **Minimum Nodes or NodePools Required** | 2, Each with a minimum of 4 vCPUs and 16 GB of RAM |
+| **NodePools Reserved for KubeSlice Components** | 1 NodePool |
+| **Cluster Requirements** | - 1 Kubernetes Cluster - 2 minimum nodes or NodePools each with a minimum of 4 vCPUs and 16 GB of RAM. - 1 NodePool for KubeSlice components|
+| **Supported Kubernetes Versions**| [1.22](https://v1-22.docs.kubenetes.io) and [1.23](https://v1-23.docs.kubernetes.io)
+| **Supported Kubernetes Services** | Azure Kubernetes Service (AKS), Elastic Kubernetes Service (EKS), and Google Kubernetes Engine (GKE)|
+| **Required Helm Version** | 3.7.0 |
+| **Required Istio Version** | 1.13.3 |
+
+#### Cluster Networking 
+:::info
+Open the UDP Ports required for the KubeSlice Gateway Node in both public and private clusters.
+:::
+
+| Kubernetes Service | CNI with Network Policy Support | Open UDP Ports | Reachability Options|
+|-----|-----|----|----|
+| Azure Kubernetes Service | [Enable Calico for Azure AKS](https://projectcalico.docs.tigera.io/getting-started/kubernetes/managed-public-cloud/aks#install-aks-with-calico-for-network-policy) | 30000-33000 | Public Node IP with NodePort Service |
+| Elastic Kubernetes Service | [Enable Calico for Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/calico.html) | 30000-33000 | Public Node IP with NodePort Service |
+| Google Kubernetes Engine | [Enable Calico for Google GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy#enabling_network_policy_enforcement)|30000-33000 | Public Node IP with NodePort Service|
+ 
+## Required Cluster Roles (RBAC) 
+:::caution
+Only the cluster administrator can install the KubeSlice Controller and the Slice Operator (Worker Operator).
+:::
+
+## Cluster Context Switching
+
+You must change your `kubeconfig` context frequently to run `kubectl `commands in each cluster. Using `kubectx` can make this
+process easier and save you time.
+
+To switch the context to a certain cluster, run the following command
+with the corresponding cluster name:
+```
+kubectx <cluster name>
+```
+
+Expected Output.
+``` 
+Switched to context "<cluster name>"
+```
+
+To return to the last used context, use the following command:
+```
+kubectx -
+```
+
+Expected Output.
+```
+Switched to context "<previous context>"
+```
+
+:::success
+You have successfully set up the required KubeSlice prerequisites.
+:::
