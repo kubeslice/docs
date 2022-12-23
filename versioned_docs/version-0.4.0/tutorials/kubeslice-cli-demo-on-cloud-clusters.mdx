@@ -22,10 +22,10 @@ In this demonstration, install KubeSlice on cloud clusters using the custom topo
 ## Install the KubeSlice Controller and Worker Clusters
 
 You must create a topology configuration file that includes the names of the clusters and the cluster contexts that host the 
-KubeSlice Controller, the worker clusters, and a project name. For more information, see sample 
+KubeSlice Controller, the worker clusters, and a project name. For more information, see the sample 
 [topology configuration](/versioned_docs/version-0.4.0/reference/sample-configuration-file.mdx#create-a-topology-configuration-file-for-cloud-clusters) file.
 
-Use the following command to install the controller and worker cluster:
+Use the following command to install the controller and the worker cluster:
 ```
 kubeslice-cli --config=<topology-configuration-file> install
 ```
@@ -117,7 +117,7 @@ spec:
 
 :::caution
 The `kubeslice-cli create sliceConfig` command returns after the configuration is applied. However, in each cluster, the relevant pods for 
-controlling and managing the slice may still be starting. Ensure to wait for the slice to complete initialization before 
+controlling and managing the slice may still be starting. Ensure to wait for the slice to complete the initialization before 
 deploying services to it.
 :::
 
@@ -225,5 +225,4 @@ Editing KubeSlice serviceExportConfig...
 
 ## Uninstall KubeSlice
 
-To uninstall KubeSlice from your cloud clusters, 
-see [Uninstall KubeSlice](/versioned_docs/version-0.4.0/kubeslice-cli/uninstalling-kubeslice.mdx).
+To uninstall KubeSlice from your cloud clusters, follow the instructions in [Uninstall KubeSlice](/versioned_docs/version-0.4.0/kubeslice-cli/uninstalling-kubeslice.mdx).
