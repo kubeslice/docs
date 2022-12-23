@@ -156,6 +156,7 @@
         "id": "release-notes/release-notes"
       },
       "items": [
+        "release-notes/release-notes-for-kubeslice-oss-0.5.0",
         "release-notes/release-notes-for-kubeslice-oss-0.4.0",
         "release-notes/release-notes-for-kubeslice-oss-0.3.0",
         "release-notes/release-notes-for-kubeslice-oss-0.2.0",
