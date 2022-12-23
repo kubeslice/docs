@@ -1,11 +1,18 @@
-# Installing the KubeSlice Controller
+# Install the KubeSlice Controller
 
 ## Introduction
 
 The KubeSlice Controller orchestrates the creation and management of slices on worker clusters. 
 The KubeSlice Controller components and the worker cluster components can coexist on a cluster. Hence, the 
-cluster running the KubeSlice controller can also be used as a worker cluster. **We recommend that you 
-run the KubeSlice Controller on a separate cluster**.
+cluster running the KubeSlice controller can also be used as a worker cluster. 
+**We recommend that you run the KubeSlice Controller on a separate cluster**.
+
+Installing the KubeSlice Controller installs the following:
+-   KubeSlice Controller specific ClusterResourceDefinitions(CRDs)
+-   ClusterRole, ServiceAccount and ClusterRoleBinding for KubeSlice Controller
+-   A Role and RoleBinding for KubeSlice Controller Leader Election
+-   KubeSlice Controller workload
+-   KubeSlice Controller API Gateway  
 
 This topic describes the steps to install the KubeSlice Controller in the cluster.
 
@@ -16,18 +23,9 @@ Before you begin, ensure the following prerequisites are met:
 see [Prerequisites](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
 - You have cluster administrator privileges to install the KubeSlice Controller.
 - You have added the helm repository to your local configuration. For more information, 
-see [Adding the Helm Repository](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx#adding-the-helm-repository).
+see [Adding the Helm Repository](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx#add-the-helm-repository).
 
-## Installing the KubeSlice Controller
-
-Installing the KubeSlice Controller installs the following:
--   KubeSlice Controller specific ClusterResourceDefinitions(CRDs)
--   ClusterRole, ServiceAccount and ClusterRoleBinding for KubeSlice Controller
--   A Role and RoleBinding for KubeSlice Controller Leader Election
--   KubeSlice Controller workload
--   KubeSlice Controller API Gateway  
-
-## Installing the Certificate Manager
+## Install the Certificate Manager
 The KubeSlice Controller uses the certificate manager to provision the certificates for the webhook server.
 The certificate manager uses the Kubernetes API server that is extended using a webhook server for 
 providing dynamic admission control over the certificate manager resources. This implies that the 
@@ -55,13 +53,15 @@ NOTES:
 cert-manager v1.7.0 has been deployed successfully!
 ```
 
-## Creating the Values File
-
+## Create the Values File
 The following information is required to create the `values.yaml` file.
 The values file will be used to install the KubeSlice Controller in one of the clusters.
 
+:::info
+For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.4.0/tutorials/kind-install-kubeslice-controller.mdx).
+:::
 
-### Getting the Cluster Endpoint
+### Get the Cluster Endpoint
 
 Use the following command to get the cluster endpoint:
 ``` 
@@ -83,7 +83,7 @@ From the above output, copy the URL for the Kubernetes control plane to
 add it as the cluster endpoint in the `values.yaml` file. For example,
 `https://aks-controller-cluster-dns-06a5f5da.hcp.westus2.azmk8s.io:443`.
 
-### Creating the Values YAML File
+### Create the Values YAML File
 
 :::info
 To understand more about the configuration parameters, see 
@@ -110,14 +110,14 @@ kubeslice:
     endpoint: https://aks-controller-cluster-dns-06a5f5da.hcp.westus2.azmk8s.io:443
 ```
 
-## Applying the Values File
+## Apply the Values File
 
 The following information is required.
 
 |Parameter|Description|
 |----|----|
-|<cluster name\>|The name of the cluster.|
-|<values\>|The name of the values file.|
+|`<cluster name\>`|The name of the cluster.|
+|`<values\>`|The name of the values file.|
 
 Use the following command to apply the YAML:
 ```
@@ -136,7 +136,7 @@ NOTES:
 kubeslice-controller installation successful!
 ```
 
-## Validating the Installation
+## Validate the Installation
 
 Perform these steps to validate the installation on the controller cluster where the KubeSlice Controller 
 is installed:
@@ -152,7 +152,7 @@ NAME                                            READY   STATUS      RESTARTS   A
 kubeslice-controller-manager-768c774c69-5qsct   2/2     Running     0          134m
 ```
 
-## Creating the Project Namespace
+## Create the Project Namespace
 
 A project may represent an individual customer or an organization or a department within an organization. 
 Each project would have a dedicated auto-generated namespace, which will ensure that the resources of one 
@@ -162,10 +162,13 @@ For example, a slice with the same name can exist across multiple projects but w
 configurations. Changes to the slice in one project will not affect the slice in another project. 
 For more information, see [The KubeSlice Architecture](/versioned_docs/version-0.4.0/architecture.mdx).
 
-
-### Creating the Project YAML File
+### Create the Project YAML File
 Create a project by applying the manifest file.After deploying the manifest, the project namespace is 
 created. Create the Project name .yaml file using the following template.
+
+:::info
+For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.4.0/tutorials/kind-install-kubeslice-controller.mdx#create-a-project-yaml-file).
+:::
 
 :::info 
 To understand more about the configuration parameters, 
@@ -188,7 +191,7 @@ spec:
       - <readwrite user3>
 ```
 
-### Applying the Project YAML File 
+### Apply the Project YAML File 
 
 The following information is required.
 
@@ -207,7 +210,7 @@ After applying the manifest file on the project namespace. You can
 validate if the project and service accounts are created successfully.
 
 
-### Validating the Project 
+### Validate the Project 
 
 Use the following command on the` kubeslice-controller` namespace to get the list of the project:
 ```
@@ -221,7 +224,7 @@ NAME     AGE
 avesha   30s
 ```
 
-###  Validating the Service Accounts
+###  Validate the Service Accounts
 
 To validate the account creation, check the service accounts belonging
 to the project namespace using the following command:

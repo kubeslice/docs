@@ -1,4 +1,4 @@
-# Offboarding Namespaces
+# Offboard Namespaces
 
 ## Introduction 
 
@@ -9,7 +9,7 @@ describes the steps to offboard namespaces before you delete your slice.
 If your application is installed on multiple clusters within a slice, you must complete these steps for each cluster.
 :::
 
-## Deleting the ServiceExport for Each Application
+## Delete the ServiceExport for Each Application
 
 :::info
 If a ServiceExport was created in the application namespace, it must be
@@ -39,7 +39,7 @@ Use the following command to delete the ServiceExport from the cluster:
 kubectl delete serviceexport <serviceexport name> -n <application namespace>
 ```
 
-## Offboarding Namespaces from the Slice Configuration 
+## Offboard Namespaces from the Slice Configuration 
 
 To offboard the namespace from a slice, delete the `namespace` and the associated 
 `clusters` under the `applicationNamespaces` in the slice configuration file as 

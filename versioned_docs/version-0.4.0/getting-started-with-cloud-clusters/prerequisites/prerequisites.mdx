@@ -1,13 +1,17 @@
-# Prerequisites
+# Prerequisites 
 
 ## Introduction
-
 This topic describes the prerequisites for installing KubeSlice. Ensure that you have the following environment set up that is required to
-install KubeSlice. In this environment, you must install the KubeSlice Controller and register clusters with it.
+install KubeSlice. In this environment, you must install the KubeSlice Controller and register clusters with it. You need: 
 
+* Kubernetes clusters.
+* Clusters to be able to reach each other (that is, for each cluster, there must be an IP address 
+  that is routable from other clusters that want to reach it) whether through a public or 
+  a private network.
+* Ports exposed on the clusters so that the tunneling service can connect.
+* A kubeconfig file retrieved from the clusters for authentication. 
 
 ## Command Line Tools
-
 You need the following command line tools to install the KubeSlice.
 
 |Package Required|Installation Instructions| 
@@ -15,13 +19,59 @@ You need the following command line tools to install the KubeSlice.
 |[Helm](https://helm.sh) - The Package Manager for Kubernetes| [Installing Helm](https://helm.sh/docs/intro/install/)|
 |[kubectl](https://kubernetes.io/docs/reference/kubectl/overview) - Kubernetes CLI | [Installing Tools](https://kubernetes.io/docs/tasks/tools/)|
 |[kubectx and kubens](https://github.com/ahmetb/kubectx) | [Installing Kubectx](https://github.com/ahmetb/kubectx#installation)
-
+| [Docker](https://docs.docker.com/get-docker/) | https://docs.docker.com/engine/install/  
+| Kind CLI | https://kind.sigs.k8s.io/docs/user/quick-start/#installation (for kind clusters)
 
 ## Infrastructure Requirements
 
-The following are the infrastructure requirements to install KubeSlice components.
+### Kind Clusters 
+The following are the infrastructure requirements to install KubeSlice
+components.
 
-### Requirements for Hosting KubeSlice Controller
+:::info
+If you are on Ubuntu OS, then it is recommended to increase the `ulimit`
+to 2048 or unlimited.
+
+If you still face issues, see [errors due to too many open files](https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files).
+:::
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Host Requirements**               | Minimum of 8vCPUs and 8GB of RAM  |
+
+:::info
+Ensure to modify the memory and CPU usage allowed to docker as described in           
+https://docs.docker.com/desktop/windows/#resources. 
+::: 
+
+#### Requirements for Hosting KubeSlice Controller
+   
+:::info
+You can install the KubeSlice Controller on a cluster and also register the same cluster 
+with the KubeSlice Controller.
+:::
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Cluster Requirements**                |     1 Kubernetes Cluster  |  
+| **Supported Kubernetes Versions**       |   [1.22](https://v1-22.docs.kubernetes.io/) and [1.23](https://v1-23.docs.kubernetes.io/) |
+| **Required Helm Version**               |  3.7.0  |
+
+
+#### Requirements for Worker Clusters
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Minimum Clusters Required**           | 2 Kubernetes Clusters    |
+|  **Nodes Reserved for KubeSlice Components** |   1 Node per cluster |
+| **Supported Kubernetes Versions**       |   [1.22](https://v1-22.docs.kubernetes.io/) and [1.23](https://v1-23.docs.kubernetes.io/) |
+| **Required Helm Version**               |  3.7.0  |
+
+### Cloud Clusters 
+The following are the infrastructure requirements to install KubeSlice components on 
+cloud clusters.
+
+#### Requirements for Hosting KubeSlice Controller
 
 :::info
 You can install the KubeSlice Controller on a cluster and also register the same cluster with the 
@@ -40,7 +90,7 @@ Kubeslice has been tested on AKS, GKE, and EKS, but it should run in any Kuberne
 environment with the supported Kubernetes versions.
 :::
 
-### Requirements for Worker Clusters
+#### Requirements for Worker Clusters
 
 | | |
 |-----|-----|
@@ -53,7 +103,7 @@ environment with the supported Kubernetes versions.
 | **Required Helm Version** | 3.7.0 |
 | **Required Istio Version** | 1.13.3 |
 
-## Cluster Networking 
+#### Cluster Networking 
 :::info
 Open the UDP Ports required for the KubeSlice Gateway Node in both public and private clusters.
 :::
