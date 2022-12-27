@@ -16,3 +16,10 @@ that provides upstream networking fixes.
 
 ### Latest Supported Kubernetes Version 
 The latest Kubernetes version that we support from this release is version [1.24](https://v1-24.docs.kubernetes.io/). 
+
+## Enhancements 
+* When the namespace sameness is applied to a namespace on a slice, then it applies to all worker 
+  clusters that are part of the slice. Now that namespace is created on a worker cluster if it does 
+  not have that namespace. This ensures that all the worker clusters that are part of a slice will have that 
+  namespace for which the namespace sameness is applied. This created namespace remains on the worker 
+  cluster even after the worker cluster is detached from that slice, and even when that slice is deleted. 
