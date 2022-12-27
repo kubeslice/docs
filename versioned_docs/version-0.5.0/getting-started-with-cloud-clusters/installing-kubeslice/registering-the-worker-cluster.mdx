@@ -396,9 +396,9 @@ Perform these steps:
    ```
    helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of secrets file>.yaml -n kubeslice-system  --create-namespace
    ```
-## Validate the Slice Operator Installation 
 
-To validate the Slice Operator installation in the registered cluster,check the pods belonging to the 
+## Validate the Slice Operator Installation 
+To validate the Slice Operator installation in the registered cluster, check the pods belonging to the 
 `kubeslice-system` namespace by running the following command:
 
 Example
@@ -418,6 +418,19 @@ nsm-admission-webhook-k8s-5cc8cd8bcd-pv7pm   1/1     Running            0       
 nsm-install-crds--1-z6bkd                    0/1     Completed          0             78s
 nsmgr-nmrv6                                  2/2     Running            0             75s
 registry-k8s-79c89968c4-gcm2k                1/1     Running            0             75s
+```
+
+You can also validate the spire installation using the following command:
+
+```
+k get pods -n spire                                                   
+```
+
+Expected Output
+```                                                 
+NAME                READY   STATUS    RESTARTS      AGE
+spire-agent-ms67k   1/1     Running   0             18h
+spire-server-0      2/2     Running   0             18h
 ```
 
 :::info
