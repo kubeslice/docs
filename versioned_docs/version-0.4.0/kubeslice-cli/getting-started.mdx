@@ -109,7 +109,7 @@ The kubeslice-cli tool must have access to the clusters you want it to manage. T
 a path to the kubeconfig file containing the necessary keys to access those clusters.
 To set the KUBECONFIG environment varible, use these commands:
   - On Linux/macOS: `export KUBECONFIG=<path to kubeconfig file>`
-  - On Windows: `set KUBECONFIG=<path to kubeconfig file>`
+  - On Windows: `$env:KUBECONFIG = "kubeslice/kubeconfig.yaml"`
 ::: 
 
 :::caution
@@ -204,8 +204,8 @@ see [Uninstalling KubeSlice](/versioned_docs/version-0.4.0/kubeslice-cli/uninsta
 
 ### Syntax
 ```
-kubeslice-cli <delete|removed|d> project <project-name> --namespace <controller-namespace>
-kubeslice-cli <delete|removed|d> <sliceConfig|serviceExportConfig> <resource-name> --namespace <project-namespace>
+kubeslice-cli <delete|remove|d> project <project-name> --namespace <controller-namespace>
+kubeslice-cli <delete|remove|d> <sliceConfig|serviceExportConfig> <resource-name> --namespace <project-namespace>
 ```
 
 ### Options
