@@ -34,6 +34,10 @@ of cluster registration by 120 seconds. The worker cluster can only be added to 
   
   Workaround: None
 
+- After a slice is created, the gateway connectivity takes approximately 120 seconds to establish a tunnel.
+ 
+  Workaround: None
+
 - Istio version 1.13 is incompatible with Kubernetes version 1.24. It might cause issues with KubeSlice version 0.5.0, which 
   now supports Kubernetes version 1.24. However, KubeSlice version 0.5.0 can be installed without Istio too.
   
