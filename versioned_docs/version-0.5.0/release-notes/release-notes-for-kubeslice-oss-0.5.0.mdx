@@ -30,11 +30,17 @@ The latest Kubernetes version that we support from this release is version [1.24
 The known issues are as follows:
 
 - Occasional **spire-server** restarts are observed if it takes time to bring up a SPIRE server.
+  
+  **Workaround**: none
+
 - Worker cluster registration requires a maximum of 120 seconds before it is available for a slice creation.
+  
+  **Workaround**: none
+
 - Istio version 1.13 is incompatible with Kubernetes version 1.24. It might cause issues with KubeSlice version 0.5.0, which 
   now supports Kubernetes version 1.24. However, KubeSlice version 0.5.0 can be installed without Istio too.
   
-  In the following topics, you must skip the steps related to Istio:
+  **Workaround**: In the following topics, you must skip the steps related to Istio:
 
   * [Prerequisites](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx)
   * [Register the worker cluster](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx)
