@@ -20,23 +20,23 @@ The Network Service Mesh (NSM) component has been upgraded to the stable
 The latest Kubernetes version that we support from this release is version [1.24](https://v1-24.docs.kubernetes.io/). 
 
 ### Enhancements 
-* When the namespace sameness is applied to a namespace on a slice, then it applies to all worker 
+* When the **namespace sameness** is applied to a namespace on a slice, then it applies to all worker 
   clusters that are part of the slice. If a worker cluster does not already have that namespace, it is now created. This 
   ensures that all the worker clusters that are part of a slice will have that 
   namespace for which the namespace sameness is applied. This created namespace remains on the worker 
   cluster even after the worker cluster is detached from that slice, and even when that slice is deleted.
 
-## Known Issues 
-Istio version 1.13 is incompatible with Kubernetes version 1.24. It might cause issues with 
-KubeSlice version 0.5.0, which now supports Kubernetes version 1.24. However, KubeSlice version 
-0.5.0 can be installed without Istio too. 
+## Known Issues
+The known issues are as follows:
 
-We have described the usage of Istio in the following topics: 
-:::info
-You can skip the steps related to Istio in the following topics. 
-:::
+- Occasional **spire-server** restarts are observed if it takes time to bring up a SPIRE server.
+- Worker cluster registration requires a maximum of 120 seconds before it is available for a slice creation.
+- Istio version 1.13 is incompatible with Kubernetes version 1.24. It might cause issues with KubeSlice version 0.5.0, which 
+  now supports Kubernetes version 1.24. However, KubeSlice version 0.5.0 can be installed without Istio too.
+  
+  In the following topics, you must skip the steps related to Istio:
 
-* [Prerequisites](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx)
-* [Register the worker cluster](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx)
-* [Create a slice](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx)
-* [Deploy the BookInfo application](/versioned_docs/version-0.4.0/tutorials/deploying-the-bookinfo-application.mdx)
+  * [Prerequisites](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx)
+  * [Register the worker cluster](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx)
+  * [Create a slice](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx)
+  * [Deploy the BookInfo application](/versioned_docs/version-0.4.0/tutorials/deploying-the-bookinfo-application.mdx)
