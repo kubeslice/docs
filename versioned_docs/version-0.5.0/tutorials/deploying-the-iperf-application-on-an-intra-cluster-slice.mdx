@@ -218,6 +218,12 @@ Perform these steps:
    ```
    kubectl get pods -n iperf
    ```
+   Example Output
+   ```
+   NAME                           READY   STATUS    RESTARTS   AGE
+   iperf-sleep-5477bf94cb-vmmtd   3/3     Running   0          10s
+   ```
+
 3. Validate the ServiceImport using the following command:
    ```
    kubectl get serviceimport -n iperf
@@ -239,6 +245,13 @@ Perform these steps:
    ```
    kubectl get pods -n iperf
    ```
+   
+   Example Output
+   ```
+   NAME                            READY   STATUS    RESTARTS   AGE
+   iperf-server-5958958795-fld2p   3/3     Running   0          20s
+   ```
+      
 3. Validate the ServiceImport using the following command:
    ```
    kubectl get serviceimport -n iperf
