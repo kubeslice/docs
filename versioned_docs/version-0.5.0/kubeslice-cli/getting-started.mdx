@@ -702,7 +702,7 @@ Use this command to delete the kind clusters used for KubeSlice demonstration.
 ### Syntax
 
 ```
-kubeslice-cli <uninstall|cleanup>
+kubeslice-cli <uninstall|cleanup> [options]
 ```
 
 ### Options
@@ -712,6 +712,8 @@ The following are the `kubeslice-cli uninstall` options
 |----|----|----|
 |--config|-c|It is a **global** option. The path to the topology configuration YAML file.|
 |--help|-h|It provides information on the delete command.|
+|--all|-a|Uninstalls all the KubeSlice components (worker, controller, and UI).|
+|--ui|-u|Uninstalls the enterprise user interface component (Kubeslice-Manager).|
 
 ### Examples
 The following is an example command:
@@ -724,4 +726,9 @@ created using `kubeslice-cli install --profile` option.
    
    ```
    kubeslice-cli uninstall
+   ```
+
+2. To uninstall the KubeSlice Controller and its component, use the following command:
+   ```
+   kubeslice-cli uninstall --config=file-path-of-topology --all
    ```
