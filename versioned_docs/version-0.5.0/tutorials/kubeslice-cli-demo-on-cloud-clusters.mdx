@@ -25,7 +25,35 @@ You must create a topology configuration file that includes the names of the clu
 KubeSlice Controller, the worker clusters, and a project name. For more information, see the sample 
 [topology configuration](/versioned_docs/version-0.5.0/reference/sample-configuration-file.mdx#create-a-topology-configuration-file-for-cloud-clusters) file.
 
-Use the following command to install the controller and the worker cluster:
+The following is an example custom topology file for installing KubeSlice in an existing setup.
+```
+configuration:
+  cluster_configuration:
+    kube_config_path: <path-to-the-kubeconfig-file>
+    controller:
+      name: controller
+      context_name: Cloud-controller
+      kube_config_path: <path-to-the-controller-kubeconfig-file>
+    workers:
+      - name: worker-1
+        context_name: cloud-worker-1
+      - name: worker-2
+        context_name: cloud-worker-2
+    kube_config_path: <path-to-the-worker-kubeconfig-file>
+  kubeslice_configuration:
+    project_name: kubeslice-avesha
+  helm_chart_configuration:
+    repo_alias: kubeslice
+    repo_url: https://kubeslice.github.io/kubeslice/
+    cert_manager_chart:
+      chart_name: cert-manager
+    controller_chart:
+      chart_name: kubeslice-controller
+    worker_chart:
+      chart_name: kubeslice-worker
+```
+
+Use the following command to install the controller and the worker clusters:
 ```
 kubeslice-cli --config=<topology-configuration-file> install
 ```
@@ -36,36 +64,40 @@ installing the Slice Operator on the worker cluster.
 
 The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration.
 
-Use the following template to add a new worker cluster.
+:::note
+Add new worker cluster information to the custom topology file that was used to install KubeSlice earlier and 
+using **install** command, register the new worker cluster with the KubeSlice controller.
+:::
 
+The following is an example custom topology file for registering a new worker cluster.
 ```
 configuration:
   cluster_configuration:
-    kube_config_path: <kubeconfig-file>
-    controller:
-      name: <controller-cluster-name>
-      context_name: <controller-cluster-context>
-    workers:
-      - name: <new-worker-cluster-name>
-        context_name: <new-worker-cluster-context>
-  kubeslice_configuration:
-    project_name: <project-namespace>
-```
-The following is an example topology file for registering a new worker cluster.
-```
-configuration:
-  cluster_configuration:
-    kube_config_path: <PATH-TO-KUBECONFIG>
+    kube_config_path: <path-to-the-kubeconfig-file>
     controller:
       name: controller
       context_name: kind-controller
+      kube_config_path: <path-to-the-controller-kubeconfig-file>
     workers:
+      - name: worker-1
+        context_name: cloud-worker-1
+      - name: worker-2
+        context_name: cloud-worker-2
       - name: worker-3
-        context_name: cloud-cluster-3      
+        context_name: cloud-worker-3    
+    kube_config_path: <path-to-the-worker-kubeconfig-file>
   kubeslice_configuration:
-    project_name: avesha
-  ```
-
+    project_name: kubeslice-avesha
+  helm_chart_configuration:
+    repo_alias: kubeslice
+    repo_url: https://kubeslice.github.io/kubeslice/
+    cert_manager_chart:
+      chart_name: cert-manager
+    controller_chart:
+      chart_name: kubeslice-controller
+    worker_chart:
+      chart_name: kubeslice-worker
+```
 
 Use the following command to register a new worker cluster with the KubeSlice Controller:
 ```
@@ -123,12 +155,12 @@ Ensure to wait for the slice to complete the initialization before deploying ser
 
 To apply the slice configuration YAML, use the following command:
 ```
-kubeslice-cli create sliceConfig -n <project-namespace> -f <slice-configuration-yaml>
+kubeslice-cli create sliceConfig -n <project-namespace> -f <slice-configuration-yaml> --config=<path-to-the-custom-topology-file>
 ```
    
 Example
 ```
-kubeslice-cli create sliceConfig -n kubeslice-avesha -f slice-config.yaml
+kubeslice-cli create sliceConfig -n kubeslice-avesha -f slice-config.yaml 
 ```
    
 Example output
@@ -147,7 +179,7 @@ If the application is already deployed on a namespace that is onboarded to a sli
 ## Create a Service Export
 To create a service export, use the following command:
 ```
-kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <project-namespace>
+kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <project-namespace>  --config=<path-to-the-custom-topology-file>
 ```
 
 ### Validate the Service Export
@@ -210,7 +242,7 @@ the value and save. This updates the ServiceExportConfig. The ServiceExportConfi
 
 To edit the service export configuration, use the following command:
 ```
-kubeslice-cli edit serviceExportConfig <resource-name> -n <project-namespace>
+kubeslice-cli edit serviceExportConfig <resource-name> -n <project-namespace> --config=<path-to-the-custom-topology-file>
 ```
 Example
 ```
@@ -225,4 +257,10 @@ Editing KubeSlice serviceExportConfig...
 
 ## Uninstall KubeSlice
 
-To uninstall KubeSlice from your cloud clusters, follow the instructions in [Uninstall KubeSlice](/versioned_docs/version-0.5.0/kubeslice-cli/uninstalling-kubeslice.mdx).
+To uninstall KubeSlice Controller and all its components, use the following command:
+```
+kubeslice-cli uninstall --config=<file-path-of-topology> --all
+```
+
+
+To uninstall KubeSlice from your cloud clusters step-by-step, follow the instructions in [Uninstall KubeSlice](/versioned_docs/version-0.5.0/kubeslice-cli/uninstalling-kubeslice.mdx).
