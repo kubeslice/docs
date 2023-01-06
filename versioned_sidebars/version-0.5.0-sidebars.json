@@ -152,6 +152,7 @@
       "label": "RELEASE NOTES",
       "collapsed": true,
       "items": [
+        "release-notes/release-notes-for-kubeslice-oss-0.5.1",
         "release-notes/release-notes-for-kubeslice-oss-0.5.0",
         "release-notes/release-notes-for-kubeslice-oss-0.4.0",
         "release-notes/release-notes-for-kubeslice-oss-0.3.0",
