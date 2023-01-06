@@ -1,4 +1,4 @@
-# Release Notes for KubeSlice OSS 0.5.1
+# Release Notes for KubeSlice OSS 0.5.0 v1
 
 *Release date: 06 Jan 2023*
 
@@ -20,31 +20,4 @@ The Network Service Mesh (NSM) component has been upgraded to the stable
 The latest Kubernetes version that we support from this release is version [1.24](https://v1-24.docs.kubernetes.io/). 
 
 ### Enhancements 
-* When the **namespace sameness** is applied to a namespace on a slice, then it applies to all worker 
-  clusters that are part of the slice. If a worker cluster does not already have that namespace, it is now created. This 
-  ensures that all the worker clusters that are part of a slice will have that 
-  namespace for which the namespace sameness is applied. This created namespace remains on the worker 
-  cluster even after the worker cluster is detached from that slice, and even when that slice is deleted.
 * The **kubeslice-cli** tool now allows you to uninstall Kubeslice components using a custom topology file.
-
-## Known Issues
-The known issues are as follows:
-
-- If the SPIRE server takes time to start up, the **spire-server** pod continues to restart, thus delaying the completion 
-of cluster registration by 120 seconds. The worker cluster can only be added to a slice after this.
-  
-  Workaround: None
-
-- After a slice is created, the gateway connectivity takes approximately 120 seconds to establish a tunnel.
- 
-  Workaround: None
-
-- Istio version 1.13 is incompatible with Kubernetes version 1.24. It might cause issues with KubeSlice version 0.5.0, which 
-  now supports Kubernetes version 1.24. However, KubeSlice version 0.5.0 can be installed without Istio too.
-  
-  Workaround: In the following topics, you must skip the steps related to Istio:
-
-  * [Prerequisites](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx)
-  * [Register the worker cluster](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx)
-  * [Create a slice](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx)
-  * [Deploy the BookInfo application](/versioned_docs/version-0.4.0/tutorials/deploying-the-bookinfo-application.mdx)
