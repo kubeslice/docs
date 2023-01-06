@@ -26,18 +26,18 @@ You must create a topology configuration file that includes the names of the clu
 that host the KubeSlice Controller and the worker clusters. For more information, see sample 
 [topology configuration](/versioned_docs/version-0.5.0/reference/sample-configuration-file.mdx) file.
 
-Use the following command to install the controller and worker cluster:
+Use the following command to install the KubeSlice Controller and worker cluster(s):
 ```
-kubeslice-cli --config=<topology-configuration-file> install
+kubeslice-cli --config=<path-to-custom-topology-file> install
 ```
-The above command installs the KubeSlice Controller, creates a project, and registers the worker cluster with the project by installing the Slice
-Operator on the worker cluster.
+The above command installs the KubeSlice Controller, creates a project, and registers the worker cluster with the project 
+by installing the Slice Operator on the worker cluster.
 
 ## Register a Worker Cluster
 
 The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration.
 
-Use the following template to add a new worker cluster.
+Use the following topology template to add a new worker cluster.
 
 ```yaml
 
@@ -54,7 +54,8 @@ configuration:
   kubeslice_configuration:
     project_name: <project-namespace>
 ```
-The following is an example topology file for registering a new worker cluster.
+
+The following is an example custom topology file for registering a new worker cluster.
 ```yaml
 configuration:
   cluster_configuration:

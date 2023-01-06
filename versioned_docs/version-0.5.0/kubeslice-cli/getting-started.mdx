@@ -126,8 +126,8 @@ service export.
 
 ### Syntax
 ```
-kubeslice-cli --config <config-yaml-file> create project <project-name> --namespace <controller-namespace>
-kubeslice-cli create <sliceConfig|serviceExportConfig> --namespace <project-namespace> --filename <path-to-the-file/configuration-yaml>
+kubeslice-cli --config <path-to-the-custom-topology-file> create project <project-name> --namespace <controller-namespace>
+kubeslice-cli create <sliceConfig|serviceExportConfig> --namespace <project-namespace> --filename <path-to-the-configuration-yaml>
 ```
 
 ### Options
@@ -206,6 +206,7 @@ see [Uninstalling KubeSlice](/versioned_docs/version-0.5.0/kubeslice-cli/uninsta
 ```
 kubeslice-cli <delete|remove|d> project <project-name> --namespace <controller-namespace>
 kubeslice-cli <delete|remove|d> <sliceConfig|serviceExportConfig> <resource-name> --namespace <project-namespace>
+kubeslice-cli <delete|remove|d> --config=<path-to-the-custom-topology-file>
 ```
 
 ### Options
@@ -284,6 +285,7 @@ Use this command to describe KubeSlice resources. This shows the details of a sp
 ```
 kubeslice-cli describe project <project-name> --namespace <controller-namespace>
 kubeslice-cli describe <sliceConfig|serviceExportConfig> --namespace <project-namespace>
+kubeslice-cli describe --config=<path-to-the-custom-topology-file>
 ```
 
 ### Options
@@ -410,6 +412,7 @@ of the resource, or update your temporary saved copy to include the latest resou
 ```
 kubeslice-cli <edit|e> project <project-name> --namespace <controller-namespace>
 kubeslice-cli <edit|e> <sliceConfig|serviceExportConfig> <resource-name> --namespace <project-namespace>
+kubeslice-cli <edit|e> --config=<path-to-the-custom-topology-file>
 ```
 
 ### Options
@@ -484,6 +487,7 @@ service export.
 ```
 kubeslice-cli <get|g> project <project-name> --namespace <controller-namespace>
 kubeslice-cli <get|g> <sliceConfig|serviceExportConfig> --namespace <project-namespace>
+kubeslice-cli <get|g> --config=<path-to-the-custom-topology-file>
 ```
 ### Options
 The following are the `kubeslice-cli get` command options.
@@ -614,7 +618,7 @@ Use this command to install the required workloads to run KubeSlice Controller a
 ### Syntax
 
 ```
-kubeslice-cli --config <path-to-the-file/configuration-yaml> <install|i>
+kubeslice-cli --config <path-to-the-custom-topology-file> <install|i>
 kubeslice-cli install <command-options>
 kubeslice-cli install --profile=<minimal-demo|full-demo>
 ```
@@ -643,7 +647,7 @@ The following are the example commands:
 
 2. To install the KubeSlice using topology file, use the following command:
    ```
-   kubeslice-cli --config <path-to-the-topology-configuration.yaml> install
+   kubeslice-cli --config <path-to-the-custom-topology-file> install
    ```
 
 ## register
@@ -654,6 +658,7 @@ Use this command to register a new worker cluster with the KubeSlice Controller 
 
 ```
 kubeslice-cli register worker <worker-cluster-name> --namespace <project-namespace>
+kubeslice-cli --config <path-to-the-custom-topology-file> <install|i> [options]
 ```
 ### Options
 The following are the `kubeslice-cli register` command options.
@@ -677,7 +682,7 @@ The following are the example commands:
 You must switch the context to the controller cluster to register the worker cluster.
 :::
 
-1. To register a worker cluster with the KubeSlice Controller in demo setup, use the following command:
+1. To register a new worker cluster with the KubeSlice Controller in demo setup, use the following command:
    ```
    kubeslice-cli register worker <worker-cluster-name> -n kubeslice-demo
    ```
@@ -694,15 +699,27 @@ You must switch the context to the controller cluster to register the worker clu
    Registered Worker Clusters with Project.
    ```
 
+2. To register a new worker cluster with the KubeSlice Controller in an existing multi-cluster setup, use the following command:
+   :::info
+   Add a new worker information in the same custom topology file that you used to install KubeSlice. The **-s controller** 
+   option skips the installation of KubeSlice Controller.
+   :::
+   
+   ```
+   kubeslice-cli --config=<path-to-the-custom-topology-file> install -s controller
+   ```
+
 
 ## uninstall
 
-Use this command to delete the kind clusters used for KubeSlice demonstration.
+Use this command to uninstall all the KubeSlice components on kind and cloud clusters.
 
 ### Syntax
 
 ```
-kubeslice-cli <uninstall|cleanup> [options]
+kubeslice-cli <uninstall|cleanup>
+kubeslice-cli <uninstall|cleanup> --config=<path-to-the-custom-topology-file> [options]
+kubeslice-cli <uninstall|cleanup> --profile=minimal-demo
 ```
 
 ### Options
@@ -712,23 +729,30 @@ The following are the `kubeslice-cli uninstall` options
 |----|----|----|
 |--config|-c|It is a **global** option. The path to the topology configuration YAML file.|
 |--help|-h|It provides information on the delete command.|
-|--all|-a|Uninstalls all the KubeSlice components (worker, controller, and UI).|
-|--ui|-u|Uninstalls the enterprise user interface component (Kubeslice-Manager).|
+|--all|-a|Uninstalls all the KubeSlice components (worker, controller, and Kubeslice Manager).|
+|--ui|-u|Uninstalls the enterprise user interface component (Kubeslice Manager).|
 
 ### Examples
 The following is an example command:
-:::info
-The `kubeslice-cli uninstall` command is used to delete the kind clusters created for Kubeslice demo. The demo setup 
-created using `kubeslice-cli install --profile` option. 
-:::
 
-1. To uninstall the KubeSlice Controller and its components, use the following command:
+1. To uninstall the KubeSlice components on kind clusters, use one of the following command:
+   :::info
+   The `kubeslice-cli uninstall` command is used to delete the kind clusters created for Kubeslice demo. The demo setup 
+   created using `kubeslice-cli install --profile=<minimal-demo|full-demo>` option. 
+   :::
    
    ```
    kubeslice-cli uninstall
    ```
-
-2. To uninstall the KubeSlice Controller and its component, use the following command:
    ```
-   kubeslice-cli uninstall --config=file-path-of-topology --all
+   kubeslice-cli uninstall --profile=minimal-demo
+   ```
+
+2. To uninstall the KubeSlice components that were installed using a custom topology file on cloud clusters, use the following command:
+
+   :::info
+   KubeSlice must be uninstalled using the topology file that was used to install it on cloud clusters.
+   :::4
+   ```
+   kubeslice-cli uninstall --config=<path-to-the-custom-topology-file> --all
    ```
