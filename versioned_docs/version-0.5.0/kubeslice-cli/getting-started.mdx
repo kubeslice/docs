@@ -206,7 +206,6 @@ see [Uninstalling KubeSlice](/versioned_docs/version-0.5.0/kubeslice-cli/uninsta
 ```
 kubeslice-cli <delete|remove|d> project <project-name> --namespace <controller-namespace>
 kubeslice-cli <delete|remove|d> <sliceConfig|serviceExportConfig> <resource-name> --namespace <project-namespace>
-kubeslice-cli <delete|remove|d> --config=<path-to-the-custom-topology-file>
 ```
 
 ### Options
@@ -285,7 +284,6 @@ Use this command to describe KubeSlice resources. This shows the details of a sp
 ```
 kubeslice-cli describe project <project-name> --namespace <controller-namespace>
 kubeslice-cli describe <sliceConfig|serviceExportConfig> --namespace <project-namespace>
-kubeslice-cli describe --config=<path-to-the-custom-topology-file>
 ```
 
 ### Options
@@ -398,7 +396,6 @@ The following are the example commands:
    Events:                  <none>
    ```
 
-
 ## edit
 Use this command to directly edit any KubeSlice resource you can retrieve through the command line tools. It opens the 
 editor defined by your KUBE_EDITOR, or EDITOR environment variables, or falls back to `vi` for Linux or `notepad` for Windows. 
@@ -412,7 +409,6 @@ of the resource, or update your temporary saved copy to include the latest resou
 ```
 kubeslice-cli <edit|e> project <project-name> --namespace <controller-namespace>
 kubeslice-cli <edit|e> <sliceConfig|serviceExportConfig> <resource-name> --namespace <project-namespace>
-kubeslice-cli <edit|e> --config=<path-to-the-custom-topology-file>
 ```
 
 ### Options
@@ -487,7 +483,6 @@ service export.
 ```
 kubeslice-cli <get|g> project <project-name> --namespace <controller-namespace>
 kubeslice-cli <get|g> <sliceConfig|serviceExportConfig> --namespace <project-namespace>
-kubeslice-cli <get|g> --config=<path-to-the-custom-topology-file>
 ```
 ### Options
 The following are the `kubeslice-cli get` command options.
@@ -645,7 +640,7 @@ The following are the example commands:
    kubectl-cli install --profile=minimal-demo
    ```
 
-2. To install the KubeSlice using topology file, use the following command:
+2. To install the KubeSlice using custom topology file, use the following command:
    ```
    kubeslice-cli --config <path-to-the-custom-topology-file> install
    ```
@@ -735,20 +730,20 @@ The following are the `kubeslice-cli uninstall` options
 ### Examples
 The following is an example command:
 
-1. To uninstall the KubeSlice components on kind clusters, use one of the following command:
-   :::info
-   The `kubeslice-cli uninstall` command is used to delete the kind clusters created for Kubeslice demo. The demo setup 
-   created using `kubeslice-cli install --profile=<minimal-demo|full-demo>` option. 
-   :::
-   
+1. To uninstall the KubeSlice components on kind clusters and delete the kind clusters created using `full-demo` option, 
+   use the following command:
    ```
    kubeslice-cli uninstall
    ```
+
+2. To uninstall the KubeSlice components on kind clusters and delete the kind clusters created using `minimal-demo` option,
+   use one of the following commands:
    ```
+   kubeslice-cli uninstall
    kubeslice-cli uninstall --profile=minimal-demo
    ```
 
-2. To uninstall the KubeSlice components that were installed using a custom topology file on cloud clusters, use the following command:
+3. To uninstall the KubeSlice components that were installed using a custom topology file on cloud clusters, use the following command:
 
    :::info
    KubeSlice must be uninstalled using the topology file that was used to install it on cloud clusters.

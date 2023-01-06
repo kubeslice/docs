@@ -25,7 +25,35 @@ You must create a topology configuration file that includes the names of the clu
 KubeSlice Controller, the worker clusters, and a project name. For more information, see the sample 
 [topology configuration](/versioned_docs/version-0.5.0/reference/sample-configuration-file.mdx#create-a-topology-configuration-file-for-cloud-clusters) file.
 
-Use the following command to install the controller and the worker cluster:
+The following is an example custom topology file for installing KubeSlice in an existing setup.
+```
+configuration:
+  cluster_configuration:
+    kube_config_path: <path-to-the-kubeconfig-file>
+    controller:
+      name: controller
+      context_name: Cloud-controller
+      kube_config_path: <path-to-the-controller-kubeconfig-file>
+    workers:
+      - name: worker-1
+        context_name: cloud-worker-1
+      - name: worker-2
+        context_name: cloud-worker-2
+    kube_config_path: <path-to-the-worker-kubeconfig-file>
+  kubeslice_configuration:
+    project_name: kubeslice-avesha
+  helm_chart_configuration:
+    repo_alias: kubeslice
+    repo_url: https://kubeslice.github.io/kubeslice/
+    cert_manager_chart:
+      chart_name: cert-manager
+    controller_chart:
+      chart_name: kubeslice-controller
+    worker_chart:
+      chart_name: kubeslice-worker
+```
+
+Use the following command to install the controller and the worker clusters:
 ```
 kubeslice-cli --config=<topology-configuration-file> install
 ```
@@ -36,36 +64,40 @@ installing the Slice Operator on the worker cluster.
 
 The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration.
 
-Use the following template to add a new worker cluster.
+:::note
+Add new worker cluster information to the custom topology file that was used to install KubeSlice earlier and 
+using **install** command, register the new worker cluster with the KubeSlice controller.
+:::
 
+The following is an example custom topology file for registering a new worker cluster.
 ```
 configuration:
   cluster_configuration:
-    kube_config_path: <kubeconfig-file>
-    controller:
-      name: <controller-cluster-name>
-      context_name: <controller-cluster-context>
-    workers:
-      - name: <new-worker-cluster-name>
-        context_name: <new-worker-cluster-context>
-  kubeslice_configuration:
-    project_name: <project-namespace>
-```
-The following is an example topology file for registering a new worker cluster.
-```
-configuration:
-  cluster_configuration:
-    kube_config_path: <PATH-TO-KUBECONFIG>
+    kube_config_path: <path-to-the-kubeconfig-file>
     controller:
       name: controller
       context_name: kind-controller
+      kube_config_path: <path-to-the-controller-kubeconfig-file>
     workers:
+      - name: worker-1
+        context_name: cloud-worker-1
+      - name: worker-2
+        context_name: cloud-worker-2
       - name: worker-3
-        context_name: cloud-cluster-3      
+        context_name: cloud-worker-3    
+    kube_config_path: <path-to-the-worker-kubeconfig-file>
   kubeslice_configuration:
-    project_name: avesha
-  ```
-
+    project_name: kubeslice-avesha
+  helm_chart_configuration:
+    repo_alias: kubeslice
+    repo_url: https://kubeslice.github.io/kubeslice/
+    cert_manager_chart:
+      chart_name: cert-manager
+    controller_chart:
+      chart_name: kubeslice-controller
+    worker_chart:
+      chart_name: kubeslice-worker
+```
 
 Use the following command to register a new worker cluster with the KubeSlice Controller:
 ```
