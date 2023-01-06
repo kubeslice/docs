@@ -155,12 +155,12 @@ Ensure to wait for the slice to complete the initialization before deploying ser
 
 To apply the slice configuration YAML, use the following command:
 ```
-kubeslice-cli create sliceConfig -n <project-namespace> -f <slice-configuration-yaml>
+kubeslice-cli create sliceConfig -n <project-namespace> -f <slice-configuration-yaml> --config=<path-to-the-custom-topology-file>
 ```
    
 Example
 ```
-kubeslice-cli create sliceConfig -n kubeslice-avesha -f slice-config.yaml
+kubeslice-cli create sliceConfig -n kubeslice-avesha -f slice-config.yaml 
 ```
    
 Example output
@@ -179,7 +179,7 @@ If the application is already deployed on a namespace that is onboarded to a sli
 ## Create a Service Export
 To create a service export, use the following command:
 ```
-kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <project-namespace>
+kubeslice-cli create serviceExportConfig -f <service-export-yaml> -n <project-namespace>  --config=<path-to-the-custom-topology-file>
 ```
 
 ### Validate the Service Export
@@ -242,7 +242,7 @@ the value and save. This updates the ServiceExportConfig. The ServiceExportConfi
 
 To edit the service export configuration, use the following command:
 ```
-kubeslice-cli edit serviceExportConfig <resource-name> -n <project-namespace>
+kubeslice-cli edit serviceExportConfig <resource-name> -n <project-namespace> --config=<path-to-the-custom-topology-file>
 ```
 Example
 ```
