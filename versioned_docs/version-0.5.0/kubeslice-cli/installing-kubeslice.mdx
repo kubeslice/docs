@@ -33,42 +33,11 @@ kubeslice-cli --config=<path-to-custom-topology-file> install
 The above command installs the KubeSlice Controller, creates a project, and registers the worker cluster with the project 
 by installing the Slice Operator on the worker cluster.
 
-## Register a Worker Cluster
+## Register a New Worker Cluster
 
-The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration.
-
-Use the following topology template to add a new worker cluster.
-
-```yaml
-
-
-configuration:
-  cluster_configuration:
-    kube_config_path: <kubeconfig-file>
-    controller:
-      name: <controller-cluster-name>
-      context_name: <controller-cluster-context>
-    workers:
-      - name: <new-worker-cluster-name>
-        context_name: <new-worker-cluster-context>
-  kubeslice_configuration:
-    project_name: <project-namespace>
-```
-
-The following is an example custom topology file for registering a new worker cluster.
-```yaml
-configuration:
-  cluster_configuration:
-    kube_config_path: <PATH-TO-KUBECONFIG>
-    controller:
-      name: controller
-      context_name: kind-controller
-    workers:
-      - name: worker-3
-        context_name: ks-w-3      
-  kubeslice_configuration:
-    project_name: demo
-  ```
+The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration. Add new worker cluster information under **workers**
+list in the custom topology file that was used to install KubeSlice earlier and using the **install** command, register the new worker 
+cluster with the KubeSlice Controller. For more information, see [demo using cloud clusters](/versioned_docs/version-0.5.0/tutorials/kubeslice-cli-demo-on-cloud-clusters.mdx).
 
 :::note
 If the KubeSlice Controller is already installed, the `-s controller` option skips installing it. The `-s kind` option skips creating a new kind 
@@ -77,22 +46,21 @@ cluster. The `-s enterprise` option skips using enterprise installation, while t
 
 In a demo setup, use the following command to register a new worker cluster with the KubeSlice Controller:
 ```
-kubeslice-cli install --config=<new-worker-topology-yaml> -s kind -s controller -s enterprise -s demo
+kubeslice-cli install --config=<custom-topology-file> -s kind -s controller -s enterprise -s demo
 ```
 In an existing multi-cluster configuration, use the following command to register a new worker cluster with the KubeSlice Controller:
 ```
-kubeslice-cli install --config-<new-worker-topology-yaml> -s controller
+kubeslice-cli install --config=<custom-topology-file> -s controller
 ```
 
-## Onboard Namespaces 
+## Create a Slice
 
-To onboard your existing namespaces (and their applications) onto a slice, follow these steps:
+To onboard your existing namespaces (and their applications) onto a slice:
 
 1. Create a slice configuration YAML file (choose the namespaces, clusters, and so on to be part of the slice).
 2. Use the `kubeslice-cli create sliceConfig` command to apply the slice configuration YAML file.
 
-
-### Create a Slice
+### Create a Slice Configuration YAML File
 
 Use the following template to create a slice configuration YAML file.
 :::info
@@ -122,7 +90,6 @@ spec:
     bandwidthCeilingKbps: 30000
     bandwidthGuaranteedKbps: 20000
     dscpClass: AF11
-
 ```
 
 ### Apply the Slice Configuration YAML file
