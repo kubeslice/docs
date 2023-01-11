@@ -105,7 +105,7 @@ kubeslice-cli install --config=<new-worker-topology-yaml> -s controller
 
 ## Create a Slice
 
-To onboard your existing namespaces (and their applications) onto a slice, follow these steps:
+To onboard your existing namespaces (and their applications) onto a slice:
 
 1. Create a slice configuration YAML file (choose the namespaces, clusters, and so on to be part of the slice).
 2. Use the `kubeslice-cli create` command to apply the slice configuration YAML file.
@@ -141,7 +141,6 @@ spec:
     bandwidthCeilingKbps: 30000
     bandwidthGuaranteedKbps: 20000
     dscpClass: AF11
-
 ```
 
 ### Apply the Slice Configuration YAML file
