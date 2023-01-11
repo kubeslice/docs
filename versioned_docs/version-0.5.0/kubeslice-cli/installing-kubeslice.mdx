@@ -35,8 +35,8 @@ by installing the Slice Operator on the worker cluster.
 
 ## Register a New Worker Cluster
 
-The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration. Add new worker cluster information under workers
-list in the custom topology file that was used to install KubeSlice earlier and using **install** command, register the new worker 
+The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration. Add new worker cluster information under **workers**
+list in the custom topology file that was used to install KubeSlice earlier and using the **install** command, register the new worker 
 cluster with the KubeSlice Controller. For more information, see [demo using cloud clusters](/versioned_docs/version-0.5.0/tutorials/kubeslice-cli-demo-on-cloud-clusters.mdx).
 
 :::note
@@ -55,12 +55,12 @@ kubeslice-cli install --config=<custom-topology-file> -s controller
 
 ## Create a Slice
 
-To onboard your existing namespaces (and their applications) onto a slice, follow these steps:
+To onboard your existing namespaces (and their applications) onto a slice:
 
 1. Create a slice configuration YAML file (choose the namespaces, clusters, and so on to be part of the slice).
 2. Use the `kubeslice-cli create sliceConfig` command to apply the slice configuration YAML file.
 
-### Creating the Slice Configuration YAML File
+### Create a Slice Configuration YAML File
 
 Use the following template to create a slice configuration YAML file.
 :::info
