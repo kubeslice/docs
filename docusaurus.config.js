@@ -137,8 +137,8 @@ const config = {
         // title: 'KubeSlice',
         logo: {
           alt: 'KubeSlice logo',
-          src: 'img/kubeslice-logo.svg',
-          srcDark: 'img/kubeslice-logo-bg.svg',
+          src: 'img/logo.svg',
+          srcDark: 'img/logo-dark.svg',
         },
         items: [
           {
