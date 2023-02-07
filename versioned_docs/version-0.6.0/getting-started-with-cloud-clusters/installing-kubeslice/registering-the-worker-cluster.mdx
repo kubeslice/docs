@@ -8,11 +8,11 @@ register your worker clusters with the KubeSlice Controller.
 Before you begin, ensure the following prerequisites are met:
 
 - You have the KubeSlice Controller installed on a separate cluster. For more information, 
-see [Installing the KubeSlice Controller](/versioned_docs/version-0.5.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
+see [Installing the KubeSlice Controller](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
 - You have set up the environment for the worker clusters. For more information, 
-see [Prerequisites](/versioned_docs/version-0.5.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
+see [Prerequisites](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
 - You have authenticated the worker clusters with the cloud providers. For more information, 
-see [Preparing the clusters for registration](/versioned_docs/version-0.5.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
+see [Preparing the clusters for registration](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
 - You have cluster administrator privileges to install the Slice Operator.
 
 ## Install Istio
@@ -67,7 +67,7 @@ istiod-66f576dd98-jtshj       1/1     Running   0          100s
 The following information is required to create your cluster registration **.yaml** file.
 
 :::info
-For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.5.0/tutorials/kind-worker-cluster-registration.mdx).
+For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.6.0/tutorials/kind-worker-cluster-registration.mdx).
 :::
 
 :::info
@@ -82,7 +82,7 @@ Create the cluster registration YAML file using the following template.
 
 :::info
 To understand more about the configuration parameters, 
-see [Cluster Registration Configuration Parameters](/versioned_docs/version-0.5.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters)
+see [Cluster Registration Configuration Parameters](/versioned_docs/version-0.6.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters)
 :::
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
@@ -217,7 +217,7 @@ communicate with the KubeSlice Controller.
 
 :::info
 Alternatively, you can use the script to create your values `.yaml` file.
-See [Script to get the secrets of the worker cluster](/versioned_docs/version-0.5.0/reference/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+See [Script to get the secrets of the worker cluster](/versioned_docs/version-0.6.0/reference/script-to-get-the-secrets-of-the-worker-cluster.mdx).
 :::
 
 1.  Switch the context to the controller cluster.
@@ -336,14 +336,14 @@ Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `tok
 to create your `values.yaml` file.
 
 :::info
-For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.5.0/tutorials/kind-worker-cluster-registration.mdx#create-the-slice-operator-yaml-file).
+For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.6.0/tutorials/kind-worker-cluster-registration.mdx#create-the-slice-operator-yaml-file).
 :::
 
 Create the `values.yaml` file using the following template.
 
 :::info
 To understand more about the configuration parameters, 
-see [Slice Operator ConfigurationParameters](/versioned_docs/version-0.5.0/reference/configuration-parameters.mdx#slice-operator-configuration-parameters)
+see [Slice Operator ConfigurationParameters](/versioned_docs/version-0.6.0/reference/configuration-parameters.mdx#slice-operator-configuration-parameters)
 :::
 
 ```

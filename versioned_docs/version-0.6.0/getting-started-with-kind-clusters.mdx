@@ -6,7 +6,7 @@ This guide will walk you through successfully registering your kind
 clusters with the KubeSlice Controller and creating a slice across the
 clusters. We have worked to make this experience as seamless as
 possible. If you have any comments, questions, or issues, please feel
-free to join our [community](/versioned_docs/version-0.5.0/community.mdx).
+free to join our [community](/versioned_docs/version-0.6.0/community.mdx).
 
 The following sections help you to:
 
@@ -498,7 +498,7 @@ kind-controller-control-plane   Ready    control-plane,master   74m   v1.20.15  
 
 :::info
 To understand more about the configuration parameters, see [Controller
-Configuration Parameters](/versioned_docs/version-0.5.0/reference/configuration-parameters.mdx#controller-configuration-parameters).
+Configuration Parameters](/versioned_docs/version-0.6.0/reference/configuration-parameters.mdx#controller-configuration-parameters).
 :::
 
 Create the`values.yaml` file for the KubeSlice Controller.
@@ -574,7 +574,7 @@ Create a `project.yaml` file for the project namespace.
 
 :::info
 To understand more about the configuration parameters, see [Project
-Namespace Configuration Parameters](/versioned_docs/version-0.5.0/reference/configuration-parameters.mdx#project-namespace-configuration-parameters).
+Namespace Configuration Parameters](/versioned_docs/version-0.6.0/reference/configuration-parameters.mdx#project-namespace-configuration-parameters).
 :::
 
 ```
@@ -635,7 +635,7 @@ template.
 
 :::info
 To understand more about the configuration parameters, see [Cluster
-Registration Configuration Parameters](/versioned_docs/version-0.5.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters).
+Registration Configuration Parameters](/versioned_docs/version-0.6.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters).
 :::
 
 ```
@@ -692,7 +692,7 @@ Operator.
 
 :::info
 Alternatively, you can use the script to create your values.yaml file as described in 
-[Script to Get the Secrets of the Worker Cluster](/versioned_docs/version-0.5.0/reference/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+[Script to Get the Secrets of the Worker Cluster](/versioned_docs/version-0.6.0/reference/script-to-get-the-secrets-of-the-worker-cluster.mdx).
 :::
 
 #### Getting the Secrets of the Registered Cluster from the Controller Cluster 
@@ -703,7 +703,7 @@ with the KubeSlice Controller.
 
 :::info
 You can also retrieve the secrets of the worker clusters using these 
-[scripts](/versioned_docs/version-0.5.0/reference/script-to-get-the-secrets-of-the-worker-cluster.mdx).
+[scripts](/versioned_docs/version-0.6.0/reference/script-to-get-the-secrets-of-the-worker-cluster.mdx).
 :::
 
 To get the secrets:
@@ -746,7 +746,7 @@ Create the`slice-operator.yaml` file using the following template.
 
 :::info
 To understand more about the configuration parameters, see [Slice
-Operator Configuration Parameters](/versioned_docs/version-0.5.0/reference/configuration-parameters.mdx#slice-operator-configuration-parameters).
+Operator Configuration Parameters](/versioned_docs/version-0.6.0/reference/configuration-parameters.mdx#slice-operator-configuration-parameters).
 :::
 
 ```
@@ -874,7 +874,7 @@ Create the slice configuration .yaml file using the following template.
 
 :::info
 If you want to add a standard QoS profile configuration for multiple slices, 
-[create a standard QoS profile](/versioned_docs/version-0.5.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-a-qos-profile). 
+[create a standard QoS profile](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-a-qos-profile). 
 Add the name of the external QoS profile as the value of `standardQosProfileName` in the slice configuration YAML file. 
 
 In a slice configuration YAML file, the `standardQosProfileName` parameter and the `qosProfileDetails` 
@@ -883,7 +883,7 @@ object are mutually exclusive.
 
 :::info
 To understand more about the configuration parameters, see [Slice
-Configuration Parameters](/versioned_docs/version-0.5.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
+Configuration Parameters](/versioned_docs/version-0.6.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
 :::
 
 ```
@@ -1026,11 +1026,11 @@ water-kind-worker-1-kind-worker-2   10.1.1.0/24   10.1.2.0/24     kind-worker-2
 ## Managing Namespaces 
 Namespaces that are created to run application deployments can be
 onboarded on a slice to form a micro network segment. To know more, see 
-[managing namespaces](/versioned_docs/version-0.5.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
+[managing namespaces](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
 
 ## Isolating Namespaces 
 You can isolate namespaces in a slice by using the namespace isolation
-feature. To know more, see [isolating namespaces](/versioned_docs/version-0.5.0/getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces.mdx).
+feature. To know more, see [isolating namespaces](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces.mdx).
 
 ## Testing the Network Connectivity between the Worker Clusters
 iPerf is a tool commonly used to measure network performance, perform
@@ -1070,7 +1070,7 @@ To establish the connectivity between two worker clusters:
    ```
 
 2. Onboard the existing `iperf` namespace to the slice. To know more, see
-   [onboarding namespaces](/versioned_docs/version-0.5.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
+   [onboarding namespaces](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
  
    :::caution
    Ensure that you have onboarded the iperf namespace. If you create a namespace after 
@@ -1142,7 +1142,7 @@ the following command:
    ```
 
 7. Onboard the existing `iperf` namespace on the slice. To know more, see 
-   [onboarding namespaces](/versioned_docs/version-0.5.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
+   [onboarding namespaces](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx).
 
    :::caution
    Ensure that you have onboarded the iperf namespace. If you create a
@@ -1310,4 +1310,4 @@ the following command:
 
 
 ## Uninstalling KubeSlice 
-Refer to [Uninstalling KubeSlice](/versioned_docs/version-0.5.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
+Refer to [Uninstalling KubeSlice](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
