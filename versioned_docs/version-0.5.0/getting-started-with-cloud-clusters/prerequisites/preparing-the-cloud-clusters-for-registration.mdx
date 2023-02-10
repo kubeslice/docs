@@ -181,14 +181,14 @@ To install Calico on a kind cluster:
 1. Install the operator on your cluster by using the following command:
 
 ```
-kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/tigera-operator.yaml
 ```
 
 2. Download the custom resources required to configure Calico by using
 the following command:
 
 ```
-curl https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml -O
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/custom-resources.yaml -O
 ```
 
 Running the above command downloads a file, which contains the following
