@@ -1,0 +1,30 @@
+# Release Notes for KubeSlice OSS 0.6.0
+
+*Release date: 15th Feb 2023*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
+in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
+by creating logical application ***slice*** boundaries that enable seamless communication between pods and services across 
+clusters, clouds, edges, and data centers.
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New
+These release notes describe the new changes and enhancements in this version.
+
+### Latest Supported Kubernetes Version 
+The latest Kubernetes version that we support from this release is version [1.24](https://v1-24.docs.kubernetes.io/). 
+
+### Enhancements 
+* With the current release, **Slice Gateway** spins up two pairs of gateway pods. With multiple replicas of the VPN pods, 
+multiple gateway nodes, and multiple network connections to the remote cluster, we now have mechanisms in place to handle 
+failure scenarios effectively.
+
+## Known Issues
+The known issues are as follows:
+
+- The Slice Gateway Redundancy is incompatible with the existing slices on the cluster. So, you must create a new slice to 
+  use the Slice Gateway Redundancy.
+- Sometimes, gateway pods get stuck in the `Init` state due to this [upstream NSM](https://github.com/networkservicemesh/cmd-registry-k8s/issues/362) issue. 
+- If a node that contains the application pods and NSM webhook pod scheduled on it is restarted, the NSM containers are not injected into the application pod. 
+  This occurs as the NSM webhook pod manages the lifecycle of the NSM `mutatingwebhookconfiguration`.
