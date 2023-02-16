@@ -12,13 +12,13 @@ or across all the clusters in your topology.
 For demonstration purposes, to set up a three-cluster topology of kind clusters in your local environment, use the 
 **—profile <minimal-demo | full-demo>** option instead of the **—config** option.
 
-## Install the KubeSlice Controller and Worker Clusters
+## Install the KubeSlice Controller and Register Worker Clusters
 
 You must create a topology configuration file that includes the names of the clusters, the project name, and the cluster contexts
 that host the KubeSlice Controller and the worker clusters. For more information, see sample 
 [topology configuration](/versioned_docs/version-0.6.0/reference/sample-configuration-file.mdx) file.
 
-Use the following command to install the KubeSlice Controller and worker cluster(s):
+Use the following command to install the KubeSlice Controller and register worker cluster(s):
 ```
 kubeslice-cli --config=<path-to-custom-topology-file> install
 ```
@@ -48,5 +48,5 @@ kubeslice-cli install --config=<custom-topology-file> -s controller
 ## Create a Slice
 
 After installing the KubeSlice Controller and registering workers with it, you can connect worker clusters. Create a slice 
-to connect your worker clusters using the "kubeslice-cli" utility. For more information, see 
+to connect your worker clusters using the **kubeslice-cli** utility. For more information, see 
 [demo using cloud clusters](/versioned_docs/version-0.6.0/tutorials/kubeslice-cli-demo-on-cloud-clusters.mdx).
