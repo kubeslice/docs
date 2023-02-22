@@ -58,7 +58,7 @@ sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/<late
 
 Example
 ```
-sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.4.2/kubeslice-cli-0.4.2-linux-amd64  -o /usr/local/bin/kubeslice-cli
+sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.4.3/kubeslice-cli-0.4.3-linux-amd64  -o /usr/local/bin/kubeslice-cli
 ```
 Make the binary executable using the following command:
 ```
@@ -71,7 +71,7 @@ kubeslice-cli -v
 
 ## kubeslice-cli Commands
 
-This section contains information about KubeSlice commands, syntax, options, a resource type, and a few examples of command usage.
+This section describes KubeSlice commands,command syntax, options, a resource type, and a few examples of command usage.
 
 ### Syntax
 Use the following syntax to run the kubeslice-cli tool:
@@ -105,8 +105,8 @@ The following are the kubeslice-cli options.
 |--version|-v|It is the version of the `kubeslice-cli` tool.|
 
 :::note
-The kubeslice-cli tool must have access to the clusters you want it to manage. To grant it access, set the KUBECONFIG environment variable to 
-a path to the kubeconfig file containing the necessary keys to access those clusters.
+The kubeslice-cli tool must have access to the clusters you want it to manage. To grant it access, set the KUBECONFIG environment variable 
+to a path to the kubeconfig file containing the necessary keys to access those clusters.
 To set the KUBECONFIG environment varible, use these commands:
   - On Linux/macOS: `export KUBECONFIG=<path to kubeconfig file>`
   - On Windows: `$env:KUBECONFIG = "kubeslice/kubeconfig.yaml"`
