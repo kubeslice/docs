@@ -1,22 +1,23 @@
 # Sample Configuration File
 
-This topic describes how to create a topology configuration file that is used to install KubeSlice. In the topology 
-configuration file, specify the controller cluster and the worker clusters names and other details as described in 
+This topic describes how to create a topology configuration file that is used to install KubeSlice. In your custom topology 
+file, specify the controller cluster, the worker cluster names, and other details as described in 
 the below sample configuration file.
 
-## Create a Topology Configuration File for Kind Clusters
+## Create a Custom Topology File
 The following is the sample configuration file to install KubeSlice on kind clusters using opensource charts:
 
-In this demonstration, we use a controller cluster with name `controller`, as well as two worker clusters with the names `worker-1` 
+In this demonstration, we use the controller cluster with the name `controller` and two worker clusters with the names `worker-1` 
 and `worker-2`. Add the path to the relevant `kubeconfig` file. 
 
 :::info
-You can set `cluster_type: kind` in the custom topology for kind clusters. This will install Calico (if not present already) and generate 
+You can set `cluster_type: kind` in the custom topology file for kind clusters. This will install Calico (if not present already) and generate 
 the correct values file for the controller endpoint using the node IP address.
 :::
 
-`kubeslice-avesha` serves as an example of a project namespace. The defined cluster contexts  are `controller`, `worker-1`, and `worker-2`. 
-The opensource KubeSlice repo charts URL is `https://kubeslice.github.io/kubeslice/`.
+`kubeslice-avesha` serves as an example of a project namespace. The defined cluster contexts  are `arn:aws:eks:us-east-1:776106081964:cluster/controller-eks-1`, 
+`arn:aws:eks:us-east-1:776106081964:cluster/cloud-cluster-eks-1`, and `gke_avesha-dev_us-central1-cloud_cluster-gke-2`. 
+The opensource repo charts URL is `https://kubeslice.github.io/kubeslice/`.
 
 Custom chart values can be specified in the topology configuration. For example, you can add `values:metrics.insecure=true` under 
 **configuration.helm_chart_configuration.worker_chart** for worker charts.
@@ -29,7 +30,7 @@ worker_chart:
           "some.other.key": "value"
 ```
 
-Create the topology YAML file using the following template:
+Create a custom topology file using the following template:
 :::info
 For more information on topology configuration parameters, 
 see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.6.0/reference/kubeslice-cli-configuration-parameters.mdx).
@@ -44,11 +45,11 @@ see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.6.0/refer
       kube_config_path: /home/user/kuebconfig-eks-1.config
     workers: 
     - name: worker-1
-      context_name: arn:aws:eks:us-east-1:776106081964:cluster/dev-richie-eks-1
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/cloud-cluster-eks-1
       kube_config_path: /home/user/kuebconfig-eks-1.config
                         #{This takes precedence over configuration.cluster_configuration.kube_config_path}
     - name: worker-2
-      context_name: gke_avesha-dev_us-central1-a_dev-richie-gke-2
+      context_name: gke_avesha-dev_us-central1-cloud_cluster-gke-2
       kube_config_path: /home/user/kuebconfig-gke-2.config
                         #{This takes precedence over configuration.cluster_configuration.kube_config_path}
   kubeslice_configuration:
@@ -69,8 +70,9 @@ see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.6.0/refer
         "metrics.insecure"="true"
 ```
 
-## Apply the Topology Configuration YAML
-To install KubeSlice using the topology YAML file, use the following command:
+## Apply the Custom Topology File
+
+Use the following command to install KubeSlice using the custom topology file:
 ```
 kubeslice-cli --config <path-to-the-topology.yaml> install
 ```
