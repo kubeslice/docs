@@ -1,6 +1,6 @@
 # Sample Configuration File
 
-This topic describes how to create a custom topology file that is used to install KubeSlice. In your custom topology 
+This topic describes how to create a custom topology file that is used to install KubeSlice. In the custom topology 
 file, specify the controller cluster, the worker cluster names, and other details as described in 
 the below sample configuration file.
 
@@ -11,8 +11,8 @@ In this demonstration, we use the controller cluster with the name `controller` 
 and `worker-2`. Add the path to the relevant `kubeconfig` file. 
 
 :::info
-You can set `cluster_type: kind` in the custom topology file for kind clusters. This will install Calico (if not present already) and generate 
-the correct values file for the controller endpoint using the node IP address.
+You can set `cluster_type: kind` in the custom topology file for kind clusters. This will install Calico (if not present already) and 
+generate the correct values file for the controller endpoint using the node IP address.
 :::
 
 `kubeslice-avesha` serves as an example of a project namespace. The defined cluster contexts  are `arn:aws:eks:us-east-1:776106081964:cluster/controller-eks-1`, 

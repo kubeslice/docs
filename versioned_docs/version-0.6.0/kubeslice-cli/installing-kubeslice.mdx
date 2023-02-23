@@ -5,7 +5,7 @@ in your existing multi-cluster configuration.
 
 ## Install KubeSlice in a Multi-Cluster Configuration
 
-Install KubeSlice using the cluster descriptions that you provide in a custom topology YAML file. The KubeSlice Controller and worker 
+Install KubeSlice using the cluster descriptions that you provide in a custom topology file. The KubeSlice Controller and worker 
 components can be installed incrementally (one cluster at a time) or across all clusters in your topology, depending on your needs.
 
 For demonstration purposes, to set up a three-cluster topology of kind clusters in your local environment, use the 
@@ -13,7 +13,7 @@ For demonstration purposes, to set up a three-cluster topology of kind clusters 
 
 ## Install the KubeSlice Controller and Register Worker Clusters
 
-You must create a topology configuration file that includes the names of the clusters, the project name, and the cluster contexts
+You must create a custom topology file that includes the names of the clusters, the project name, and the cluster contexts
 that host the KubeSlice Controller and the worker clusters. For more information, see sample 
 [topology configuration](/versioned_docs/version-0.6.0/reference/sample-configuration-file.mdx) file.
 
@@ -27,8 +27,8 @@ by installing the Slice Operator on the worker cluster.
 
 ## Create a Slice
 
-After installing the KubeSlice Controller and registering workers with it, you can connect worker clusters. Create a slice 
-to connect your worker clusters using the **kubeslice-cli** utility. For more information, see 
+After installing the KubeSlice Controller and registering workers with it, you can connect worker clusters by creating a slice. Create a slice 
+using the **kubeslice-cli** utility. For more information, see 
 [demo using cloud clusters](/versioned_docs/version-0.6.0/tutorials/kubeslice-cli-demo-on-cloud-clusters.mdx).
 
 ## Register a New Worker Cluster
