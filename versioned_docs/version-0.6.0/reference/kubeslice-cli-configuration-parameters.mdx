@@ -1,25 +1,26 @@
 # kubeslice-cli Configuration Parameters
-This topic describes the parameters used in creating the topology YAML file to install KubeSlice.
+This topic describes the parameters used in creating a custom topology file to install KubeSlice.
 
 ## Cluster Configuration Parameters
-The following table describes the cluster configuration parameters used to create the topology YAML.
+The following table describes the cluster configuration parameters.
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-|profile|String|It is the KubeSlice profile to create demo clusters.The supported values are **minimal-demo** and **full-demo**|Mandatory|
-|kube_config_path|String|It is the absolute path to the kubeconfig file to use topology set up. It is used in the topology YAML file.| Optional|
+|profile|String|It is the KubeSlice profile to create a demo clusters. The supported values are **minimal-demo** and **full-demo**.|Mandatory|
+|kube_config_path|String|It is the absolute path to the kubeconfig file to use topology setup. It is used in the custom topology file.| Optional|
+|cluster_type|String|It is the type of cluster on which KubeSlice is deployed. The acceptable values are `cloud`, `kind`, and `data-center`.|Optional|
 |[controller](#controller-cluster-configuration-parameters)|Object| It is the controller cluster details.|Mandatory|
 |[worker](#worker-cluster-configuration-parameters)|Object|It is the worker clusters details.|Mandatory|
 
 ### Controller Cluster Configuration Parameters
-The following table describes the controller cluster configuration parameters used to create the topology YAML.
+The following table describes the controller cluster configuration parameters.
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-|name|String|It is the user-defined name of the controller cluster.|Mandatory|
+|name|String|It is a user-defined name for a controller cluster.|Mandatory|
 |context_name|String|It is the name of the context to use from the kubeconfig file; It is used in the topology YAML file.|Optional|
-|kube_config_path|String|It is the absolute path to the kubeconfig file to install controller cluster. This takes precedence over the kubeconfig path defined under cluster configuration.|Optional|
-|control_plane_address|AlphaNumeric|It is the address of the control plane kube-apiserver. The kubeslice-cli determines the address from kubeconfig. Override this option if the address in kubeconfig is not reachable by other clusters in the topology.|Mandatory|
+|kube_config_path|String|It is the absolute path to the kubeconfig file to install a controller cluster. This takes precedence over the kubeconfig path defined under cluster configuration.|Optional|
+|control_plane_address|AlphaNumeric|It is the address of the control plane `kube-apiserver`. The kubeslice-cli determines the address from kubeconfig. Override this option if the address in the kubeconfig file is not reachable by other clusters in the topology.|Mandatory|
 |node_ip|Numeric|It is the IP address of one of the node in the cluster. The kubeslice-cli determines the address from this command:`kubectl get nodes`. Override this option to an address which is discoverable by other clusters in the topology.| Mandatory|
 
 ### Worker Cluster Configuration Parameters
@@ -27,7 +28,7 @@ The following table describes the worker cluster configuration parameters.
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-|name|String|It is the user-defined name of the worker cluster.|Mandatory|
+|name|String|It is a user-defined name for the worker cluster.|Mandatory|
 |context_name|String|It is the name of the context to use from kubeconfig file; It is used in the topology YAML only.|Optional|
 |kube_config_path|String|It is the absolute path to the kubeconfig file to install a worker cluster. This takes precedence over the kubeconfig path defined under cluster configuration.|Optional|
 |control_plane_address|AlphaNumeric|It is the address of the control plane `kube-apiserver`. The kubeslice-cli determines the address from kubeconfig. Override this option if the address in kubeconfig is not reachable by other clusters in the topology.|Mandatory|
@@ -39,7 +40,7 @@ The following table describes the KubeSlice configuration parameters.
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-|project_name|String|It is the user-defined name of the Kubeslice project.|Mandatory|
+|project_name|String|It is a user-defined name for the Kubeslice project.|Mandatory|
 
 ## Helm Chart Configuration Parameters
 The following table describes the helm chart configuration parameters.
@@ -48,13 +49,13 @@ The following table describes the helm chart configuration parameters.
 |----|----|----|----|
 |repo_alias|String|It is the alias of the helm repo for KubeSlice charts.|Optional|
 |repo_url|String|It is the URL of the helm charts for KubeSlice.|Mandatory|
-|[cert_manager_chart](#certificate-manager-chart-configuration-parameters)|Object|It is the certificate manager chart details.|Mandatory|
-|[controller_chart](#controller-chart-configuration-parameters)|Object|It is the controller chart details.|Mandatory|
-|[worker_chart](#worker-chart-configuration-parameters)|Object|It is the worker chart details.|Mandatory|
+|[cert_manager_chart](#certificate-manager-chart-configuration-parameters)|Object|It is the **certificate manager** chart information.|Mandatory|
+|[controller_chart](#controller-chart-configuration-parameters)|Object|It is the **controller** chart information.|Mandatory|
+|[worker_chart](#worker-chart-configuration-parameters)|Object|It is the **worker** chart information.|Mandatory|
 
 
 ### Certificate Manager Chart Configuration Parameters
-The following table describes the certificate manager chart configuration parameters used to create topology YAML.
+The following table describes the certificate manager chart configuration parameters.
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -62,21 +63,22 @@ The following table describes the certificate manager chart configuration parame
 |version|Numeric|It is the version of the certificate manager chart. Leave this value blank for the latest version.|Optional|
 
 ## Controller Chart Configuration Parameters
-The following table describes the controller chart configuration parameters used to create topology YAML.
+The following table describes the controller chart configuration parameters.
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
 |chart_name|String|It is the  name of the controller chart.|Mandatory|
-|version|Numeric|Is it the version of the chart. Leave this value blank for the latest version|Optional|
-
+|version|Numeric|It is the version of the chart. Leave this value blank for the latest version|Optional|
+|values|String|It is the additional value that can be passed as --set arguments for **helm install**.|Optional|
 
 ## Worker Chart Configuration Parameters
-The following table describes the worker chart configuration parameters used to create topology YAML.
+The following table describes the worker chart configuration parameters.
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
 |chart_name|String|It is the name of the worker chart.|Mandatory|
 |version|Numeric|It is the version of the chart. Leave this value blank for the latest version|Optional|
+|values|String|It is the additional value that can be passed as --set arguments for **helm install**.|Optional|
 
 :::note
 The 'kube_config_path' parameter in the topology configuration requires the absolute path to the kubeconfig file. 

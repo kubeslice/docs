@@ -9,6 +9,7 @@ configuration:
   cluster_configuration:
     profile: #{the KubeSlice Profile for the demo. Possible values [full-demo, minimal-demo]}
     kube_config_path: #{specify the kube config file to use for topology setup; for topology only}
+    cluster_type: #{optional: specify the type of cluster. Valid values are kind, cloud, data-center}
     controller:
       name: #{the user defined name of the controller cluster}
       context_name: #{the name of the context to use from kubeconfig file; for topology only}
@@ -46,12 +47,15 @@ configuration:
     controller_chart:
       chart_name: #{The name of the Controller Chart}
       version: #{The version of the chart to use. Leave blank for latest version}
+      values: #{Values to be passed as --set arguments to helm install}
     worker_chart:
       chart_name: #{The name of the Worker Chart}
       version: #{The version of the chart to use. Leave blank for latest version}
+      values: #{Values to be passed as --set arguments to helm install}
     ui_chart:
       chart_name: #{The name of the UI/Enterprise Chart}
       version: #{The version of the chart to use. Leave blank for latest version}
+      values: #{Values to be passed as --set arguments to helm install}
     helm_username: #{Helm Username if the repo is private}
     helm_password: #{Helm Password if the repo is private}
     image_pull_secret: #{The image pull secrets. Optional for OpenSource, required for enterprise}
