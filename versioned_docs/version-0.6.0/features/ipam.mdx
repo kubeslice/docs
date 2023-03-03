@@ -1,0 +1,25 @@
+# IP Address Management 
+
+IP Address Management (IPAM) is a method of planning, tracking, and managing the IP address space 
+used in a network. The `maxClusters` parameter of the slice configuration represents IPAM. 
+
+This parameter sets the maximum number of worker clusters that you can connect to a slice. The 
+maximum number of worker clusters affects the subnet calculation of a worker cluster. The subnet 
+in turn determines the number of host addresses a worker cluster gets for its application pods. 
+
+For example, if the slice subnet is 10.1.0.0/16 and the maximum number of clusters is 16, then each 
+cluster gets a subnet of 10.1.x.0/20, where x = 0, 16, or 32.
+
+This is a significant parameter that is only configured during a slice creation. If this parameter is 
+not set, it defaults to 16. 
+ 
+:::caution
+The subnet of a worker cluster determines the number of host addresses that are available to that 
+cluster. Hence, you must be prudent and cautious when you set the maximum worker clusters. The value 
+of the maximum number of clusters set remains constant for the entire life of a slice, and it is 
+immutable after a slice is created. 
+:::
+
+The lesser the number of clusters, the more number of IP addresses are available for the application pods 
+of every worker cluster that is part of a slice. By default, the value of the **maxClusters**
+parameter is 16. The supported value range is 2 to 32 clusters.
