@@ -66,6 +66,14 @@
           }
         ]  
       }, 
+  {
+     "type": "category",
+     "label": "KEY FEATURES",
+     "collapsed": true,
+      "items": [
+          "features/ipam"
+        ]
+  },      
    {
     "type": "category",
     "label": "TUTORIALS",
