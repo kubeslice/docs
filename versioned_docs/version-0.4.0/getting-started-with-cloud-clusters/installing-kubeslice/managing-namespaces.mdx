@@ -113,6 +113,5 @@ kubectl get serviceimport -n <namespace>
 ```
 ## Limitations
 :::info
-Only HTTP services can be exported on a slice that is configured to use Istio gateways for ingress/egress.
-Raw TCP or UDP services cannot be exported.
+A slice configured with the Istio gateway for egress/ingress only supports HTTP services.
 :::
