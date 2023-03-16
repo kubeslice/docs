@@ -19,7 +19,7 @@ To install the `kubeslice-cli` tool on different operating systems, download an 
 
 ### Install kubeslice-cli on Windows
 
-To install kubeslice-cli on Windows:
+To install kubeslice-cli:
 
 1. Download the latest Windows version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
    After downloading the executable file, rename it to **kubeslice-cli.exe** for ease of use.
@@ -32,7 +32,7 @@ To install kubeslice-cli on Windows:
    ```
 ### Install kubeslice-cli on Linux
 
-To install kubeslice-cli on Linux, macOS, or Ubuntu:
+To install kubeslice-cli on Linux or Ubuntu:
 
 1. Download the latest Linux version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
 
@@ -47,6 +47,32 @@ To install kubeslice-cli on Linux, macOS, or Ubuntu:
    ```
    kubeslice-cli --version
    ```
+
+### Install kubeslice-cli on macOS
+
+To install kubeslice-cli:
+
+1. Download the latest macOS version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+2. Fix the error. When you try to install kubeslice-cli on macOS, you get the **Unverified Developer Error Message**.
+   This error message appears when you try to install an application from a developer who is not registered with Apple.
+
+   ![mac](/images/kubeslice-cli/mac-download.png)
+   
+   To fix the `Unverified developer error message` follow the instructions in [enabling the application for macOS](https://www.alphr.com/cannot-be-opened-because-the-developer-cannot-be-verified/).
+
+3. Create a symlink to access the file:
+   :::info
+   A symlink is a symbolic Linux/ UNIX link that points to another file or folder on your computer, or a connected file system.
+   :::
+   ```
+   ln -s <downloaded-binary>  ~/bin/kubeslice-cli
+   ```
+4. Ensure the downloaded version is up-to-date using the following command:
+   ```
+   kubeslice-cli --version
+   ```
+
 ### Download kubeslice-cli using Wget
 
 See the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page for the latest version. Use the following command to 
