@@ -11,6 +11,8 @@ public clouds, or edge locations:
 * [Slice Istio Components](#slice-istio-components)
 * [KubeSlice DNS](#kubeslice-dns)
 * [Network Service Mesh Control and Data Plane](#network-service-mesh-control-and-data-plane)
+* [NSM Kernel Forwarder](#nsm-kernel-forwarder)
+* [Spire Server and Agents](#spire-server-and-agents)
 * [NetOps](#netops)
 
 ## KubeSlice Controller
@@ -96,6 +98,26 @@ slice overlay network. It consists of:
 - NSM Data plane daemon set
 - NSM admission webhook controller pod
 - NSM CRD objects that facilitate setting up the slice overlay network
+
+## NSM Kernel Forwarder
+The NSM kernel forwarder is a `DaemonSet` that works with the NSM manager to set up 
+the data plane for the slice overlay network within a cluster. Its functions include: 
+* Inserting the NSM interfaces in the application pods and the vL3 slice router pod
+* Configuring the interfaces 
+* Setting the operational state of the interfaces 
+* Setting up the routing table in the pods
+
+## Spire Server and Agents
+The NSM components communicate with each other over gRPC (Google version of Remote Procedure Calls) 
+to set up and maintain the slice overlay network. Spire, a reference implementation of the SPIFFE 
+software identity management standard, is used to establish the NSM control plane and 
+the data plane workload identities. The Spire implementation on Kubernetes contains a 
+server as a `StatefulSet` and an agent that runs on every cluster node  
+as a `DaemonSet`. The NSM pods communicate with the node local Spire agent using the 
+Workload API to receive X.509 SVIDs (SPIFFE Verifiable Identity Document). The SVIDs 
+and the Spire trust bundle establish workload identities for authentication 
+and authorization. The SVIDs and the Spire trust bundle are also used in secure gRPC 
+with Transport Layer Security (TLS) between the NSM components to ensure confidentiality and integrity.
 
 ## NetOps
 Each slice in a cluster is associated with a QoS profile for bandwidth control across the 
