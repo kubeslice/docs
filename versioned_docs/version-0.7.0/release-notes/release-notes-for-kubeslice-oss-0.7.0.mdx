@@ -1,0 +1,23 @@
+# Release Notes for KubeSlice OSS 0.6.0
+
+*Release date: 6th April 2023*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
+in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
+by creating logical application ***slice*** boundaries that enable seamless communication between pods and services across 
+clusters, clouds, edges, and data centers.
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New
+These release notes describe the new changes and enhancements in this version.
+
+### Latest Supported Kubernetes Version 
+
+### Controller Events 
+
+### Removal of the Cert Manager Dependency 
+The `cert-manager` is no longer required to install the KubeSlice Controller on the controller cluster. 
+With this version, the KubeSlice Controller supports upward compatibility. This means that the `cert-manager` 
+installed does not have any impact on the KubeSlice Controller. However, the `cert-manager` is still 
+required for the version 0.6.0 and older versions of the KubeSlice Controller to work.

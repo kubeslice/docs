@@ -55,6 +55,11 @@ const config = {
              * }
              * 
              */
+            '0.7.0':{
+              label: '0.7.0',
+              path: '0.7.0',
+              banner: 'none'
+            },
             '0.6.0':{
               label: '0.6.0',
               path: '0.6.0',
