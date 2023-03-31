@@ -21,3 +21,8 @@ The `cert-manager` is no longer required to install the KubeSlice Controller on 
 With this version, the KubeSlice Controller supports upward compatibility. This means that the `cert-manager` 
 installed does not have any impact on the KubeSlice Controller. However, the `cert-manager` is still 
 required for the version 0.6.0 and older versions of the KubeSlice Controller to work.
+
+### Service Export Discovery
+To identify the exported services from a worker cluster that have different names other than 
+the `slice.local` name, a new property called `aliases` has been introduced as part of 
+the service export configuration.  
