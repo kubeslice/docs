@@ -154,6 +154,14 @@
          }
        ]
      },
+    {
+      "type": "category",
+      "label": "MONITOR KUBESLICE",
+      "collapsed": true,
+      "items": [
+          "monitor/controller-events"
+      ]
+    },  
     "troubleshooting-guide",
     {
       "type": "category",
