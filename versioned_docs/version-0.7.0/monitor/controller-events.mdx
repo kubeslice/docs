@@ -1,8 +1,122 @@
 # Controller Events 
+:::note
+This draft is in progress. The content is not up for review. 
+:::
+
 By default, the controller events are logged in the kubeslice-controller and kubeslice-project namespaces. 
 
-The following section describes the different events 
+The following section describes the different events.
 
 ## kubeslice-controller Namespace Events 
 
+### Access Control 
+| Sl. No |  Event | Type | Description | 
+|----|----|----|----|
+| 1 | WorkerClusterRoleCreated | NORMAL| Worker cluster role got created.
+| 2 | WorkerClusterRoleCreationFailed  | WARNING |  Worker cluster role creation failed.
+| 3 | WorkerClusterRoleUpdated  | NORMAL |  Worker cluster role got updated.
+| 4 | WorkerClusterRoleUpdateFailed  | WARNING | Worker cluster role update failed.
+| 5 | ReadOnlyRoleCreated | NORMAL| Read only role got created.
+| 6 | ReadOnlyRoleCreationFailed  | WARNING |  Read only role creation failed.
+| 7 | ReadOnlyRoleUpdated  | NORMAL |   Read only role got updated.
+| 8 | ReadOnlyRoleUpdateFailed  | WARNING |Read only role update failed.
+| 9 | ReadWriteRoleCreated | NORMAL| Read write role got created.
+| 10 | ReadWriteRoleCreationFailed  | WARNING |   Read write role creation failed.
+| 11 | ReadWriteRoleUpdated  | NORMAL |   Read write role got updated.
+| 12 | ReadWriteRoleUpdateFailed  | WARNING |Read write role update failed.
+| 13 | ServiceAccountCreated | NORMAL|  Service account got created.
+| 14 | ServiceAccountCreationFailed  | WARNING |  Service account creation failed.
+| 15 | ServiceAccountSecretCreated  | NORMAL | Service account secret got updated.
+| 16 | ServiceAccountSecretCreationFailed  | WARNING | Service account secret creation failed.
+| 17 | DefaultRoleBindingCreated  | NORMAL | Default role binding got created.
+| 18 | DefaultRoleBindingCreationFailed  | WARNING | Default role binding creation failed.
+| 19 | DefaultRoleBindingUpdated | NORMAL| Default role binding got deleted.
+| 20 | DefaultRoleBindingDeleted  | WARNING |  Service account creation failed.
+| 21 | InactiveRoleBindingDeleted  | WARNING | Inactive role binding got deleted.
+| 22 | InactiveRoleBindingDeletionFailed  | WARNING | Inactive role binding deletion failed.
+| 23 | InactiveServiceAccountDeleted  | WARNING | Inactive service account got deleted.
+| 24 | InactiveServiceAccountDeletionFailed  | WARNING | Inactive service account deletion failed.
+| 25 | ServiceAccountDeleted | WARNING| Service account got deleted.
+| 26 | ServiceAccountDeletionFailed  | WARNING | Service account deletion failed.
+| 27 | SecretDeleted | WARNING | Service account secret got deleted.
+| 28 | SecretDeletionFailed  | WARNING | Service account secret deletion failed.
+
+### Cluster 
+| Sl. No |  Event | Type | Description | 
+|----|----|----|----|
+| 1 | ClusterDeleted | WARNING| Cluster got deleted.
+| 2 | ClusterDeletionFailed  | WARNING | Cluster deletion failed.
+
+### SliceConfig
+| Sl. No |  Event | Type | Description | 
+|----|----|----|----|
+| 1 | SliceConfigDeleted | WARNING| Slice config got deleted.
+| 2 | SliceConfigDeletionFailed  | WARNING | Slice config deletion failed.
+
+### ServiceExportConfig
+| Sl. No |  Event | Type | Description | 
+|----|----|----|----|
+| 1 | ServiceExportConfigDeleted | WARNING| Service export config got deleted.
+| 2 | ServiceExportConfigDeletionFailed  | WARNING | Service export config deletion failed.
+
+### SliceQoSConfig
+| Sl. No |  Event | Type | Description | 
+|----|----|----|----|
+| 1 | SliceQoSConfigDeleted | WARNING| Slice QoS config got deleted.
+| 2 | SliceQoSConfigDeletionFailed  | WARNING | Slice QoS config deletion failed.
+
+### WorkerServiceImport
+| Sl. No |  Event | Type | Description | 
+|----|----|----|----|
+| 1 | WorkerServiceImportDeletedForcefully | WARNING| Worker service import got deleted forcefully.
+| 2 | WorkerServiceImportRecreationFailed  | WARNING | Worker service import recreation failed after forceful deletion.
+| 3 | WorkerServiceImportRecreated  | NORMAL | Worker service import got recreated after forceful deletion.
+| 4 | WorkerServiceImportCreationFailed  | WARNING | Worker service import creation failed.
+| 5 | WorkerServiceImportCreated | NORMAL| Worker service import got created.
+| 6 | WorkerServiceImportUpdateFailed  | WARNING | Worker service import update failed.
+| 7 | WorkerServiceImportUpdated  | NORMAL | Worker service import got updated.
+| 8 | WorkerServiceImportDeleted  | WARNING | Worker service import got deleted.
+| 9 | WorkerServiceImportDeletionFailed | WARNING| Worker service import deletion failed.
+
+### WorkerSliceConfig
+| Sl. No |  Event | Type | Description | 
+|----|----|----|----|
+| 1 | WorkerSliceConfigDeletedForcefully | WARNING| Worker slice config got deleted forcefully.
+| 2 | WorkerSliceConfigRecreationFailed  | WARNING | Worker slice config recreation failed after forceful deletion.
+| 3 | WorkerSliceConfigRecreated  | NORMAL | Worker slice config got recreated after forceful deletion.
+| 4 | WorkerSliceConfigCreationFailed  | WARNING | Worker slice config creation failed.
+| 5 | WorkerSliceConfigCreated | NORMAL| Worker slice config got created.
+| 6 | WorkerSliceConfigUpdateFailed  | WARNING | Worker slice config update failed.
+| 7 | WorkerSliceConfigUpdated  | NORMAL | Worker service slice config updated.
+| 8 | WorkerSliceConfigDeleted  | WARNING | Worker slice config got deleted.
+| 9 | WorkerSliceConfigDeletionFailed | WARNING| Worker slice config deletion failed.
+
+### WorkerSliceGateway
+| Sl. No |  Event | Type | Description | 
+|----|----|----|----|
+| 1 | WorkerSliceGatewayDeletedForcefully | WARNING| Worker slice gateway got deleted forcefully.
+| 2 | WorkerSliceGatewayRecreationFailed  | WARNING | Worker slice gateway recreation failed after forceful deletion.
+| 3 | WorkerSliceGatewayRecreated  | NORMAL | Worker slice gateway got recreated after forceful deletion.
+| 4 | WorkerSliceGatewayCreationFailed  | WARNING | Worker slice gateway creation failed.
+| 5 | WorkerSliceGatewayCreated | NORMAL| Worker slice gateway got created.
+| 6 | SliceGatewayJobCreationFailed  | WARNING | Slice gateway job creation failed.
+| 7 | SliceGatewayJobCreated  | NORMAL |Slice gateway job got created.
+| 8 | WorkerSliceGatewayDeleted  | WARNING | Worker slice gateway got deleted.
+| 9 | WorkerSliceGatewayDeletionFailed | WARNING| Worker slice gateway deletion failed.
+
 ## kubeslice-project Namespace Events 
+
+### Project 
+
+| Sl. No | Event | Type | Description | 
+|----|----|----|----|
+| 1      | ProjectDeleted | WARNING |  The project has been deleted. |
+| 2 | ProjectDeletionFailed | WARNING | The project deletion is unsuccessful. | 
+
+### Namespace 
+| Sl. No |  Event | Type | Description | 
+|----|----|----|----|
+| 1 | NamespaceCreated | NORMAL| Namespace got created.
+| 2 | NamespaceCreationFailed  | WARNING | Namespace creation failed.
+| 3 | NamespaceDeleted  | WARNING | Namespace got deleted.
+| 4 | NamespaceDeletionFailed  | WARNING | Namespace deletion failed.
