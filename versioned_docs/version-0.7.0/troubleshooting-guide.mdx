@@ -7,20 +7,6 @@ during installing and configuring KubeSlice.
 
 ## Installation Issues 
 
-### Why did the download of the KubeSlice Cert Manager fail?
-
-During the installation of the KubeSlice cert-manager, if you get the
-following error message.
-
-``` 
-failed to download "kubeslice/cert-manager" (hint: running helm repo update may help)
-```
-
-Check the helm version. If the helm version is older than version 3.7.0,
-then you cannot download the `kubeslice/cert-manager`. Upgrade the helm
-version to 3.7.0 to successfully install the cert-manager.
-
-
 ### Why do I face installation issues while installing KubeSlice on kind clusters on Ubuntu OS?
 On Ubuntu OS, if you have too many files open and try installing KubeSlice on kind clusters, 
 then you face issues.
@@ -199,6 +185,504 @@ No LimitRange resource.
 
 In the command output, the iperf namespace contains the `kubeslice.io/slice=blue` label. 
 This means that the namespace is already onboarded to the blue slice.
+
+## Slice and Cluster Health Issues
+
+### Why does the KubeSlice Manager dashboard's health tab show that a worker cluster's health status is unavailable?
+
+![alt](/images/version8/km-kubeslicemanager/dash-health-worker-operator-down.png)
+
+When a Worker Operator on a worker cluster is down or unable to communicate with the KubeSlice Controller, that
+cluster's health status becomes unavailable. On the slice health pie chart, hovering your mouse indicates that the
+component of only that worker cluster is down.
+
+To resolve this issue, check the corresponding Worker Operator and restore its communication with the
+KubeSlice Controller.
+
+`kubeslice-operator` (Worker Operator) is a deployment running in the `kubeslice-system` namespace.
+You can verify the status of `kubeslice-operator` on the corresponding worker cluster to further
+trace the issue.
+
+To verify the status of `kubeslice-operator`:
+
+1. Get the details of `kubeslice-operator` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=control-plane=controller-manager
+   ```
+
+   Expected Output
+
+   ```
+   NAME                READY  UP-TO-DATE  AVAILABLE  AGE
+   kubeslice-operator  1/1    1           1          17d
+   ```
+
+2. Get the status of `kubeslice-operator` pods using the following command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=control-plane=controller-manager
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                 READY  STATUS  RESTARTS  AGE
+   kubeslice-operator-789b475bb8-sz49v  2/2    Running  0        45h
+   ```
+
+### What should I do when nsmgr is down?
+
+Identify the worker cluster on which `nsmgr` is down.
+
+`nsmgr` is a `DaemonSet` running in the `kubeslice-system` namespace. You can verify the status
+of `nsmgr` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `nsmgr`:
+
+1. Get the details of `nsmgr` using the following command:
+
+   ```
+   kubectl get daemonset -n kubeslice-system --selector=app=nsmgr
+   ```
+
+   Expected Output
+
+   ```
+   NAME   DESIRED  CURRENT  READY  UP-TO-DATE  AVAILABLE  NODE SELECTOR  AGE
+   nsmgr  3        3        3      3           3          <none>         17d
+   ```
+
+2. Get the status of `nsmgr` from all the pods by using the following command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=app=nsmgr
+   ```
+
+   Expected Output
+
+   ```
+   NAME         READY  STATUS   RESTARTS     AGE
+   nsmgr-6gfxz  2/2    Running  3 (40h ago)  17d
+   nsmgr-jtxxr  2/2    Running  2 (12d ago)  17d
+   nsmgr-tdmd8  2/2    Running  0            11d
+   ```
+
+   If the status is not `Running`, then `nsmgr` on that pod is down.
+
+### What should I do when forwarder is down?
+
+Identify the worker cluster on which `forwarder` is down.
+
+`forwarder` is a `DaemonSet` running in the `kubeslice-system` namespace. You can verify the status
+of `forwarder` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `forwarder`:
+
+1. Get the details of `forwarder` using the following command:
+   ```
+   kubectl get daemonset -n kubeslice-system --selector=app=forwarder-kernel
+   ```
+   Expected Output
+   ```
+   NAME              DESIRED  CURRENT  READY  UP-TO-DATE  AVAILABLE  NODE SELECTOR  AGE
+   forwarder-kernel  3         3        3     3           3          <none>         17d
+   ```
+
+   If a `forwarder` pod is down, then the number under `READY` will not be the same as other columns. 
+
+2. Get the status of `forwarder` from all the pods using the following command:
+   ```
+   kubectl get pods -n kubeslice-system --selector=app=forwarder-kernel
+   ```
+   ```
+   NAME                    READY  STATUS   RESTARTS  AGE
+   forwarder-kernel-2zb9r  1/1    Running  0         17d
+   forwarder-kernel-jjzz7  1/1    Running  0         17d
+   forwarder-kernel-r5kcw  1/1    Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, then that pod is down. 
+
+### What should I do when netop is down?
+
+Identify the worker cluster on which `netop` is down.
+
+`netop` is a `DaemonSet` running in the `kubeslice-system` namespace. You can verify the status
+of `netop` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `netop`:
+
+1. Get the details of `netop` using the following command:
+
+   ```
+   kubectl get daemonsets -n kubeslice-system | grep kubeslice-netop
+   ```
+
+   Expected Output
+
+   ```
+   kubeslice-netop 2     2     2    2     2      <none>    17d
+   ```
+
+2. The `netop` pod is restricted to run only on gateway nodes. Get the gateway nodes that run
+   the `netop` pod.
+
+   ```
+   kubectl get nodes --selector=kubeslice.io/node-type=gateway
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                                 STATUS  ROLES   AGE  VERSION
+   gke-demo-cluster-2-s-demo-cluster-2-s-3e484d4b-cbnl  Ready   <none>  17d  v1.23.16-gke.1400
+   gke-demo-cluster-2-s-demo-cluster-2-s-3e484d4b-qnwp  Ready   <none>  17d  v1.23.16-gke.1400
+   ```
+
+3. Get the `netop` pods on the `kubeslice-system` namespace using the following command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=app=app_net_op
+   ```
+
+   Expected Output
+
+   ```
+   NAME                   READY  STATUS   RESTARTS  AGE
+   kubeslice-netop-dqsg7  1/1    Running  0         17d
+   kubeslice-netop-jc4c2  1/1    Running  0         11d
+   ```
+
+   If the `STATUS` is not `Running`, then that pod is down. 
+
+### What should I do when spire-agent is down?
+
+Identify the worker cluster on which `spire-agent` is down.
+
+`spire-agent` is a `DaemonSet` running in the `spire` namespace. You can verify the status
+of `spire-agent` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `spire-agent`:
+
+1. Get the details of `spire-agent` using the following command:
+   ```
+   kubectl get daemonset -n spire --selector=app=spire-agent
+   ```
+   Expected Output
+   ```
+   NAME       DESIRED  CURRENT  READY  UP-TO-DATE  AVAILABLE  NODE SELECTOR  AGE
+   spire-agent  3      3        3      3           3             <none>      17d
+   ```
+2. Get the `spire-agent` pods from the `spire` namespace using the following command:
+   ```
+   kubectl get pods -n spire --selector=app=spire-agent
+   ```
+   Expected Output
+   ```
+   NAME              READY  STATUS   RESTARTS  AGE
+   spire-agent-l692m  1/1   Running  0         11d
+   spire-agent-nrfnf  1/1   Running  0         17d
+   spire-agent-xp5m8  1/1   Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, then that pod is down. 
+
+### What should I do when spire-server is down?
+
+Identify the worker cluster on which `spire-server` is down.
+
+`spire-server` is a `StatefulSet` running in the `spire` namespace. You can verify the status
+of `spire-server` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `spire-server`:
+
+1. Get the details of `spire-server` using the following command:
+
+   ```
+   kubectl get statefulset -n spire --selector=app=spire-server
+   ```
+
+   Expected Output
+
+   ```
+   NAME         READY  AGE
+   spire-server  1/1   17d
+   ```
+
+2. Get the `spire-agent` pods from the `spire` namespace using the following command:
+   ```
+   kubectl get pods -n spire --selector=app=spire-server
+   ```
+   Expected Output
+   ```
+   NAME            READY  STATUS   RESTARTS  AGE
+   spire-server-0  2/2    Running  0         17d
+   ```
+   If the `STATUS` is not `Running` and `2/2` pods are not `READY`, then that pod is down. 
+
+### What should I do when admission-webhook is down?
+
+Identify the worker cluster on which `admission-webhook` is down.
+
+`admission-webhook` is a deployment running in the `kubeslice-system` namespace. You can verify the status
+of `admission-webhook` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `admission-webhook`:
+
+1. Get the details of `admission-webhook` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=app=admission-webhook-k8s
+   ```
+
+   Expected Output
+
+   ```
+   NAME                       READY  UP-TO-DATE  AVAILABLE  AGE
+   nsm-admission-webhook-k8s  1/1     1          1          17d
+   ```
+
+2. Get the `admission-webhook` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pod -n kubeslice-system --selector=app=admission-webhook-k8s
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                        READY  STATUS  RESTARTS  AGE
+   nsm-admission-webhook-k8s-698784967d-nmtrl  1/1    Running  0        17d
+   ```
+
+   If the `STATUS` is not `Running`, and `1/1` pod is not `READY`, then that pod is down. 
+
+### What should I do when istiod is down?
+
+Identify the worker cluster on which `istiod` is down.
+
+`istiod` is a deployment running in the `istio-system` namespace. You can verify the status
+of `istiod` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `istiod`:
+
+1. Get the details of `istiod` using the following command:
+
+   ```
+   kubectl get deployment -n istio-system --selector app=istiod
+   ```
+
+   Expected Output
+
+   ```
+   NAME   READY  UP-TO-DATE  AVAILABLE  AGE
+   istiod  1/1   1           1          17d
+
+   ```
+
+2. Get the `istiod` pods from the `istio-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pods -n istio-system --selector app=istiod
+   ```
+
+   Expected Output
+
+   ```
+   NAME                     READY  STATUS   RESTARTS  AGE
+   istiod-6b56cffbd9-8xx5t  1/1    Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, and `1/1` pod is not `READY`, then that pod is down. 
+
+### What should I do when dns is down?
+
+Identify the worker cluster on which `dns` is down.
+
+`dns` is a deployment running in the `kubeslice-system` namespace. You can verify the status
+of `dns` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `dns`:
+
+1. Get the details of `dns` using the following command:
+
+   ```
+   kubectl get deployments -n kubeslice-system --selector=app=kubeslice-dns
+   ```
+
+   Expected Output
+
+   ```
+   NAME           READY  UP-TO-DATE  AVAILABLE  AGE
+   kubeslice-dns  1/1    1           1          17d
+   ```
+
+2. Get the `dns` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=app=kubeslice-dns
+   ```
+
+   Expected Output
+
+   ```
+   NAME                            READY  STATUS   RESTARTS  AGE
+   kubeslice-dns-79d4fc6477-frjw6  1/1    Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, and `1/1` pod is not `READY`, then that pod is down. 
+
+### What should I do when slice-router is down?
+
+`slice-router` is a deployment running in the `kubeslice-system` namespace, which is only one per slice.
+You can verify the status of `slice-router` on the corresponding worker cluster to further trace
+the issue.
+
+To verify the status of `slice-router`:
+
+1. Get the details of `slice-router` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system | grep vl3-slice-router-<slice-name>
+   ```
+
+   Example
+
+   ```
+   kubectl get deployment -n kubeslice-system | grep vl3-slice-router-bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   vl3-slice-router-bookinfo-slice  1/1   1     1      17d
+   ```
+
+2. Get the `slice-router` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=kubeslice.io/pod-type=router,kubeslice.io/slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                              READY  STATUS   RESTARTS  AGE
+   vl3-slice-router-bookinfo-slice-795fb754cc-4dnl4  2/2    Running  0         11d
+   ```
+   If the `STATUS` is not `Running`, and `2/2` pods are not `READY`, then that pod is down. 
+
+### What should I do when egress is down?
+
+`egress`is a deployment running in the`kubeslice-system`namespace. You can verify the status 
+of`egress`` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `egress`:
+
+1. Get the details of `egress` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=istio=egressgateway,slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                 READY  UP-TO-DATE  AVAILABLE  AGE
+   bookinfo-slice-istio-egressgateway  1/1   1     1      17d
+
+   ```
+
+2. Get the `egressgateway` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pod -n kubeslice-system --selector=istio=egressgateway,slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                                READY  STATUS   RESTARTS  AGE
+   bookinfo-slice-istio-egressgateway-7548b49659-9z4c5  2/2   Running  0         17d
+   ```
+
+### What should I do when ingress is down?
+
+`ingress`is a deployment running in the`kubeslice-system`namespace. You can verify the status 
+of`ingress`` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `ingress`:
+
+1. Get the details of `ingress` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=istio=ingressgateway,slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                READY  UP-TO-DATE  AVAILABLE  AGE
+   bookinfo-slice-istio-ingressgateway  1/1   1           1          17d
+
+   ```
+
+2. Get the `ingressgateway` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pod -n kubeslice-system --selector=istio=ingressgateway,slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                                 READY  STATUS   RESTARTS  AGE
+   bookinfo-slice-istio-ingressgateway-765fb4ddf-d52cs  2/2    Running  0        17d
+   ```
+
+   If the `STATUS` is not `Running`, and `2/2` pods are not `READY`, then that pod is down. 
+
+### What should I do when slicegateway is down?
+
+`slicegateway` is a deployment running in the `kubeslice-system` namespace. You can verify the
+status of `slicegateway` on the corresponding worker cluster to further trace the issue.
+Slice gateways are always created in pairs.
+
+To verify the status of `slicegateway`:
+
+1. Get the details of `slicegateway` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=kubeslice.io/pod-type=slicegateway,kubeslice.io/slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                READY  UP-TO-DATE  AVAILABLE  AGE
+   bookinfo-slice-worker-1-worker-2-0  1/1    1           1          17d
+   bookinfo-slice-worker-1-worker-2-1  1/1    1           1          17d
+   ```
+   If a pod is down, then it is shown under `READY` as `0/1`. 
+
+2. Get the `ingressgateway` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pod -n kubeslice-system --selector=kubeslice.io/pod-type=slicegateway,kubeslice.io/slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                                READY  STATUS   RESTARTS  AGE
+   bookinfo-slice-worker-1-worker-2-0-97748d58b-sqm7s  3/3    Running  0         17d
+   bookinfo-slice-worker-1-worker-2-1-8496454697-mw8cs 3/3    Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, and `3/3` pods are not `READY`, then that pod is down.
 
 
 ## kubeslice-cli
