@@ -7,10 +7,14 @@ To monitor a slice's health:
 
 1. Get the list of worker clusters connected to a slice using the following command:
    ```
+   kubectl get workersliceconfig -n kubeslice-<project>
+   ```
+   Example
+   ```
    kubectl get workersliceconfig -n kubeslice-avesha
    ```
 
-   Expected Output
+   Example Output
    ```
    NAME             AGE
    water-worker-1   54m
@@ -22,10 +26,14 @@ To monitor a slice's health:
    get the slice description:
    
    ```
+   kubectl describe workersliceconfig <worker-cluster> -n kubeslice-<project>
+   ```
+   Example
+   ```
    kubectl describe workersliceconfig water-worker-1 -n kubeslice-avesha
    ```
 
-   Expected Output 
+   Example Output 
 
    :::info 
    The output below is an excerpt of the command output to only show the health status. 
@@ -55,7 +63,15 @@ To monitor a cluster's health:
 1. Get the list of worker clusters using the following command:
 
    ```
+   kubectl get clusters -n kubeslice-<project>
+   ```
+   
+   Example
+   ```
    kubectl get clusters -n kubeslice-avesha
+   ```
+   Example Output
+   ```
    NAME       AGE
    worker-1   76m
    worker-2   75m
@@ -66,10 +82,16 @@ To monitor a cluster's health:
    command to get the cluster description:
 
    ```
+   kubectl describe clusters <worker-cluster> -n kubeslice-<project>
+   ```
+
+   Example
+
+   ```
    kubectl describe clusters worker-1 -n kubeslice-avesha
    ```
 
-   Expected Output 
+   Example Output 
 
    :::info 
    The output below is an excerpt of the command output to only show the health status. 

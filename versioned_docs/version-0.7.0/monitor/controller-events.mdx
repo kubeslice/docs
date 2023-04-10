@@ -142,16 +142,36 @@ If you do not want to see a controller event, then you can list it under `disabl
 the ``kubeslice-controller-event-schema-conf`` file that is located in the `kubeslice-controller` 
 namespace. 
 
-For example, if you don't want to see the `NamespaceCreated` event, then go to 
+For example, if you don't want to see the `WorkerSliceConfigCreated` event, then go to 
 the ``kubeslice-controller-event-schema-conf`` file using the following command, 
 
 ```
 kubectl edit cm kubeslice-controller-event-schema-conf -n kubeslice-controller
 ```
-In the ``kubeslice-controller-event-schema-conf`` file, add the `NamespaceCreated` event that you want 
+In the ``kubeslice-controller-event-schema-conf`` file, add the `WorkerSliceConfigCreated` event that you want 
 to hide under `disabledEvents` as illustrated below. 
 
 ```
-disabledEvents:
-- NamespaceCreated
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+data:
+  controller.yaml: |-
+    disabledEvents:
+      - WorkerSliceConfigCreated
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kubeslice-controller
+    meta.helm.sh/release-namespace: kubeslice-controller
+  creationTimestamp: "2023-04-10T07:32:57Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    name: event-schema
+  name: kubeslice-controller-event-schema-conf
+  namespace: kubeslice-controller
+  resourceVersion: "201971"
+  uid: 6cbcaba7-08b8-4d2e-b880-7516f594950f
 ```
