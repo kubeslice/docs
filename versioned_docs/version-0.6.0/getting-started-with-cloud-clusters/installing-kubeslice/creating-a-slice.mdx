@@ -513,7 +513,7 @@ Perform these steps:
 To validate the gateway pods on the worker cluster, use the following command:
 
 ```
-k get pods 
+kubectl get pods 
 ```
 
 Example Output
@@ -525,6 +525,7 @@ blue-cluster1-cluster2-1-65f64b67c8-t975h    3/3     Running     0          43s
 forwarder-kernel-g6b67                       1/1     Running     0          153m
 forwarder-kernel-mv52h                       1/1     Running     0          153m
 kubeslice-dns-6976b58b5c-kzbgg               1/1     Running     0          153m
+kubeslice-install-crds-smcf7                 0/1     Completed   0          153m
 kubeslice-netop-bfb55                        1/1     Running     0          153m
 kubeslice-netop-c4795                        1/1     Running     0          153m
 kubeslice-operator-7cf497857f-scf4w          2/2     Running     0          79m
