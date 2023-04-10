@@ -189,12 +189,8 @@ This means that the namespace is already onboarded to the blue slice.
 ## Slice and Cluster Health Issues
 
 ### Why does the KubeSlice Manager dashboard's health tab show that a worker cluster's health status is unavailable?
-
-![alt](/images/version8/km-kubeslicemanager/dash-health-worker-operator-down.png)
-
 When a Worker Operator on a worker cluster is down or unable to communicate with the KubeSlice Controller, that
-cluster's health status becomes unavailable. On the slice health pie chart, hovering your mouse indicates that the
-component of only that worker cluster is down.
+cluster's health status becomes unavailable. 
 
 To resolve this issue, check the corresponding Worker Operator and restore its communication with the
 KubeSlice Controller.

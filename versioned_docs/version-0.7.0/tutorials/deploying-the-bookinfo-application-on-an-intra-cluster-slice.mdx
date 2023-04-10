@@ -467,7 +467,7 @@ KubeSlice configuration:
    Expected Output
    ```
    kubectl get serviceexport -n bookinfo
-   NAME      SLICE   INGRESS   PORT(S)    ENDPOINTS   STATUS
+   NAME      SLICE   INGRESS   PORT(S)    ENDPOINTS   STATUS   ALIAS
    details   white             9080/TCP   1           READY
    reviews   white             9080/TCP   1           READY
    ```
@@ -486,7 +486,7 @@ Perform these steps:
    ```
    Expected Output
    ```
-   NAME      SLICE   PORT(S)    ENDPOINTS   STATUS
+   NAME      SLICE   PORT(S)    ENDPOINTS   STATUS  ALIAS
    details   white   9080/TCP   1           READY
    reviews   white   9080/TCP   1           READY
    ```

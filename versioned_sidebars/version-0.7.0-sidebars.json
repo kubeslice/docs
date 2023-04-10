@@ -159,6 +159,7 @@
       "label": "MONITOR KUBESLICE",
       "collapsed": true,
       "items": [
+          "monitor/slice-cluster-health",
           "monitor/controller-events"
       ]
     },  
