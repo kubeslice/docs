@@ -1,12 +1,15 @@
 # KubeSlice Controller-generated Events
-The KubeSlice Controller generates events that represents an operation that occurs on the controller 
-cluster. All of these generated events are specific to KubeSlice operations. 
+
+The KubeSlice Controller generates events that represents an operation that occurs on the controller
+cluster. All of these generated events are specific to KubeSlice operations.
 
 By default, the controller events are logged in the following namespaces:
-* `kubeslice-controller`  
-* `kubeslice-project`
+
+- `kubeslice-controller`
+- `kubeslice-project`
 
 ## kubeslice-project Namespace Events
+
 This section describes the events that are generated on the `kubeslice-project` namespace.
 Use the following command to get the `kubeslice-project` namespace events:
 
@@ -15,6 +18,7 @@ kubectl get events -n kubeslice-project
 ```
 
 ### Project
+
 These events are related to the KubeSlice projects that you create on the controller cluster.
 
 | Sl. No | Event                 | Type    | Description                      |
@@ -23,6 +27,7 @@ These events are related to the KubeSlice projects that you create on the contro
 | 2      | ProjectDeletionFailed | WARNING | The project deletion has failed. |
 
 ### Namespace
+
 These events are related to the project namespace in the controller cluster.
 
 | Sl. No | Event                   | Type    | Description                        |
@@ -32,8 +37,8 @@ These events are related to the project namespace in the controller cluster.
 | 3      | NamespaceDeleted        | WARNING | The namespace has been deleted.    |
 | 4      | NamespaceDeletionFailed | WARNING | The namespace deletion has failed. |
 
-
 ## kubeslice-controller Namespace Events
+
 This section describes the events that are generated on the `kubeslice-controller` namespace.
 Use the following command to get the `kubeslice-controller` namespace events:
 
@@ -42,6 +47,7 @@ kubectl get events -n kubeslice-controller
 ```
 
 ### Access Control
+
 These events are associated with Kubernetes RBAC on the controller cluster.
 
 | Sl. No | Event                                | Type    | Description                                       |
@@ -76,14 +82,16 @@ These events are associated with Kubernetes RBAC on the controller cluster.
 | 28     | SecretDeletionFailed                 | WARNING | The service account secret deletion has failed.   |
 
 ### Cluster
+
 These events associated with worker cluster deletion are listed below.
 
-| Sl. No | Event                 | Type    | Description                                     |
-| ------ | --------------------- | ------- | ----------------------------------------------- |
-| 1      | ClusterDeleted        | WARNING | The cluster has been deleted from KubeSlice.    |
-| 2      | ClusterDeletionFailed | WARNING | The cluster deletion from KubeSlice has failed. |
+| Sl. No | Event                 | Type    | Description                                            |
+| ------ | --------------------- | ------- | ------------------------------------------------------ |
+| 1      | ClusterDeleted        | WARNING | The worker cluster has been deleted from KubeSlice.    |
+| 2      | ClusterDeletionFailed | WARNING | The worker cluster deletion from KubeSlice has failed. |
 
 ### SliceConfig
+
 These events are related to a slice deletion.
 
 | Sl. No | Event                     | Type    | Description                    |
@@ -92,7 +100,8 @@ These events are related to a slice deletion.
 | 2      | SliceConfigDeletionFailed | WARNING | The slice deletion has failed. |
 
 ### ServiceExportConfig
-These events are related to the [service export](../getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces/#serviceexports-and-serviceimports) 
+
+These events are related to the [service export](../getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces/#serviceexports-and-serviceimports)
 of a worker cluster.
 
 | Sl. No | Event                             | Type    | Description                                           |
@@ -101,6 +110,7 @@ of a worker cluster.
 | 2      | ServiceExportConfigDeletionFailed | WARNING | The service export configuration deletion has failed. |
 
 ### SliceQoSConfig
+
 These events are related to a slice quality-of-service (QoS) profile.
 
 | Sl. No | Event                        | Type    | Description                                      |
@@ -109,6 +119,7 @@ These events are related to a slice quality-of-service (QoS) profile.
 | 2      | SliceQoSConfigDeletionFailed | WARNING | The slice QoS configuration deletion has failed. |
 
 ### WorkerServiceImport
+
 These events are related to the worker objects of [service import](../getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces/#serviceimports)
 of a worker cluster.
 
@@ -125,6 +136,7 @@ of a worker cluster.
 | 9      | WorkerServiceImportDeletionFailed    | WARNING | The worker service import deletion has failed.                           |
 
 ### WorkerSliceConfig
+
 These events are related to the worker objects of a slice. A worker object is an automatically generated after slice creation.
 A worker object is created for every worker cluster connected to a slice.
 
@@ -136,13 +148,14 @@ A worker object is created for every worker cluster connected to a slice.
 | 4      | WorkerSliceConfigCreationFailed    | WARNING | The worker slice configuration creation has failed.                           |
 | 5      | WorkerSliceConfigCreated           | NORMAL  | The worker slice configuration has been created.                              |
 | 6      | WorkerSliceConfigUpdateFailed      | WARNING | The worker slice configuration update has failed.                             |
-| 7      | WorkerSliceConfigUpdated           | NORMAL  | The worker service slice configuration updated.                               |
+| 7      | WorkerSliceConfigUpdated           | NORMAL  | The worker slice configuration has been updated.                                    |
 | 8      | WorkerSliceConfigDeleted           | WARNING | The worker slice configuration has been deleted.                              |
 | 9      | WorkerSliceConfigDeletionFailed    | WARNING | The worker slice configuration deletion has failed.                           |
 
 ### WorkerSliceGateway
+
 These events are related to the worker slice gateways for a slice with more than one worker cluster. The number
-of worker slice gateways on a slice is equal to `n * (n-1)`, where `n` is the total number of worker 
+of worker slice gateways on a slice is equal to `n * (n-1)`, where `n` is the total number of worker
 clusters on that slice.
 
 | Sl. No | Event                               | Type    | Description                                                             |
@@ -157,7 +170,6 @@ clusters on that slice.
 | 8      | WorkerSliceGatewayDeleted           | WARNING | The worker slice gateway has been deleted.                              |
 | 9      | WorkerSliceGatewayDeletionFailed    | WARNING | The worker slice gateway deletion has failed.                           |
 
-
 ## Disable Controller Events
 
 If you do not want to see a controller event, then you can list it under `disabledEvents` in
@@ -165,7 +177,7 @@ the `kubeslice-controller-event-schema-conf` file that is located in the `kubesl
 namespace.
 
 For example, if you don't want to see the `WorkerSliceConfigCreated` event, then go to
-the `kubeslice-controller-event-schema-conf` file using the following command,
+the `kubeslice-controller-event-schema-conf` file using the following command:
 
 ```
 kubectl edit cm kubeslice-controller-event-schema-conf -n kubeslice-controller
