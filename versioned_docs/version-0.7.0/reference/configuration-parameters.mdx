@@ -95,8 +95,9 @@ The parameters are related to the specification configured in the
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-| networkInterface | String | The name of the network interface for egress traffic on a gateway  node. The QoS profile for a slice will be applied to this interface.Default Interface:   **eth0** | Mandatory |
-| [clusterProperty](#cluster-property-parameters) | Object | It contains  the worker  cluster  details. | Mandatory |
+| [clusterProperty](#cluster-property-parameters) | Object | It contains  the worker  cluster details. | Mandatory |
+| networkInterface | String | The name of the network interface for egress traffic on a gateway  node. The QoS profile for a slice will be applied to this interface.Default Interface:   **eth0** | Deprecated |
+| nodeIPs | String Array | The IP addresses used for inter-cluster tunnel creation. (Supports IPv4 and IPv6 IP address). If a node IP is not provided, Kubeslice will auto detect it from the gateway nodes. | Optional |
 
 #### Cluster Property Parameters
 The parameters are related to the cluster property configured in the 
@@ -139,7 +140,7 @@ the Slice Operator and they are configured in the [Slice Operator YAML file](/ve
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
 | namespace | String | The namespace that you get from the secret. | Mandatory|
-| endpoint | String | The ` controllerEndpoint` that you get from the secret.| Mandatory |
+| endpoint | String | The `controllerEndpoint` that you get from the secret.| Mandatory |
 | ca.crt | String | The `ca.crt` that you get from the secret. | Mandatory |
 | token | String | The `token `that you get from the secret. | Mandatory |
  
@@ -150,14 +151,14 @@ These parameters are related to the worker cluster that are configured in the
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
 | name | String | The name of the  cluster that is  registered with the KubeSlice controller. The cluster name must be `unique` in the  project. |Mandatory|
-| nodeIp | String | The Node IP address of the registered  worker cluster (Required for  Kind cluster only). |Mandatory | 
+| nodeIp | String | The Node IP address of the registered  worker cluster (Required for  Kind cluster only). | (deprecated) | 
 
 ### Network Operator Parameter
 This parameter is related to network operations such as enforcing the QoS profile configured for a slice and is configured in the [Slice Operator YAML file](/versioned_docs/version-0.7.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#create-the-slice-operator-yaml-file).
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-| networkInterface | AlphaNumeric | The name of the network interface on the gateway nodes that is the egress interface for external traffic. It may be obtained by doing a route lookup on a well-known public IP address like the Google public DNS IP address `8.8.8.8`. |	Mandatory |
+| networkInterface | AlphaNumeric | The name of the network interface on the gateway nodes that is the egress interface for external traffic. It may be obtained by doing a route lookup on a well-known public IP address like the Google public DNS IP address `8.8.8.8`. | Optional |
 
 
 ## Slice Configuration Parameters

@@ -91,11 +91,13 @@ metadata:
   name: <cluster-name-1>
   namespace: kubeslice-<projectname>
 spec:
-  networkInterface: <network_interface>
   clusterProperty:
     geoLocation:
       cloudProvider: "<cloud_provider>"
       cloudRegion: "<cloud_region>"
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>    
 ---
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -109,6 +111,12 @@ spec:
       cloudProvider: "<cloud_provider>"
       cloudRegion: "<cloud_region>"
 ```
+
+:::info
+The IP addresses used for inter-cluster tunnel creation. (Supports IPv4 and IPv6 IP address). If a node IP is not provided, Kubeslice will 
+auto detect it from the gateway nodes.
+:::
+
 
 Example YAML file
 ``` 
@@ -199,12 +207,12 @@ gke-worker-1   17s
 ```
 
 :::success
-You have successfully registered the Worker clusters with the KubeSlice Controller.
+You have successfully registered the worker clusters with the KubeSlice Controller.
 :::
 
 ## Install the Slice Operator 
 
-Install the Slice Operator on the worker cluster that you just registered.Before installing the 
+Install the Slice Operator on the worker cluster that you just registered. Before installing the 
 Slice Operator in your registered cluster, you must get the secrets and the endpoints from the KubeSlice 
 Controller.
 

@@ -13,6 +13,8 @@ template.
 :::info
 To understand more about the configuration parameters, see [Cluster
 Registration Configuration Parameters](/versioned_docs/version-0.7.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters).
+
+The IP addresses used for inter-cluster tunnel creation. (Supports IPv4 and IPv6 IP address). If a node IP is not provided, Kubeslice will auto detect it from the gateway nodes.
 :::
 
 ```
@@ -22,7 +24,9 @@ metadata:
   name: <first-worker-cluster-name>  # kind-worker-1 
   namespace: kubeslice-<project name> # kubeslice-avesha
 spec:
-  networkInterface: eth0
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>   
 ---
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -30,7 +34,9 @@ metadata:
   name: <second-worker-cluster-name> # kind-worker-2
   namespace: kubeslice-<project name> # kubeslice-avesha
 spec:
-  networkInterface: eth0
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>   
 ```
 
 ### Apply the Cluster Registration YAML File
