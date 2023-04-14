@@ -39,14 +39,14 @@ spec:
       - <IP address -2>   
 ```
 
-### Apply the Cluster Registration YAML File
+## Apply the Cluster Registration YAML File
 Apply the cluster-reg.yaml file by using the following command:
 
 ```
 kubectl apply -f cluster-reg.yaml -n kubeslice-<project name>
 ```
 
-### Validate the Registered Clusters
+## Validate the Registered Clusters
 Validate the registered clusters by using the following command:
 
 ```
@@ -66,7 +66,7 @@ kind-worker-2  51s
 ```
 
 
-### Create the Slice Operator YAML File 
+## Create the Slice Operator YAML File 
 Create the`slice-operator.yaml` file using the following template.
 
 :::info
@@ -87,7 +87,7 @@ cluster:
   nodeIp: <worker-cluster-nodeip> # 172.18.0.6
 ```
 
-##### Get the Node IPs of Worker Clusters
+#### Get the Node IPs of Worker Clusters
 Switch the context to the worker cluster.
 
 ```
@@ -124,7 +124,7 @@ cluster:
   nodeIp: 172.18.0.7
 ```
 
-### Apply the Slice Operator Values File 
+## Apply the Slice Operator Values File 
 The following information is required to apply the manifest file.
 
 | Parameter     |  Description |
@@ -140,7 +140,7 @@ using the following command:
 helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of slice-operator.yaml> --namespace kubeslice-system  --create-namespace
 ```
 
-### Validating the Slice Operator Installation 
+## Validating the Slice Operator Installation 
 To validate the Slice Operator installation in the registered cluster,
 check the pods belonging to the namespace `kubeslice-system` by using
 the following command:
