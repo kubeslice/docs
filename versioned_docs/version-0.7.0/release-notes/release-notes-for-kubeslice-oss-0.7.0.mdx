@@ -31,3 +31,7 @@ required for the version 0.6.0 and older versions of the KubeSlice Controller to
 To identify the exported services from a worker cluster that have different names other than 
 the `slice.local` name, a new property called `aliases` has been introduced as part of 
 the service export configuration.  
+
+### The Node IP is Editable
+The node IP for the worker cluster that is registered with the controller can now be edited. If 
+KubeSlice could not detect a node IP during registration, you can enter it by editing a cluster.
