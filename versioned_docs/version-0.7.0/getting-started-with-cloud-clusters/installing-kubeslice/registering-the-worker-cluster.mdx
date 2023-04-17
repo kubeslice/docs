@@ -323,25 +323,7 @@ See [Script to get the secrets of the worker cluster](/versioned_docs/version-0.
     type: kubernetes.io/service-account-token
     ```
 
-### Get the Worker Network Interface
-Get the name of the network interface on the gateway nodes that is the egress interface for external traffic.
 
-:::warning
-The below command does not work for OpenShift users.
-:::
-
-Use the following command on the gateway node:
-```
-ip route get 8.8.8.8 | awk '{ print $5 }'
-```
-Example
-```
-ip route get 8.8.8.8 | awk '{ print $5 }'
-```
-Example Output
-```
-eth0
-```
 ## Create the Slice Operator YAML File
 
 Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `token` from the above secrets 
