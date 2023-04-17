@@ -1,0 +1,212 @@
+# KubeSlice Controller-generated Events
+
+The KubeSlice Controller generates events that represents an operation that occurs on the controller
+cluster. All of these generated events are specific to KubeSlice operations.
+
+By default, the controller events are logged in the following namespaces:
+
+- `kubeslice-controller`
+- `kubeslice-project`
+
+## kubeslice-project Namespace Events
+
+This section describes the events that are generated on the `kubeslice-project` namespace.
+Use the following command to get the `kubeslice-project` namespace events:
+
+```
+kubectl get events -n kubeslice-project
+```
+
+### Project
+
+These events are related to the KubeSlice projects that you create on the controller cluster.
+
+| Sl. No | Event                 | Type    | Description                      |
+| ------ | --------------------- | ------- | -------------------------------- |
+| 1      | ProjectDeleted        | WARNING | The project has been deleted.    |
+| 2      | ProjectDeletionFailed | WARNING | The project deletion has failed. |
+
+### Namespace
+
+These events are related to the project namespace in the controller cluster.
+
+| Sl. No | Event                   | Type    | Description                        |
+| ------ | ----------------------- | ------- | ---------------------------------- |
+| 1      | NamespaceCreated        | NORMAL  | The namespace has been created.    |
+| 2      | NamespaceCreationFailed | WARNING | The namespace creation has failed. |
+| 3      | NamespaceDeleted        | WARNING | The namespace has been deleted.    |
+| 4      | NamespaceDeletionFailed | WARNING | The namespace deletion has failed. |
+
+## kubeslice-controller Namespace Events
+
+This section describes the events that are generated on the `kubeslice-controller` namespace.
+Use the following command to get the `kubeslice-controller` namespace events:
+
+```
+kubectl get events -n kubeslice-controller
+```
+
+### Access Control
+
+These events are associated with Kubernetes RBAC on the controller cluster.
+
+| Sl. No | Event                                | Type    | Description                                       |
+| ------ | ------------------------------------ | ------- | ------------------------------------------------- |
+| 1      | WorkerClusterRoleCreated             | NORMAL  | The worker cluster role has been created.         |
+| 2      | WorkerClusterRoleCreationFailed      | WARNING | The worker cluster role creation has failed.      |
+| 3      | WorkerClusterRoleUpdated             | NORMAL  | The worker cluster role has been updated.         |
+| 4      | WorkerClusterRoleUpdateFailed        | WARNING | The worker cluster role update has failed.        |
+| 5      | ReadOnlyRoleCreated                  | NORMAL  | The read-only role has been created.              |
+| 6      | ReadOnlyRoleCreationFailed           | WARNING | The read-only role creation has failed.           |
+| 7      | ReadOnlyRoleUpdated                  | NORMAL  | The read-only role has been updated.              |
+| 8      | ReadOnlyRoleUpdateFailed             | WARNING | The read-only role update has failed.             |
+| 9      | ReadWriteRoleCreated                 | NORMAL  | The read-write role has been created.             |
+| 10     | ReadWriteRoleCreationFailed          | WARNING | The read-write role creation has failed.          |
+| 11     | ReadWriteRoleUpdated                 | NORMAL  | The read-write role has been updated.             |
+| 12     | ReadWriteRoleUpdateFailed            | WARNING | The read-write role update has failed.            |
+| 13     | ServiceAccountCreated                | NORMAL  | The service account has been created.             |
+| 14     | ServiceAccountCreationFailed         | WARNING | The service account creation has failed.          |
+| 15     | ServiceAccountSecretCreated          | NORMAL  | The service account secret has been updated.      |
+| 16     | ServiceAccountSecretCreationFailed   | WARNING | The service account secret creation has failed.   |
+| 17     | DefaultRoleBindingCreated            | NORMAL  | The default role binding has been created.        |
+| 18     | DefaultRoleBindingCreationFailed     | WARNING | The default role binding creation has failed.     |
+| 19     | DefaultRoleBindingUpdated            | NORMAL  | The default role binding has been deleted.        |
+| 20     | DefaultRoleBindingDeleted            | WARNING | The service account creation has failed.          |
+| 21     | InactiveRoleBindingDeleted           | WARNING | The inactive role binding has been deleted.       |
+| 22     | InactiveRoleBindingDeletionFailed    | WARNING | The inactive role binding deletion has failed.    |
+| 23     | InactiveServiceAccountDeleted        | WARNING | The inactive service account has been deleted.    |
+| 24     | InactiveServiceAccountDeletionFailed | WARNING | The inactive service account deletion has failed. |
+| 25     | ServiceAccountDeleted                | WARNING | The service account has been deleted.             |
+| 26     | ServiceAccountDeletionFailed         | WARNING | The service account deletion has failed.          |
+| 27     | SecretDeleted                        | WARNING | The service account secret has been deleted.      |
+| 28     | SecretDeletionFailed                 | WARNING | The service account secret deletion has failed.   |
+
+### Cluster
+
+These events associated with worker cluster deletion are listed below.
+
+| Sl. No | Event                 | Type    | Description                                            |
+| ------ | --------------------- | ------- | ------------------------------------------------------ |
+| 1      | ClusterDeleted        | WARNING | The worker cluster has been deleted from KubeSlice.    |
+| 2      | ClusterDeletionFailed | WARNING | The worker cluster deletion from KubeSlice has failed. |
+
+### SliceConfig
+
+These events are related to a slice deletion.
+
+| Sl. No | Event                     | Type    | Description                    |
+| ------ | ------------------------- | ------- | ------------------------------ |
+| 1      | SliceConfigDeleted        | WARNING | The slice has been deleted.    |
+| 2      | SliceConfigDeletionFailed | WARNING | The slice deletion has failed. |
+
+### ServiceExportConfig
+
+These events are related to the [service export](../getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces/#serviceexports-and-serviceimports)
+of a worker cluster.
+
+| Sl. No | Event                             | Type    | Description                                           |
+| ------ | --------------------------------- | ------- | ----------------------------------------------------- |
+| 1      | ServiceExportConfigDeleted        | WARNING | The service export configuration has been deleted.    |
+| 2      | ServiceExportConfigDeletionFailed | WARNING | The service export configuration deletion has failed. |
+
+### SliceQoSConfig
+
+These events are related to a slice quality-of-service (QoS) profile.
+
+| Sl. No | Event                        | Type    | Description                                      |
+| ------ | ---------------------------- | ------- | ------------------------------------------------ |
+| 1      | SliceQoSConfigDeleted        | WARNING | The slice QoS configuration has been deleted.    |
+| 2      | SliceQoSConfigDeletionFailed | WARNING | The slice QoS configuration deletion has failed. |
+
+### WorkerServiceImport
+
+These events are related to the worker objects of [service import](../getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces/#serviceimports)
+of a worker cluster.
+
+| Sl. No | Event                                | Type    | Description                                                              |
+| ------ | ------------------------------------ | ------- | ------------------------------------------------------------------------ |
+| 1      | WorkerServiceImportDeletedForcefully | WARNING | The worker service import has been deleted forcefully.                   |
+| 2      | WorkerServiceImportRecreationFailed  | WARNING | The worker service import recreation has failed after forceful deletion. |
+| 3      | WorkerServiceImportRecreated         | NORMAL  | The worker service import has been recreated after forceful deletion.    |
+| 4      | WorkerServiceImportCreationFailed    | WARNING | The worker service import creation has failed.                           |
+| 5      | WorkerServiceImportCreated           | NORMAL  | The worker service import has been created.                              |
+| 6      | WorkerServiceImportUpdateFailed      | WARNING | The worker service import update has failed.                             |
+| 7      | WorkerServiceImportUpdated           | NORMAL  | The worker service import has been updated.                              |
+| 8      | WorkerServiceImportDeleted           | WARNING | The worker service import has been deleted.                              |
+| 9      | WorkerServiceImportDeletionFailed    | WARNING | The worker service import deletion has failed.                           |
+
+### WorkerSliceConfig
+
+These events are related to the worker objects of a slice. A worker object is an automatically generated after slice creation.
+A worker object is created for every worker cluster connected to a slice.
+
+| Sl. No | Event                              | Type    | Description                                                                   |
+| ------ | ---------------------------------- | ------- | ----------------------------------------------------------------------------- |
+| 1      | WorkerSliceConfigDeletedForcefully | WARNING | The worker slice configuration has been deleted forcefully.                   |
+| 2      | WorkerSliceConfigRecreationFailed  | WARNING | The worker slice configuration recreation has failed after forceful deletion. |
+| 3      | WorkerSliceConfigRecreated         | NORMAL  | The worker slice configuration has been recreated after forceful deletion.    |
+| 4      | WorkerSliceConfigCreationFailed    | WARNING | The worker slice configuration creation has failed.                           |
+| 5      | WorkerSliceConfigCreated           | NORMAL  | The worker slice configuration has been created.                              |
+| 6      | WorkerSliceConfigUpdateFailed      | WARNING | The worker slice configuration update has failed.                             |
+| 7      | WorkerSliceConfigUpdated           | NORMAL  | The worker slice configuration has been updated.                              |
+| 8      | WorkerSliceConfigDeleted           | WARNING | The worker slice configuration has been deleted.                              |
+| 9      | WorkerSliceConfigDeletionFailed    | WARNING | The worker slice configuration deletion has failed.                           |
+
+### WorkerSliceGateway
+
+These events are related to the worker slice gateways for a slice with more than one worker cluster. The number
+of worker slice gateways on a slice is equal to `n * (n-1)`, where `n` is the total number of worker
+clusters on that slice.
+
+| Sl. No | Event                               | Type    | Description                                                             |
+| ------ | ----------------------------------- | ------- | ----------------------------------------------------------------------- |
+| 1      | WorkerSliceGatewayDeletedForcefully | WARNING | The worker slice gateway has been deleted forcefully.                   |
+| 2      | WorkerSliceGatewayRecreationFailed  | WARNING | The worker slice gateway recreation has failed after forceful deletion. |
+| 3      | WorkerSliceGatewayRecreated         | NORMAL  | The worker slice gateway has been recreated after forceful deletion.    |
+| 4      | WorkerSliceGatewayCreationFailed    | WARNING | The worker slice gateway creation has failed.                           |
+| 5      | WorkerSliceGatewayCreated           | NORMAL  | The worker slice gateway has been created.                              |
+| 6      | SliceGatewayJobCreationFailed       | WARNING | The worker slice gateway job creation has failed.                       |
+| 7      | SliceGatewayJobCreated              | NORMAL  | The worker slice gateway job has been created.                          |
+| 8      | WorkerSliceGatewayDeleted           | WARNING | The worker slice gateway has been deleted.                              |
+| 9      | WorkerSliceGatewayDeletionFailed    | WARNING | The worker slice gateway deletion has failed.                           |
+
+## Disable Controller Events
+
+If you do not want to see a controller event, then you can list it under `disabledEvents` in
+the `kubeslice-controller-event-schema-conf` file that is located in the `kubeslice-controller`
+namespace.
+
+For example, if you don't want to see the `WorkerSliceConfigCreated` event, then go to
+the `kubeslice-controller-event-schema-conf` file using the following command:
+
+```
+kubectl edit cm kubeslice-controller-event-schema-conf -n kubeslice-controller
+```
+
+In the `kubeslice-controller-event-schema-conf` file, add the `WorkerSliceConfigCreated` event that you want
+to hide under `disabledEvents` as illustrated below.
+
+```
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+data:
+  controller.yaml: |-
+    disabledEvents:
+      - WorkerSliceConfigCreated
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kubeslice-controller
+    meta.helm.sh/release-namespace: kubeslice-controller
+  creationTimestamp: "2023-04-10T07:32:57Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    name: event-schema
+  name: kubeslice-controller-event-schema-conf
+  namespace: kubeslice-controller
+  resourceVersion: "201971"
+  uid: 6cbcaba7-08b8-4d2e-b880-7516f594950f
+```

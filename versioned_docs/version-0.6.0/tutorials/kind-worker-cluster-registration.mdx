@@ -33,14 +33,14 @@ spec:
   networkInterface: eth0
 ```
 
-### Apply the Cluster Registration YAML File
+## Apply the Cluster Registration YAML File
 Apply the cluster-reg.yaml file by using the following command:
 
 ```
 kubectl apply -f cluster-reg.yaml -n kubeslice-<project name>
 ```
 
-### Validate the Registered Clusters
+## Validate the Registered Clusters
 Validate the registered clusters by using the following command:
 
 ```
@@ -60,7 +60,7 @@ kind-worker-2  51s
 ```
 
 
-### Create the Slice Operator YAML File 
+## Create the Slice Operator YAML File 
 Create the`slice-operator.yaml` file using the following template.
 
 :::info
@@ -81,7 +81,7 @@ cluster:
   nodeIp: <worker-cluster-nodeip> # 172.18.0.6
 ```
 
-##### Get the Node IPs of Worker Clusters
+#### Get the Node IPs of Worker Clusters
 Switch the context to the worker cluster.
 
 ```
@@ -118,7 +118,7 @@ cluster:
   nodeIp: 172.18.0.7
 ```
 
-### Apply the Slice Operator Values File 
+## Apply the Slice Operator Values File 
 The following information is required to apply the manifest file.
 
 | Parameter     |  Description |
@@ -134,7 +134,7 @@ using the following command:
 helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of slice-operator.yaml> --namespace kubeslice-system  --create-namespace
 ```
 
-### Validating the Slice Operator Installation 
+## Validating the Slice Operator Installation 
 To validate the Slice Operator installation in the registered cluster,
 check the pods belonging to the namespace `kubeslice-system` by using
 the following command:
@@ -146,17 +146,16 @@ kubectl get pods -n kubeslice-system
 Expected Output
 
 ```
-NAME                                                 READY   STATUS    RESTARTS   AGE
-jaeger-65c6b7f5dd-597wv                              1/1     Running   0          40s
-kubeslice-netop-xldst                                1/1     Running   0          40s
-kubeslice-operator-7c64667fd4-cvmps                  2/2     Running   0          40s
-mesh-dns-bf5d97cf5-lxlnr                             1/1     Running   0          40s
-nsm-admission-webhook-bb4994c7d-x25rk                1/1     Running   0          40s
-nsm-kernel-forwarder-99c6k                           1/1     Running   0          40s
-nsm-kernel-forwarder-cx6fn                           1/1     Running   0          40s
-nsmgr-blfvn                                          3/3     Running   0          40s
-nsmgr-z2msg                                          3/3     Running   0          40s
-prefix-service-76bd89c44f-pbrmn                      1/1     Running   0          40s
+NAME                                         READY   STATUS             RESTARTS      AGE
+forwarder-kernel-rjmkr                       1/1     Running            0             75s
+kubeslice-install-crds-kkdg4                 0/1     Completed          0             75s
+kubeslice-dns-85667c68fc-wb4dv               1/1     Running            0             75s
+kubeslice-netop-zb4jq                        1/1     Running            0             75s
+kubeslice-operator-76f5d97796-zv6nm          2/2     Running            0             75s
+nsm-admission-webhook-k8s-5cc8cd8bcd-pv7pm   1/1     Running            0             75s
+nsm-install-crds-1-z6bkd                     0/1     Completed          0             78s
+nsmgr-nmrv6                                  2/2     Running            0             75s
+registry-k8s-79c89968c4-gcm2k                1/1     Running            0             75s
 ```
 
 :::info

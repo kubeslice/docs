@@ -1,0 +1,89 @@
+# Offboard Namespaces
+
+## Introduction 
+
+Offboarding namespaces from slice is an easy and straightforward process. This topic
+describes the steps to offboard namespaces before you delete your slice.
+
+:::caution
+If your application is installed on multiple clusters within a slice, you must complete these steps for each cluster.
+:::
+
+## Delete the ServiceExport for Each Application
+
+:::info
+If a ServiceExport was created in the application namespace, it must be
+deleted first.
+:::
+
+:::info
+Deleting the ServiceExport removes the corresponding ServiceImport
+automatically on all the clusters of the slice.
+:::
+
+| Variables | Description |
+|-------------------------|--------------------------------------------------------- 
+| <cluster name\> | The name of the cluster the application is deployed on.|
+|<serviceexport name\> | The name of the service export that you want to delete.|
+| <namespace\> | The namespace the application is deployed on.|
+
+Switch the contexts to the cluster you deployed the application on:
+
+```
+kubectx <cluster name>
+```
+
+Use the following command to delete the ServiceExport from the cluster:
+
+``` 
+kubectl delete serviceexport <serviceexport name> -n <application namespace>
+```
+
+## Offboard Namespaces from the Slice Configuration 
+
+To offboard the namespace from a slice, delete the `namespace` and the associated 
+`clusters` under the `applicationNamespaces` in the slice configuration file as 
+illustrated below.
+
+``` 
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+     - namespace: bookinfo
+       clusters:
+       - '*'
+```
+
+For example, in the above slice configuration YAML file, if you want to offboard the 
+Bookinfo namespace from all clusters, edit the slice configuration YAML file and remove it 
+from `applicationNamespaces` as illustrated below.
+
+```
+namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+```
+
+To delete a slice, you must remove all the namespaces and the corresponding clusters. So, 
+edit the slice configuration YAML file to remove them. After you remove the namespaces 
+and the corresponding clusters, the application namespace configuration looks as 
+illustrated below.
+
+``` 
+namespaceIsolationProfile:
+    applicationNamespaces:
+```
+
+Apply the slice configuration YAML to update the offboarded namespaces.
+
+``` 
+kubectl apply -f <slice configuration>.yaml -n <project namespace>
+```
+
+:::success
+You have successfully offboarded the namespaces from the slice.
+:::

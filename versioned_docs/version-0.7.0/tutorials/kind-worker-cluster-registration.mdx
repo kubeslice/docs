@@ -12,7 +12,9 @@ template.
 
 :::info
 To understand more about the configuration parameters, see [Cluster
-Registration Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters).
+Registration Configuration Parameters](/versioned_docs/version-0.7.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters).
+
+The IP addresses used for inter-cluster tunnel creation. (Supports IPv4 and IPv6 IP address). If a node IP is not provided, Kubeslice will auto detect it from the gateway nodes.
 :::
 
 ```
@@ -22,7 +24,9 @@ metadata:
   name: <first-worker-cluster-name>  # kind-worker-1 
   namespace: kubeslice-<project name> # kubeslice-avesha
 spec:
-  networkInterface: eth0
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>   
 ---
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -30,7 +34,9 @@ metadata:
   name: <second-worker-cluster-name> # kind-worker-2
   namespace: kubeslice-<project name> # kubeslice-avesha
 spec:
-  networkInterface: eth0
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>   
 ```
 
 ## Apply the Cluster Registration YAML File
@@ -65,7 +71,7 @@ Create the`slice-operator.yaml` file using the following template.
 
 :::info
 To understand more about the configuration parameters, see [Slice
-Operator Configuration Parameters](/versioned_docs/version-0.4.0/reference/configuration-parameters.mdx#slice-operator-configuration-parameters).
+Operator Configuration Parameters](/versioned_docs/version-0.7.0/reference/configuration-parameters.mdx#slice-operator-configuration-parameters).
 :::
 
 ```
@@ -146,17 +152,16 @@ kubectl get pods -n kubeslice-system
 Expected Output
 
 ```
-NAME                                                 READY   STATUS    RESTARTS   AGE
-jaeger-65c6b7f5dd-597wv                              1/1     Running   0          40s
-kubeslice-netop-xldst                                1/1     Running   0          40s
-kubeslice-operator-7c64667fd4-cvmps                  2/2     Running   0          40s
-mesh-dns-bf5d97cf5-lxlnr                             1/1     Running   0          40s
-nsm-admission-webhook-bb4994c7d-x25rk                1/1     Running   0          40s
-nsm-kernel-forwarder-99c6k                           1/1     Running   0          40s
-nsm-kernel-forwarder-cx6fn                           1/1     Running   0          40s
-nsmgr-blfvn                                          3/3     Running   0          40s
-nsmgr-z2msg                                          3/3     Running   0          40s
-prefix-service-76bd89c44f-pbrmn                      1/1     Running   0          40s
+NAME                                         READY   STATUS             RESTARTS      AGE
+forwarder-kernel-rjmkr                       1/1     Running            0             75s
+kubeslice-install-crds-kkdg4                 0/1     Completed          0             75s
+kubeslice-dns-85667c68fc-wb4dv               1/1     Running            0             75s
+kubeslice-netop-zb4jq                        1/1     Running            0             75s
+kubeslice-operator-76f5d97796-zv6nm          2/2     Running            0             75s
+nsm-admission-webhook-k8s-5cc8cd8bcd-pv7pm   1/1     Running            0             75s
+nsm-install-crds-1-z6bkd                     0/1     Completed          0             78s
+nsmgr-nmrv6                                  2/2     Running            0             75s
+registry-k8s-79c89968c4-gcm2k                1/1     Running            0             75s
 ```
 
 :::info

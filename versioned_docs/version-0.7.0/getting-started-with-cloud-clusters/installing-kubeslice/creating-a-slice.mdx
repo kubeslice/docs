@@ -9,11 +9,11 @@ that are registered with the KubeSlice Controller.
 Before you begin, ensure the following prerequisites are met:
 
 - You have the KubeSlice Controller installed on a separate cluster. For more information, 
-see [Installing the KubeSlice Controller](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
+see [Installing the KubeSlice Controller](/versioned_docs/version-0.7.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx).
 - You have registered two or more worker clusters with the KubeSlice Controller. For more information, 
-see [Registering the Worker Cluster](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx).
+see [Registering the Worker Cluster](/versioned_docs/version-0.7.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx).
 - You have installed Istio in the worker clusters to configure the external gateways. For more information, 
-see [Installing Istio](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#install-istio).
+see [Installing Istio](/versioned_docs/version-0.7.0/getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller.mdx#install-istio).
 
 ## Creating the Slice YAML File
 
@@ -23,14 +23,14 @@ The following information is required to create the .yaml file for the slice.
 
 :::info
 Before creating the slice configuration .yaml file, 
-see [Managing Namespaces](/versioned_docs/version-0.6.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx)
+see [Managing Namespaces](/versioned_docs/version-0.7.0/getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces.mdx)
 to add namespaces in the slice configuration.
 :::
 
 ### Slice Configuration
 
 :::info
-For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.6.0/tutorials/kind-create-slice.mdx).
+For example YAML files on kind clusters, see [kind YAML examples](/versioned_docs/version-0.7.0/tutorials/kind-create-slice.mdx).
 :::
 
 Create the slice configuration `.yaml` file using the following template.
@@ -45,7 +45,7 @@ object are mutually exclusive.
 
 :::info
 To understand more about the configuration parameters, see [Slice
-Configuration Parameters](/versioned_docs/version-0.6.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
+Configuration Parameters](/versioned_docs/version-0.7.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
 :::
 
 ``` 
@@ -330,7 +330,7 @@ Use the following template to create a standard `sliceqosconfig` file.
 
 :::info
 To understand more about the configuration parameters, see 
-[Standard QoS Profile Parameters](/versioned_docs/version-0.6.0/reference/configuration-parameters.mdx#standard-qos-profile-parameters).
+[Standard QoS Profile Parameters](/versioned_docs/version-0.7.0/reference/configuration-parameters.mdx#standard-qos-profile-parameters).
 :::
 
 ```
