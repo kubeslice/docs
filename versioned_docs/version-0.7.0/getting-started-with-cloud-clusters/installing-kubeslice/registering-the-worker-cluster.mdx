@@ -105,11 +105,13 @@ metadata:
   name: <cluster-name-2>
   namespace: <kubeslice-projectname>
 spec:
-  networkInterface: <network_interface>
   clusterProperty:   
     geoLocation:
       cloudProvider: "<cloud_provider>"
       cloudRegion: "<cloud_region>"
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>   
 ```
 
 :::info
@@ -126,11 +128,13 @@ metadata:
   name: worker-cluster-1
   namespace: avesha
 spec:
-  networkInterface: eth0
   clusterProperty:   
     geoLocation:
       cloudProvider: "AZURE"
       cloudRegion: "eastus"
+  nodeIPs: # Optional
+    - <IP address -1>
+    - <IP address -2>   
 ---
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -138,11 +142,13 @@ metadata:
   name: worker-cluster-2
   namespace: avesha
 spec:
-  networkInterface: eth0
   clusterProperty:   
     geoLocation:
       cloudProvider: "AZURE"
       cloudRegion: "westus2"
+  nodeIPs: # Optional
+    - <IP address -1>
+    - <IP address -2>   
 ```
 
 Example YAML File Only with Mandatory Parameters
@@ -153,7 +159,6 @@ metadata:
   name: worker-1
   namespace: kubeslice-avesha
 spec:
-  networkInterface: eth0
 ---
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -161,7 +166,6 @@ metadata:
   name: worker-2
   namespace: kubeslice-avesha
 spec:
-  networkInterface: eth0
 ```
 
 ## Applying the Cluster Registration YAML File 
@@ -365,8 +369,6 @@ controllerSecret:
 cluster:
   name: <cluster-name>
 
-netop:
-  networkInterface: <network interface value>
 ```
 
 Example
@@ -381,8 +383,6 @@ controllerSecret:
 cluster:
   name: cluster-worker-1
 
-netop:
-  networkInterface: eth0
 ```
 
 ## Apply the Values File
@@ -432,7 +432,7 @@ registry-k8s-79c89968c4-gcm2k                1/1     Running            0       
 You can also validate the spire installation using the following command:
 
 ```
-k get pods -n spire                                                   
+kubectl get pods -n spire                                                   
 ```
 
 Expected Output
