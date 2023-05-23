@@ -40,7 +40,7 @@ project namespace.
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
 | apiVersion | String | The KubeSlice Controller API version. The value must be `controller.kubeslice.io/v1alpha1`. | Mandatory |
-| kind | String | The name of a Mandatory particular object schema. The value must be `Project`. | Mandatory |
+| kind | String | The name of a mandatory particular object schema. The value must be `Project`. | Mandatory |
 | [metadata](#project-metadata-parameters) | Object | The metadata describes the parameters (names and types) and attributes that have been applied. | Mandatory |
 | [spec](#project-specification-parameters) | Object | The specification of the desired state of an object. | Mandatory |
 
@@ -50,7 +50,7 @@ These parameters are required for configuring the metadata in the
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-| name | String | The name of the project you are  creating. Each project should have a `unique` name. | Mandatory |
+| name | String | The name of the project. Each project should have a `unique` name. | Mandatory |
 | namespace | String | The namespace on which you apply the project configuration file. The value must  be `kubeslice-controller`. | Mandatory |
 
 ### Project Specification Parameters
@@ -131,7 +131,7 @@ they are configured in the [Slice Operator YAML file](/versioned_docs/version-0.
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-| logLevel | String | The log level can be set to INFO or DEBUG. The default value is set to  INFO. | Optional |
+| logLevel | String | The log level can be set to INFO or DEBUG. The default value is set to INFO. | Optional |
 
 ### Controller Secret Parameters
 These parameters are related to the KubeSlice Controller that are required to install 
@@ -152,13 +152,6 @@ These parameters are related to the worker cluster that are configured in the
 |----|----|----|----|
 | name | String | The name of the  cluster that is  registered with the KubeSlice controller. The cluster name must be `unique` in the  project. |Mandatory|
 | nodeIp | String | The Node IP address of the registered  worker cluster (Required for  Kind cluster only). | (deprecated) | 
-
-### Network Operator Parameter
-This parameter is related to network operations such as enforcing the QoS profile configured for a slice and is configured in the [Slice Operator YAML file](/versioned_docs/version-0.7.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#create-the-slice-operator-yaml-file).
-
-|Parameter|Parameter Type|Description|Required|
-|----|----|----|----|
-| networkInterface | AlphaNumeric | The name of the network interface on the gateway nodes that is the egress interface for external traffic. It may be obtained by doing a route lookup on a well-known public IP address like the Google public DNS IP address `8.8.8.8`. | Optional |
 
 
 ## Slice Configuration Parameters
@@ -181,7 +174,7 @@ These parameters are related to the metadata configured in the
 |namespace | String | The project namespace on which you apply the slice configuration file. | Mandatory |
 
 ### Slice Spec Parameters
-These parameters are related to the spec configured  in the 
+These parameters are related to the spec configured in the 
 [slice configuration YAML file](/versioned_docs/version-0.7.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
@@ -195,7 +188,7 @@ These parameters are related to the spec configured  in the
 | [qosProfileDetails](#qos-profile-parameters) | Object | QoS profile for the slice inter cluster traffic. Note that `qosProfileDetails` and `standardQosProfileName` are mutually exclusive parameters.  | Mandatory |
 | [standardQosProfileName](#standard-qos-profile-parameters) | String | This [name](#slice-qos-profile-metadata-parameter) of the [external QoS profile](/versioned_docs/version-0.7.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-a-qos-profile) that you can apply for multiple slices. Note that `qosProfileDetails` and `standardQosProfileName` are mutually exclusive parameters. | Mandatory |
 | [namespaceIsolationProfile](#namespace-isolation-profile-parameters) | Object | It is the configuration to onboard namespaces and/or isolate namespaces with the network policy. | Mandatory |
-| [externalGatewayConfig](#external-gateway-configuration-parameters) | Object | It is the slice ingress/egress gateway configuration. It is an optional configuration. | Mandatory |
+| [externalGatewayConfig](#external-gateway-configuration-parameters) | Object | It is the slice ingress/egress gateway configuration. It is an optional configuration. | Optional |
 
 #### Slice Gateway Provider Parameters
 These parameters are related to the slice gateway created for the inter-cluster 
@@ -286,7 +279,6 @@ Parameter|Parameter Type|Description|Required|
 | bandwidthCeilingKbps | Integer | The maximum bandwidth in Kbps that is allowed for the slice traffic. | Mandatory |
 | bandwidthGuaranteedKbps | Integer | The guaranteed bandwidth in Kbps for the slice traffic. | Mandatory |
 | dscpClass | Alphanumeric | DSCP marking code for the slice inter-cluster traffic. | Mandatory |
-
 
 
 ## Service Export Configuration Parameters
