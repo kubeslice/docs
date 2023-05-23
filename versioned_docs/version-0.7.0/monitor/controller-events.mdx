@@ -5,10 +5,10 @@ cluster. All of these generated events are specific to KubeSlice operations.
 
 By default, the controller events are logged in the following namespaces:
 
-- `kubeslice-controller`
-- `kubeslice-project`
+- [kubeslice-controller](#kubeslice-controller-namespace-events)
+- [kubeslice-project](#kubeslice-project-namespace-events)
 
-## kubeslice-project Namespace Events
+## kubeslice-controller Namespace Events
 
 This section describes the events that are generated on the `kubeslice-project` namespace.
 Use the following command to get the `kubeslice-project` namespace events:
@@ -37,7 +37,7 @@ These events are related to the project namespace in the controller cluster.
 | 3      | NamespaceDeleted        | WARNING | The namespace has been deleted.    |
 | 4      | NamespaceDeletionFailed | WARNING | The namespace deletion has failed. |
 
-## kubeslice-controller Namespace Events
+## kubeslice-project Namespace Events
 
 This section describes the events that are generated on the `kubeslice-controller` namespace.
 Use the following command to get the `kubeslice-controller` namespace events:
@@ -137,7 +137,7 @@ of a worker cluster.
 
 ### WorkerSliceConfig
 
-These events are related to the worker objects of a slice. A worker object is an automatically generated after slice creation.
+These events are related to the worker objects of a slice. A worker object is automatically generated after slice creation.
 A worker object is created for every worker cluster connected to a slice.
 
 | Sl. No | Event                              | Type    | Description                                                                   |
