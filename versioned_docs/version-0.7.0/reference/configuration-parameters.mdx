@@ -78,7 +78,7 @@ register the worker cluster with the controller cluster.
 | apiVersion | String | The KubeSlice Controller API version. The value must be `controller.kubeslice.io/v1alpha1`. |Mandatory|
 | kind | String | The name of a particular object schema. The value must be `Cluster`. |Mandatory|
 | [metadata](#cluster-registration-metadata-parameters) | Object | The meta data parameters (names and types) and attributes that have been applied. | Mandatory | 
-| [spec](#cluster-registration-specification-parameters) | Object | The specification  of the desired state of an object. | Mandatory |
+| [spec](#cluster-registration-specification-parameters) | Object | The specification of the desired state of an object. | Mandatory |
 
 ### Cluster Registration Metadata Parameters
 The parameters are related to metadata configured in the 
@@ -95,8 +95,8 @@ The parameters are related to the specification configured in the
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-| [clusterProperty](#cluster-property-parameters) | Object | It contains  the worker  cluster details. | Mandatory |
-| networkInterface | String | The name of the network interface for egress traffic on a gateway  node. The QoS profile for a slice will be applied to this interface.Default Interface:   **eth0** | Deprecated |
+| [clusterProperty](#cluster-property-parameters) | Object | It contains the worker cluster details. | Mandatory |
+| networkInterface | String | The name of the network interface for egress traffic on a gateway  node. The QoS profile for a slice will be applied to this interface. Default Interface: **eth0** | Deprecated |
 | nodeIPs | String Array | The IP addresses used for inter-cluster tunnel creation. (Supports IPv4 and IPv6 IP address). If a node IP is not provided, Kubeslice will auto detect it from the gateway nodes. | Optional |
 
 #### Cluster Property Parameters
@@ -150,8 +150,8 @@ These parameters are related to the worker cluster that are configured in the
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-| name | String | The name of the  cluster that is  registered with the KubeSlice controller. The cluster name must be `unique` in the  project. |Mandatory|
-| nodeIp | String | The Node IP address of the registered  worker cluster (Required for  Kind cluster only). | (deprecated) | 
+| name | String | The name of the cluster that is registered with the KubeSlice controller. The cluster name must be `unique` in the project. |Mandatory|
+| nodeIp | String | The Node IP address of the registered worker cluster (Required for  Kind cluster only). | (deprecated) | 
 
 
 ## Slice Configuration Parameters
@@ -161,7 +161,7 @@ The following tables describe the configuration parameters used to create the Sl
 |----|----|----|----|
 | apiVersion | String | The KubeSlice Controller API version. A set of resources that are exposed together, along with the version. The value must be `controller.kubeslice.io/v1alpha1`. |Mandatory|
 | kind | String | The name of a particular object schema. The value must be `SliceConfig`. | Mandatory |
-| [metadata](#slice-metadata-parameters) | Object | The meta data describes parameters (names and types) and attributes that have been applied. | Mandatory |
+| [metadata](#slice-metadata-parameters) | Object | The metadata describes parameters (names and types) and attributes that have been applied. | Mandatory |
 | [spec](#slice-spec-parameters) | Object | The specification of the desired state of an object. | Mandatory |
 
 ### Slice Metadata Parameters
@@ -170,7 +170,7 @@ These parameters are related to the metadata configured in the
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
-|name | String | The name of the Slice. The name of the slice you are creating. Each slice **must** have a unique name within a Project namespace. | Mandatory |
+|name | String | The name of the Slice. The name of the slice you are creating. Each slice **must** have a unique name within a project namespace. | Mandatory |
 |namespace | String | The project namespace on which you apply the slice configuration file. | Mandatory |
 
 ### Slice Spec Parameters
