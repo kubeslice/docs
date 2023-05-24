@@ -26,8 +26,8 @@ Custom chart values can be specified in the topology configuration. For example,
 worker_chart:
         chart_name: kubeslice-worker
         values:
-          "metrics.insecure": "true"
-          "some.other.key": "value"
+          "metrics.insecure": true
+          "some.other.key": value
 ```
 
 Create a custom topology file using the following template:
@@ -67,7 +67,7 @@ see [kubeslice-cli Configuration Parameters](/versioned_docs/version-0.7.0/refer
       chart_name: kubeslice-worker
       version: ''
       values: 
-        "metrics.insecure"="true"
+        "metrics.insecure": true
 ```
 
 ## Apply the Custom Topology File
