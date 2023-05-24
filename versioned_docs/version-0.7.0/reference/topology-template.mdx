@@ -56,6 +56,10 @@ configuration:
       chart_name: #{The name of the UI/Enterprise Chart}
       version: #{The version of the chart to use. Leave blank for latest version}
       values: #{Values to be passed as --set arguments to helm install}
+    prometheus_chart:
+      chart_name: #{The name of the Prometheus Chart}
+      version: #{The version of the chart to use. Leave blank for latest version}
+      values: #(Values to be passed as --set arguments to helm install)
     helm_username: #{Helm Username if the repo is private}
     helm_password: #{Helm Password if the repo is private}
     image_pull_secret: #{The image pull secrets. Optional for OpenSource, required for enterprise}

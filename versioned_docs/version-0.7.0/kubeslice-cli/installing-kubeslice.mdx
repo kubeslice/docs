@@ -3,17 +3,12 @@
 This topic describes the steps to install the KubeSlice Controller and register a worker cluster 
 in your existing multi-cluster configuration.
 
-## Install KubeSlice in a Multi-Cluster Configuration
+## Install KubeSlice using Custom Topology
 
 Install KubeSlice using the cluster descriptions that you provide in a custom topology file. The KubeSlice Controller and worker 
 components can be installed incrementally (one cluster at a time) or across all clusters in your topology, depending on your needs.
 
-For demonstration purposes, to set up a three-cluster topology of kind clusters in your local environment, use the 
-**—profile <minimal-demo | full-demo>** option instead of the **—config** option.
-
-## Install the KubeSlice Controller and Register Worker Clusters
-
-You must create a custom topology file that includes the names of the clusters, the project name, and the cluster contexts
+Create a custom topology file that includes the names of the clusters, the project name, and the cluster contexts
 that host the KubeSlice Controller and the worker clusters. For more information, see sample 
 [topology configuration](/versioned_docs/version-0.7.0/reference/sample-configuration-file.mdx) file.
 
@@ -21,8 +16,12 @@ Use the following command to install the KubeSlice Controller and register worke
 ```
 kubeslice-cli --config=<path-to-custom-topology-file> install
 ```
+
 The above command installs the KubeSlice Controller, creates a project, and registers the worker cluster with the project 
 by installing the Slice Operator on the worker cluster.
+
+For demonstration purposes, to set up a three-cluster topology of kind clusters in your local environment, use the 
+**—profile <minimal-demo | full-demo>** option instead of the **—config** option.
 
 
 ## Create a Slice
@@ -33,9 +32,9 @@ using the **kubeslice-cli** utility. For more information, see
 
 ## Register a New Worker Cluster
 
-The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration. Add new worker cluster information under **workers**
-list in the custom topology file that was used to install KubeSlice earlier and using the **install** command, register the new worker 
-cluster with the KubeSlice Controller. For more information, see [demo using cloud clusters](/versioned_docs/version-0.7.0/tutorials/kubeslice-cli-demo-on-cloud-clusters.mdx).
+The kubeslice-cli allows you to add a new worker cluster to an existing KubeSlice configuration. Add new worker cluster information 
+under **workers** list in the custom topology file that was used to install KubeSlice earlier and using the **install** command, 
+register the new worker cluster with the KubeSlice Controller. For more information, see [demo using cloud clusters](/versioned_docs/version-0.7.0/tutorials/kubeslice-cli-demo-on-cloud-clusters.mdx).
 
 :::note
 If the KubeSlice Controller is already installed, the `-s controller` option skips installing it. The `-s kind` option skips creating a new kind 
@@ -46,7 +45,8 @@ In a demo setup, use the following command to register a new worker cluster with
 ```
 kubeslice-cli install --config=<custom-topology-file> -s kind -s controller -s enterprise -s demo
 ```
+
 In an existing multi-cluster configuration, use the following command to register a new worker cluster with the KubeSlice Controller:
 ```
 kubeslice-cli install --config=<custom-topology-file> -s controller
-``
+```

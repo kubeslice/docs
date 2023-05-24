@@ -1,8 +1,8 @@
 # Install kubeslice-cli
 
 ## Introduction 
-kubeslice-cli is a command-line tool that allows you to perform KubeSlice operations on Kubernetes clusters. It simplifies the process
-to install and uninstall the workloads needed to run KubeSlice Controller and Slice Operator in the specified clusters. 
+kubeslice-cli is a command-line tool that allows you to perform KubeSlice operations on Kubernetes and cloud clusters. 
+It simplifies the process to install and uninstall the workloads needed to run KubeSlice Controller and Slice Operator in the specified clusters. 
 This tool registers those clusters as part of a KubeSlice multi-cluster, and administer slices across those clusters.
 
 The tool takes input in the form of YAML files that describe the membership of clusters in the multi-cluster (the `topology` YAML file) 
@@ -10,8 +10,8 @@ as well as the definition of slices across those clusters (the `slice configurat
 installation of KubeSlice by performing all of the necessary configuration steps to apply the appropriate config to each cluster. 
 You can install KubeSlice on your existing kind or cloud clusters. 
 
-Alternatively, as a shortcut to create a multicluster of kind clusters to get familiar with KubeSlice, you can use the 
-`kubeslice-cli install —profile` option. It will create a demo topology with one controller and two worker clusters.
+Alternatively, to get familiar with KubeSlice, you can create a multicluster using kind clusters. Use the 
+`kubeslice-cli install —profile` option to create a demo setup consisting of one controller and two worker clusters.
 
 ## Install the kubeslice-cli Tool
 To install the `kubeslice-cli` tool on different operating systems, download an executable version from the 
@@ -85,7 +85,7 @@ sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/<late
 
 Example
 ```
-sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.4.4/kubeslice-cli-0.4.4-linux-amd64  -o /usr/local/bin/kubeslice-cli
+sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.5.3/kubeslice-cli-0.5.3-linux-amd64  -o /usr/local/bin/kubeslice-cli
 ```
 Make the binary executable using the following command:
 ```
@@ -528,6 +528,7 @@ The following are the resource types used with the get command:
 - **sliceConfig**: It is used to create, edit, delete, describe, and get the slice.
 - **serviceExportConfig**: It is used to create, edit, delete, describe, and get the service export.
 - **secrets**: It is used to get the secrets of the registered worker clusters from the controller cluster.
+- **ui-endpoint**: It is used to get the KubeSlice Manager URL.
 
 For more information on resource configuration parameters, see 
 [Kubeslice Configuration Parameters](/versioned_docs/version-0.7.0/reference/configuration-parameters.mdx).
@@ -642,7 +643,7 @@ Use this command to install the required workloads to run KubeSlice Controller a
 ```
 kubeslice-cli --config <path-to-the-custom-topology-file> <install|i>
 kubeslice-cli install <command-options>
-kubeslice-cli install --profile=<minimal-demo|full-demo>
+kubeslice-cli install --profile=<minimal-demo|full-demo|enterprise-demo>
 ```
 
 ### Options
@@ -650,8 +651,8 @@ The following are the `kubeslice-cli install` command options.
 
 |Option|Shorthand|Description|Supported Values| 
 |----|----|----|----|
-|--profile |-p|It is the profile to install or uninstall KubeSlice.|**full-demo**: showcases the KubeSlice inter-cluster connectivity by spawning 3 kind clusters, including 1 KubeSlice Controller and 2 worker clusters, and installing iPerf application to generate network traffic. **minimal-demo**: sets up 3 kind clusters, including 1 KubeSlice Controller and 2 worker clusters. Generates the Kubernetes manifests for user to manually apply, and verify the functionality.|
-|--skip|-s| It skips the installation steps (comma-separated) with `minimal-demo` and `full-demo` options. | **kind**: skips the creation of kind clusters. **calico**: skips the installation of Calico. **controller**: skips the installation of KubeSlice Controller. **worker-registration**: skips the registration of worker clusters with the KubeSlice Controller. **worker**: skips the installation of worker clusters. **demo**: skips the installation of additional example applications.|
+|--profile |-p|It is the profile to install or uninstall KubeSlice.|**full-demo**: showcases the KubeSlice inter-cluster connectivity by spawning 3 kind clusters, including 1 KubeSlice Controller and 2 worker clusters, and installing iPerf application to generate network traffic. **minimal-demo**: sets up 3 kind clusters, including 1 KubeSlice Controller and 2 worker clusters. Generates the Kubernetes manifests for user to manually apply, and verify the functionality. **enterprise-demo**: showcases the KubeSlice Enterprise functionality by spawning 3 kind clusters, including 1 KubeSlice Controller and 2 KubeSlice Workers. Installs the Enterprise charts for the controller, the worker(s), the KubeSlice Manager (UI), and iPerf application to generate network traffic. The imagePullSecrets (username and password) listed must be set as environment variables: **KUBESLICE_IMAGE_PULL_USERNAME**: optional, the default value is `aveshaenterprise`. **KUBESLICE_IMAGE_PULL_PASSWORD**: `required`.|
+|--skip|-s| It skips the installation steps (comma-separated) with `minimal-demo`, `full-demo`, and `enterprise-demo` options. | **kind**: skips the creation of kind clusters. **calico**: skips the installation of Calico. **controller**: skips the installation of KubeSlice Controller. **worker-registration**: skips the registration of worker clusters with the KubeSlice Controller. **worker**: skips the installation of worker clusters. **demo**: skips the installation of additional example applications. **prometheus**: skips the installation of the Prometheus.|
 |--config|-c|It is a **global** option. The path to the topology configuration YAML file.|
 |--help|-h|It provides information on the install command.|
 
@@ -755,7 +756,7 @@ The following are the `kubeslice-cli uninstall` options
 ### Examples
 The following is an example command:
 
-1. To uninstall the KubeSlice components on kind clusters and delete the kind clusters created using `full-demo|minimal-demo` option, 
+1. To uninstall the KubeSlice components on kind clusters and delete the kind clusters created using `full-demo|minimal-demo|enterprise-demo` option, 
    use the following command:
    ```
    kubeslice-cli uninstall
