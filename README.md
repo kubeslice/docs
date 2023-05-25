@@ -10,44 +10,41 @@ To use this website, you need
 
 ## Installation
 
-### 1. Fork the repository
+### 1. Fork the Repository
 
-Go to the project repository on Github and click on **Fork** button. On this forked copy you can try new ideas.
+Go to the project repository on Github and click the **Fork** button. On this forked copy you can try new ideas.
 
 ### 2. Clone the project
 
 Get the link of your forked repository and clone the repository using git clone.
+
 ```
-$ git clone https://github.com/<Github-Username>/<Forked-repo-name>.git
+git clone https://github.com/<github-username>/<forked-repo-name>.git
 ```
 
-### 3. Change the directory
+### 3. Change the Directory
 
 Navigate to the directory that contains the project.
-```
-$ cd <Forked-repo-name>
-```
-
-### 4. Install the node modules
 
 ```
-$ npm install
+cd <forked-repo-name>
 ```
-This command installs all the dependencies of the project in the local node_modules folder.
+
+### 4. Install the Node Modules
+
+The following command installs all the dependencies of the project in the local `node_modules` folder.
+
+```
+npm install
+```
+
 
 ## Local Development
 
-```
-$ npm start
-```
-
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
+The following command starts a local development server and opens up a browser window. The changes are reflected in real time 
+without the need to restart the server.
 
 ```
-$ npm run build
+npm start
 ```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
