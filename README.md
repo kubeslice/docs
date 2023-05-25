@@ -45,6 +45,6 @@ The following command starts a local development server and opens up a browser w
 without the need to restart the server.
 
 ```
-npm start
+npm run start
 ```
 
