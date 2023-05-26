@@ -14,7 +14,7 @@ To use this website, you need
 
 Go to the project repository on Github and click the **Fork** button. On this forked copy you can try new ideas.
 
-### 2. Clone the project
+### 2. Clone the Project
 
 Get the link of your forked repository and clone the repository using git clone.
 
