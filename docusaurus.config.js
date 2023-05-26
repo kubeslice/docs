@@ -40,7 +40,7 @@ const config = {
             'https://github.com/kubeslice/docs/tree/master/',
           routeBasePath: '/',
           includeCurrentVersion: false,
-          lastVersion: '0.7.0',
+          lastVersion: '1.0.0',
           versions:{
 
             /***
@@ -55,6 +55,11 @@ const config = {
              * }
              * 
              */
+            '1.0.0':{
+              label: '1.0.0',
+              path: '1.0.0',
+              banner: 'none'
+            },
             '0.7.0':{
               label: '0.7.0',
               path: '0.7.0',

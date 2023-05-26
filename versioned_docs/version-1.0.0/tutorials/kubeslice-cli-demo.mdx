@@ -1,0 +1,366 @@
+# Demo using Kind Clusters
+This topic describes the steps to install the KubeSlice Controller and its components using kind clusters for non-production use. To 
+install KubeSlice on a locally configured kind cluster, use the `kubeslice-cli install` command.
+
+## Prerequisites
+Before you begin, ensure the following prerequisites are met:
+- You have installed kind to create a demo clusters. For more information, see [kind](https://kind.sigs.k8s.io/docs/user/quick-start/).
+- You have installed helm to add the KubeSlice repo. For more information, see helm [Releases](https://github.com/helm/helm/releases) page.
+- You have installed kubectl to access clusters. For more information, see [Installing Tools](https://kubernetes.io/docs/tasks/tools/).
+- You have installed kubectx which is required to switch cluster contexts. For more information, see [Installing Kubectx](https://github.com/ahmetb/kubectx).
+- You have installed Docker. For more information, see [Install Docker Engine](https://docs.docker.com/engine/install/).
+
+## Install KubeSlice
+
+The `kubeslice-cli install —profile=<minimal-demo|full-demo>` command creates a demo topology consisting of one controller and 
+two worker clusters. The **full-demo** deploys the application on the `demo` slice, whereas the **minimal-demo** requires that an application 
+be deployed on the `demo` slice.
+
+In this demonstration, install KubeSlice on kind clusters using kubeslice-cli, using the `--profile=minimal-demo` option.
+
+The `kubeslice-cli install` command with the `--profile=minimal-demo` option does the following:
+
+1. Creates three kind clusters. One controller cluster with the name `ks-ctrl` and two worker clusters with the names `ks-w-1` and `ks-w-1`.
+2. Installs Calico Networking on controller and worker clusters.
+3. Downloads the opensource KubeSlice helm charts.
+4. Installs KubeSlice Controller on a `ks-ctrl` cluster.
+5. Creates a `kubeslice-demo` project namespace on a controller cluster.
+6. Registers the `ks-w-1` and `ks-w-2` worker clusters with a project.
+7. Installs Slice Operator on the worker clusters.
+8. Creates a slice called `demo`. 
+9. Creates the `iperf` namespace for application deployment.
+
+
+To setup the KubeSlice demo, use the following command:
+```
+kubeslice-cli install --profile=minimal-demo
+```
+
+:::caution
+- You must run the kubeslice-cli commands on the controller cluster. Run this command to ensure you are on the controller cluster: `kubectx -c`.
+- Export the kubeconfig file before you run any kubeslice-cli command using this command: `export KUBECONFIG=kubeslice/kubeconfig.yaml`.
+:::
+
+## Switch the Cluster Context
+Use the following command to switch the context of the cluster:
+```
+kubectx kind-ks-ctrl
+```
+Expected Output
+```
+✔ Switched to context "kind-ks-ctrl".
+```
+
+## Validate the Installation
+
+To validate a project, use the following command on the `kubeslice-controller` namespace to get the list of project:
+```
+kubeslice-cli get project -n kubeslice-controller
+```
+
+Example Output
+```
+Fetching KubeSlice Project...
+🏃 Running command: /usr/local/bin/kubectl get projects.controller.kubeslice.io -n kubeslice-controller
+NAME   AGE
+kubeslice-demo   4h19m
+```
+
+To validate the registered worker clusters, use the following command:
+```
+kubeslice-cli get worker -n kubeslice-demo
+```
+Expected Output
+```
+Fetching KubeSlice Worker...
+🏃 Running command: /usr/local/bin/kubectl get clusters.controller.kubeslice.io -n kubeslice-demo
+NAME     AGE
+ks-w-1   54m
+ks-w-2   54m
+```
+
+:::success
+You have successfully installed the KubeSlice Controller on the controller cluster and Slice Operator on the worker cluster.
+:::
+
+
+The `kubeslice-cli install —profile=minimal-demo` command creates a slice called `demo` after successfully installing KubeSlice Controller 
+and the Slice Operator on the worker clusters. To validate the demo slice, see [Validating the Slice](#validating-the-slice).
+
+You can now onboard the iperf application on the `demo` slice. To onboard the application on the slice, see
+[Deploying the iPerf Application](#deploying-the-iperf-application). 
+
+You can also use the kubeslice-cli command to create a new slice for application onboarding. To create a slice on your demo setup, 
+follow these steps.
+
+
+## Create a Slice
+:::info
+Skips this step if you do not want to create a new slice and continue onboarding the application on the `demo` slice.
+:::
+Create a slice configuration YAML file using the following template and apply it to the project namespace.
+
+### Create the Slice Configuration YAML File
+:::info
+To understand more about the configuration parameters, see [Slice Configuration Parameters](/versioned_docs/version-1.0.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
+:::
+
+Use the following template to create a slice.
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: <slice-name>                #The name of the slice
+spec:  
+  sliceSubnet: <slice-subnet>        #The slice subnet
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+  - <worker-cluster-name1>           #The name of your worker cluster1
+  - <worker-cluster-name2>           #The name of your worker cluster2
+  qosProfileDetails:
+    queueType: HTB
+    priority: 0
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 30000
+    bandwidthGuaranteedKbps: 20000
+    dscpClass: AF11
+
+```
+
+The following is the example slice configuration YAML file:
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: slice-red
+spec:  
+  sliceSubnet: 10.190.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+  - ks-w-1
+  - ks-w-2
+  qosProfileDetails:
+    queueType: HTB
+    priority: 0
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 30000
+    bandwidthGuaranteedKbps: 20000
+    dscpClass: AF11
+```
+
+### Apply the Slice Configuration YAML File
+Use the following command to create a slice.
+```
+kubeslice-cli create sliceConfig -n kubeslice-demo -f <slice-configuration-yaml>
+```
+Example
+```
+kubeslice-cli create sliceConfig -n kubeslice-demo -f slice-config.yaml
+```
+Example output
+```
+🏃 Running command: /usr/local/bin/kubectl apply -f slice-config.yaml -n kubeslice-demo
+sliceconfig.controller.kubeslice.io/slice-red created
+
+Successfully Applied Slice Configuration.
+```
+### Validate the Slice
+Use the following command to get a slice:
+```
+kubeslice-cli get sliceConfig -n kubeslice-demo
+```
+
+Example Output
+```
+Fetching KubeSlice sliceConfig...
+🏃 Running command: /usr/local/bin/kubectl get sliceconfigs.controller.kubeslice.io -n kubeslice-demo
+NAME        AGE
+slice-red   110s
+```
+
+### Validate the Slice on the Controller Cluster
+To validate the slice configuration on the controller cluster, use the following command:
+```
+/usr/local/bin/kubectl --context=kind-ks-ctrl --kubeconfig=kubeslice/kubeconfig.yaml get workersliceconfig -n kubeslice-demo
+```
+Expected Output
+```
+NAME               AGE
+slice-red-ks-w-1   19h
+slice-red-ks-w-2   19h
+```
+
+To validate the worker slice gateway, use the following command:
+```
+/usr/local/bin/kubectl --context=kind-ks-ctrl --kubeconfig=kubeslice/kubeconfig.yaml get workerslicegateway -n kubeslice-demo
+```
+Expected Output
+```
+NAME                      AGE
+slice-red-ks-w-1-ks-w-2   19h
+slice-red-ks-w-2-ks-w-1   19h
+```
+
+### Validate the Slice on the Worker Cluster
+
+To validate the slice creation on each worker cluster, use the following command:
+```
+/usr/local/bin/kubectl --context=kind-ks-w-1 --kubeconfig=kubeslice/kubeconfig.yaml get slice -n kubeslice-system
+```
+Expected Output
+```
+NAME        AGE
+slice-red   19h
+```
+
+To validate the slice gateway on each worker cluster, use the following command:
+```
+/usr/local/bin/kubectl --context=kind-ks-w-1 --kubeconfig=kubeslice/kubeconfig.yaml get slicegw -n kubeslice-system
+```
+
+Expected Output
+```
+NAME                      SUBNET          REMOTE SUBNET   REMOTE CLUSTER   GW STATUS
+slice-red-ks-w-1-ks-w-2   10.190.1.0/24   10.190.2.0/24   ks-w-2
+```
+
+## Deploy the iPerf Application
+
+The `kubeslice-cli` tool sets up the iPerf demo application on the `iperf` namespace. The `iperf-server` is deployed on the `ks-w-1` worker 
+cluster and the `iperf-sleep` is deployed on the `ks-w-2` worker cluster. You need to restart the iPerf deployment to onboard the
+applications on the slice.
+
+To restart the deployment on the `ks-w-1` worker, use the following command:
+```
+/usr/local/bin/kubectl rollout  restart deployment/iperf-server -n iperf --context=kind-ks-w-1 --kubeconfig=kubeslice/kubeconfig.yaml
+```
+Expected Output
+```
+deployment.apps/iperf-server restarted
+```
+
+To restart the deployment on the `ks-w-2` worker, use the following command:
+```
+/usr/local/bin/kubectl rollout  restart deployment/iperf-sleep -n iperf --context=kind-ks-w-2 --kubeconfig=kubeslice/kubeconfig.yaml
+```
+Expected Output
+```
+deployment.apps/iperf-sleep restarted
+```
+
+## Validate the iPerf Installation
+
+To validate the iperf-server installation, use the following command:
+```
+/usr/local/bin/kubectl --context=kind-ks-w-1 --kubeconfig=kubeslice/kubeconfig.yaml get pods -n iperf
+```
+Expected Output
+```
+NAME                           READY   STATUS    RESTARTS   AGE
+iperf-server-758dd55bf-dkkbw   2/2     Running   0          36m
+```
+
+## ServiceExports and ServiceImports
+
+The iPerf server needs to be exported for visibility. Use the following command to export the iPerf server:
+
+```
+/usr/local/bin/kubectl --context=kind-ks-w-1 --kubeconfig=kubeslice/kubeconfig.yaml apply  -f kubeslice/iperf-server-service-export.yaml -n iperf
+```
+Expected Output
+```
+serviceexport.networking.kubeslice.io/iperf-server created
+```
+
+To validate the service export on the `ks-w-1` worker cluster where the iperf-server is installed, use the following command:
+```
+/usr/local/bin/kubectl --context=kind-ks-w-1 --kubeconfig=kubeslice/kubeconfig.yaml get serviceexport  -n iperf
+```
+Expected Output
+```
+NAME           SLICE       INGRESS   PORT(S)    ENDPOINTS   STATUS
+iperf-server   slice-red             5201/TCP   1           READY
+```
+
+To validate the service imports on the workers clusters, use the following commands:
+
+```
+/usr/local/bin/kubectl --context=kind-ks-w-1 --kubeconfig=kubeslice/kubeconfig.yaml get serviceimport -n iperf
+```
+Expected Output
+```
+NAME           SLICE       PORT(S)    ENDPOINTS   STATUS
+iperf-server   slice-red   5201/TCP   1           READY
+```
+
+```
+/usr/local/bin/kubectl --context=kind-ks-w-2 --kubeconfig=kubeslice/kubeconfig.yaml get serviceimport -n iperf
+```
+Expected Output
+```
+NAME           SLICE       PORT(S)    ENDPOINTS   STATUS
+iperf-server   slice-red   5201/TCP   1           READY
+```
+
+### Verify the Inter-Cluster Communication
+
+Use the following command to describe the iperf-server service and retrieve the short and full DNS names for the service. 
+```
+/usr/local/bin/kubectl --context=kind-ks-w-2 --kubeconfig=kubeslice/kubeconfig.yaml describe serviceimport iperf-server -n iperf | grep
+```
+
+Expected Output
+```
+"Dns Name:"
+  Dns Name:  iperf-server.iperf.svc.slice.local
+    Dns Name:     iperf-server-758dd55bf-dkkbw.ks-w-1.iperf-server.iperf.svc.slice.local
+```
+
+:::note
+Use the short DNS name later to verify the inter-cluster communication.
+:::
+
+To verify the iPerf connectivity, use the following command:
+```
+/usr/local/bin/kubectl --context=kind-ks-w-2 --kubeconfig=kubeslice/kubeconfig.yaml exec -it deploy/iperf-sleep -c iperf -n iperf -- iperf -c iperf-server.iperf.svc.slice.local -p 5201 -i 1 -b 10Mb;
+```
+
+Expected Output
+```
+------------------------------------------------------------
+Client connecting to iperf-server.iperf.svc.slice.local, TCP port 5201
+TCP window size: 45.0 KByte (default)
+------------------------------------------------------------
+[  1] local 10.1.2.5 port 49188 connected with 10.1.1.5 port 5201
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.00-1.00 sec   640 KBytes  5.24 Mbits/sec
+[  1] 1.00-2.00 sec   512 KBytes  4.19 Mbits/sec
+[  1] 2.00-3.00 sec   512 KBytes  4.19 Mbits/sec
+[  1] 3.00-4.00 sec   640 KBytes  5.24 Mbits/sec
+[  1] 4.00-5.00 sec   512 KBytes  4.19 Mbits/sec
+[  1] 5.00-6.00 sec   640 KBytes  5.24 Mbits/sec
+[  1] 6.00-7.00 sec   512 KBytes  4.19 Mbits/sec
+[  1] 7.00-8.00 sec   512 KBytes  4.19 Mbits/sec
+[  1] 8.00-9.00 sec   640 KBytes  5.24 Mbits/sec
+[  1] 9.00-10.00 sec   512 KBytes  4.19 Mbits/sec
+[  1] 0.00-10.12 sec  5.88 MBytes  4.87 Mbits/sec
+```
+
+## Uninstall KubeSlice
+
+:::info
+The `kubeslic-cli uninstall` command deletes the kind clusters created for the demo, uninstalling the KubeSlice Controller and the registered worker clusters.
+:::
+To uninstall KubeSlice and delete the demo clusters, use the following command:
+```
+kubeslice-cli uninstall
+```

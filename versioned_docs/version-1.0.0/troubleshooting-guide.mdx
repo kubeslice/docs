@@ -1,0 +1,731 @@
+# TROUBLESHOOTING 
+
+## Introduction
+
+This topic describes a few troubleshooting scenarios that you could face
+during installing and configuring KubeSlice.
+
+## Installation Issues 
+
+### Why do I face installation issues while installing KubeSlice on kind clusters on Ubuntu OS?
+On Ubuntu OS, if you have too many files open and try installing KubeSlice on kind clusters, 
+then you face issues.
+
+You must increase the `ulimit` to `2048` or `unlimited` and try installing KubeSlice on kind 
+clusters. If you still face issues, see [errors due to too many open files](https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files).
+
+### Why do I get an error during a helm upgrade of the KubeSlice Controller? 
+
+:::caution 
+Currently, you can only upgrade to a software patch version that does not contain schema 
+changes. You cannot upgrade to a software patch/complete version that contains schema changes.
+:::
+
+When you try to upgrade the controller using the `helm upgrade` command,
+during which, if the worker operator pod is down, you get the following error related 
+to a mutating webhook.
+
+```
+Patch Deployment "kubeslice-controller-manager" in namespace kubeslice-controller
+error updating the resource "kubeslice-controller-manager":
+cannot patch "kubeslice-controller-manager" with kind Deployment: Internal error occurred: failed calling webhook "mdeploy.avesha.io": failed to call webhook: Post "https://kubeslice-webhook-service.kubeslice-system.svc:443/mutate-appsv1-deploy?timeout=10s": no endpoints available for service "kubeslice-webhook-service"
+Looks like there are no changes for Deployment "kubernetes-dashboard"
+Looks like there are no changes for Deployment "dashboard-metrics-scraper"
+Patch Certificate "kubeslice-controller-serving-cert" in namespace kubeslice-controller
+Patch Issuer "kubeslice-controller-selfsigned-issuer" in namespace kubeslice-controller
+Patch MutatingWebhookConfiguration "kubeslice-controller-mutating-webhook-configuration" in namespace
+Patch ValidatingWebhookConfiguration "kubeslice-controller-validating-webhook-configuration" in namespace
+Error: UPGRADE FAILED: cannot patch "kubeslice-controller-manager" with kind Deployment: Internal error occurred: failed calling webhook "mdeploy.avesha.io": failed to call webhook: Post "https://kubeslice-webhook-service.kubeslice-system.svc:443/mutate-appsv1-deploy?timeout=10s": no endpoints available for service "kubeslice-webhook-service" 
+```
+To resolve this error, manually delete the mutating webhook configuration as described 
+below: 
+
+1. Get the name of the `MutatingWebhookConfiguration` webhook using the following command: 
+
+   ```
+   kubectl get mutatingwebhookconfiguration
+   ```
+   
+   Expected Output 
+
+   ```
+   NAME                                                  WEBHOOKS   AGE
+   cdi-api-datavolume-mutate                             1          16d
+   cert-manager-webhook                                  1          31d
+   istio-sidecar-injector                                4          15d   
+   kubeslice-controller-mutating-webhook-configuration   7          30d
+   kubeslice-mutating-webhook-configuration              1          29d
+   longhorn-webhook-mutator                              1          17d
+   nsm-admission-webhook-cfg                             1          29d
+   virt-api-mutator                                      4          18d
+   ```
+   Note down the name of the `MutatingWebhookConfiguration` webhook, which is `kubeslice-mutating-webhook-configuration` 
+   in the above output.   
+
+2. Delete the `MutatingWebhookConfiguration` using the following command: 
+
+   ```
+   kubectl delete mutatingwebhookconfiguration kubeslice-mutating-webhook-configuration
+   ```
+
+## Connectivity Issues
+
+### Why is my registered cluster not connected to the KubeSlice Controller? 
+
+There could be an issue during the installation of the Slice Operator on the registered 
+cluster. Try these steps:
+
+1. Switch context to the registered cluster on which you are facing
+   connectivity issues using the following command:
+
+   ```
+   kubectx <cluster name>
+   ```
+
+2. Validate the installation of the Slice Operator by checking the pods belonging to 
+   the namespace `kubeslice-controller-system`using the following command (from the output, check the status of the pods):
+
+   ``` 
+   kubectl get pods -n kubeslice-controller-system
+   ```
+
+3. If the connection issue still persists, check if the KubeSlice Controller endpoint and token in the cluster are correct in the
+   Slice Operator YAML configuration file that is applied in that registered cluster. To know about the configuration, 
+   see the [Slice Operator YAML file](/versioned_docs/version-1.0.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#create-the-slice-operator-yaml-file).
+   file.
+
+
+### Registering clusters with the same name does not throw an error. 
+
+Each instance of the cluster is registered separately as two different clusters and 
+Kubernetes ignores duplication of the cluster's name.
+
+It is best to avoid the duplication of the clusters names as Kubernetes inherently ignores 
+the duplication of cluster names.
+
+### The KubeSlice Controller was successfully installed with a controller endpoint that is not reachable by a slice. 
+
+Check if the controller endpoint is correct during the installation of  the Slice Operator 
+on the worker cluster. Check if the controller cluster's secret token and ca-cert installed on the 
+worker cluster is correct. To know more, see [Getting the Secrets of the Registered
+Cluster](/versioned_docs/version-1.0.0/getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster.mdx#get-the-secrets-of-the-registered-cluster).
+
+### Node IP address on the registered cluster was changed but the KubeSlice components were not cleaned up. 
+
+When the Node IP address is changed on a registered cluster, then a manual clean-up is 
+required for the worker cluster configuration to use the updated IP. So, we recommend not 
+to change the Node IP manually when it is already configured or add an invalid Node IP 
+address.
+
+While registering a cluster, the Node IP is configured by pulling the value from the cluster.
+
+### A cluster registration failed with a correct cluster.yaml file. 
+
+The registration fails when a `cluster.yaml` file is applied to register more than one 
+clusters.
+
+Ensure that a` cluster.yaml `file is applied to only one cluster and not multiple clusters.
+
+## Cluster Issues
+
+### The error/warning states that the CRD object is stuck.
+
+1. Patch an empty finalizer with the failing object CRD warning as shown in this example.
+
+   (`serviceexportconfigs.hub.kubeslice.io` is a failing CRD object in this
+example.)
+
+   ```
+   kubectl patch crd/serviceexportconfigs.hub.kubeslice.io -p '{"metadata":{"finalizers":[]}}' --type=merge
+   ```
+
+2. Uninstall and reinstall the KubeSlice Controller.
+
+
+###  The error states that the project namespace is stuck.
+
+1. Delete the stuck namespace by running the following command:
+
+    ```
+    kubectl patch ns/<stuck-namespace> -p '{"metadata":{"finalizers":[]}}' --type=merge
+    ```
+
+2. Uninstall and reinstall the KubeSlice Controller.
+
+## Onboarded Application Namespace Issues
+
+### NSM containers are not injected in pods during deployments in the application namespace. 
+
+If NSM containers are not injected in pods during deployments in the application namespace, 
+then check if that application namespace contains the KubeSlice label. If the label is 
+not there, wait for the Slice Operator to label the namespace.
+
+For example, run the following command to check the label:
+
+``` 
+kubectl describe ns iperf
+```
+
+
+In the command output below, `kubeslice.io/slice=blue` is the KubeSlice label.
+
+```
+Name:          iperf
+Labels:        hnc.x-k8s.io/included-namespace=true
+               iperf.tree.hnc.x-k8s.io/depth=0
+               kubernetes.io/metadata.name=iperf
+               kubeslice.io/slice=blue
+Annotations:  <none>
+Status:       Active
+
+No resource quota.
+
+No LimitRange resource.
+```
+
+In the command output, the iperf namespace contains the `kubeslice.io/slice=blue` label. 
+This means that the namespace is already onboarded to the blue slice.
+
+## Slice and Cluster Health Issues
+
+### Why does the KubeSlice Manager dashboard's health tab show that a worker cluster's health status is unavailable?
+When a Worker Operator on a worker cluster is down or unable to communicate with the KubeSlice Controller, that
+cluster's health status becomes unavailable. 
+
+To resolve this issue, check the corresponding Worker Operator and restore its communication with the
+KubeSlice Controller.
+
+`kubeslice-operator` (Worker Operator) is a deployment running in the `kubeslice-system` namespace.
+You can verify the status of `kubeslice-operator` on the corresponding worker cluster to further
+trace the issue.
+
+To verify the status of `kubeslice-operator`:
+
+1. Get the details of `kubeslice-operator` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=control-plane=controller-manager
+   ```
+
+   Expected Output
+
+   ```
+   NAME                READY  UP-TO-DATE  AVAILABLE  AGE
+   kubeslice-operator  1/1    1           1          17d
+   ```
+
+2. Get the status of `kubeslice-operator` pods using the following command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=control-plane=controller-manager
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                 READY  STATUS  RESTARTS  AGE
+   kubeslice-operator-789b475bb8-sz49v  2/2    Running  0        45h
+   ```
+
+### What should I do when nsmgr is down?
+
+Identify the worker cluster on which `nsmgr` is down.
+
+`nsmgr` is a `DaemonSet` running in the `kubeslice-system` namespace. You can verify the status
+of `nsmgr` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `nsmgr`:
+
+1. Get the details of `nsmgr` using the following command:
+
+   ```
+   kubectl get daemonset -n kubeslice-system --selector=app=nsmgr
+   ```
+
+   Expected Output
+
+   ```
+   NAME   DESIRED  CURRENT  READY  UP-TO-DATE  AVAILABLE  NODE SELECTOR  AGE
+   nsmgr  3        3        3      3           3          <none>         17d
+   ```
+
+2. Get the status of `nsmgr` from all the pods by using the following command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=app=nsmgr
+   ```
+
+   Expected Output
+
+   ```
+   NAME         READY  STATUS   RESTARTS     AGE
+   nsmgr-6gfxz  2/2    Running  3 (40h ago)  17d
+   nsmgr-jtxxr  2/2    Running  2 (12d ago)  17d
+   nsmgr-tdmd8  2/2    Running  0            11d
+   ```
+
+   If the status is not `Running`, then `nsmgr` on that pod is down.
+
+### What should I do when forwarder is down?
+
+Identify the worker cluster on which `forwarder` is down.
+
+`forwarder` is a `DaemonSet` running in the `kubeslice-system` namespace. You can verify the status
+of `forwarder` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `forwarder`:
+
+1. Get the details of `forwarder` using the following command:
+   ```
+   kubectl get daemonset -n kubeslice-system --selector=app=forwarder-kernel
+   ```
+   Expected Output
+   ```
+   NAME              DESIRED  CURRENT  READY  UP-TO-DATE  AVAILABLE  NODE SELECTOR  AGE
+   forwarder-kernel  3         3        3     3           3          <none>         17d
+   ```
+
+   If a `forwarder` pod is down, then the number under `READY` will not be the same as other columns. 
+
+2. Get the status of `forwarder` from all the pods using the following command:
+   ```
+   kubectl get pods -n kubeslice-system --selector=app=forwarder-kernel
+   ```
+   ```
+   NAME                    READY  STATUS   RESTARTS  AGE
+   forwarder-kernel-2zb9r  1/1    Running  0         17d
+   forwarder-kernel-jjzz7  1/1    Running  0         17d
+   forwarder-kernel-r5kcw  1/1    Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, then that pod is down. 
+
+### What should I do when netop is down?
+
+Identify the worker cluster on which `netop` is down.
+
+`netop` is a `DaemonSet` running in the `kubeslice-system` namespace. You can verify the status
+of `netop` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `netop`:
+
+1. Get the details of `netop` using the following command:
+
+   ```
+   kubectl get daemonsets -n kubeslice-system | grep kubeslice-netop
+   ```
+
+   Expected Output
+
+   ```
+   kubeslice-netop 2     2     2    2     2      <none>    17d
+   ```
+
+2. The `netop` pod is restricted to run only on gateway nodes. Get the gateway nodes that run
+   the `netop` pod.
+
+   ```
+   kubectl get nodes --selector=kubeslice.io/node-type=gateway
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                                 STATUS  ROLES   AGE  VERSION
+   gke-demo-cluster-2-s-demo-cluster-2-s-3e484d4b-cbnl  Ready   <none>  17d  v1.23.16-gke.1400
+   gke-demo-cluster-2-s-demo-cluster-2-s-3e484d4b-qnwp  Ready   <none>  17d  v1.23.16-gke.1400
+   ```
+
+3. Get the `netop` pods on the `kubeslice-system` namespace using the following command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=app=app_net_op
+   ```
+
+   Expected Output
+
+   ```
+   NAME                   READY  STATUS   RESTARTS  AGE
+   kubeslice-netop-dqsg7  1/1    Running  0         17d
+   kubeslice-netop-jc4c2  1/1    Running  0         11d
+   ```
+
+   If the `STATUS` is not `Running`, then that pod is down. 
+
+### What should I do when spire-agent is down?
+
+Identify the worker cluster on which `spire-agent` is down.
+
+`spire-agent` is a `DaemonSet` running in the `spire` namespace. You can verify the status
+of `spire-agent` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `spire-agent`:
+
+1. Get the details of `spire-agent` using the following command:
+   ```
+   kubectl get daemonset -n spire --selector=app=spire-agent
+   ```
+   Expected Output
+   ```
+   NAME       DESIRED  CURRENT  READY  UP-TO-DATE  AVAILABLE  NODE SELECTOR  AGE
+   spire-agent  3      3        3      3           3             <none>      17d
+   ```
+2. Get the `spire-agent` pods from the `spire` namespace using the following command:
+   ```
+   kubectl get pods -n spire --selector=app=spire-agent
+   ```
+   Expected Output
+   ```
+   NAME              READY  STATUS   RESTARTS  AGE
+   spire-agent-l692m  1/1   Running  0         11d
+   spire-agent-nrfnf  1/1   Running  0         17d
+   spire-agent-xp5m8  1/1   Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, then that pod is down. 
+
+### What should I do when spire-server is down?
+
+Identify the worker cluster on which `spire-server` is down.
+
+`spire-server` is a `StatefulSet` running in the `spire` namespace. You can verify the status
+of `spire-server` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `spire-server`:
+
+1. Get the details of `spire-server` using the following command:
+
+   ```
+   kubectl get statefulset -n spire --selector=app=spire-server
+   ```
+
+   Expected Output
+
+   ```
+   NAME         READY  AGE
+   spire-server  1/1   17d
+   ```
+
+2. Get the `spire-agent` pods from the `spire` namespace using the following command:
+   ```
+   kubectl get pods -n spire --selector=app=spire-server
+   ```
+   Expected Output
+   ```
+   NAME            READY  STATUS   RESTARTS  AGE
+   spire-server-0  2/2    Running  0         17d
+   ```
+   If the `STATUS` is not `Running` and `2/2` pods are not `READY`, then that pod is down. 
+
+### What should I do when admission-webhook is down?
+
+Identify the worker cluster on which `admission-webhook` is down.
+
+`admission-webhook` is a deployment running in the `kubeslice-system` namespace. You can verify the status
+of `admission-webhook` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `admission-webhook`:
+
+1. Get the details of `admission-webhook` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=app=admission-webhook-k8s
+   ```
+
+   Expected Output
+
+   ```
+   NAME                       READY  UP-TO-DATE  AVAILABLE  AGE
+   nsm-admission-webhook-k8s  1/1     1          1          17d
+   ```
+
+2. Get the `admission-webhook` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pod -n kubeslice-system --selector=app=admission-webhook-k8s
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                        READY  STATUS  RESTARTS  AGE
+   nsm-admission-webhook-k8s-698784967d-nmtrl  1/1    Running  0        17d
+   ```
+
+   If the `STATUS` is not `Running`, and `1/1` pod is not `READY`, then that pod is down. 
+
+### What should I do when istiod is down?
+
+Identify the worker cluster on which `istiod` is down.
+
+`istiod` is a deployment running in the `istio-system` namespace. You can verify the status
+of `istiod` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `istiod`:
+
+1. Get the details of `istiod` using the following command:
+
+   ```
+   kubectl get deployment -n istio-system --selector app=istiod
+   ```
+
+   Expected Output
+
+   ```
+   NAME   READY  UP-TO-DATE  AVAILABLE  AGE
+   istiod  1/1   1           1          17d
+
+   ```
+
+2. Get the `istiod` pods from the `istio-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pods -n istio-system --selector app=istiod
+   ```
+
+   Expected Output
+
+   ```
+   NAME                     READY  STATUS   RESTARTS  AGE
+   istiod-6b56cffbd9-8xx5t  1/1    Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, and `1/1` pod is not `READY`, then that pod is down. 
+
+### What should I do when dns is down?
+
+Identify the worker cluster on which `dns` is down.
+
+`dns` is a deployment running in the `kubeslice-system` namespace. You can verify the status
+of `dns` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `dns`:
+
+1. Get the details of `dns` using the following command:
+
+   ```
+   kubectl get deployments -n kubeslice-system --selector=app=kubeslice-dns
+   ```
+
+   Expected Output
+
+   ```
+   NAME           READY  UP-TO-DATE  AVAILABLE  AGE
+   kubeslice-dns  1/1    1           1          17d
+   ```
+
+2. Get the `dns` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=app=kubeslice-dns
+   ```
+
+   Expected Output
+
+   ```
+   NAME                            READY  STATUS   RESTARTS  AGE
+   kubeslice-dns-79d4fc6477-frjw6  1/1    Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, and `1/1` pod is not `READY`, then that pod is down. 
+
+### What should I do when slice-router is down?
+
+`slice-router` is a deployment running in the `kubeslice-system` namespace, which is only one per slice.
+You can verify the status of `slice-router` on the corresponding worker cluster to further trace
+the issue.
+
+To verify the status of `slice-router`:
+
+1. Get the details of `slice-router` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system | grep vl3-slice-router-<slice-name>
+   ```
+
+   Example
+
+   ```
+   kubectl get deployment -n kubeslice-system | grep vl3-slice-router-bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   vl3-slice-router-bookinfo-slice  1/1   1     1      17d
+   ```
+
+2. Get the `slice-router` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pods -n kubeslice-system --selector=kubeslice.io/pod-type=router,kubeslice.io/slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                              READY  STATUS   RESTARTS  AGE
+   vl3-slice-router-bookinfo-slice-795fb754cc-4dnl4  2/2    Running  0         11d
+   ```
+   If the `STATUS` is not `Running`, and `2/2` pods are not `READY`, then that pod is down. 
+
+### What should I do when egress is down?
+
+`egress`is a deployment running in the`kubeslice-system`namespace. You can verify the status 
+of`egress`` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `egress`:
+
+1. Get the details of `egress` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=istio=egressgateway,slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                 READY  UP-TO-DATE  AVAILABLE  AGE
+   bookinfo-slice-istio-egressgateway  1/1   1     1      17d
+
+   ```
+
+2. Get the `egressgateway` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pod -n kubeslice-system --selector=istio=egressgateway,slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                                READY  STATUS   RESTARTS  AGE
+   bookinfo-slice-istio-egressgateway-7548b49659-9z4c5  2/2   Running  0         17d
+   ```
+
+### What should I do when ingress is down?
+
+`ingress`is a deployment running in the`kubeslice-system`namespace. You can verify the status 
+of`ingress`` on the corresponding worker cluster to further trace the issue.
+
+To verify the status of `ingress`:
+
+1. Get the details of `ingress` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=istio=ingressgateway,slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                READY  UP-TO-DATE  AVAILABLE  AGE
+   bookinfo-slice-istio-ingressgateway  1/1   1           1          17d
+
+   ```
+
+2. Get the `ingressgateway` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pod -n kubeslice-system --selector=istio=ingressgateway,slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                                 READY  STATUS   RESTARTS  AGE
+   bookinfo-slice-istio-ingressgateway-765fb4ddf-d52cs  2/2    Running  0        17d
+   ```
+
+   If the `STATUS` is not `Running`, and `2/2` pods are not `READY`, then that pod is down. 
+
+### What should I do when slicegateway is down?
+
+`slicegateway` is a deployment running in the `kubeslice-system` namespace. You can verify the
+status of `slicegateway` on the corresponding worker cluster to further trace the issue.
+Slice gateways are always created in pairs.
+
+To verify the status of `slicegateway`:
+
+1. Get the details of `slicegateway` using the following command:
+
+   ```
+   kubectl get deployment -n kubeslice-system --selector=kubeslice.io/pod-type=slicegateway,kubeslice.io/slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                READY  UP-TO-DATE  AVAILABLE  AGE
+   bookinfo-slice-worker-1-worker-2-0  1/1    1           1          17d
+   bookinfo-slice-worker-1-worker-2-1  1/1    1           1          17d
+   ```
+   If a pod is down, then it is shown under `READY` as `0/1`. 
+
+2. Get the `ingressgateway` pods from the `kubeslice-system` namespace using the following
+   command:
+
+   ```
+   kubectl get pod -n kubeslice-system --selector=kubeslice.io/pod-type=slicegateway,kubeslice.io/slice=bookinfo-slice
+   ```
+
+   Expected Output
+
+   ```
+   NAME                                                READY  STATUS   RESTARTS  AGE
+   bookinfo-slice-worker-1-worker-2-0-97748d58b-sqm7s  3/3    Running  0         17d
+   bookinfo-slice-worker-1-worker-2-1-8496454697-mw8cs 3/3    Running  0         17d
+   ```
+   If the `STATUS` is not `Running`, and `3/3` pods are not `READY`, then that pod is down.
+
+
+## kubeslice-cli
+
+This guide describes troubleshooting scenarios that you could face during installing and while using the `kubeSlice-cli` tool.
+
+### Unable to Install Kubeslice using the kubeslice-cli Tool on Ubuntu
+
+During the installation of KubeSlice using the `kubeslice-cli install -p=minimal-demo` command, if you get the following error message: 
+
+```
+✓ Writing configuration 📜
+ • Starting control-plane 🕹️  ...
+ ✗ Starting control-plane 🕹️
+ERROR: failed to create cluster: failed to init node with kubeadm: command "docker exec --privileged ks-w-2-control-plane kubeadm init --skip-phases=preflight --config=/kind/kubeadm.conf --skip-token-print --v=6" failed with error: exit status 137
+
+Command Output:
+2022/10/04 06:12:21 Process failed exit status 1
+```
+There could be a memory/disk space issue.
+
+**To resolve**:
+
+- Remove unused clusters (other than the ones used in the demo).
+- Increase disk space/memory resources.
+
+### Unable to run the kubeslice-cli commands
+After successfully installing KubeSlice using kubeslice-cli, if you are unable to use the commands:
+
+```
+kubeslice-cli get sliceConfig -n kubeslice-demo
+```
+```
+Fetching KubeSlice sliceConfig...
+🏃 Running command: /usr/local/bin/kubectl get sliceconfigs.controller.kubeslice.io -n demo
+error: the server doesn't have a resource type "sliceconfigs"
+2022/10/04 08:26:40 Process failed exit status 1
+```
+**To resolve**:
+- Ensure you are on the controller cluster to run the commands: `kubectx -c`.
+- Export the configuration file using this command: `export KUBECONFIG=kubeslice/<path-to-the-kubeconfig-file>`.
+
+
+### Getting an Unverified Developer Error Message on macOS
+When you try to install kubeslice-cli on macOS, you get the `Unverified Developer Error Message`.
+This error message appears when you try to install an application from a developer who is not registered with Apple.
+
+**To resolve**:
+
+Follow the instructions in [Enabling the Application for macOS](https://www.alphr.com/cannot-be-opened-because-the-developer-cannot-be-verified/).
