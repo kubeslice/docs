@@ -161,7 +161,11 @@
       "items": [
           "monitor/slice-cluster-health",
           "monitor/controller-events",
-          "monitor/worker-operator-events"
+          "monitor/worker-operator-events",
+          "monitor/slack-event-integration",
+          "monitor/kubeslice-metrics",
+          "monitor/alert-manager-slack",
+          "monitor/alert-rules"
       ]
     },  
     "troubleshooting-guide",

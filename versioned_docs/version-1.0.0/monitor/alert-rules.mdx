@@ -1,0 +1,269 @@
+# Configure Prometheus Alert Rules
+Prometheus is a real-time series database for monitoring components. Configure the rules on 
+Prometheus to monitor components and get the alerts when components do not work as expected. 
+
+:::note 
+These rules are only required for brownfield Prometheus deployments. 
+:::
+
+We support configuring rules for Kube State metrics and KubeSlice custom resource metrics. 
+
+## Prerequisites
+Before you begin, ensure that the following prerequisites are met: 
+
+* Currently, we only support metric alerts on Slack. You must be a Slack user to configure Prometheus 
+  alert rules. 
+* Integrate [KubeSlice alerts with Slack](alert-manager-slack).
+
+## KSM and Custom Resources Metrics 
+Kube State metrics (KSM) is a service that communicates to the Kubernetes API server to get all 
+the information about all the objects such as deployments, pods, and namespaces. It generates metrics in 
+the Prometheus format that have the stability as the Kubernetes API.
+
+Custom resources metrics provides information about the KubeSlice-specific components such as slice, 
+service export/import, Slice Gateway, and so on. 
+
+We use Prometheus alert rules to monitor the following namespaces:
+
+* `kubeslice-controller`
+* `kubeslice-system`
+* `istio-system`
+* `spire`
+
+:::info
+KubeSlice only sends alerts when a pod is in the `Failed`, `Pending`, or `Unknown` state.
+:::
+
+### Rules for KSM Metrics 
+The following code snippet contains the rules for KSM metrics. 
+
+```
+  - alert: kubeslice component pod status with labels_app
+    annotations:
+      description: ' Pod {{ $labels.pod }} is {{  $labels.phase }} ,  see the Details
+        for more info with labels'
+      summary: ' {{ $labels.pod }} Pod went down'
+    expr: (sum by (pod,namespace,kubernetes_node,phase,job,instance) (kube_pod_status_phase{namespace=~"^kubeslice.*|spire|istio-system",phase=~"Pending|Unknown|Failed"})>0)+on(instance,pod,kubernetes_node,namespace)group_left(label_app,label_cluster_name)(sum by(pod,namespace,kubernetes_node,label_app,instance,label_cluster_name)(kube_pod_labels{namespace=~"^kubeslice.*|spire|istio-system",label_app=~"app_net_op|nsmgr|admission-webhook-k8s|kubeslice-dns|forwarder-kernel|cert-manager|controller-manager|kubeslice-api-gw|kubeslice-ui-proxy|kubeslice-ui|registry|spire-agent|spire-server|istiod"})>0)
+    for: 1m
+    labels:
+      severity: slack
+  - alert: kubeslice operator pod status
+    annotations:
+      description: ' Pod {{ $labels.pod }} is {{  $labels.phase }} , see the Details
+        for more info with labels'
+      summary: ' {{ $labels.pod }} Pod went down'
+    expr: (sum by(pod,namespace,kubernetes_node,phase,job,instance)(kube_pod_status_phase{namespace=~"^kubeslice.*|spire|istio-system",phase=~"Pending|Unknown|Failed"})>0)+on(instance,pod,kubernetes_node,namespace)group_left(label_spoke_cluster,label_control_plane,label_cluster_name)(sum by(pod, namespace,label_cluster_name,kubernetes_node,label_spoke_cluster,label_control_plane,instance)(kube_pod_labels{namespace=~"^kubeslice.*|spire|istio-system",label_spoke_cluster=~"^w.*|^c.*"})>0)
+    for: 1m
+    labels:
+      severity: slack
+  - alert: vl3 pod status
+    annotations:
+      description: Pod {{ $labels.pod }} is {{  $labels.phase }} , see the Details
+        for more info with labels
+      summary: '{{ $labels.pod }} Pod went down'
+    expr: (sum by(pod,namespace,kubernetes_node,phase,job,instance)(kube_pod_status_phase{namespace=~"^kubeslice.*|spire|istio-system",phase=~"Pending|Unknown|Failed"})>0)+on(instance,pod,kubernetes_node,namespace)group_left(label_networkservicemesh_io_app,label_cluster_name,label_networkservicemesh_io_impl,label_kubeslice_io_slice,label_pod_template_hash)(sum by(pod,namespace,label_cluster_name,kubernetes_node,label_networkservicemesh_io_app,label_networkservicemesh_io_impl,label_kubeslice_io_slice,label_pod_template_hash,instance)(kube_pod_labels{namespace=~"^kubeslice.*|spire|istio-system",pod=~"^vl3-slice-router.*"})>0)
+    for: 1m
+    labels:
+      severity: slack
+  - alert: vpn gw pod status
+    annotations:
+      description: Pod {{ $labels.pod }} is {{  $labels.phase }} , see the Details
+        for more info with labels
+    expr: (sum by(pod,namespace,kubernetes_node,phase,job,instance)(kube_pod_status_phase{namespace=~"^kube.*|spire|istio-system",phase=~"Pending|Unknown|Failed"})>0)+on(instance,pod,kubernetes_node,namespace)group_left(label_kubeslice_io_slice,label_cluster_name,label_kubeslice_io_slice_gw,label_networkservicemesh_io_app,label_pod_template_hash,label_kubeslice_io_pod_type)(sum by(pod,namespace,kubernetes_node,label_cluster_name,label_kubeslice_io_slice,label_kubeslice_io_slice_gw,label_networkservicemesh_io_app,label_pod_template_hash,label_kubeslice_io_pod_type,instance)(kube_pod_labels{namespace=~"^kubeslice.*|spire|istio-system",pod=~"^b.*|^i.*"})>0)
+    for: 1m
+    labels:
+      severity: slack
+```
+
+### Rules for Custom Resource Metrics 
+The following code snippet contains the rules for custom resources metrics. 
+
+```
+      - alert: kubeslice cluster health
+        annotations:
+          description: kubeslice cluster {{ $labels.slice_cluster }} is not up for project {{  $labels.slice_project }}, see the Details for more info with labels
+        expr: kubeslice_cluster_up < 0
+        for: 1m
+        labels:
+          severity: slack
+      - alert: kubeslice cluster component health
+        annotations:
+          description: cluster component {{ $labels.slice_cluster_component }} is unhealthy for project {{  $labels.slice_project }} on cluster {{ $labels.slice_cluster }}, see the Details for more info with labels
+        expr: kubeslice_cluster_component_up < 0
+        for: 1m
+        labels:
+          severity: slack
+      - alert: kubeslice slice health
+        annotations:
+          description: slice component {{ $labels.slice }} is unhealthy for project {{  $labels.slice_project }} on cluster {{ $labels.slice_cluster }}, see the Details for more info with labels
+        expr: kubeslice_slice_up < 0
+        for: 1m
+        labels:
+          severity: slack
+      - alert: kubeslice slice component health
+        annotations:
+          description: slice component {{ $labels.slice_component }} is unhealthy for project {{  $labels.slice_project }} on cluster {{ $labels.slice_cluster }}, see the Details for more info with labels
+        expr: kubeslice_slice_component_up < 0
+        for: 1m
+        labels:
+          severity: slack
+      - alert: kubeslice app pod details
+        annotations:
+          description: No app pod is active on slice {{ $labels.slice }} for project {{  $labels.slice_project }} at cluster {{ $labels.slice_cluster }}, see the Details for more info with labels
+        expr: kubeslice_app_pods < 0
+        for: 1m
+        labels:
+          severity: slack
+      - alert: kubeslice service export endpoints
+        annotations:
+          description: for project {{ $labels.slice_project }} no service export endpoints is active on slice {{ $labels.slice }} in namespace {{  $labels.slice_namespace }}, see the Details for more info with labels
+        expr: kubeslice_serviceexport_endpoints < 0
+        for: 1m
+        labels:
+          severity: slack
+      - alert: kubeslice service import endpoints
+        annotations:
+          description: for project {{ $labels.slice_project }} no service  import endpoints is active on slice {{ $labels.slice }} in namespace {{  $labels.slice_namespace }}, see the Details for more info with labels
+        expr: kubeslice_serviceimport_endpoints < 0
+        for: 1m
+        labels:
+          severity: slack
+      - alert: kubeslice netpol validation
+        annotations:
+          description: netpol voilation is not active for project {{ $labels.slice_project }} on cluster {{ $labels.slice_cluster }} and the slice reporting controller is {{ $labels.slice_reporting_controller }}, see the Details for more info with labels
+        expr: kubeslice_netpol_violations_active < 0
+        for: 1m
+        labels:
+          severity: slack
+      - alert: kubeslice slice gateway tunnel validation
+        annotations:
+          description: no vpn tunnel is active for project {{ $labels.slice_project }} on cluster {{ $labels.slice_cluster }} and the slice reporting controller is {{ $labels.slice_reporting_controller }}, see the Details for more info with labels
+        expr: kubeslice_slicegateway_tunnel_up < 0
+        for: 1m
+        labels:
+          severity: slack
+```
+## Add the Alert Rules into Prometheus 
+To add the alert rules: 
+
+1. Add the [KSM](#rules-for-custom-resource-metrics) and [custom metrics](#rules-for-custom-resource-metrics) 
+   alert rules into the Prometheus configuration. The updated 
+   configuration with alert rules should look as the file below.
+
+   ```
+   groups:
+       - name: kubeslice component status
+         rules:
+         - alert: kubeslice component pod status with labels_app
+           annotations:
+             description: ' Pod {{ $labels.pod }} is {{  $labels.phase }} ,  see the Details
+               for more info with labels'
+             summary: ' {{ $labels.pod }} Pod went down'
+           expr: (sum by (pod,namespace,kubernetes_node,phase,job,instance) (kube_pod_status_phase{namespace=~"^kubeslice.*|spire|istio-system",phase=~"Pending|Unknown|Failed"})>0)+on(instance,pod,kubernetes_node,namespace)group_left(label_app,label_cluster_name)(sum by(pod,namespace,kubernetes_node,label_app,instance,label_cluster_name)(kube_pod_labels{namespace=~"^kubeslice.*|spire|istio-system",label_app=~"app_net_op|nsmgr|admission-webhook-k8s|kubeslice-dns|forwarder-kernel|cert-manager|controller-manager|kubeslice-api-gw|kubeslice-ui-proxy|kubeslice-ui|registry|spire-agent|spire-server|istiod"})>0)
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice operator pod status
+           annotations:
+             description: ' Pod {{ $labels.pod }} is {{  $labels.phase }} , see the Details
+               for more info with labels'
+             summary: ' {{ $labels.pod }} Pod went down'
+           expr: (sum by(pod,namespace,kubernetes_node,phase,job,instance)(kube_pod_status_phase{namespace=~"^kubeslice.*|spire|istio-system",phase=~"Pending|Unknown|Failed"})>0)+on(instance,pod,kubernetes_node,namespace)group_left(label_spoke_cluster,label_control_plane,label_cluster_name)(sum by(pod, namespace,label_cluster_name,kubernetes_node,label_spoke_cluster,label_control_plane,instance)(kube_pod_labels{namespace=~"^kubeslice.*|spire|istio-system",label_spoke_cluster=~"^w.*|^c.*"})>0)
+           for: 1m
+           labels:
+             severity: slack
+         - alert: vl3 pod status
+           annotations:
+             description: Pod {{ $labels.pod }} is {{  $labels.phase }} , see the Details
+               for more info with labels
+             summary: '{{ $labels.pod }} Pod went down'
+           expr: (sum by(pod,namespace,kubernetes_node,phase,job,instance)(kube_pod_status_phase{namespace=~"^kubeslice.*|spire|istio-system",phase=~"Pending|Unknown|Failed"})>0)+on(instance,pod,kubernetes_node,namespace)group_left(label_networkservicemesh_io_app,label_cluster_name,label_networkservicemesh_io_impl,label_kubeslice_io_slice,label_pod_template_hash)(sum by(pod,namespace,label_cluster_name,kubernetes_node,label_networkservicemesh_io_app,label_networkservicemesh_io_impl,label_kubeslice_io_slice,label_pod_template_hash,instance)(kube_pod_labels{namespace=~"^kubeslice.*|spire|istio-system",pod=~"^vl3-slice-router.*"})>0)
+           for: 1m
+           labels:
+             severity: slack
+         - alert: vpn gw pod status
+           annotations:
+             description: Pod {{ $labels.pod }} is {{  $labels.phase }} , see the Details
+               for more info with labels
+           expr: (sum by(pod,namespace,kubernetes_node,phase,job,instance)(kube_pod_status_phase{namespace=~"^kube.*|spire|istio-system",phase=~"Pending|Unknown|Failed"})>0)+on(instance,pod,kubernetes_node,namespace)group_left(label_kubeslice_io_slice,label_cluster_name,label_kubeslice_io_slice_gw,label_networkservicemesh_io_app,label_pod_template_hash,label_kubeslice_io_pod_type)(sum by(pod,namespace,kubernetes_node,label_cluster_name,label_kubeslice_io_slice,label_kubeslice_io_slice_gw,label_networkservicemesh_io_app,label_pod_template_hash,label_kubeslice_io_pod_type,instance)(kube_pod_labels{namespace=~"^kubeslice.*|spire|istio-system",pod=~"^b.*|^i.*"})>0)
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice cluster health
+           annotations:
+             description: kubeslice cluster {{ $labels.slice_cluster }} is not up for project {{  $labels.slice_project }}, see the Details for more info with labels
+           expr: kubeslice_cluster_up < 0
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice cluster component health
+           annotations:
+             description: cluster component {{ $labels.slice_cluster_component }} is unhealthy for project {{  $labels.slice_project }} on cluster {{ $labels.slice_cluster }}, see the Details for more info with labels
+           expr: kubeslice_cluster_component_up < 0
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice slice health
+           annotations:
+             description: slice component {{ $labels.slice }} is unhealthy for project {{  $labels.slice_project }} on cluster {{ $labels.slice_cluster }}, see the Details for more info with labels
+           expr: kubeslice_slice_up < 0
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice slice component health
+           annotations:
+             description: slice component {{ $labels.slice_component }} is unhealthy for project {{  $labels.slice_project }} on cluster {{ $labels.slice_cluster }}, see the Details for more info with labels
+           expr: kubeslice_slice_component_up < 0
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice app pod details
+           annotations:
+             description: No app pod is active on slice {{ $labels.slice }} for project {{  $labels.slice_project }} at cluster {{ $labels.slice_cluster }}, see the Details for more info with labels
+           expr: kubeslice_app_pods < 0
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice service export endpoints
+           annotations:
+             description: for project {{ $labels.slice_project }} no service export endpoints is active on slice {{ $labels.slice }} in namespace {{  $labels.slice_namespace }}, see the Details for more info with labels
+           expr: kubeslice_serviceexport_endpoints < 0
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice service import endpoints
+           annotations:
+             description: for project {{ $labels.slice_project }} no service  import endpoints is active on slice {{ $labels.slice }} in namespace {{  $labels.slice_namespace }}, see the Details for more info with labels
+           expr: kubeslice_serviceimport_endpoints < 0
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice netpol validation
+           annotations:
+             description: netpol voilation is not active for project {{ $labels.slice_project }} on cluster {{ $labels.slice_cluster }} and the slice reporting controller is {{ $labels.slice_reporting_controller }}, see the Details for more info with labels
+           expr: kubeslice_netpol_violations_active < 0
+           for: 1m
+           labels:
+             severity: slack
+         - alert: kubeslice slice gateway tunnel validation
+           annotations:
+             description: no vpn tunnel is active for project {{ $labels.slice_project }} on cluster {{ $labels.slice_cluster }} and the slice reporting controller is {{ $labels.slice_reporting_controller }}, see the Details for more info with labels
+           expr: kubeslice_slicegateway_tunnel_up < 0
+           for: 1m
+           labels:
+             severity: slack
+   ```
+
+2. Upgrade Prometheus using the following command: 
+
+   :::info
+   For instructions on how to get the Slack API URL (also known as webhook URL), see [alert integration with Slack](alert-manager-slack#configure-the-alerts-integration).
+   :::
+
+   ```
+   helm upgrade prometheus kubeslice/prometheus --set alertmanager.enabled=true --set-string alertmanager.config.global.slack_api_url="<Slack API URL>"  -n monitoring
+   ```
+
+:::info
+You have successfully configured the alert rules to monitor KubeSlice.
+:::

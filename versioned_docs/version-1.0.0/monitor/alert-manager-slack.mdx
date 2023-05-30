@@ -1,0 +1,77 @@
+# Integrate Metric Alerts with Slack
+This topic describes integrating the KubeSlice metric alerts with Slack. 
+The integration involves configuring the Prometheus rules. The integration helps you 
+receive alerts on issues such as a pod not working on your cluster.
+
+:::info
+For more information on the metrics description, see [KubeSlice metrics](kubeslice-metrics).
+:::
+
+## Configure the Alerts Integration 
+To integrate KubeSlice alerts with Slack:
+1. Add the kubeslice-Prometheus repo using the following command: 
+   ```
+   helm repo add kubeslice/prometheus
+   ```
+
+2. On your Slack workspace, create a channel called `#kubeslice-events-alerts`. 
+3. You should get the Slack API URL for Slack-based alerts. To create the Slack API URL on the `#kubeslice-events-alerts` channel, 
+   click the **Settings** icon and go to **Administration** > **Manage apps**. 
+
+   ![alt](/images/version1.0.0/monitor/slack-channel-admin-option.png)
+
+4. On the **slack app directory** page, go to **Installed Apps** in the left sidebar.  
+5. Look for `incoming-webhook` in the **Search** field, and click `incoming-webhook` 
+   from the search results. 
+
+   ![alt](/images/version1.0.0/monitor/slack-installed-apps.png)
+
+6. Under **Post to Channel**, choose **kubeslice-events-alerts** to post the alerts. 
+
+   ![alt](/images/version1.0.0/monitor/slack-post-to-channel.png)
+
+7. Click **Add Incoming Webhooks integration**. 
+
+   ![alt](/images/version1.0.0/monitor/slack-add-incoming-webhook-integration.png)
+
+8. You get a webhook URL that you should copy and note it down in a separate file for using it later. 
+
+   ![alt](/images/version1.0.0/monitor/slack-copy-webhook-url.png)
+
+9. Click **Save Settings** to save the webhook integration. 
+
+   ![alt](/images/version1.0.0/monitor/slack-webhook-save.png)
+   
+10. Go back to the KubeSlice Controller command terminal. You must have a `monitoring` namespace when you had installed KubeSlice. If it does not exist, 
+    create a `monitoring` namespace using the following command:
+
+    ```
+    kubectl create ns monitoring
+    ```
+
+11. Use the following command to complete the integration: 
+
+    (Replace `Slack API URL` with the webhook URL you had copied from the Slack 
+    `#kubernetes-events-alerts` channel.)
+
+    ```
+    helm install prometheus kubeslice/prometheus --set alertmanager.enabled=true --set-string alertmanager.config.global.slack_api_url="<Slack-API-URL>"  -n monitoring
+    ```
+
+## Verify the KubeSlice Alerts Integration with Slack 
+Verify the running pods in the `monitoring` namespace using the following command:
+
+```
+kubectl get pods -n monitoring
+```
+
+Expected Output
+```
+NAME                                             READY   STATUS    RESTARTS   AGE
+prometheus-alertmanager-0                        1/1     Running   0          26s
+prometheus-kube-state-metrics-7f6bc6c4ff-29kts   1/1     Running   0          27s
+prometheus-prometheus-node-exporter-7nmxc        1/1     Running   0          27s
+prometheus-prometheus-node-exporter-9bvlk        1/1     Running   0          27s
+prometheus-prometheus-node-exporter-rd6tk        1/1     Running   0          27s
+prometheus-server-6bf6cb66cd-w6w4r               2/2     Running   0          27s
+```
