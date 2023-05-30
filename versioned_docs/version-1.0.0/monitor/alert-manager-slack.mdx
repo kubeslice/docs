@@ -26,30 +26,34 @@ To integrate KubeSlice alerts with Slack:
 
    ![alt](/images/version1.0.0/monitor/slack-installed-apps.png)
 
-6. Under **Post to Channel**, choose **kubeslice-events-alerts** to post the alerts. 
+6. Click **Add to Slack** to add incoming webhooks. 
+
+   ![alt](/images/version1.0.0/monitor/add-to-slack.png)
+
+7. Under **Post to Channel**, choose **kubeslice-events-alerts** to post the alerts. 
 
    ![alt](/images/version1.0.0/monitor/slack-post-to-channel.png)
 
-7. Click **Add Incoming Webhooks integration**. 
+8. Click **Add Incoming Webhooks integration**. 
 
    ![alt](/images/version1.0.0/monitor/slack-add-incoming-webhook-integration.png)
 
-8. You get a webhook URL that you should copy and note it down in a separate file for using it later. 
+9. You get a webhook URL that you should copy and note it down in a separate file for using it later. 
 
    ![alt](/images/version1.0.0/monitor/slack-copy-webhook-url.png)
 
-9. Click **Save Settings** to save the webhook integration. 
+10. Click **Save Settings** to save the webhook integration. 
 
-   ![alt](/images/version1.0.0/monitor/slack-webhook-save.png)
+    ![alt](/images/version1.0.0/monitor/slack-webhook-save.png)
    
-10. Go back to the KubeSlice Controller command terminal. You must have a `monitoring` namespace when you had installed KubeSlice. If it does not exist, 
+11. Go back to the KubeSlice Controller command terminal. You must have a `monitoring` namespace when you had installed KubeSlice. If it does not exist, 
     create a `monitoring` namespace using the following command:
 
     ```
     kubectl create ns monitoring
     ```
 
-11. Use the following command to complete the integration: 
+12. Use the following command to complete the integration: 
 
     (Replace `Slack API URL` with the webhook URL you had copied from the Slack 
     `#kubernetes-events-alerts` channel.)
