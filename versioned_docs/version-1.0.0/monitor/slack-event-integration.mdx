@@ -28,32 +28,31 @@ To create an app:
 
    ```yaml
    display_information:
-   name: Botkube
-   description: Botkube
-   background_color: "#a653a6"
+     name: Botkube
+     description: Botkube
+     background_color: "#a653a6"
    features:
      bot_user:
-     display_name: Botkube
-     always_online: false
+       display_name: Botkube
+       always_online: false
    oauth_config:
-   scopes:
-     bot:
-      - channels:read
-      - groups:read
-      - app_mentions:read
-      - chat:write
-      - files:write
-      - users:read # Remote configuration only: Used to get Real Name for audit reporting
-  settings:
-  event_subscriptions:
-    bot_events:
-      - app_mention
-  interactivity:
-    is_enabled: true
-  org_deploy_enabled: false
-  socket_mode_enabled: true
-  token_rotation_enabled: false
-  ```
+     scopes:
+       bot:
+         - channels:read
+         - app_mentions:read
+         - chat:write
+         - files:write
+         - users:read # Remote configuration only: Used to get Real Name for audit reporting
+   settings:
+     event_subscriptions:
+       bot_events:
+         - app_mention
+     interactivity:
+       is_enabled: true
+     org_deploy_enabled: false
+     socket_mode_enabled: true
+     token_rotation_enabled: false
+   ```
 
 6. Click **Next**.
 
@@ -83,7 +82,8 @@ To get an oauth token for your workspace:
 
 1. Go to **Features** > **OAuth & Permissions** on the left sidebar.
 
-2. Copy the **Bot User OAuth Token** and save the token for later use.
+2. Copy the **Bot User OAuth Token** and save the token for later use while deploying the **kubeslice-botkube** 
+  bundle in the controller and worker clusters.
    
     ![events](/images/version1.0.0/monitoring-events/bot-user-oauth-token.png)
 
@@ -108,12 +108,10 @@ To get an app-level token:
 
 5. Click **Generate**.
 
-6. Review the details and click **Done**. Copy the app-level token for later use.
-
-
+6. Review the details and click **Done**. Copy the app-level token for later use while deploying the 
+   **kubeslice-botkube** bundle in the controller and worker clusters.
 
 ## Create Slack Channel for Events
-
 After you install a Botkube application, you see a new bot user with the name `botkube` added in your workspace. 
 Now create the two channels to receive KSM and KubeSlice events in the workspace.
 
@@ -122,8 +120,6 @@ Now create the two channels to receive KSM and KubeSlice events in the workspace
 Add the bot to a Slack channel you want to receive notification in. You can add it by inviting the **@Botkube** user to a channel.
 
 ![events](/images/version1.0.0/monitoring-events/add-bot-to-channel.png)
-
-
 
 ## Deploy the kubeslice-botkube Bundle
 
@@ -141,7 +137,7 @@ To deploy the **kubeslice-botkube** bundle:
    helm repo add kubeslice/botkube
    ```
 
-3. Use the following command to create the `botkube` namespace.
+3. Use the following command to create the `botkube` namespace on the controller and worker clusters.
    
    ```
    kubectl create ns botkube
@@ -164,7 +160,6 @@ To deploy the **kubeslice-botkube** bundle:
    --set 'executors.k8s-default-tools.botkube/kubectl.enabled'=true \
    --set 'executors.k8s-default-tools.botkube/helm.enabled'=true
    ```
-
 
 5. Use the following command to deploy the **kubeslice-botkube** bundle on the worker cluster:
    
