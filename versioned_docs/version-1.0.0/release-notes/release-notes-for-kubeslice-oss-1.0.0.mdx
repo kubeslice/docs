@@ -13,18 +13,23 @@ We continue to add new features and enhancements to KubeSlice.
 These release notes describe the new changes and enhancements in this version.
 
 ### Worker Operator-generated Events
-The Worker Operator creates events and stores them in the `kubeslice-system` namespace. The events can 
+The Worker Operator generates events in the `kubeslice-system` namespace. The events can 
 be retrieved using the corresponding command.
 For more information, see [the Worker Operator events](../monitor/worker-operator-events).
 
 ### KubeSlice Metrics 
-KubeSlice now records the Kube State and custom metrics that helps in ensuring that the slice, 
-application pods, and other KubeSlice components are healthy. These metrics configured as alerts 
-can be tracked on Prometheus.   
+KubeSlice now records custom metrics that helps in monitoring the slice, and other KubeSlice 
+components. These Prometheus metrics can be configured as alerts using the alert manager.   
 For more information, see [KubeSlice metrics](../monitor/kubeslice-metrics) 
 and [Prometheus alert rules](../monitor/alert-rules).
 
-### Integrate Metric Alerts with Slack
-KubeSlice metric alerts can be integrated with Slack for brownfield and greenfield Prometheus deployments. 
-This integration facilitates tracking the metric alerts on a dedicated Slack channel. 
+### Event Integration on Slack 
+KubeSlice-generated events can be integrated on slack to track them on a separate application workspace besides 
+checking them on the KubeSlice Manager. 
+
+For more information, see [integrate KubeSlice-generated events on Slack](../monitor/slack-event-integration).
+
+### Metric-based Alerts Integration with Slack
+KubeSlice metric-based alerts can be integrated with Slack for brownfield and greenfield Prometheus deployments. 
+This integration facilitates tracking the metric-based alerts on a dedicated Slack channel. 
 For more information, see [integrate alerts with Slack](../monitor/alert-manager-slack).
