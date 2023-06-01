@@ -1,0 +1,39 @@
+# Release Notes for KubeSlice OSS 0.3.0
+*Release Date 12th September 2022*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this by creating logical application ***slice*** boundaries which allow pods and services to communicate seamlessly across clusters, clouds, edges, and data centres. 
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New
+
+These release notes describe the new changes and enhancements in this version.
+
+### Standard QoS Profile
+KubeSlice supports a standard QoS profile configuration in a separate YAML file. 
+This QoS profile must be applied and called out as a standard QoS profile in 
+a slice configuration. This is useful when you want to configure the same 
+QoS profile on multiple slices. For more information, see 
+[creating a standard QoS profile](/versioned_docs/version-1.0.0//getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-a-standard-qos-profile). 
+
+## Bug Fixes
+* The issue where the QoS traffic on a worker cluster did not work due to 
+  an incorrect *node port* while passing conContext to the NetOp pod is fixed. The 
+  issue has also occurred because the master node's *node IP address* was configured on 
+  the worker cluster. You must always configure the *node IP address* of the worker cluster's gateway node 
+  while installing the Slice Operator on the worker cluster.
+
+* The issue where an exponential increase of goroutine threads in the Gateway Sidecar 
+  component caused abrupt CPU utilization is fixed. The fix reduces the CPU utilization 
+  by around 500 percent. 
+
+## Supported Kubernetes Services 
+This version of KubeSlice has been tested on Azure Kubernetes Service and 
+Google Kubernetes Engine, and KIND Kubernetes clusters.  
+
+The supported Kubernetes versions for cloud clusters are 
+[1.20](https://v1-20.docs.kubernetes.io/), [1.21](https://v1-21.docs.kubernetes.io/),
+and [1.22](https://v1-22.docs.kubernetes.io/). 
+
+The supported Kubernetes versions for KIND clusters are 
+[1.21](https://v1-21.docs.kubernetes.io/) and [1.22](https://v1-22.docs.kubernetes.io/).

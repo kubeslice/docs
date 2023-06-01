@@ -1,0 +1,468 @@
+# Prepare Clusters 
+
+## Introduction
+This topic describes how to prepare your kind clusters to register with KubeSlice Controller.
+
+## Prepare Kind Clusters
+Using the kubeslice cli's `minimal-demo` or `full-demo` option creates kind clusters for you. 
+To use a new topology file for kubeslice-cli or configure KubeSlice with YAML, you must 
+prepare the kind clusters as described below. 
+
+### Prepare the Controller Cluster for Registration
+Create a YAML file to prepare the controller cluster for registration by using the 
+following template:
+
+:::info
+The `networking` property is required for the namespace isolation
+feature. By default, the kind cluster has the kindnet CNI setting, but it needs to be 
+disabled for the namespace isolation feature to work. We install Calico instead for the
+CNI network.
+:::
+
+:::info
+To understand more about the configuration parameters, see
+[kind - Configuration](https://kind.sigs.k8s.io/docs/user/configuration/).
+:::
+
+:::caution
+If you face memory issues with a **two-nodes** kind cluster, then use a
+**single-node** kind cluster.
+:::
+
+```
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "127.0.0.1"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 6443
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+  - role: worker
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"
+```
+
+ Use the following template to create a single-node controller cluster. 
+
+ ```
+ kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "127.0.0.1"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 6443
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"
+ ```
+
+### Apply the YAML File to Create the Controller Cluster 
+Apply the YAML File to  create the controller cluster by running this command:
+
+```
+kind create cluster --name <Controller-Cluster-Name> --config kind-controller-cluster.yaml
+```
+
+
+### Prepare the Worker Cluster 
+Create a YAML file to prepare the worker cluster for registration by using the 
+following template:
+
+:::info
+The `networking` property is required for the namespace isolation
+feature. By default, the kind cluster has the kindnet CNI setting, but it needs to be 
+disabled for the namespace isolation feature to work. We install Calico instead for the
+CNI network.
+:::
+
+:::info
+To understand more about the configuration parameters, see
+[kind – Configuration](https://kind.sigs.k8s.io/docs/user/configuration/).
+:::
+
+:::caution
+If you face memory issues with a **two-nodes** kind cluster, then use a
+**single-node** kind cluster.
+:::
+
+```
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking: 
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+  - role: worker
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c  
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"    
+```
+
+Use the following template to create a single-node worker cluster.
+
+```
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking: 
+  # By default kind takes kindnet CNI but we are disabling this to use netpol feature
+  disableDefaultCNI: true # disable kindnet 
+  podSubnet: 192.168.0.0/16 # set to Calico's default subnet
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "kubeslice.io/node-type=gateway"
+```
+
+### Apply the YAML File to Create the Worker Cluster
+Apply the YAML File to create the worker cluster by running this
+command:
+
+**For worker cluster 1**
+
+``` 
+kind create cluster --name <Worker-Cluster-Name-1> --config kind-Worker-cluster.yaml
+```
+
+**For worker cluster 2**
+
+```
+kind create cluster --name <Worker-Cluster-Name-2> --config kind-Worker-cluster.yaml
+```
+
+### Install Calico Networking and Network Security
+Install
+[Calico](https://projectcalico.docs.tigera.io/about/about-calico) to provide networking and
+network security for kind clusters.
+
+:::info
+Install Calico only after creating the clusters.
+:::
+
+To install Calico on a kind cluster:
+1. Install the operator on your cluster by using the following command:
+
+```
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/tigera-operator.yaml
+```
+
+2. Download the custom resources required to configure Calico by using
+the following command:
+
+```
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/custom-resources.yaml -O
+```
+
+Running the above command downloads a file, which contains the following
+content.
+
+```
+# This section includes base Calico installation configuration.
+# For more information, see: https://projectcalico.docs.tigera.io/v3.23/reference/installation/api#operator.tigera.io/v1.Installation
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  # Configures Calico networking.
+  calicoNetwork:
+    # Note: The ipPools section cannot be modified post-install.
+    ipPools:
+    - blockSize: 26
+      cidr: 192.168.0.0/16
+      encapsulation: VXLANCrossSubnet
+      natOutgoing: Enabled
+      nodeSelector: all()
+
+---
+
+# This section configures the Calico API server.
+# For more information, see: https://projectcalico.docs.tigera.io/v3.23/reference/installation/api#operator.tigera.io/v1.APIServer
+apiVersion: operator.tigera.io/v1
+kind: APIServer
+metadata:
+  name: default
+spec: {}
+```
+
+3. Create the manifest to install Calico by using the following
+command:
+
+```
+kubectl create -f custom-resources.yaml
+```
+
+4. Validate namespaces related to Calico by using the following
+command:
+
+```
+kubectl get ns
+```
+
+Expected Output
+
+```
+NAME                   STATUS   AGE
+calico-apiserver       Active   3d
+calico-system          Active   3d
+default                Active   3d
+kube-node-lease        Active   3d
+kube-public            Active   3d
+kube-system            Active   3d
+local-path-storage     Active   3d
+tigera-operator        Active   3d
+```
+
+5. Validate the Calico pods by using the following command: 
+
+```
+kubectl get pods -n calico-system
+```
+
+Expected Output
+
+```
+NAME                                       READY   STATUS    RESTARTS   AGE
+calico-kube-controllers-59f859b79d-vbmqh   1/1     Running   1          30s
+calico-node-nq7sp                          1/1     Running   0          30s
+calico-node-rhw7h                          1/1     Running   0          30s
+calico-node-tfqzp                          1/1     Running   0          30s
+calico-typha-8b888f7d8-fx62t               1/1     Running   0          30s
+calico-typha-8b888f7d8-vnb67               1/1     Running   0          30s
+```
+
+:::success
+Calico networking is installed successfully. 
+:::
+
+## Prepare Cloud Clusters for Registration
+You must prepare cloud clusters for registration as described in the following sections. 
+
+### Authenticate Clusters 
+
+:::info
+If you have already retrieved your credentials to log in to your clusters, continue to 
+[Label KubeSlice Nodes](#label-kubeslice-gateway-nodes) below.
+:::
+:::info 
+Perform these steps on each cluster that you want to register with the KubeSlice Controller.
+:::
+
+Before registering your clusters with KubeSlice Controller, you must authenticate with each cloud provider 
+that is used in your installation. Each of the following commands retrieves the relevant `kubeconfig` and 
+add it to your default `kubeconfig` path.
+
+### Azure Kubernetes Service 
+For information on prerequisites and authentication, see [Microsoft AKS Docs](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-credentials).
+The following information is required to retrieve your Microsoft Azure
+Kubernetes Service (AKS) `kubeconfig`.
+
+| **Variable**      |        **Description** |
+|-----|-----|
+| <resource group name\> |  The name of the resource group the cluster belongs to.
+  <cluster name\>         | The name of the cluster you would like to get credentials for.|
+
+The following command retrieves your AKS cluster `kubeconfig` and add it to your default `kubeconfig` path. Complete this step for each
+AKS cluster that you want to work with.
+
+``` 
+az aks get-credentials --resource-group <resource group name> --name <cluster name>
+```
+
+### Elastic Kubernetes Service 
+For information on prerequisites and other required details, see the [Amazon EKS documentation](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html).
+
+The following information is required to retrieve your Elastic Kubernetes
+Service (EKS) `kubeconfig`.
+
+| **Variable**  |     **Description** |
+|-----|----|
+|<cluster name\>  | The name of the cluster you want to get credentials for.|
+|  <cluster region\>       |  The AWS region the cluster belongs to.|
+
+The following command retrieves your EKS cluster `kubeconfig` and adds
+it to your default `kubeconfig` path. Complete this step for each EKS
+cluster that you want to work with.
+
+``` 
+aws eks update-kubeconfig --name <cluster-name> --region <cluster-region>  
+```
+
+### Google Kubernetes Engine
+For information on the prerequisites and other required details, see [Google Cloud CLI Docs](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials).
+
+The following information is required to retrieve your Google Kubernetes
+Engine (GKE) `kubeconfig`.
+
+| **Variable**  |     **Description** |
+|-----|----|
+|<cluster name\>  | The name of the cluster you want to get credentials for.|
+|  <region\>       |  The region the cluster belongs to.|
+| <project id\>    | The project ID that the cluster belongs to.|
+ 
+
+The following command retrieves your GKE cluster `kubeconfig` and adds
+it to your default `kubeconfig` path. Complete this step for each GKE
+cluster that you want to work with.
+
+``` 
+gcloud container clusters get-credentials <cluster name> --region <region> --project <project id>
+```
+
+Expected Output
+
+``` 
+Fetching cluster endpoint and auth data.
+kubeconfig entry generated for <cluster name>
+```
+
+### Label KubeSlice Gateway Nodes
+
+:::info
+Labeling gateway nodes only applies to the worker cluster.
+:::
+
+:::caution
+We recommend using a dedicated nodepool and follow the above instructions for labeling.
+:::
+
+If you have multiple node pools on your worker cluster, then you can add a
+label to each node pool. Labels are useful in managing scheduling rules
+for nodes.
+
+Perform these steps in each worker cluster that you want to register with 
+the KubeSlice Controller. If you have to use a single node pool, then perform the
+following steps.
+
+#### Azure Kubernetes Service
+AKS nodepools can only be set during nodepool creation. The nodepool
+must contain the `kubeslice.io/node-type=gateway` label. For instructions on creating
+a labeled nodepool, visit the [AKS documentation](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#setting-nodepool-labels).
+
+#### Elastic Kubernetes Service  
+Nodepools are called node groups in EKS clusters. The node group must contain 
+the `kubeslice.io/node-type=gateway` label. You can add or remove the Kubernetes 
+labels by editing a node group configuration as described in 
+[updating managed node groups](https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html).
+
+#### Google Kubernetes Engine
+The following information is required to label the GKE cluster nodepools.
+
+|**Variable** |       **Description** |
+|-----|----|
+|<nodepool name\>|   The name of the nodepool being labeled.|
+|<cluster name\>  |  The name of the cluster the nodepool being labeled belongs to.|
+|  <region\>      |    The Compute Engine region for the cluster the nodepool belongs to.|
+|  <zone\>         |   The Compute Engine zone for the cluster the nodepool belongs to.|
+ 
+The following command labels the GKE cluster nodepool: 
+
+``` 
+gcloud container node-pools update <nodepool name> \
+    --node-labels=kubeslice.io/node-type=gateway \
+    --cluster=<cluster name> \
+    [--region=<region> | --zone=<zone>]
+```
+
+### Verify Your Labels
+:::info
+Perform these steps on each cluster that you want to register with the KubeSlice.
+:::
+
+Perform these steps to verify your cluster labels:
+
+1.  To verify the label, switch to the context that you want to verify.
+    
+    ``` 
+    kubectx <cluster name>
+    ``` 
+2.  Use the following command to get all nodes with the `kubeslice.io/node-type=gateway` label.
+    ```
+    kubectl get no -l kubeslice.io/node-type=gateway
+    ```    
+3.  If you successfully set your labels, you  get a list of the labeled nodes in the cluster. Use the following command to verify if
+    each gateway node has an external IP address configured:
+    ```
+    kubectl get no -o wide
+    ```
+  
+## Add the Helm Repository
+
+To add the helm repository:
+
+1. Add the helm repository information to your local system.
+   ```
+   helm repo add kubeslice https://kubeslice.github.io/kubeslice/
+   ```
+   Expected Output
+   ``` 
+   "kubeslice" has been added to your repositories
+   ```
+2. Update the repositories on your system with the following command:
+   ``` 
+   helm repo update
+   ```
+   Expected Output
+   ``` 
+   Hang tight while we grab the latest from your chart repositories...
+   ...Successfully got an update from the "kubeslice" chart repository
+   Update Complete. ⎈Happy Helming!⎈
+   ```
+3. To verify the repository was added successfully, view the KubeSlice
+charts using the following command:
+   ``` 
+   helm search repo kubeslice
+   ```
+   Expected Output
+   ```
+   NAME                            CHART VERSION   APP VERSION     DESCRIPTION
+   kubeslice/botkube               v1.0.0          v1.0.0          Controller for the Kubeslice Botkube Slack app ...
+   kubeslice/cert-manager          v1.7.0          v1.7.0          A Helm chart for cert-manager
+   kubeslice/istio-base            1.16.0          1.16.0          Helm chart for deploying Istio cluster resource...
+   kubeslice/istio-discovery       1.16.0          1.16.0          Helm chart for istio control plane
+   kubeslice/kubeslice-controller  1.0.0           1.0.0           A Helm chart for kubeslice-controller
+   kubeslice/kubeslice-worker      1.0.0           1.0.0           A Helm chart for kubeslice-worker
+   kubeslice/prometheus            19.3.0          v2.41.0         Prometheus is a monitoring system and time seri...
+   ```
+ 
+:::success
+You have successfully prepared your clusters to install the KubeSlice.
+:::

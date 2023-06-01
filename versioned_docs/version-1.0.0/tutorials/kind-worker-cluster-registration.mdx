@@ -1,0 +1,171 @@
+# Register Worker Clusters
+The YAML files to register the kind worker cluster and install the Slice Operator 
+(Worker Operator) on them are described in this topic. 
+
+:::warning
+Istio does not work with kind clusters. 
+:::
+
+## Create the Cluster Registration YAML File
+Create the `cluster-reg.yaml`file for registering the worker cluster using the following
+template.
+
+:::info
+To understand more about the configuration parameters, see [Cluster
+Registration Configuration Parameters](/versioned_docs/version-1.0.0/reference/configuration-parameters.mdx#cluster-registration-configuration-parameters).
+
+The IP addresses used for inter-cluster tunnel creation. (Supports IPv4 and IPv6 IP address). If a node IP is not provided, Kubeslice will auto detect it from the gateway nodes.
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: <first-worker-cluster-name>  # kind-worker-1 
+  namespace: kubeslice-<project name> # kubeslice-avesha
+spec:
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>   
+---
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: <second-worker-cluster-name> # kind-worker-2
+  namespace: kubeslice-<project name> # kubeslice-avesha
+spec:
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>   
+```
+
+## Apply the Cluster Registration YAML File
+Apply the cluster-reg.yaml file by using the following command:
+
+```
+kubectl apply -f cluster-reg.yaml -n kubeslice-<project name>
+```
+
+## Validate the Registered Clusters
+Validate the registered clusters by using the following command:
+
+```
+kubectl get clusters -n kubeslice-<project name>
+```
+Example 
+```
+kubectl get clusters -n kubeslice-avesha
+```
+
+Expected Output
+
+```
+NAME           AGE
+kind-worker-1  51s
+kind-worker-2  51s
+```
+
+
+## Create the Slice Operator YAML File 
+Create the`slice-operator.yaml` file using the following template.
+
+:::info
+To understand more about the configuration parameters, see [Slice
+Operator Configuration Parameters](/versioned_docs/version-1.0.0/reference/configuration-parameters.mdx#slice-operator-configuration-parameters).
+:::
+
+```
+## Base64 encoded secret values from the controller cluster
+controllerSecret:
+  namespace: <namespace from secrets> 
+  endpoint: <base64 of (https://<kind-controller-control-plane-nodeip>:6443)>
+  ca.crt: <ca.crt from secrets>
+  token: <token from secrets>
+
+cluster:
+  name: <worker-cluster-name> # kind-worker-1
+  nodeIp: <worker-cluster-nodeip> # 172.18.0.6
+```
+
+#### Get the Node IPs of Worker Clusters
+Switch the context to the worker cluster.
+
+```
+kubectx <cluster name>
+```
+Retrieve the node IP of the worker cluster by running the following command:
+
+:::info
+The `grep` and `awk` commands do not work on Windows. Use Gitbash to use
+grep and awk commands if you are on Windows.
+:::
+
+```
+kubectl get nodes -o wide | grep master | awk '{ print $6 }'
+```
+
+Expected Output
+```
+172.18.0.6
+```
+
+Example of the Slice Operator YAML file
+
+```
+## Base64 encoded secret values from controller cluster
+controllerSecret:
+  namespace: a3ViZXNsaWNlLWF2ZXNoYQ==
+  endpoint: aHR0cHM6Ly8xNzIuMTguMC4zOjY0NDM=
+  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJeU1EVXlNekE1TkRBeU5Wb1hEVE15TURVeU1EQTVOREF5TlZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSjBwClh6MloxYXBNeXdGV1d0ek8wdnMvNHA0a0xQeVUyamF1blhiSmhhUDdwbytWRXIrcHB4cDMyNlBFMDdYTVBGYkkKY0hLWFdGUU1sSWRXK256UHRDYTMzdGRLdlRtYzZHR1k5bnJNeTBaRW1wcnd6Kzc1RmpXcE1lcXdROExHZnYzeQpoZlNqdmRSQ3JTSC9WMUlTUkxJc1VVcVlNeVJLYWZXWmMyRHpwM1RsS2M1d0UwWk5ldW5vMDRDRUttc0p5WmlPCkZVeXB4S05RbGdNd0hBdUZIWGVBSnMxbWhubDNYbHpRUlduRzFnZDBvTW5pZEsyUzhJSy9vZVk1OVVkaU5UV1EKdzMwa1JJWVZPOWE1S1B4aFhjMWtUQlhqQVlKL2dlZldNb1NYK3dnbnl2YWQyaUdvZWlnc0FJNVc1NGJVY2E2YQpnMUdlbnBvOENrZUdIQUNZVzdFQ0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZGSGVwbEVYNDA5RWR6RFRsQVlzUHV5TCtkdWtNQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFBMjhEUW54OEpHc1JJUGE4bENzSmxKa25ialVDVm9xQnhxNkMrelRhZm5PUXFFS1VVWQp6YlRjNjhxeDFLYVdQdzVEeXQzQWNERWZmTnUwbFNzekwrUy8rcDRUc0V1dVl0bzVuRFEwTkxrek5Qd0JrT2krCjFnRkxJNmZ4NnlSbGhNS0YrVG9zWnZObXRsc2J0bVUvWWRxWG5mdE1ya2tiNTFGdVhTUHNDeXU1eERLejZ6WEEKa2I5dWVpRE8xS2ZWVG4xZm5Ec3VuWmdraUJGZ05WZkdwcHlPWDZlbVVmcHgrVWhVeTJhZkljSTlWRE0rdWY5cQpDYVl4NTN5UzR4amErbk5OS1RJbnhkd0JGeTJ3ekdrZVFiVXVKeDBmdnhGdTRzeDFtRmRkQ1JTMUl4SzVDcE05CmphZHBTSUNWU3k3ZHJ6NzQ0cnV1VGZhZjlHeTJHY3p6ajJwSgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  token: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNkltZHdhRGx0U1djM04yb3pPRUl5WlUxd01VUlBjamMxUTJSTFJXdGlTMWRaY21KWWIxQTBSSGd4ZWxVaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUpyZFdKbGMyeHBZMlV0WVhabGMyaGhJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpXTnlaWFF1Ym1GdFpTSTZJbXQxWW1WemJHbGpaUzF5WW1GakxYZHZjbXRsY2kxM2IzSnJaWEl0TVMxMGIydGxiaTFyT0daMFp5SXNJbXQxWW1WeWJtVjBaWE11YVc4dmMyVnlkbWxqWldGalkyOTFiblF2YzJWeWRtbGpaUzFoWTJOdmRXNTBMbTVoYldVaU9pSnJkV0psYzJ4cFkyVXRjbUpoWXkxM2IzSnJaWEl0ZDI5eWEyVnlMVEVpTENKcmRXSmxjbTVsZEdWekxtbHZMM05sY25acFkyVmhZMk52ZFc1MEwzTmxjblpwWTJVdFlXTmpiM1Z1ZEM1MWFXUWlPaUl5WkRBNU5HTTNZeTAyTkRCbUxUUTFZVEl0WVdWak1DMDNaVGhpTkdGa09XUmxPRGNpTENKemRXSWlPaUp6ZVhOMFpXMDZjMlZ5ZG1salpXRmpZMjkxYm5RNmEzVmlaWE5zYVdObExXRjJaWE5vWVRwcmRXSmxjMnhwWTJVdGNtSmhZeTEzYjNKclpYSXRkMjl5YTJWeUxURWlmUS5nSmZzUWlGMjByeXRPaFpoQkVzTlNEUjl2cTdqUkg5amdoUkU3WllQbG9VUHV1VEJ2eHBYUW94V2xHcHlRMDVURXRlcGdSOUo1N3R6djFkTjNteTd5TVFSQmlUMWp4bld3UXhNV19QLUFPV01pSVpUeEZCUU04R0pMdVZDRFhqOXBudWpBTnFqMk8wWE5HQmliNlpEeWk1UGNmcEpzb1ZQT1Y2R2Uxcmt4UnRmeFplTkVyRDJOUmNtNG5oX2Z2d0ZoLWd3UW5yTEZoVUpvNVZyckFaNGwtSUlMbFhjZm03bnJBWTRoa19MWVpod2JLd2dLUWw4Qk1YVE8tcHRRSkJfczl0X3VFeExfaHlRRmthLTNwZzBSTjlIYWhzQWtQNlRKOUdTc0VWVVpJMmN6LWNkbVlzNDdaLWh6eHlpUnJyWEhwOE4xLUtUTXFtSTVlYXBPLUxnenc=
+
+cluster:
+  name: worker-1
+  nodeIp: 172.18.0.7
+```
+
+## Apply the Slice Operator Values File 
+The following information is required to apply the manifest file.
+
+| Parameter     |  Description |
+|---------------|--------------------------------|
+| `<values-file>` | The file name that contains the configuration values. |
+
+You must install the Slice Operator in the registered cluster.
+
+Apply the slice configuration through the `slice-operator.yaml` to the worker cluster by 
+using the following command:
+
+```
+helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of slice-operator.yaml> --namespace kubeslice-system  --create-namespace
+```
+
+## Validating the Slice Operator Installation 
+To validate the Slice Operator installation in the registered cluster,
+check the pods belonging to the namespace `kubeslice-system` by using
+the following command:
+
+```
+kubectl get pods -n kubeslice-system
+```
+
+Expected Output
+
+```
+NAME                                         READY   STATUS             RESTARTS      AGE
+forwarder-kernel-rjmkr                       1/1     Running            0             75s
+kubeslice-install-crds-kkdg4                 0/1     Completed          0             75s
+kubeslice-dns-85667c68fc-wb4dv               1/1     Running            0             75s
+kubeslice-netop-zb4jq                        1/1     Running            0             75s
+kubeslice-operator-76f5d97796-zv6nm          2/2     Running            0             75s
+nsm-admission-webhook-k8s-5cc8cd8bcd-pv7pm   1/1     Running            0             75s
+nsm-install-crds-1-z6bkd                     0/1     Completed          0             78s
+nsmgr-nmrv6                                  2/2     Running            0             75s
+registry-k8s-79c89968c4-gcm2k                1/1     Running            0             75s
+```
+
+:::info
+You must repeat the same sequence of steps that is getting secrets, creating the values .yaml file 
+and applying it on each worker cluster to install the Slice Operator on other worker 
+clusters. 
+:::
