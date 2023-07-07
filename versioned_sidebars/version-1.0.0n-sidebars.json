@@ -224,6 +224,61 @@
     },
     {
       "type": "category",
+      "label": "Tutorials",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Tutorials",
+        "description": "The tutorials section describes how to deploy applications such as BookInfo and iPerf. It also describes the demos using kubeslice-cli.",
+        "keywords": [
+          "tutorials", "kubeslice"
+        ]
+      },
+      "items": [
+                    {                
+            "type": "category",
+            "label": "kubeslice-cli Tutorials",
+            "collapsed": true,
+            "link": {
+              "type": "generated-index",
+              "title": "kubeslice-cli Tutorials",
+              "description": "The tutorials section of the documentation describes how to use the demo options on kind and cloud clusters.",
+              "keywords": [
+                "tutorials", "kubeslice-cli"
+              ]
+
+            },
+            "items": [
+              "tutorials/kubeslice-cli-tutorials/kubeslice-cli-demo-on-cloud-clusters",
+              "tutorials/kubeslice-cli-tutorials/kubeslice-cli-demo"
+                  ]
+          },
+          {                
+            "type": "category",
+            "label": "YAML Tutorials",
+            "collapsed": true,
+            "link": {
+              "type": "generated-index",
+              "title": "YAML Tutorials",
+              "description": "The tutorials section of the documentation describes how to test the network connectivity and deploy BookInfo and iPerf applications on a slice.",
+              "keywords": [
+                "tutorials", "kubeslice"
+              ]
+
+            },
+            "items": [
+              "tutorials/yaml-tutorials/test-network-connectivity",
+              "tutorials/yaml-tutorials/deploy-the-bookinfo-application-on-an-intra-cluster-slice",
+              "tutorials/yaml-tutorials/deploy-the-bookinfo-application",
+              "tutorials/yaml-tutorials/deploy-the-iperf-application-on-an-intra-cluster-slice",
+              "tutorials/yaml-tutorials/deploy-the-iperf-application"
+                  ]
+          }
+                
+      ]
+    },
+    {
+      "type": "category",
       "label": "Release Notes",
       "collapsed": true,
       "link": {
