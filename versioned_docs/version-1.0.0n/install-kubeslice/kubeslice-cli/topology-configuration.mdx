@@ -1,0 +1,178 @@
+# Topology Configuration Parameters
+
+In this topic, you will find a description of the parameters required to create the topology
+YAML file for installing KubeSlice.
+
+## Cluster Configuration Parameters
+The following table describes the cluster configuration parameters used to create the topology YAML.
+
+| Parameter                                                  | Parameter Type | Description                                                                                                       | Required  |
+| ---------------------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------- | --------- |
+| profile                                                    | String         | The KubeSlice profile to create demo clusters. The supported values are **minimal-demo** and **full-demo**.       | Mandatory |
+| kube_config_path                                           | String         | The absolute path to the `kubeconfig` file to use topology setup. It is used in the topology YAML file.           | Optional  |
+| cluster_type                                               | String         | The type of cluster on which KubeSlice is deployed. The acceptable values are `cloud`, `kind`, and `data-center`. | Optional  |
+| [controller](#controller-cluster-configuration-parameters) | Object         | The KubeSlice Controller cluster details.                                                                         | Mandatory |
+| [worker](#worker-cluster-configuration-parameters)         | Object         | The KubeSlice Worker clusters details.                                                                            | Mandatory |
+
+### Controller Cluster Configuration Parameters
+The following table describes the controller cluster configuration parameters used to create the topology YAML.
+
+| Parameter             | Parameter Type | Description                                                                                                                                                                                                                   | Required  |
+| --------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| name                  | String         | The user-defined name of the controller cluster.                                                                                                                                                                              | Mandatory |
+| context_name          | String         | The name of the context to use from the kubeconfig file; It is used in the topology YAML file.                                                                                                                                | Optional  |
+| kube_config_path      | String         | The absolute path to the kubeconfig file to install controller cluster. This takes precedence over the kubeconfig path defined under cluster configuration.                                                                   | Optional  |
+| control_plane_address | AlphaNumeric   | The address of the control plane kube-apiserver. The kubeslice-cli determines the address from kubeconfig. Override this option if the address in the kubeconfig is not reachable by other clusters in the topology.          | Mandatory |
+| node_ip               | Numeric        | The IP address of one of the node in the cluster. The kubeslice-cli determines the address from this command:`kubectl get nodes`. Override this option to an address which is discoverable by other clusters in the topology. | Mandatory |
+
+### Worker Cluster Configuration Parameters
+
+The following table describes the worker cluster configuration parameters.
+
+| Parameter             | Parameter Type | Description                                                                                                                                                                                                                   | Required  |
+| --------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| name                  | String         | The user-defined name of the worker cluster.                                                                                                                                                                                  | Mandatory |
+| context_name          | String         | The name of the context to use from kubeconfig file; It is used in the topology YAML only.                                                                                                                                    | Optional  |
+| kube_config_path      | String         | The absolute path to the kubeconfig file to install a worker cluster. This takes precedence over the kubeconfig path defined under cluster configuration.                                                                     | Optional  |
+| control_plane_address | AlphaNumeric   | The address of the control plane `kube-apiserver`. The kubeslice-cli determines the address from kubeconfig. Override this option if the address in the kubeconfig is not reachable by other clusters in the topology.        | Mandatory |
+| node_ip               | Numeric        | The IP address of one of the node in the cluster. The kubeslice-cli determines the address from this command:`kubectl get nodes`. Override this option to an address which is discoverable by other clusters in the topology. | Mandatory |
+
+## KubeSlice Configuration Parameters
+The following table describes the KubeSlice configuration parameters.
+
+| Parameter     | Parameter Type | Description                                                                                                                                    | Required  |
+| ------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| project_name  | String         | the user-defined name of the Kubeslice project.                                                                                                | Mandatory |
+| project_users | String         | This contains the list of KubeSlice project users to be created. The users will have read/write privileges. By default, admin user is created. | Optional  |
+
+## Helm Chart Configuration Parameters
+The following table describes the helm chart configuration parameters.
+
+| Parameter                                                                 | Parameter Type | Description                                                                                    | Required  |
+| ------------------------------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------- | --------- |
+| repo_alias                                                                | String         | The alias of the helm repo for KubeSlice charts.                                               | Optional  |
+| repo_url                                                                  | String         | The URL of the helm charts for KubeSlice.                                                      | Mandatory |
+| [cert_manager_chart](#certificate-manager-chart-configuration-parameters) | Object         | The cert-manager chart details.                                                                | Mandatory |
+| [controller_chart](#controller-chart-configuration-parameters)            | Object         | The Kubeslice Controller chart details.                                                        | Mandatory |
+| [worker_chart](#worker-chart-configuration-parameters)                    | Object         | The KubeSlice Worker chart details.                                                            | Mandatory |
+| [ui_chart](#ui-chart-configuration-parameters)                            | Object         | The KubeSlice Manager chart details.                                                           | Optional  |
+| helm_username                                                             | AlphaNumeric   | The helm username if the repo is private.                                                      | Optional  |
+| helm_password                                                             | AlphaNumeric   | The helm password if the repo is private.                                                      | Optional  |
+| [image_pull_secret](#image-pull-configuration-parameters)                 | Object         | The image pull secrets to pull the Kubernetes dashboard image. Required for Enterprise charts. | Mandatory |
+
+## Certificate Manager Chart Configuration Parameters
+The following table describes the certificate manager chart configuration parameters used to create topology YAML.
+
+| Parameter  | Parameter Type | Description                                                                           | Required  |
+| ---------- | -------------- | ------------------------------------------------------------------------------------- | --------- |
+| chart_name | String         | The name of the cert-manager chart.                                                   | Mandatory |
+| version    | Numeric        | The version of the cert-manager chart. Leave this value blank for the latest version. | Optional  |
+
+## Controller Chart Configuration Parameters
+The following table describes the controller chart configuration parameters used to create topology YAML.
+
+| Parameter  | Parameter Type | Description                                                                      | Required  |
+| ---------- | -------------- | -------------------------------------------------------------------------------- | --------- |
+| chart_name | String         | The name of the controller chart.                                                | Mandatory |
+| version    | Numeric        | The version of the chart. Leave this value blank for the latest version.         | Optional  |
+| values     | String         | The additional value that can be passed as --set arguments for **helm install**. | Optional  |
+
+## Worker Chart Configuration Parameters
+The following table describes the worker chart configuration parameters used to create topology YAML.
+
+| Parameter  | Parameter Type | Description                                                                      | Required  |
+| ---------- | -------------- | -------------------------------------------------------------------------------- | --------- |
+| chart_name | String         | The name of the worker chart.                                                    | Mandatory |
+| version    | Numeric        | The version of the chart. Leave this value blank for the latest version.         | Optional  |
+| values     | String         | The additional value that can be passed as --set arguments for **helm install**. | Optional  |
+
+## UI Chart Configuration Parameters
+The following table describes the UI chart configuration parameters used to create topology YAML.
+
+| Parameter  | Parameter Type | Description                                                                      | Required  |
+| ---------- | -------------- | -------------------------------------------------------------------------------- | --------- |
+| chart_name | String         | The name of the UI or enterprise chart.                                          | Mandatory |
+| version    | Numeric        | The version of the chart. Leave it blank for the latest version.                 | Optional  |
+| values     | String         | The additional value that can be passed as --set arguments for **helm install**. | Optional  |
+
+## Image Pull Secret Configuration Parameters
+The following table describes the image pull secret configuration parameters used to create topology YAML.
+
+| Parameter | Parameter Type | Description                                            | Required  |
+| --------- | -------------- | ------------------------------------------------------ | --------- |
+| registry  | String         | The endpoint of the OCI registry to use.               | Mandatory |
+| username  | AlphaNumeric   | The username to authenticate against the OCI registry. | Mandatory |
+| password  | AlphaNumeric   | The password to authenticate against the OCI registry. | Mandatory |
+| email     | AlphaNumeric   | The email to authenticate against the OCI registry.    | Mandatory |
+
+:::note
+The 'kube_config_path' parameter in the topology configuration requires the absolute path to the kubeconfig file.
+The 'kube_config_path' parameter must be set at the top-level, that is under **cluster_configuration**,' or under
+the **controller** and **workers** configuration.
+:::
+
+### Complete Topology Template
+The following template can be used to create a topology YAML file for installing KubeSlice.
+This is a complete list of all the values that can be passed in a topology file.
+
+```yaml
+configuration:
+  cluster_configuration:
+    profile: #{the KubeSlice Profile for the demo. Possible values [full-demo, minimal-demo]}
+    kube_config_path: #{specify the kube config file to use for topology setup; for topology only}
+    cluster_type: #{optional: specify the type of cluster. Valid values are kind, cloud, data-center}
+    controller:
+      name: #{the user defined name of the controller cluster}
+      context_name: #{the name of the context to use from kubeconfig file; for topology only}
+      kube_config_path:#{the path to kube config file to use for controller installation; for topology only.}
+        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+      control_plane_address:#{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
+        #{Override this flag if the address in kubeconfig is not reachable by other clusters in topology}
+      node_ip:#{the IP address of one of the node in this cluster. kubeslice-cli determines this address from kubectl get nodes}
+        #{Override this flag to an address which is discoverable by other clusters in the topology}
+    workers: #{specify the list of worker clusters}
+      - name: #{the user defined name of the worker cluster}
+        context_name: #{the name of the context to use from the kubeconfig file; for topology only}
+        kube_config_path:#{the path to kube config file to use for worker installation; for topology only.}
+          #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+        control_plane_address:#{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
+          #{Override this flag if the address in kubeconfig is not reachable by other clusters in topology}
+        node_ip:#{the IP address of one of the node in this cluster. kubeslice-cli determines this address from kubectl get nodes}
+          #{Override this flag to an address which is discoverable by other clusters in the topology}
+      - name: #{the user defined name of the worker cluster}
+        context_name: #{the name of the context to use from the kubeconfig file; for topology only}
+        kube_config_path:#{the path to kube config file to use for worker installation; for topology only.}
+          #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+        control_plane_address:#{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
+          #{Override this flag if the address in kubeconfig is not reachable by other clusters in topology}
+        node_ip:#{the IP address of one of the node in this cluster. kubeslice-cli determines this address from kubectl get nodes}
+          #{Override this flag to an address which is discoverable by other clusters in the topology}
+  kubeslice_configuration:
+    project_name: #{the name of the KubeSlice Project}
+    project_users: #{optional: specify KubeSlice Project users with Readw-Write access. Default is admin}
+  helm_chart_configuration:
+    repo_alias: #{The alias of the helm repo for KubeSlice Charts}
+    repo_url: #{The URL of the Helm Charts for KubeSlice}
+    cert_manager_chart:
+      chart_name: #{The name of the Cert Manager Chart}
+      version: #{The version of the chart to use. Leave blank for latest version}
+    controller_chart:
+      chart_name: #{The name of the Controller Chart}
+      version: #{The version of the chart to use. Leave blank for latest version}
+      values: #(Values to be passed as --set arguments to helm install)
+    worker_chart:
+      chart_name: #{The name of the Worker Chart}
+      version: #{The version of the chart to use. Leave blank for latest version}
+      values: #(Values to be passed as --set arguments to helm install)
+    ui_chart:
+      chart_name: #{The name of the UI/Enterprise Chart}
+      version: #{The version of the chart to use. Leave blank for latest version}
+      values: #(Values to be passed as --set arguments to helm install)
+    helm_username: #{Helm Username if the repo is private}
+    helm_password: #{Helm Password if the repo is private}
+    image_pull_secret: #{The image pull secrets. Optional for OpenSource, required for enterprise}
+      registry: #{The endpoint of the OCI registry to use. Default is `https://index.docker.io/v1/`}
+      username: #{The username to authenticate against the OCI registry}
+      password: #{The password to authenticate against the OCI registry}
+      email: #{The email to authenticate against the OCI registry}
+```

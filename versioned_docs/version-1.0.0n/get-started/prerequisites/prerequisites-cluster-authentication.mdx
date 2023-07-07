@@ -1,0 +1,73 @@
+# Cluster Authentication 
+Before registering each worker cluster with the KubeSlice Controller, you must 
+authenticate with each cloud provider used in the installation.
+
+To register your worker clusters with the KubeSlice Controller, it is 
+necessary to authenticate with each cloud provider used in the installation. 
+To accomplish this, run the commands below to retrieve the relevant kubeconfig file 
+and add it to your default kubeconfig path.
+
+## Azure Kubernetes Service (AKS) 
+For information on prerequisites and authentication, see [Microsoft AKS Docs](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-get-credentials).
+The following information is required to retrieve your Microsoft Azure
+Kubernetes Service (AKS) `kubeconfig`.
+
+| **Variable**      |        **Description** |
+|-----|-----|
+| <resource group name\> |  The name of the resource group the cluster belongs to.
+  <cluster name\>         | The name of the cluster you would like to get credentials for.|
+
+The following command retrieves your AKS cluster `kubeconfig` and add it to your default `kubeconfig` path. Complete this step for each
+AKS cluster in the configuration.
+
+``` 
+az aks get-credentials --resource-group <resource group name> --name <cluster name>
+```
+
+## AWS Elastic Kubernetes Service (EKS)
+For information on prerequisites and other required details, see the [Amazon EKS documentation](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html).
+
+The following information is required to retrieve your Elastic Kubernetes
+Service (EKS) `kubeconfig`.
+
+| **Variable**  |     **Description** |
+|-----|----|
+|<cluster name\>  | The name of the cluster you want to get credentials for.|
+|  <cluster region\>       |  The AWS region the cluster belongs to.|
+
+ 
+The following command retrieves your EKS cluster `kubeconfig` and adds
+it to your default `kubeconfig` path. Complete this step for each EKS
+cluster in the configuration.
+
+``` 
+aws eks update-kubeconfig --name <cluster-name> --region <cluster-region>  
+```
+
+## Google Kubernetes Engine (GKE)
+For information on the prerequisites and other required details, see [Google Cloud CLI Docs](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials).
+
+The following information is required to retrieve your Google Kubernetes
+Engine (GKE) `kubeconfig`.
+
+| **Variable**  |     **Description** |
+|-----|----|
+|<cluster name\>  | The name of the cluster you want to get credentials for.|
+|  <region\>       |  The region the cluster belongs to.|
+| <project id\>    | The project ID that the cluster belongs to.|
+ 
+
+The following command retrieves your GKE cluster `kubeconfig` and adds
+it to your default `kubeconfig` path. Complete this step for each GKE
+cluster in the configuration.
+
+``` 
+gcloud container clusters get-credentials <cluster name> --region <region> --project <project id>
+```
+
+Expected Output
+
+``` 
+Fetching cluster endpoint and auth data.
+kubeconfig entry generated for <cluster name>
+```

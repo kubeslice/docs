@@ -60,6 +60,11 @@ const config = {
               path: '1.0.0',
               banner: 'none'
             },
+            '1.0.0n':{
+              label: '1.0.0n',
+              path: '1.0.0n',
+              banner: 'none'
+            },
             '0.7.0':{
               label: '0.7.0',
               path: '0.7.0',

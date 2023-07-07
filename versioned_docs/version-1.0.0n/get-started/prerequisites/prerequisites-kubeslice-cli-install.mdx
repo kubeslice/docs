@@ -1,0 +1,97 @@
+# Installing kubeslice-cli
+
+## Introduction 
+
+kubeslice-cli is a command-line tool designed to simplify KubeSlice operations on Kubernetes 
+and cloud clusters. With this tool, you can easily install and uninstall the necessary 
+workloads to run the KubeSlice Controller and Slice Operator on specific clusters. Additionally, 
+it registers these clusters as part of a KubeSlice multi-cluster configuration and manages slices across them.
+
+To use the tool, you provide input in the form of YAML files. The topology YAML file describes 
+the cluster membership in the multi-cluster configuration, while the slice configuration YAML 
+file defines slices across these clusters. By using these YAML files, kubeslice-cli simplifies 
+the KubeSlice installation process by configuring each cluster appropriately. This way, you 
+can install KubeSlice on your on-premises or cloud clusters without any hassle.
+
+## Install the kubeslice-cli Tool
+To install the `kubeslice-cli` tool on different operating systems, download an executable version from the 
+[Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+### Install kubeslice-cli on Windows
+
+To install kubeslice-cli:
+
+1. Download the latest Windows version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+   After downloading the executable file, rename it to **kubeslice-cli.exe** for ease of use.
+
+2. Navigate to the directory where you have downloaded the executable file or provide the absolute path to run the `kubeslice-cli` command.
+
+3. Ensure the downloaded version is the latest using the following command:
+   ```
+   .\kubeslice-cli.exe --version
+   ```
+### Install kubeslice-cli on Linux
+
+To install kubeslice-cli on Linux or Ubuntu:
+[comment]: <!-- What is the difference between linux or Ubuntu?-->
+
+1. Download the latest Linux version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+2. Create a symlink to access the file:
+   :::info
+   A symlink is a symbolic Linux/ UNIX link that points to another file or folder on your computer, or a connected file system.
+   :::
+   ```
+   ln -s <downloaded-binary>  ~/bin/kubeslice-cli
+   ```
+3. Ensure the downloaded version is the latest using the following command:
+   ```
+   kubeslice-cli --version
+   ```
+
+### Install kubeslice-cli on macOS
+
+To install kubeslice-cli:
+
+1. Download the latest macOS version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+2. Fix the error. When you try to install kubeslice-cli on macOS, you get the **Unverified Developer Error Message**.
+   This error message appears when you try to install an application from a developer who is not registered with Apple.
+
+   ![mac](/images/kubeslice-cli/mac-download.png)
+
+   
+   To fix the `Unverified developer error message`, follow the instructions in [enabling the application for macOS](https://www.alphr.com/cannot-be-opened-because-the-developer-cannot-be-verified/).
+
+3. Create a symlink to access the file:
+   :::info
+   A symlink is a symbolic Linux/ UNIX link that points to another file or folder on your computer, or a connected file system.
+   :::
+   ```
+   ln -s <downloaded-binary>  ~/bin/kubeslice-cli
+   ```
+4. Ensure the downloaded version is the latest using the following command:
+   ```
+   kubeslice-cli --version
+
+### Download kubeslice-cli using Wget
+
+See the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page for the latest version. Use the following command to 
+download the latest binary (~6 MB):
+
+```
+sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/<latest-version>/kubeslice-cli-<latest-version>-linux-amd64 -o /usr/local/bin/kubeslice-cli
+```
+
+Example
+```
+sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.5.0/kubeslice-cli-0.5.0-linux-amd64  -o /usr/local/bin/kubeslice-cli
+```
+Make the binary executable using the following command:
+```
+sudo chmod a+x /usr/local/bin/kubeslice-cli
+```
+Ensure the downloaded version is the latest using the following command:
+```
+kubeslice-cli -v
+```

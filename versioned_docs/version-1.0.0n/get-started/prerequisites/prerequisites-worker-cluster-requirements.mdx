@@ -1,0 +1,16 @@
+# Worker Cluster
+Note that the information provided on this page represents the **minimum** requirements 
+for installing the product. It is essential to understand that these requirements may vary 
+depending on the specific workload of each customer. However, following these minimum 
+requirements will ensure a successful installation of the product.
+
+|                                                 |                                                                                                                                           |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cluster Requirements**                        | 1 Kubernetes Cluster                                                                                                                      |
+| **NodePools Required**                          | 2 node pools with a minimum of 2 nodes each sized with a minimum of 4 vCPUs and 16GB of RAM.                                              |
+| **NodePools Reserved for KubeSlice Components** | 1 NodePool - We highly recommend creating a separate NodePool for KubeSlice components to improve performance and simplify management.    |
+| **Supported Kubernetes Versions**               | [1.23](https://v1-23.docs.kubenetes.io) and [1.24](https://v1-24.docs.kubernetes.io)                                                      |
+| **Supported Kubernetes Services**               | Azure Kubernetes Service (AKS), AWS Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), and Rancher Kubernetes Engine (RKE) |
+| **Required Helm Version**                       | 3.7.0                                                                                                                                     |
+| **Required Istio Version**                      | 1.16.0                                                                                                                                    |
+| **Required Prometheus Version**                 | 19.2.2                                                                                                                                    |
