@@ -12,6 +12,27 @@ requirements will ensure a successful installation of the product.
 | **Supported Kubernetes Services** | Azure Kubernetes Service (AKS), AWS Elastic Kubernetes Service (EKS), Google Kubernetes Engine (GKE), and Rancher Kubernetes Engine (RKE)                                                                    |
 | **Required Helm Version**         | 3.7.0                                                                                                                                                                                                        |
 
+
+## Kind Clusters 
+The following are the infrastructure requirements to install KubeSlice
+components.
+
+:::info
+If you are on Ubuntu OS, then it is recommended to increase the `ulimit`
+to 2048 or unlimited.
+
+If you still face issues, see [errors due to too many open files](https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files).
+:::
+
+|                                         |                           |
+|-----------------------------------------|---------------------------|
+| **Host Requirements**               | Minimum of 8vCPUs and 8GB of RAM  |
+
+:::info
+Ensure to modify the memory and CPU usage allowed to docker as described in           
+https://docs.docker.com/desktop/windows/#resources. 
+::: 
+
 :::info
 KubeSlice has been tested on AKS, GKE, and EKS, but it should run in any Kubernetes
 environment with the supported Kubernetes versions.
