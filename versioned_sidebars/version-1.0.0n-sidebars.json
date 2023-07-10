@@ -26,7 +26,7 @@
       "link": {
         "type": "generated-index",
         "title": "Playground",
-        "description": "Welcome to the KubeSlice Playground, a limited-time sandbox environment that allows you to explore and experiment with KubeSlice Enterprise on kind clusters. This playground provides a preconfigured setup with all the necessary tool sets and is available for a duration of 4 hours. With this installation guide, you will be guided through the process of setting up KubeSlice on kind clusters, creating slices across the clusters, and testing connectivity using the iPerf tool. Furthermore, you will have the opportunity to visualize clusters, slices, and related data using the intuitive KubeSlice Manager UI.",
+        "description": "Welcome to the KubeSlice Playground, a limited-time sandbox environment that allows you to explore and experiment with KubeSlice Enterprise on kind clusters. This playground provides a preconfigured setup with all the necessary tool sets and is available for a duration of 4 hours. With this installation guide, you will be guided through the process of setting up KubeSlice on kind clusters, creating slices across the clusters, and testing connectivity using the iPerf tool.",
         "keywords": [
           "playground", "kubeslice"
         ]
@@ -196,7 +196,7 @@
         "title": "Add-ons",
         "description": "The add-on section of the documentation provides valuable insights and instructions for extending the functionality of KubeSlice through various add-ons. These add-ons enhance and customize KubeSlice's capabilities to meet specific use cases and requirements. The documentation outlines how to install, configure, and utilize these add-ons effectively. Whether it's integrating with monitoring tools, enabling advanced networking features, or implementing additional security measures, the add-on section offers comprehensive guidance on expanding KubeSlice's capabilities beyond its core features. By exploring the add-ons, users can unlock new possibilities and tailor KubeSlice to suit their unique needs, making it a versatile and adaptable tool for managing slices and optimizing cluster resources.",
         "keywords": [
-          "kubeslice-manager", "kubeslice"
+         "kubeslice"
         ]
       },
       "items": [
