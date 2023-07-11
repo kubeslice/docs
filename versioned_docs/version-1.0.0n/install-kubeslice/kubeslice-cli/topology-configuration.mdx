@@ -55,7 +55,6 @@ The following table describes the helm chart configuration parameters.
 | [cert_manager_chart](#certificate-manager-chart-configuration-parameters) | Object         | The cert-manager chart details.                                                                | Mandatory |
 | [controller_chart](#controller-chart-configuration-parameters)            | Object         | The Kubeslice Controller chart details.                                                        | Mandatory |
 | [worker_chart](#worker-chart-configuration-parameters)                    | Object         | The KubeSlice Worker chart details.                                                            | Mandatory |
-| [ui_chart](#ui-chart-configuration-parameters)                            | Object         | The KubeSlice Manager chart details.                                                           | Optional  |
 | helm_username                                                             | AlphaNumeric   | The helm username if the repo is private.                                                      | Optional  |
 | helm_password                                                             | AlphaNumeric   | The helm password if the repo is private.                                                      | Optional  |
 | [image_pull_secret](#image-pull-configuration-parameters)                 | Object         | The image pull secrets to pull the Kubernetes dashboard image. Required for Enterprise charts. | Mandatory |
@@ -86,24 +85,7 @@ The following table describes the worker chart configuration parameters used to 
 | version    | Numeric        | The version of the chart. Leave this value blank for the latest version.         | Optional  |
 | values     | String         | The additional value that can be passed as --set arguments for **helm install**. | Optional  |
 
-## UI Chart Configuration Parameters
-The following table describes the UI chart configuration parameters used to create topology YAML.
 
-| Parameter  | Parameter Type | Description                                                                      | Required  |
-| ---------- | -------------- | -------------------------------------------------------------------------------- | --------- |
-| chart_name | String         | The name of the UI or enterprise chart.                                          | Mandatory |
-| version    | Numeric        | The version of the chart. Leave it blank for the latest version.                 | Optional  |
-| values     | String         | The additional value that can be passed as --set arguments for **helm install**. | Optional  |
-
-## Image Pull Secret Configuration Parameters
-The following table describes the image pull secret configuration parameters used to create topology YAML.
-
-| Parameter | Parameter Type | Description                                            | Required  |
-| --------- | -------------- | ------------------------------------------------------ | --------- |
-| registry  | String         | The endpoint of the OCI registry to use.               | Mandatory |
-| username  | AlphaNumeric   | The username to authenticate against the OCI registry. | Mandatory |
-| password  | AlphaNumeric   | The password to authenticate against the OCI registry. | Mandatory |
-| email     | AlphaNumeric   | The email to authenticate against the OCI registry.    | Mandatory |
 
 :::note
 The 'kube_config_path' parameter in the topology configuration requires the absolute path to the kubeconfig file.
@@ -164,15 +146,4 @@ configuration:
       chart_name: #{The name of the Worker Chart}
       version: #{The version of the chart to use. Leave blank for latest version}
       values: #(Values to be passed as --set arguments to helm install)
-    ui_chart:
-      chart_name: #{The name of the UI/Enterprise Chart}
-      version: #{The version of the chart to use. Leave blank for latest version}
-      values: #(Values to be passed as --set arguments to helm install)
-    helm_username: #{Helm Username if the repo is private}
-    helm_password: #{Helm Password if the repo is private}
-    image_pull_secret: #{The image pull secrets. Optional for OpenSource, required for enterprise}
-      registry: #{The endpoint of the OCI registry to use. Default is `https://index.docker.io/v1/`}
-      username: #{The username to authenticate against the OCI registry}
-      password: #{The password to authenticate against the OCI registry}
-      email: #{The email to authenticate against the OCI registry}
 ```

@@ -103,7 +103,8 @@
               "items": [
                   "install-kubeslice/kubeslice-cli/command-reference",
                   "install-kubeslice/kubeslice-cli/topology-configuration",
-                  "install-kubeslice/kubeslice-cli/install-kubeslice"
+                  "install-kubeslice/kubeslice-cli/install-kubeslice",
+                  "install-kubeslice/kubeslice-cli/uninstall-kubeslice"
               ]
           },
           {
@@ -130,7 +131,7 @@
                       "link": {
                         "type": "generated-index",
                         "title": "Slice Operations",
-                        "description": "The Slice Operations page serves as a comprehensive guide for performing various operations and tasks with Kubeslice. It covers a wide range of topics related to managing and manipulating Kubernetes slices using Kubeslice's powerful features and functionality. The page includes detailed instructions and examples for each submenu of Slice Operations, including Slice Creation, Assigning Node Labels, Managing and Monitoring Resource Quotas, and Managing RBAC (Role-Based Access Control). By following the guidance provided in this section, users can effectively leverage Kubeslice to streamline their slice management processes. They will learn how to create slices, define node labels for resource allocation, set and monitor resource quotas for slices, and manage RBAC permissions for secure access control. This knowledge will enable users to optimize resource utilization, improve scalability, and ensure efficient operations of their Kubernetes applications. Explore the Slice Operations page and its submenus to gain a deeper understanding of Kubeslice's capabilities and enhance your Kubernetes slice management skills.",
+                        "description": "The Slice Operations page serves as a comprehensive guide for performing various operations and tasks with Kubeslice. It covers a wide range of topics related to managing and manipulating Kubernetes slices using Kubeslice's powerful features and functionality. The page includes detailed instructions and examples for each submenu of Slice Operations, including Slice Creation, . By following the guidance provided in this section, users can effectively leverage Kubeslice to streamline their slice management processes. They will learn how to create slices. This knowledge will enable users to ensure efficient operations of their Kubernetes applications. Explore the Slice Operations page and its submenus to gain a deeper understanding of Kubeslice's capabilities and enhance your Kubernetes slice management skills.",
                         "keywords": [
                           "slice-operations", "kubeslice"
                         ]

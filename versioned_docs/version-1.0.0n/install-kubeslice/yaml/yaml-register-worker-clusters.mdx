@@ -39,7 +39,6 @@ The parameters are related to the cluster property configured in the
 | Parameter                              | Parameter Type | Description                                                               | Required |
 | -------------------------------------- | -------------- | ------------------------------------------------------------------------- | -------- |
 | [geoLocation](#geolocation-parameters) | Object         | It contains information on the geological location of the worker cluster. | Optional |
-| [telemetry](#telemetry-parameters)     | Object         | It contains the telemetry configuration of the worker cluster.            | Optional |
 
 #### Geolocation Parameters
 
@@ -48,13 +47,6 @@ The parameters are related to the cluster property configured in the
 | cloudProvider | String         | The name of your cloud provider                          | Optional |
 | cloudRegion   | String         | The cloud provider region where your cluster is located. | Optional |
 
-#### Telemetry Parameters
-
-| Parameter         | Parameter Type | Description                                                                                                        | Required |
-| ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------------ | -------- |
-| enabled           | Boolean        | It is a setting to indicate whether or not the telemetry is enabled on the worker cluster. It must be set to true. | Optional |
-| telemetryProvider | String         | The name of the telemetry provider. Currently, only prometheus is the supported telemetry provider.                | Optional |
-| endpoint          | String         | The value is the Prometheus URL (Server Domain Name/ IP).                                                          | Optional |
 
 ## Create Cluster Registration YAML 
 You can list multiple clusters in a single registration YAML file and register them with the KubeSlice Controller.
@@ -65,18 +57,20 @@ Create your cluster `registration.yaml` file using the following template:
 To understand more about the parameters, see [Cluster Registration Configuration Parameters](#cluster-registration-configuration-parameters).
 :::
 
-``` 
+```
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
 metadata:
   name: <cluster-name-1>
   namespace: kubeslice-<projectname>
 spec:
-  networkInterface: <network_interface>
   clusterProperty:
     geoLocation:
       cloudProvider: "<cloud_provider>"
       cloudRegion: "<cloud_region>"
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>    
 ---
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -84,32 +78,22 @@ metadata:
   name: <cluster-name-2>
   namespace: <kubeslice-projectname>
 spec:
-  networkInterface: <network_interface>
   clusterProperty:   
     geoLocation:
       cloudProvider: "<cloud_provider>"
       cloudRegion: "<cloud_region>"
+    nodeIPs: # Optional
+      - <IP address -1>
+      - <IP address -2>   
 ```
 
-### Example YAML File Only with Mandatory Parameters
-``` 
-apiVersion: controller.kubeslice.io/v1alpha1
-kind: Cluster
-metadata:
-  name: worker-1
-  namespace: kubeslice-avesha
-spec:
-  networkInterface: eth0
----
-apiVersion: controller.kubeslice.io/v1alpha1
-kind: Cluster
-metadata:
-  name: worker-2
-  namespace: kubeslice-avesha
-spec:
-  networkInterface: eth0
-```
-### Example YAML Expanded file
+:::info
+The IP addresses used for inter-cluster tunnel creation. (Supports IPv4 and IPv6 IP address). If a node IP is not provided, Kubeslice will 
+auto detect it from the gateway nodes.
+:::
+
+
+Example YAML file
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -117,11 +101,13 @@ metadata:
   name: worker-cluster-1
   namespace: avesha
 spec:
-  networkInterface: eth0
   clusterProperty:   
     geoLocation:
       cloudProvider: "AZURE"
       cloudRegion: "eastus"
+  nodeIPs: # Optional
+    - <IP address -1>
+    - <IP address -2>   
 ---
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -129,12 +115,34 @@ metadata:
   name: worker-cluster-2
   namespace: avesha
 spec:
-  networkInterface: eth0
   clusterProperty:   
     geoLocation:
       cloudProvider: "AZURE"
       cloudRegion: "westus2"
+  nodeIPs: # Optional
+    - <IP address -1>
+    - <IP address -2>   
 ```
+
+Example YAML File Only with Mandatory Parameters
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: worker-1
+  namespace: kubeslice-avesha
+spec:
+---
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: Cluster
+metadata:
+  name: worker-2
+  namespace: kubeslice-avesha
+spec:
+
+```
+
 ### Apply the Cluster Registration YAML File 
 
 The following information is required.
@@ -197,9 +205,6 @@ integrate with the KubeSlice Controller and utilize its features.
 |`kubeslice-<projectname>`|The given name of your project. For example, add `kubeslice-avesha` as the project namespace.|
 |`<network-interface>`| The worker network interface you get in the above output by doing route lookup on the `EXTERNAL` IP address. For example, add `eth0` as the parameter value.|
 |`<worker-api-endpoint`| The endpoint of the worker cluster you get by running this command: `kubectl cluster-info`. For example, add `https://34.105.95.217` as the endpoint.|
-|`<kubesliceRegistrationUsername>`| The username you received in the KubeSlice Registration email.|
-|`<kubesliceRegistrationPassword>`| The password you received in the KubeSlice Registration email.|
-|`<kubesliceRegistrationEmail>`| The email address you used in the KubeSlice Registration process.|
 
 ### Getting the Worker Network Interface
 
@@ -246,10 +251,6 @@ networkInterface=$4
 # kubectl cluster-info of respective worker-cluster
 worker_endpoint=$5
 
-# Enter your username getting through mail
-dusername=$6
-# Enter your password getting through mail
-dpassword=$7
 
 ######################
 # actual script starts
@@ -274,11 +275,6 @@ cluster:
   endpoint: ${worker_endpoint}
 netop:
   networkInterface: ${networkInterface}             
-imagePullSecrets:
-  repository: https://index.docker.io/v1/
-  username: ${kubesliceRegistrationUsername}                             
-  password: ${kubesliceRegistrationPassword}                             
-  email: ${kubesliceRegistrationEmail}
 ```
 
 ### Execute `secrets.sh` script
@@ -310,11 +306,6 @@ cluster:
   endpoint: https://34.105.95.217
 netop:
   networkInterface: eth0
-imagePullSecrets:
-  repository: https://index.docker.io/v1/
-  username: Kumar
-  password: 5585799-5d5a-48fa-b805-f4a1ffb110
-  email: aveshaenterprise@gmail.com
 ```
 
 ## Manually Retrieve Registered Cluster Secrets
@@ -442,7 +433,7 @@ The following tables describe the configuration parameters used to install the S
 | [controllerSecret](#controller-secret-parameters)      | Object         | This contains the secrets to connect to controller cluster.                                                          | Optional  |
 | [cluster](#cluster-parameters)                         | Object         | This contains the information about the worker cluster.                                                              | Optional  |
 | [netop](#network-operator)                             | Object         | This contains the parameters related to network operations such as enforcing the QoS profile configured for a slice. | Mandatory |
-| [imagePullSecrets](#slice-operator-image-pull-secrets) | Object         | This contains the secrets to access the repository that contains the image.                                          | Mandatory |
+
 
 #### Slice Operator Parameters
 
@@ -557,11 +548,6 @@ cluster:
 netop:
   networkInterface: eth0
 
-imagePullSecrets:
-  repository: https://index.docker.io/v1/
-  username: <username from KubeSlice Registration email>
-  password: <accesstoken from KubeSlice Registration email>
-  email: <KubeSlice Registration email ID>
 ```
 
 ### Apply the Slice Operator YAML
@@ -584,7 +570,6 @@ Apply Slice Operator:
    ```
    helm install kubeslice-worker kubeslice/kubeslice-worker -f <full path of sliceoperator>.yaml -n kubeslice-system --create-namespace
    ```
-
 
 ### Validate the Slice Operator Installation 
 To validate the Slice Operator installation on the worker cluster, check the pods status 
@@ -627,6 +612,7 @@ spire-server-0            2/2     Running   0          2m29s
 You have successfully installed the Slice Operator on the worker cluster. Repeat the above steps to 
 install the Slice Operator on all the participating worker clusters.
 :::
+
 :::success
 You have successfully registered the worker clusters with the KubeSlice Controller.
 :::

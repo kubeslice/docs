@@ -70,27 +70,6 @@ below:
    kubectl delete mutatingwebhookconfiguration kubeslice-mutating-webhook-configuration
    ```
 
-## IdP Integration Issues
-
-### Why do I get an error stating that my IdP account doesn't exist on the KubeSlice Manager login page?
-
-The access to KubeSlice project is controlled by Kubernetes RoleBinding. Make sure that you have
-created a ` RoleBinding`` with necessary RBAC on the KubeSlice project namespace for your IdP account. 
-You can use one of the out-of-the-box roles ( `kubeslice-read-only`or`kubeslice-read-write`) or
-create a new role for the role binding.
-
-### Why don't I see the IdP login button on the KubeSlice Manager login page?
-
-The IdP configuration gets persisted in `kubeslice-ui-oidc` Kubernetes Secret
-in the `kubeslice-controller` namespace. If you're not seeing the IdP login button or having issues,
-make sure that the configuration in this secret is correct. After modifying the value of the
-secret, it may take up to 90 seconds for the secret to get propagated to the volume mounts. If you
-still don't see the updated configuration, you need to restart the `kubeslice-api-gw` deployment using
-the following command:
-
-```
-kubectl rollout restart deploy/kubeslice-api-gw -n kubeslice-controller
-```
 
 ## Connectivity Issues
 

@@ -40,13 +40,6 @@ configuration:
       chart_name: kubeslice-controller
     worker_chart:
       chart_name: kubeslice-worker
-    ui_chart:
-      chart_name: kubeslice-ui
-    image_pull_secret: #{The image pull secrets. Optional for OpenSource, required for enterprise}
-      registry: https://index.docker.io/v1/
-      username: '<username from registration email>'
-      password: '<password from registration email>'
-      email: '<email provided during registration>'
 ```
 
 Custom chart values can be specified in the topology configuration. See [Topology Configuration Parameters](topology-configuration).
