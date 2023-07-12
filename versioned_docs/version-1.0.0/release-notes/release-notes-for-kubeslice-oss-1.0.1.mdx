@@ -1,6 +1,6 @@
-# Release Notes for KubeSlice OSS 1.0.0
+# Release Notes for KubeSlice OSS 1.0.1
 
-*Release date: 31st May 2023*
+*Release date: 13th Jul 2023*
 
 KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
 in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
@@ -12,23 +12,14 @@ We continue to add new features and enhancements to KubeSlice.
 ## What's New
 These release notes describe the new changes and enhancements in this version.
 
-### Worker Operator-generated Events
-The Worker Operator generates events in the `kubeslice-system` namespace. The events can 
-be retrieved using the corresponding command.
-For more information, see [the Worker Operator events](../monitor/worker-operator-events).
+## Limitations
+We cannot have an application namespace placed in the Kubernetes Pod Security Standard (PSS) restricted profile.
 
-### KubeSlice Metrics 
-KubeSlice now records custom metrics that helps in monitoring the slice, and other KubeSlice 
-components. These Prometheus metrics can be configured as alerts using the alert manager.   
-For more information, see [KubeSlice metrics](../monitor/kubeslice-metrics) 
-and [Prometheus alert rules](../monitor/alert-rules).
-
-### Event Integration on Slack 
-KubeSlice-generated events can be integrated on slack to track them on a separate application workspace.
-
-For more information, see [integrate KubeSlice-generated events on Slack](../monitor/slack-event-integration).
-
-### Metric-based Alerts Integration with Slack
-KubeSlice metric-based alerts can be integrated with Slack for brownfield and greenfield Prometheus deployments. 
-This integration facilitates tracking the metric-based alerts on a dedicated Slack channel. 
-For more information, see [integrate alerts with Slack](../monitor/alert-manager-slack).
+## Issues Fixed
+- KubeSlice is interoperable with the Kubernetes PSS-defined profiles: baseline and privileged. These profiles could be 
+  applied to an application namespace that is part of a multi-cluster slice created using KubeSlice. To be fully operational, 
+  KubeSlice requires certain privileges that are allowed in the baseline and privileged profiles, but not in the restricted 
+  profile. Hence, an application namespace should not be placed in the restricted profile if it 
+  needs to be connected to a slice.
+- We have fixed the issue where the external gateway went missing when the namespace isolation was enabled on the 
+  KubeSlice Manager.
