@@ -47,7 +47,7 @@ const config = {
              * 
              *  version: {
              *      label: <Version Label>
-             *      path: <Version lable to be shown in url>
+             *      path: <Version label to be shown in url>
              *      banner: 
              *            1) none
              *            2) unreleased
