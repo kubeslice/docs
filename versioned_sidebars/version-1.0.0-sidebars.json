@@ -1,178 +1,295 @@
 {
-  "version2": [    
-      {
-        "type": "category",
-      "label": "GET STARTED",
-      "collapsed": false,
-      "items": [    
-          "register-to-try",
-          "cloud-cluster-quick-start"  
-    ]
-     }, 
-     {
-        "type": "category",
-        "label": "CONFIGURE KUBESLICE",
-        "collapsed": true,
-        "items": [ 
-                        {
-                "type": "category",
-                "label": "Prepare to Install",
-                "collapsed": true,
-                "items": [
-                  "getting-started-with-cloud-clusters/prerequisites/prerequisites",
-                  "getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration"
-                ]
-              },
-          {
-            "type": "category",
-            "label": "With kubeslice-cli",
-            "collapsed": true,
-            "items": [
-              "kubeslice-cli/getting-started",
-              "kubeslice-cli/installing-kubeslice",
-              "kubeslice-cli/uninstalling-kubeslice"     
-            ]
-          },
-          {
-            "type": "category",
-            "label": "With YAML",
-            "collapsed": true,
-            "items": [
-              {
-                "type": "category",
-                "label": "Install KubeSlice",
-                "collapsed": true,
-                "items": [
-                  "getting-started-with-cloud-clusters/installing-kubeslice/installing-the-kubeslice-controller",
-                  "getting-started-with-cloud-clusters/installing-kubeslice/registering-the-worker-cluster",
-                  "getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice",
-                  "getting-started-with-cloud-clusters/installing-kubeslice/managing-namespaces",
-                  "getting-started-with-cloud-clusters/installing-kubeslice/isolating-namespaces"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Uninstall KubeSlice",
-                "collapsed": true,
-                "items": [
-                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces",
-                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-slice",
-                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/deregistering-the-worker-cluster",
-                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/deleting-the-project",
-                  "getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-the-kubeslice-controller"
-                ]
-              }
-            ]
-          }
-        ]  
-      }, 
-  {
-     "type": "category",
-     "label": "KEY FEATURES",
-     "collapsed": true,
-      "items": [
-          "features/ipam"
-        ]
-  },      
-   {
-    "type": "category",
-    "label": "TUTORIALS",
-    "collapsed": true,
-    "items":[
-    {
-    "type": "category",
-    "label": "Cloud Clusters",
-    "collapsed": true,
-    "items": [
-      "tutorials/deploying-the-iperf-application",
-      "tutorials/deploying-the-bookinfo-application",
-      "tutorials/deploying-the-iperf-application-on-an-intra-cluster-slice",
-      "tutorials/deploying-the-bookinfo-application-on-an-intra-cluster-slice"
-    ]
-   },
-   {
-    "type": "category",
-    "label": "Kind Clusters",
-    "collapsed": true,
-    "items": [
-      "tutorials/kind-install-kubeslice-controller",
-      "tutorials/kind-worker-cluster-registration",
-      "tutorials/kind-create-slice",
-      "tutorials/test-network-connectivity-kind"
-    ]
-   },
-   {
-    "type": "category",
-    "label": "kubeslice-cli",
-    "collapsed": true,
-    "items": [
-      "tutorials/kubeslice-cli-demo",
-      "tutorials/kubeslice-cli-demo-on-cloud-clusters"
-    ]
-   }
-
-  ]
- },
-  {
-      "type": "category",
-      "label": "OVERVIEW",
-      "collapsed": true,
-      "items": [
-          "overview",
-          "architecture",
-          "components"
-      ]
-    },  
+  "version3": [      
     {
       "type": "category",
-      "label": "REFERENCE",
-      "collapsed": true,
+      "label": "Overview",
       "link": {
-        "type": "doc",
-        "id": "reference/reference"
+        "type": "generated-index",
+        "title": "KubeSlice Overview",
+        "description": "The Kubeslice Overview section provides a high-level introduction and understanding of Kubeslice, a Kubernetes management platform. It covers the architecture, components, and key features of Kubeslice, giving users a comprehensive overview of its capabilities and functionalities. This section serves as a starting point for users to familiarize themselves with Kubeslice and gain insights into its purpose and benefits.",
+        "keywords": [
+          "guides"
+        ],
+        "slug": "/"
       },
       "items": [
-        {
-          "type": "category",
-          "label": "KubeSlice",
-          "collapsed": true,
-          "items": [
-            "reference/configuration-parameters",
-            "reference/script-to-get-the-secrets-of-the-worker-cluster"
-          ]
-         },
-       
-        {
-          "type": "category",
-          "label": "kubeslice-cli",
-          "collapsed": true,
-          "items": [
-            "reference/kubeslice-cli-configuration-parameters",
-            "reference/topology-template",
-            "reference/sample-configuration-file"
-          ]
-         }
-       ]
-     },
-    {
-      "type": "category",
-      "label": "MONITOR KUBESLICE",
-      "collapsed": true,
-      "items": [
-          "monitor/slice-cluster-health",
-          "monitor/controller-events",
-          "monitor/worker-operator-events",
-          "monitor/slack-event-integration",
-          "monitor/kubeslice-metrics",
-          "monitor/alert-manager-slack",
-          "monitor/alert-rules"
+        "overview/overview",
+        "overview/architecture",
+        "overview/components",
+        "overview/features"
       ]
-    },  
-    "troubleshooting-guide",
+    },
     {
       "type": "category",
-      "label": "RELEASE NOTES",
+      "label": "Playground",
       "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Playground",
+        "description": "Welcome to the KubeSlice Playground, a limited-time sandbox environment that allows you to explore and experiment with KubeSlice Enterprise on kind clusters. This playground provides a preconfigured setup with all the necessary tool sets and is available for a duration of 4 hours. With this installation guide, you will be guided through the process of setting up KubeSlice on kind clusters, creating slices across the clusters, and testing connectivity using the iPerf tool.",
+        "keywords": [
+          "playground", "kubeslice"
+        ]
+      },
+      "items": [
+        "playground/sandbox" 
+        ]
+    },
+    {
+      "type": "category",
+      "label": "Get Started",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Get Started",
+        "description": "The Get Started section serves as a comprehensive guide to help you quickly get started with using Kubeslice. Before diving into Kubeslice, it's important to ensure that you have completed the prerequisites outlined in the Prerequisites section, which include installing the necessary command line tools like Kubernetes CLI (kubectl) and KubeSlice-CLI (kubeslice-cl), as well as having a basic understanding of Kubernetes concepts. By following the instructions and best practices outlined in this section, you'll be able to efficiently leverage the power of Kubeslice and streamline your application deployment and management processes. Start your Kubeslice journey today and experience the benefits of simplified Kubernetes application deployment.",
+        "keywords": [
+          "get-started", "kubeslice"
+        ]
+      },
+      "items": [
+          {                
+            "type": "category",
+            "label": "Prerequisites",
+            "collapsed": true,
+            "link": {
+              "type": "generated-index",
+              "title": "Installation Prerequisites",
+              "description": "The prerequisites section of the documentation outlines the necessary requirements and conditions that need to be met before installing and using KubeSlice. It provides a comprehensive checklist of the software, tools, and resources that should be in place to ensure a smooth installation and optimal usage of KubeSlice. The prerequisites section helps users understand the dependencies and configurations needed, such as having a compatible Kubernetes cluster, sufficient system resources, and required access privileges. By following the guidelines in this section, users can ensure that their environment meets the necessary prerequisites for a successful deployment and utilization of KubeSlice.",
+              "keywords": [
+                "prerequisites", "kubeslice"
+              ]
+            },
+            "items": [
+              "get-started/prerequisites/prerequisites-command-line-tools",
+              "get-started/prerequisites/prerequisites-kubeslice-controller-requirements",
+              "get-started/prerequisites/prerequisites-worker-cluster-requirements",      
+              "get-started/prerequisites/prerequisites-cluster-authentication",
+              "get-started/prerequisites/prerequisites-gateway-node-label",
+              "get-started/prerequisites/prerequisites-configure-helm-repository",
+              "get-started/prerequisites/prerequisites-install-istio"
+
+               
+                  ]
+                }
+                
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Install KubeSlice",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Install KubeSlice",
+        "description": "The Install Kubeslice section offers comprehensive, step-by-step instructions for installing and setting up Kubeslice in your environment. It covers various methods and approaches to install Kubeslice, providing flexibility based on your specific requirements. The section includes detailed procedures and commands for deploying Kubeslice components, configuring settings, and integrating it with your Kubernetes cluster. It provides guidance on downloading the Kubeslice package, installing necessary dependencies, and executing the installation process. By following the instructions in this section, users can successfully install Kubeslice, ensuring its proper integration and operation within their Kubernetes environment.",
+        "keywords": [
+          "install", "kubeslice"
+        ]
+      },
+      "items": [
+          {
+              "type": "category",
+              "label": "Using kubeslice-cli",
+              "collapsed": true,
+              "link": {
+                "type": "generated-index",
+                "title": "KubeSlice CLI",
+                "description": "Installing KubeSlice using the KubeSlice CLI method of installation is a straightforward, efficient and recommended approach. The KubeSlice CLI provides a convenient way to install and manage KubeSlice Enterprise deployments. To begin the installation process, the CLI can be easily configured by setting up the necessary installation template. With the CLI properly configured, users can initiate the installation by running a simple command, which will handle the installation process automatically. This method ensures a smooth and hassle-free installation, allowing users to quickly get KubeSlice up and running in their desired environment. By leveraging the power of the KubeSlice CLI, users can effortlessly deploy and manage KubeSlice Enterprise, enabling efficient slice creation, cluster management, and data visualization.",
+                "keywords": [
+                  "kubeslice-cli-install", "kubeslice"
+                ]
+              },
+              "items": [
+                  "install-kubeslice/kubeslice-cli/command-reference",
+                  "install-kubeslice/kubeslice-cli/topology-configuration",
+                  "install-kubeslice/kubeslice-cli/install-kubeslice",
+                  "install-kubeslice/kubeslice-cli/uninstall-kubeslice"
+              ]
+          },
+          {
+              "type": "category",
+              "label": "Using YAML",
+              "collapsed": true,
+              "link": {
+                "type": "generated-index",
+                "title": "YAML Installation",
+                "description": "Installing KubeSlice using the YAML method provides a flexible and customizable approach for deployment. The YAML method allows users to define their desired configuration in a YAML file, specifying various parameters and settings for their KubeSlice installation. To get started, users need to create a series of YAML files with the necessary specifications, including cluster details, slice configurations, and other required settings. Once the YAML files are prepared, users can apply it using Kubernetes tools such as kubectl, which will initiate the installation process. This method offers granular control over the installation process, allowing users to tailor their KubeSlice deployment according to their specific requirements. By leveraging the YAML method, users can seamlessly integrate KubeSlice into their existing infrastructure and take advantage of its powerful features for managing slices, cluster connectivity, and visualizing data within their Kubernetes clusters.",
+                "keywords": [
+                  "yaml-install", "kubeslice"
+                ]
+              },
+              "items": [
+                "install-kubeslice/yaml/yaml-controller-install",
+                "install-kubeslice/yaml/yaml-register-worker-clusters",
+                
+
+                    {
+                      "type": "category",
+                      "label": "Slice Operations",
+                      "collapsed": true,
+                      "link": {
+                        "type": "generated-index",
+                        "title": "Slice Operations",
+                        "description": "The Slice Operations page serves as a comprehensive guide for performing various operations and tasks with Kubeslice. It covers a wide range of topics related to managing and manipulating Kubernetes slices using Kubeslice's powerful features and functionality. The page includes detailed instructions and examples for each submenu of Slice Operations, including Slice Creation, . By following the guidance provided in this section, users can effectively leverage Kubeslice to streamline their slice management processes. They will learn how to create slices. This knowledge will enable users to ensure efficient operations of their Kubernetes applications. Explore the Slice Operations page and its submenus to gain a deeper understanding of Kubeslice's capabilities and enhance your Kubernetes slice management skills.",
+                        "keywords": [
+                          "slice-operations", "kubeslice"
+                        ]
+                     
+                      },
+                      "items": [
+                        "install-kubeslice/yaml/slice-operations/slice-operations-slice-creation",
+                        "install-kubeslice/yaml/slice-operations/slice-operations-slice-deletion"
+                    ]    
+                  },
+                  {
+                    "type": "category",
+                    "label": "Events",
+                    "collapsed": true,
+                    "link": {
+                      "type": "generated-index",
+                      "title": "Events",
+                      "description": "Kubernetes Events are informative messages that provide real-time updates about the activities and state changes occurring within a Kubernetes cluster. They offer insights into various events, such as pod creations, deployments, service changes, and error notifications, enabling administrators to monitor and troubleshoot the cluster's behavior and health.",
+                      "keywords": [
+                        "events", "kubeslice"
+                      ]
+                   
+                    },
+                    "items": [
+                      "install-kubeslice/yaml/events/yaml-events-controller-events",
+                      "install-kubeslice/yaml/events/yaml-events-worker-events"
+                  ]    
+                },
+                {
+                  "type": "category",
+                  "label": "Metrics",
+                  "collapsed": true,
+                  "link": {
+                    "type": "generated-index",
+                    "title": "Metrics",
+                    "description": "Kubernetes metrics provide valuable insights into the performance and health of your Kubernetes clusters and workloads. These metrics encompass various aspects such as resource utilization, network traffic, and application-specific metrics. By collecting and analyzing Kubernetes metrics, you can gain a deep understanding of your cluster's behavior, identify bottlenecks, optimize resource allocation, and make data-driven decisions for scaling and performance tuning. Monitoring Kubernetes metrics is crucial for maintaining the stability, efficiency, and reliability of your containerized environment.",
+                    "keywords": [
+                      "metrics", "kubeslice"
+                    ]
+                 
+                  },
+                  "items": [
+                    "install-kubeslice/yaml/metrics/yaml-metrics-controller-metrics",
+                    "install-kubeslice/yaml/metrics/yaml-metrics-worker-metrics"
+                ]    
+              }
+              
+              ]
+              
+          } 
+           
+          
+          
+      ]
+    },
+        "uninstall-kubeslice/uninstall-kubeslice",
+    {
+      "type": "category",
+      "label": "Add-ons",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Add-ons",
+        "description": "The add-on section of the documentation provides valuable insights and instructions for extending the functionality of KubeSlice through various add-ons. These add-ons enhance and customize KubeSlice's capabilities to meet specific use cases and requirements. The documentation outlines how to install, configure, and utilize these add-ons effectively. Whether it's integrating with monitoring tools, enabling advanced networking features, or implementing additional security measures, the add-on section offers comprehensive guidance on expanding KubeSlice's capabilities beyond its core features. By exploring the add-ons, users can unlock new possibilities and tailor KubeSlice to suit their unique needs, making it a versatile and adaptable tool for managing slices and optimizing cluster resources.",
+        "keywords": [
+         "kubeslice"
+        ]
+      },
+      "items": [
+        "add-ons/add-ons-slack-events",
+        "add-ons/add-ons-slack-metrics"
+        ]
+    },
+
+    "troubleshooting/troubleshooting-guide", 
+    {
+      "type": "category",
+      "label": "Reference",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Reference",
+        "description": "The reference section of the documentation provides a collection of tools and configuration information for KubeSlice. It serves as a valuable resource for developers, system administrators, and advanced users, offering essential details on configuration parameters. This section acts as a handy guide, providing the necessary tools and information to effectively utilize KubeSlice in various use cases.",
+        "keywords": [
+          "reference", "kubeslice"
+        ]
+      },
+      "items": [
+        "reference/reference-worker-cluster-secrets-script" 
+        ]
+    },
+    {
+      "type": "category",
+      "label": "Tutorials",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Tutorials",
+        "description": "The tutorials section describes how to deploy applications such as BookInfo and iPerf. It also describes the demos using kubeslice-cli.",
+        "keywords": [
+          "tutorials", "kubeslice"
+        ]
+      },
+      "items": [
+                    {                
+            "type": "category",
+            "label": "kubeslice-cli Tutorials",
+            "collapsed": true,
+            "link": {
+              "type": "generated-index",
+              "title": "kubeslice-cli Tutorials",
+              "description": "The tutorials section of the documentation describes how to use the demo options on kind and cloud clusters.",
+              "keywords": [
+                "tutorials", "kubeslice-cli"
+              ]
+
+            },
+            "items": [
+              "tutorials/kubeslice-cli-tutorials/kubeslice-cli-demo-on-cloud-clusters",
+              "tutorials/kubeslice-cli-tutorials/kubeslice-cli-demo"
+                  ]
+          },
+          {                
+            "type": "category",
+            "label": "YAML Tutorials",
+            "collapsed": true,
+            "link": {
+              "type": "generated-index",
+              "title": "YAML Tutorials",
+              "description": "The tutorials section of the documentation describes how to test the network connectivity and deploy BookInfo and iPerf applications on a slice.",
+              "keywords": [
+                "tutorials", "kubeslice"
+              ]
+
+            },
+            "items": [
+              "tutorials/yaml-tutorials/test-network-connectivity",
+              "tutorials/yaml-tutorials/deploy-the-bookinfo-application-on-an-intra-cluster-slice",
+              "tutorials/yaml-tutorials/deploy-the-bookinfo-application",
+              "tutorials/yaml-tutorials/deploy-the-iperf-application-on-an-intra-cluster-slice",
+              "tutorials/yaml-tutorials/deploy-the-iperf-application"
+                  ]
+          }
+                
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Release Notes",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Release Notes",
+        "description": "The release notes section of the documentation provides an overview of the latest updates, enhancements, bug fixes, and new features introduced in each version of KubeSlice. It serves as a valuable resource for users to stay informed about the changes and improvements made to the platform over time. By referring to the release notes, users can understand the evolution of KubeSlice, discover new functionalities, and ensure compatibility with their existing deployments.",
+        "keywords": [
+          "release-notes", "kubeslice"
+        ]
+      },
       "items": [
         "release-notes/release-notes-for-kubeslice-oss-1.0.0",
         "release-notes/release-notes-for-kubeslice-oss-0.7.0",
@@ -183,7 +300,7 @@
         "release-notes/release-notes-for-kubeslice-oss-0.3.0",
         "release-notes/release-notes-for-kubeslice-oss-0.2.0",
         "release-notes/release-notes-for-kubeslice-oss-0.1.0"
-      ]
+        ]
     }
-    ]
-}   
+  ]
+}
