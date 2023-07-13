@@ -21,7 +21,7 @@ These parameters are related to the metadata configured in the
 
 | Parameter | Parameter Type | Description                                                                                                                       | Required  |
 | --------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| name      | String         | The name of the Slice. The name of the slice you are creating. Each slice **must** have a unique name within a Project namespace. | Mandatory |
+| name      | String         | The name of the Slice. Each slice **must** have a unique name within a project namespace. | Mandatory |
 | namespace | String         | The project namespace on which you apply the slice configuration file.                                                            | Mandatory |
 
 #### Slice Spec Parameters
@@ -73,7 +73,7 @@ communicate with the slice. They are configured in the
 
 | Parameter                                                   | Parameter Type | Description                                                                                                                                                                                                                                                                                                         | Required  |
 | ----------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| [applicationNamespaces](#application-namespaces-parameters) | Array object   | Defines the [namespaces that will be onboarded](#manage-namespaces) to the slice and their corresponding worker clusters.                                                                                               | Mandatory |
+| [applicationNamespaces](#application-namespaces-parameters) | Array object   | Defines the [namespaces that will be onboarded](#manage-namespace) to the slice and their corresponding worker clusters.                                                                                               | Mandatory |
 | [allowedNamespaces](#allowed-namespaces-parameters)         | Array object   | Contains the list of namespaces from which the traffic flow is allowed to the slice. By default, native kubernetes namespaces such as `kube-system` are allowed. If `isolationEnabled ` is set to `true`, then you must include namespaces that you want to allow traffic from.                                     | Optional  |
 | isolationEnabled                                            | Boolean        | Defines if the namespace isolation is enabled. By default, it is set to `false`. The [isolation policy](#isolate-namespaces) only applies to the traffic from the application and allowed namespaces to the same slice. | Optional  |
 
@@ -153,12 +153,14 @@ spec:
 ```
 
 ## Manage Namespaces
-This section describes how to onboard namespaces to a slice. In Kubernetes, a namespace is a logical separation of resources within a cluster, where resources like pods and services are associated with a namespace and are guaranteed to be uniquely identifiable within it. Namespaces created for application deployments can be onboarded onto a slice to form a micro-network segment. Once a namespace is bound to a slice, all pods scheduled in the namespace get connected to the slice.
+This section describes how to onboard namespaces to a slice. In Kubernetes, a namespace is a logical separation of resources within a
+cluster, where resources like pods and services are associated with a namespace and are guaranteed to be uniquely 
+identifiable within it. Namespaces created for application deployments can be onboarded onto a slice to form a micro-network segment. 
+Once a namespace is bound to a slice, all pods scheduled in the namespace get connected to the slice.
 
 ### Onboard Namespaces
 To onboard namespaces, you must add them as part of `applicationNamespaces` in the 
-[slice configuration](#slice-creation) 
-YAML file. 
+[slice configuration](#slice-creation) YAML file. 
 
 In the slice configuration YAML file, add the namespaces using one of these methods:
 
@@ -396,8 +398,6 @@ spec:
 ```
 
 
-
-
 ## Apply Slice Configuration 
 
 The following information is required.
@@ -477,7 +477,7 @@ kubectl get slicegw -n kubeslice-system
 
 **Example Output**
 ``` 
-NAME                                          SUBNET        REMOTE SUBNET   REMOTE CLUSTER        GW STATUS
+NAME                                            SUBNET        REMOTE SUBNET   REMOTE CLUSTER        GW STATUS
 red-dev-worker-cluster-1-dev-worker-cluster-2   10.1.1.0/24   10.1.2.0/24     dev-worker-cluster-2  
 ```
 
@@ -525,7 +525,8 @@ In the above output, `peacock` is the slice name and `bookinfo` is the onboarded
 namespace to which the namespace isolation policy is applied.
 
 :::success
-After creating a slice on the worker clusters, it should be noted that all the slice configuration is applied at the KubeSlice Controller level and the creation process was successful.
+After creating a slice across the worker clusters, it should be noted that all the slice configuration is applied at the 
+KubeSlice Controller level and the creation process was successful.
 :::
 
 ## ServiceExports and ServiceImports
@@ -544,10 +545,10 @@ DNS entries and ensures traffic to reach the correct clusters and endpoint.
 The following tables describe the configuration parameters used to create Service Export.
 
 | Parameter                                      | Parameter Type | Description                                                                                                                                                      | Required                                                                      |
-| ---------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --------- |
+| ---------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | apiVersion                                     | String         | The KubeSlice Controller API version. A set of resources that are exposed together, along with the version. The value must be `networking.kubeslice.io/v1beta1`. | Mandatory                                                                     |
 | kind                                           | String         | The name of a particular object schema. The value must be `ServiceExport`.                                                                                       | Mandatory                                                                     |
-| [metadata](#serviceexport-metadata-parameters) | Object         | The metadata                                                                                                                                                     | describes parameters (names and types) and attributes that have been applied. | Mandatory |
+| [metadata](#serviceexport-metadata-parameters) | Object         | The metadata describes parameters (names and types) and attributes that have been applied.                                                                       | Mandatory                                                                     |
 | [spec](#serviceexport-spec-parameters)         | Object         | The specification of the desired state of an object.                                                                                                             | Mandatory                                                                     |
 
 #### ServiceExport Metadata Parameters
