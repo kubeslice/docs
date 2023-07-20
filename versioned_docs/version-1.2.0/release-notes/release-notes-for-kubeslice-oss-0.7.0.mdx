@@ -1,0 +1,37 @@
+# Release Notes for KubeSlice OSS 0.7.0
+
+*Release date: 14th April 2023*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
+in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
+by creating logical application ***slice*** boundaries that enable seamless communication between pods and services across 
+clusters, clouds, edges, and data centers.
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New
+These release notes describe the new changes and enhancements in this version.
+
+### Controller Events 
+KubeSlice creates controller events and stores them in the `kubeslice-controller`
+and `kubeslice-project` namespaces. The events can be retrieved using the corresponding command.
+For more information, see [controller events](../monitor/controller-events).
+
+### Slice and Cluster Health
+You can now monitor slice and cluster health using the corresponding description commands. 
+For more information, see [slice and cluster health](../monitor/slice-cluster-health).
+
+### Removal of the Cert Manager Dependency 
+The `cert-manager` is no longer required to install the KubeSlice Controller on the controller cluster. 
+With this version, the KubeSlice Controller supports upward compatibility. This means that the `cert-manager` 
+installed does not have any impact on the KubeSlice Controller. However, the `cert-manager` is still 
+required for the version 0.6.0 and older versions of the KubeSlice Controller to work.
+
+### Service Export Discovery
+To identify the exported services from a worker cluster that have different names other than 
+the `slice.local` name, a new property called `aliases` has been introduced as part of 
+the service export configuration.  
+
+### The Node IP is Editable
+The node IP for the worker cluster that is registered with the controller can now be edited. If 
+KubeSlice could not detect a node IP during registration, you can enter it by editing a cluster.
