@@ -206,11 +206,16 @@ spec:
        - '*'
 ```
 
-### Renew Slice Gateway Certificates
+## Renew Slice Gateway Certificates
 
 You can use the renewBefore option to start the certificate renewal process right away. Using this option, you can start the certificate 
 renewal procedure before the rotation interval expires. The renewBefore parameter in the YAML file can be set to a suitable value to 
 ensure that the certificate renewal process begins right away, maintaining your system's security and compliance.
+
+
+:::warning
+Before you use the renewBefore parameter to renew the gateway certificates, ensure the slice gateways are operational.
+:::
 
 Use the following template to renew your certificates.
 
