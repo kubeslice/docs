@@ -32,7 +32,12 @@ security and compliance of your system.
 The VPN cipher can be configured during slice creation using the cipher parameter in the slice configuration YAML file. The cipher 
 value can be set to AES_128_CBC. The default value is AES_256_CBC. This configuration is immutable during the lifetime of a slice.
 
+
+## Known Issues
+
+Renewing the VPN keys before they are due causes rotation failures. You must not use the renewBefore option before the VPN keys are due.
+
 ## Issues Fixed
 
-* Added a security context at the container level to the NSM init container to enable it to modify the resolv.conf file when there 
-  is a security context at the pod level that is too restrictive.
+Added a security context at the container level to the NSM init container to enable it to modify the `resolv.conf` file when there 
+is a security context at the pod level that is too restrictive.

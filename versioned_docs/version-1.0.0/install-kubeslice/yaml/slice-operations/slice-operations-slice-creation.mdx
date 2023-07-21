@@ -65,6 +65,9 @@ These parameters are related to the QoS profile for the slice inter-cluster traf
 | bandwidthGuaranteedKbps | Integer        | The guaranteed bandwidth in Kbps for the slice traffic.                                                                                                                                                        | Mandatory |
 | dscpClass               | Alphanumeric   | DSCP marking code for the slice inter-cluster traffic.                                                                                                                                                         | Mandatory |
 
+
+
+
 #### Namespace Isolation Profile Parameters
 
 These parameters are related to onboarding namespaces, isolating the slice, and allowing external namespaces to
@@ -108,6 +111,36 @@ These parameters are related to external gateways, which are configured in the
 | egress      | Boolean         | To use the egress gateway for East-West traffic on your slice, set the value to `true`.                                                                                                                                                                                                                                                                                              | Optional  |
 | gatewayType | String          | The type of ingress/egress gateways that need to be provisioned for the slice. It can either be `none` or `istio`.If set to `istio`, - The ingress gateway is created for a slice when `ingress` is enabled. - The egress gateway is created for a slice when `egress` is enabled. If set to `istio`, and ingress and egress are set to `false` then Istio gateways are not created. | Mandatory |
 | clusters    | List of Strings | Names of the clusters to which the `externalGateway` configuration should be applied.                                                                                                           ### Create Slice YAML                                                                                                                                                                                    | Optional  |
+
+### Standard QOS Profile Parameters
+These parameters are related to the QoS profile for the slice inter-cluster traffic configured in the standard QoS profile configuration 
+YAML file.
+
+| Parameter	 | Parameter Type	| Description |	Required |
+|------------|----------------|-------------|----------|
+| apiVersion | String	        | The KubeSlice Controller API version. A set of resources that are exposed together, along with the version. The value must be networking.kubeslice.io/v1beta1.	Mandatory
+| kind	     | String	        | The name of a particular object schema. The value must be SliceQoSConfig.	Mandatory
+| [metadata](#standard-qos-profile-metadata-parameter)	| Object	        | The metadata describes parameters (names and types) and attributes that have been applied.	Mandatory
+| [spec](#standard-qos-profile-specification-parameters)	     | Object	        | The specification of the desired state of an object.	Mandatory
+
+#### Standard QoS Profile Metadata Parameter
+
+| Parameter	| Parameter Type | Description	| Required |
+|-----------|----------------|--------------|----------|
+| name	    | String	       | It is the name of the QoS profile. |	Mandatory |
+|namespace	| String	       | The project namespace on which you apply the slice configuration file. |	Mandatory |
+
+#### Standard QoS Profile Specification Parameters
+| Parameter	| Parameter Type | Description	| Required |
+|-----------|----------------|--------------|----------|
+| queueType	| String	       | It is the slice traffic control queue type. The value must be Hierarchical Token Bucket (HTB). HTB facilitates guaranteed bandwidth for the slice traffic.	| Mandatory |
+| priority	| Integer	       | QoS profiles allows traffic management within a slice as well as prioritization across slices. The value range is 0-3. 0 represents the highest priority and 3 represents the lowest priority. |	Mandatory |
+| tcType	  | String	       | It is the traffic control type. The value must be BANDWIDTH_CONTROL.	| Mandatory |
+| bandwidthCeilingKbps |	Integer |	The maximum bandwidth in Kbps that is allowed for the slice traffic.| Mandatory |
+| bandwidthGuaranteedKbps |	Integer	| The guaranteed bandwidth in Kbps for the slice traffic.	| Mandatory |
+| dscpClass	| Alphanumeric |	DSCP marking code for the slice inter-cluster traffic.	| Mandatory |
+
+
 
 ## Slice Creation
 Create the slice configuration `.yaml` file using the following template.
@@ -421,6 +454,129 @@ Perform these steps:
   ``` 
   kubectl apply -f <slice configuration>.yaml -n <project namespace>
   ```
+
+### Create a Standard QoS Profile
+The slice configuration file contains a QoS profile object. To apply a QoS profile to multiple slices, you can create a separate QOS profile YAML file and call it out in other slice configuration.
+
+#### Create a Standard QoS Profile YAML File
+Use the following template to create a standard sliceqosconfig file.
+
+:::info
+To understand more about the configuration parameters, see Standard QoS Profile Parameters.
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceQoSConfig
+metadata:
+  name: profile1
+spec:
+  queueType: HTB
+  priority: 1
+  tcType: BANDWIDTH_CONTROL
+  bandwidthCeilingKbps: 5120
+  bandwidthGuaranteedKbps: 2562
+  dscpClass: AF11
+```
+
+#### Apply the Standard QOS Profile YAML File
+Apply the slice-qos-config file using the following command.
+
+```
+kubectl apply -f <full path of slice-qos-config.yaml> -n project-namespace
+```
+
+:::info
+You can only add the filename if you are on the project namespace using the following command.
+:::
+
+```
+kubectl apply slice-qos-config.yaml -n project-namespace
+```
+
+### Validate the Standard QoS Profile
+To validate the standard QoS profile that you created, use the following command:
+
+``` 
+kubectl get sliceqosconfigs.controller.kubeslice.io -n project-namespace
+```
+
+Expected Output
+
+```
+NAME       AGE
+profile1   33s
+```
+
+After applying the slice-qos-config.yaml file, add the profile name in a slice configuration. You must add the name of the QoS 
+profile for the standardQosProfileName parameter in a slice configuration YAML file as illustrated in the following examples.
+
+:::info
+In a slice configuration YAML file, the standardQosProfileName parameter and the qosProfileDetails object are mutually exclusive.
+:::
+
+
+#### Example of using the standard QoS Profile without Istio
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: red
+spec:
+  sliceSubnet: 10.1.0.0/16
+  maxClusters: <2 - 32>               #Ex: 5. By default, the maxClusters value is set to 16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - cluster-1
+    - cluster-2
+  standardQosProfileName: profile1
+```
+
+#### Example of using the standard QoS Profile with Istio
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: red
+spec:
+  sliceSubnet: 10.1.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - cluster-1
+    - cluster-2
+  standardQosProfileName: profile1
+  externalGatewayConfig:
+    - ingress:
+        enabled: false
+      egress:
+        enabled: false
+      nsIngress:
+        enabled: false
+      gatewayType: none
+      clusters:
+        - "*"
+    - ingress:
+        enabled: true
+      egress:
+        enabled: true
+      nsIngress:
+        enabled: true
+      gatewayType: istio
+      clusters:
+        - cluster-2
+
+```
+
 
 ### Validate the Slice on the Controller Cluster
 
