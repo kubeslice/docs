@@ -15,15 +15,15 @@ To create an app:
 
 2. Click the **Create an App** button.
 
-![events](/images/version1.0.0/monitoring-events/kubernetes-events1.png)
+![events](/images/version1.1.0/monitoring-events/kubernetes-events1.png)
 
 3. Select **From an app manifest** to configure your app scopes and settings.
    
-![events](/images/version1.0.0/monitoring-events/kubernetes-events2.png)
+![events](/images/version1.1.0/monitoring-events/kubernetes-events2.png)
 
 4. Select a workspace where you want to create an app and click **Next**.
 
-![events](/images/version1.0.0/monitoring-events/kubernetes-events3.png)
+![events](/images/version1.1.0/monitoring-events/kubernetes-events3.png)
 
 5. In the **Enter app manifest below** section, click on the **YAML** tab and enter the following manifest:
 
@@ -59,7 +59,7 @@ To create an app:
 
 7. In the **Review summary & create your app** section, review the details and click **Create**.
 
-![events](/images/version1.0.0/monitoring-events/kubernetes-events4.png)
+![events](/images/version1.1.0/monitoring-events/kubernetes-events4.png)
 
 
 ## Install an App
@@ -86,7 +86,7 @@ To get an oauth token for your workspace:
 2. Copy the **Bot User OAuth Token** and save the token for later use while deploying the 
    **kubeslice-botkube** bundle on the controller and worker clusters.
    
- ![events](/images/version1.0.0/monitoring-events/bot-user-oauth-token.png)
+ ![events](/images/version1.1.0/monitoring-events/bot-user-oauth-token.png)
 
 
 ## Get an App-Level Token
@@ -100,11 +100,11 @@ To get an app-level token:
 
 2. Click the **Generate Token and Scopes** button.
    
-![events](/images/version1.0.0/monitoring-events/app-level-token.png)
+![events](/images/version1.1.0/monitoring-events/app-level-token.png)
 
 3. In the **Generate an app-level token** section, enter a token name. For example, `botkube` is a token name.
 
-![events](/images/version1.0.0/monitoring-events/generate-app-level-token.png)
+![events](/images/version1.1.0/monitoring-events/generate-app-level-token.png)
 
 4. Click **Add Scope** and select **connections:write scope**.
 
@@ -119,11 +119,11 @@ Once you have successfully installed the Botkube application, you will notice a 
 
 Next, proceed to create **two channels** within your workspace to receive KSM and KubeSlice events.  Save the channel names for later use.
 
-![events](/images/version1.0.0/monitoring-events/create-channel1.png)
+![events](/images/version1.1.0/monitoring-events/create-channel1.png)
 
 To receive notifications in a specific Slack channel, you need to add the Botkube bot. This can be done by inviting the **@Botkube** user to the desired channel.
 
-![events](/images/version1.0.0/monitoring-events/add-bot-to-channel.png)
+![events](/images/version1.1.0/monitoring-events/add-bot-to-channel.png)
 
 
 
@@ -196,15 +196,15 @@ To deploy the **kubeslice-botkube** bundle:
 After deploying the charts in the workspace, you will start receiving notifications. The KSM events received in the Slack channel are depicted in the figures below:
 
 
-![events](/images/version1.0.0/monitoring-events/ksm-events.png)
+![events](/images/version1.1.0/monitoring-events/ksm-events.png)
 
 ### Slack KubeSlice Events
 #### Controller Events
 The Slack channel displays the KubeSlice events for the controller cluster, as depicted in the following figure.
 
- ![events](/images/version1.0.0/monitoring-events/kubeslice-controller-events.png)
+ ![events](/images/version1.1.0/monitoring-events/kubeslice-controller-events.png)
 
 #### Worker Events
 The Slack channel displays the KubeSlice events for the worker cluster, as depicted in the following figure.
 
-![events](/images/version1.0.0/monitoring-events/kubeslice-worker-events.png)
+![events](/images/version1.1.0/monitoring-events/kubeslice-worker-events.png)
