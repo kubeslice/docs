@@ -35,7 +35,9 @@ value can be set to AES_128_CBC. The default value is AES_256_CBC. This configur
 
 ## Known Issues
 
-Renewing the VPN keys before they are due causes rotation failures. You must not use the renewBefore option before the VPN keys are due.
+Users can trigger VPN Key Rotation with the `RenewBefore` parameter even before the slice gateways are up and running. 
+This premature rotation attempt often results in failures during the rotation process. Please refrain from triggering VPN 
+Key rotation before the gateways are in a healthy condition to ensure a successful rotation process.
 
 ## Issues Fixed
 
