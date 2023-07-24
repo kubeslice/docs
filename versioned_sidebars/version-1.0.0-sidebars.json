@@ -101,6 +101,7 @@
                 ]
               },
               "items": [
+                  "install-kubeslice/kubeslice-cli/install-kubeslice-cli",  
                   "install-kubeslice/kubeslice-cli/command-reference",
                   "install-kubeslice/kubeslice-cli/topology-configuration",
                   "install-kubeslice/kubeslice-cli/install-kubeslice",
