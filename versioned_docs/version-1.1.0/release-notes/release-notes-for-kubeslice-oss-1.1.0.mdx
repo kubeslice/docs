@@ -33,6 +33,11 @@ The VPN cipher can be configured during slice creation using the cipher paramete
 value can be set to AES_128_CBC. The default value is AES_256_CBC. This configuration is immutable during the lifetime of a slice.
 
 
+## Issues Fixed
+
+Added a security context at the container level to the NSM init container to enable it to modify the `resolv.conf` file when there 
+is a security context at the pod level that is too restrictive.
+
 ## Known Issues
 
 * Users can trigger VPN Key Rotation with the `RenewBefore` parameter even before the slice gateways are up and running. 
@@ -44,8 +49,3 @@ value can be set to AES_128_CBC. The default value is AES_256_CBC. This configur
   webhook pod might not be automatically cleaned up in case of a failure. As a result, there could be potential issues 
   with the old NSM webhook pod lingering from the previous release. So users are advised to manually delete the 
   old NSM webhook pod until the issue is resolved.
-
-## Issues Fixed
-
-Added a security context at the container level to the NSM init container to enable it to modify the `resolv.conf` file when there 
-is a security context at the pod level that is too restrictive.
