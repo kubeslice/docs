@@ -40,8 +40,10 @@ value can be set to AES_128_CBC. The default value is AES_256_CBC. This configur
   Key rotation before the gateways are in a healthy condition to ensure a successful rotation process.
 * After detaching a worker cluster from a slice, gateway pods are not deleted.
 * In the current version, the rebalancing feature of gateway redundancy is disabled.
-* If the helm upgrade fails on the Kubeslice worker, the nsm admission webhook pod does not always clean itself, so you 
-  must delete the old nsm webhook pod (from the previous release).
+* We have identified a scenario where, during a Helm upgrade on kubeslice-worker, the NSM (Network Service Mesh) admission 
+  webhook pod might not be automatically cleaned up in case of a failure. As a result, there could be potential issues 
+  with the old NSM webhook pod lingering from the previous release. Our team is actively working on a resolution for 
+  this problem. Until the fix is implemented, users are advised to manually delete the old NSM webhook pod if encountered
 
 ## Issues Fixed
 
