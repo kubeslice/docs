@@ -1,6 +1,6 @@
 # Release Notes for KubeSlice OSS 1.1.0
 
-*Release date: 26th July 2023*
+*Release date: 28th July 2023*
 
 KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
 in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
@@ -40,7 +40,8 @@ value can be set to AES_128_CBC. The default value is AES_256_CBC. This configur
   Key rotation before the gateways are in a healthy condition to ensure a successful rotation process.
 * After detaching a worker cluster from a slice, gateway pods are not deleted.
 * In the current version, the rebalancing feature of gateway redundancy is disabled.
-* In the current version, helm upgrade on the Kubeslice Worker fails intermittently.
+* If the helm upgrade fails on the Kubeslice worker, the nsm admission webhook pod does not always clean itself, so you 
+  must delete the old nsm webhook pod (from the previous release).
 
 ## Issues Fixed
 
