@@ -71,15 +71,6 @@ This object contains the different parameters used in the [KubeSlice Controller 
 | projectnsPrefix    | String         | The project namespace prefix.                                                                      | Optional  |
 | endpoint           | AlphaNumeric   | The URL of the Kubernetes control plane.                                                           | Mandatory |
 
-#### Controller License Parameters
-This object contains the different parameters used in the
-[KubeSlice Controller YAML file](#create-controller-yaml).
-
-| Parameter    | Parameter Type | Description                                                                                                                                                                                                      | Required  |
-| ------------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| type         | String         | The type of the license for installing KubeSlice. The value must be always `kubeslice-trial-license`. Currently, we support only trial license.                                                                  | Mandatory |
-| mode         | String         | This is the license activation mode. For installing the KubeSlice Controller online, the value is `auto`, which is default. For installing the KubeSlice Controller on an airgap cluster, the value is `manual`. | Optional  |
-
 
 ### Create Controller YAML
 Create the `controller.yaml` file using the following template.
