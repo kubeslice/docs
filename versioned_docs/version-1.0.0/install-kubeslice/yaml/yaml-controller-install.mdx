@@ -51,7 +51,7 @@ The following tables describe the configuration parameters used to install the K
 | Parameter                                                    | Parameter Type | Description                                                                  | Required  |
 | ------------------------------------------------------------ | -------------- | ---------------------------------------------------------------------------- | --------- |
 | Kubeslice                                                    | Object         | The cluster where the KubeSlice Controller is installed.                     | Mandatory |
-| [imagePullSecrets](#controller-image-pull-secret-parameters) | Object         | This contains the configuration to pull the Kubernetes dashboard image from. | Mandatory |
+
 
 #### KubeSlice Parameters
 
@@ -61,7 +61,7 @@ This parameter contains the configuration object used in the
 | Parameter                            | Parameter Type | Description                                                            | Required  |
 | ------------------------------------ | -------------- | ---------------------------------------------------------------------- | --------- |
 | [controller](#controller-parameters) | Object         | The cluster where the KubeSlice Controller is installed.               | Mandatory |
-| [license](#license-parameters)       | Object         | This object describes the type of the license and its activation mode. | Optional  |
+
 
 #### Controller Parameters
 This object contains the different parameters used in the [KubeSlice Controller YAML file](#create-controller-yaml).
@@ -83,21 +83,6 @@ This object contains the different parameters used in the
 | mode         | String         | This is the license activation mode. For installing the KubeSlice Controller online, the value is `auto`, which is default. For installing the KubeSlice Controller on an airgap cluster, the value is `manual`. | Optional  |
 | customerName | String         | Enter a name of the user or organization to easily identify.                                                                                                                                                     | Optional  |
 
-#### Controller Image Pull Secret Parameters
-
-:::note
-The values required for this section were supplied during the registration process. Refer to your registration email.
-:::
-These parameters are required to access the repository to pull the image. They are configured in the
-[KubeSlice Controller YAML file](#create-controller-yaml).
-
-| **Parameter** | **Parameter Type** | **Description**                                                                                           | **Required** |
-| ------------- | ------------------ | --------------------------------------------------------------------------------------------------------- | ------------ |
-| repository    | String             | This is the repository URL to pull the image from.Its value must always be `https://index.docker.io/v1/`. | Mandatory    |
-| username      | String             | This is your username to log in to the repository.                                                        | Mandatory    |
-| password      | String             | This is your user access token/password to log in to the repository.                                      | Mandatory    |
-| email         | String             | This is your email address to log into the repository.                                                    | Mandatory    |
-
 ### Create Controller YAML
 Create the `controller.yaml` file using the following template.
 
@@ -112,20 +97,6 @@ kubeslice:
     rbacResourcePrefix: kubeslice-rbac
     projectnsPrefix: kubeslice
     endpoint: <endpoint of your cluster>
-
-  license:
-    # possible license type values ["kubeslice-trial-license"]
-    type: kubeslice-trial-license
-    # possible license mode - ["auto", "manual"]
-    mode: auto
-    # please give company-name or user-name as customerName
-    customerName: ""
-
-imagePullSecrets:
-  repository: https://index.docker.io/v1/
-  username: <Provide from Registration Email>
-  password: <Provide from Registration Email>
-  email:    <Provide from Registration Email>
 ```
 
 ### Apply Controller YAML
