@@ -133,6 +133,11 @@ metadata:
   name: worker-1
   namespace: kubeslice-avesha
 spec:
+  networkInterface: eth0
+  clusterProperty:
+    geoLocation:
+      cloudProvider: "GCP"
+      cloudRegion: "europe-west3"
 ---
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -140,6 +145,11 @@ metadata:
   name: worker-2
   namespace: kubeslice-avesha
 spec:
+  networkInterface: eth0
+  clusterProperty:
+    geoLocation:
+      cloudProvider: "GCP"
+      cloudRegion: "europe-west3"
 
 ```
 
@@ -476,17 +486,6 @@ This parameter is related to network operations such as enforcing the QoS profil
 | ---------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | networkInterface | AlphaNumeric   | The name of the network interface on the gateway nodes that is the egress interface for external traffic. It may be obtained by doing a route lookup on a well-known public IP address like the Google public DNS IP address `8.8.8.8`. | Mandatory |
 
-#### Slice Operator Image Pull Secret Parameters
-
-These parameters are required to pull the image and they are configured in the
-[Slice Operator YAML file](#create-the-slice-operator-yaml).
-
-| **Parameter** | **Parameter Type** | **Description**                                                                                                                        | **Required** |
-| ------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| repository    | String             | This is the repository URL to pull the image from.Its value must always be `https://index.docker.io/v1/`.                              | Mandatory    |
-| username      | String             | This is your username to log in to the repository from your KubeSlice Registration email.                                                                                     | Mandatory    |
-| password      | String             | This is your user access token/password to log in to the repository for your KubeSlice Registration email.                                                                   | Mandatory    |
-| email         | String             | This is your email address to log into the repository use in your KubeSlice Registration. | Mandatory     |
 
 ## Create the Slice Operator YAML
 
