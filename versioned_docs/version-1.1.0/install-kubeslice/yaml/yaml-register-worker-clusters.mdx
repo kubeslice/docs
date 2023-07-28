@@ -150,6 +150,7 @@ spec:
     geoLocation:
       cloudProvider: "GCP"
       cloudRegion: "europe-west3"
+
 ```
 
 ### Apply the Cluster Registration YAML File 
@@ -473,7 +474,7 @@ These parameters are related to the worker cluster that are configured in the
 | Parameter | Parameter Type | Description                                                                                                                                                                                | Required  |
 | --------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
 | name      | String         | The name of the cluster that is registered with the KubeSlice controller. The cluster name must be `unique` in the project.                                                                | Mandatory |
-| endpoint  | String         | The control plane's `kube-apiserver` endpoint of the worker cluster that you get in the output after running the `kubectl cluster-info` command. | Mandatory |
+| endpoint  | String         | The control plane's kube-apiserver endpoint of the worker cluster that you get in the output after running the `kubectl cluster-info` command. | Mandatory |
                                                                     
 
 #### Network Operator Parameter
@@ -484,6 +485,7 @@ This parameter is related to network operations such as enforcing the QoS profil
 | Parameter        | Parameter Type | Description                                                                                                                                                                                                                             | Required  |
 | ---------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | networkInterface | AlphaNumeric   | The name of the network interface on the gateway nodes that is the egress interface for external traffic. It may be obtained by doing a route lookup on a well-known public IP address like the Google public DNS IP address `8.8.8.8`. | Mandatory |
+
 
 ## Create the Slice Operator YAML
 
@@ -508,6 +510,7 @@ cluster:
 
 netop:
   networkInterface: <network interface value>
+
 ```
 
 
@@ -537,6 +540,7 @@ cluster:
 
 netop:
   networkInterface: eth0
+
 ```
 
 ### Apply the Slice Operator YAML
@@ -549,7 +553,7 @@ The following information is required to apply the YAML file.
 |`<values>`|The file name with the values.|
 
 
-Apply Slice Operator:
+Apply Slice Operator YAML file:
 
 1. Switch the context to the **worker cluster** for which you have created the `sliceoperator.yaml` file.
    ```

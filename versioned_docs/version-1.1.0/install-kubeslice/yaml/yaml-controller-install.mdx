@@ -52,7 +52,6 @@ The following tables describe the configuration parameters used to install the K
 | ------------------------------------------------------------ | -------------- | ---------------------------------------------------------------------------- | --------- |
 | Kubeslice                                                    | Object         | The cluster where the KubeSlice Controller is installed.                     | Mandatory |
 
-
 #### KubeSlice Parameters
 
 This parameter contains the configuration object used in the
@@ -61,7 +60,6 @@ This parameter contains the configuration object used in the
 | Parameter                            | Parameter Type | Description                                                            | Required  |
 | ------------------------------------ | -------------- | ---------------------------------------------------------------------- | --------- |
 | [controller](#controller-parameters) | Object         | The cluster where the KubeSlice Controller is installed.               | Mandatory |
-
 
 #### Controller Parameters
 This object contains the different parameters used in the [KubeSlice Controller YAML file](#create-controller-yaml).
@@ -73,7 +71,6 @@ This object contains the different parameters used in the [KubeSlice Controller 
 | projectnsPrefix    | String         | The project namespace prefix.                                                                      | Optional  |
 | endpoint           | AlphaNumeric   | The URL of the Kubernetes control plane.                                                           | Mandatory |
 
-                                                                                                                                                  | Optional  |
 
 ### Create Controller YAML
 Create the `controller.yaml` file using the following template.
@@ -136,7 +133,7 @@ project do not clash with the resources of another project.
 For example, a slice with the same name can exist across multiple projects but with different
 configurations. Changes to the slice in one project will not affect the slice in another
 project. For more information, see the
-[KubeSlice Architecture](/versioned_docs/version-1.0.0/overview/architecture.mdx).
+[KubeSlice Architecture](/versioned_docs/version-1.1.0/overview/architecture.mdx).
 
 ### Project Namespace Configuration Parameters
 

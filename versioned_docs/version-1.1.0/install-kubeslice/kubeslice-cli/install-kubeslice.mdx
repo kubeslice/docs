@@ -1,0 +1,56 @@
+# Install KubeSlice
+Kubeslice-cli is a command-line tool designed to simplify KubeSlice operations on Kubernetes 
+and cloud clusters. With this tool, you can easily install the necessary workloads to run the 
+KubeSlice Controller and Slice Operator on specific clusters. Additionally, it registers these 
+clusters as part of a KubeSlice multi-cluster and manages slices across them.
+
+To use the tool, you provide input in the form of YAML files. The topology YAML file describes 
+the cluster membership in the multi-cluster. 
+
+## Create Topology YAML file
+To install KubeSlice, you need to create a topology configuration file that specifies the 
+controller cluster and the worker cluster names. The file should include other relevant details 
+as described in the sample configuration file provided below. This file is essential in setting 
+up KubeSlice.
+
+### Sample Topology Configuration File
+The following a minimal configuration file to install KubeSlice Enterprise on cloud clusters:
+
+Create the topology configuration file using the following template:
+```yaml
+configuration:
+  cluster_configuration:
+    kube_config_path: <path to kubeconfig file>
+    controller:
+      name: <cluster name acting as controller>
+      context_name: <controller cluster context name>
+    workers:
+      - name: <cluster name>
+        context_name: <cluster context name>
+      - name: <cluster name>
+        context_name: <cluster context name>
+  kubeslice_configuration:
+    project_name: <create project name>
+  helm_chart_configuration:
+    repo_alias: kubeslice
+    repo_url: https://kubeslice.aveshalabs.io/repository/kubeslice-helm-ent-prod/
+    cert_manager_chart:
+      chart_name: cert-manager
+    controller_chart:
+      chart_name: kubeslice-controller
+    worker_chart:
+      chart_name: kubeslice-worker
+```
+
+Custom chart values can be specified in the topology configuration. See [Topology Configuration Parameters](topology-configuration).
+
+## Apply the Topology Configuration YAML
+To install KubeSlice using the topology YAML file, use the following command:
+
+```
+kubeslice-cli --config <path-to-the-topology.yaml> install
+```
+
+:::success
+You have successfully installed KubeSlice.
+:::

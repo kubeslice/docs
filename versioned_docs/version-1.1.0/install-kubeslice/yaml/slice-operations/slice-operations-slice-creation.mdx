@@ -36,6 +36,9 @@ These parameters are related to the spec configured in the
 | sliceType                                                            | String                                         | Denotes the type of the slice. The value must be set to `Application`.                                                                                                                                                                                                                                                                                                                                                                                                                                | Mandatory |
 | [sliceGatewayProvider](#slice-gateway-provider-parameters)           | Object                                         | It is the type of slice gateway created for inter cluster communication.                                                                                                                                                                                                                                                                                                                                                                                                                              | Mandatory |
 | sliceIpamType                                                        | String                                         | It is the type of the IP address management for the slice subnet. The value must be always set to `Local`.                                                                                                                                                                                                                                                                                                                                                                                            | Mandatory |
+| rotationInterval	                                                   | Integer                                        | The duration in which SliceGateway certificates are periodically renewed or rotated to ensure security and compliance. The default interval is 30 days and the supported range is 30 to 90 days.|	Optional |
+| renewBefore	                                                         | Time	                                          | The time period before the expiration of SliceGateway certificates during which the renewal process is initiated. It represents the duration prior to certificate expiration when the renewal process is triggered to ensure seamless continuation of secure communication. By setting an appropriate value for renewBefore, certificates can be renewed ahead of time, allowing for any necessary updates or adjustments to be completed before the current certificates expire. This parameter helps avoid potential disruptions by ensuring the availability of valid certificates without waiting until the last moment. If you want to renew it now, provide the current Timestamp. warning: Do not set this parameter during slice creation.| Optional |
+| [vpnConfig](#openvpn-configuration)	                                 | Object	                                        | The Slice VPN Gateway is a slice network service component that provides a secure VPN tunnel between multiple clusters that are a part of the slice configuration.	| Optional |
 | clusters                                                             | List of Strings                                | The names of the worker clusters that would be part of the slice. You can provide the list of worker clusters.                                                                                                                                                                                                                                                                                                                                                                                        | Mandatory |
 | [qosProfileDetails](#qos-profile-parameters)                         | Object                                         | QoS profile for the slice inter cluster traffic.                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Mandatory |
 | [namespaceIsolationProfile](#namespace-isolation-profile-parameters) | Object                                         | It is the configuration to onboard namespaces and/or isolate namespaces with the network policy.                                                                                                                                                                                                                                                                                                                                                                                                      | Mandatory |
@@ -51,6 +54,16 @@ These parameters are related to the slice gateway created for the inter-cluster 
 | sliceGatewayType | String         | The slice gateway type for inter cluster communication. The value must be `OpenVPN`.                                                              | Mandatory |
 | sliceCaType      | String         | The slice gateway certificate authority type that provides certificates to secure inter-cluster traffic. The value must be always set to `Local`. | Mandatory |
 
+
+#### OpenVPN Configuration
+This parameter is related to the open VPN certificate generation and is configured in the [slice configuration](#slice-creation) YAML file.
+
+| Parameter	| Parameter Type	| Parameter Description	| Required |
+|-----------|-----------------|-----------------------|----------|
+| cipher	  | Alphanumeric	  | This is the type of cipher used to generate the open VPN certificates. The value can be set to `AES_128_CBC`. The default value is `AES_256_CBC`.This parameter is provided as part of the slice configuration during creation. This configuration is immutable during the lifetime of the slice.| Optional |
+
+
+
 #### QOS Profile Parameters
 
 These parameters are related to the QoS profile for the slice inter-cluster traffic configured in the
@@ -64,9 +77,6 @@ These parameters are related to the QoS profile for the slice inter-cluster traf
 | bandwidthCeilingKbps    | Integer        | The maximum bandwidth in Kbps that is allowed for the slice traffic.                                                                                                                                           | Mandatory |
 | bandwidthGuaranteedKbps | Integer        | The guaranteed bandwidth in Kbps for the slice traffic.                                                                                                                                                        | Mandatory |
 | dscpClass               | Alphanumeric   | DSCP marking code for the slice inter-cluster traffic.                                                                                                                                                         | Mandatory |
-
-
-
 
 #### Namespace Isolation Profile Parameters
 
@@ -112,6 +122,8 @@ These parameters are related to external gateways, which are configured in the
 | gatewayType | String          | The type of ingress/egress gateways that need to be provisioned for the slice. It can either be `none` or `istio`.If set to `istio`, - The ingress gateway is created for a slice when `ingress` is enabled. - The egress gateway is created for a slice when `egress` is enabled. If set to `istio`, and ingress and egress are set to `false` then Istio gateways are not created. | Mandatory |
 | clusters    | List of Strings | Names of the clusters to which the `externalGateway` configuration should be applied.                                                                                                           ### Create Slice YAML                                                                                                                                                                                    | Optional  |
 
+
+
 ### Standard QOS Profile Parameters
 These parameters are related to the QoS profile for the slice inter-cluster traffic configured in the standard QoS profile configuration 
 YAML file.
@@ -141,9 +153,15 @@ YAML file.
 | dscpClass	| Alphanumeric |	DSCP marking code for the slice inter-cluster traffic.	| Mandatory |
 
 
-
 ## Slice Creation
-Create the slice configuration `.yaml` file using the following template.
+
+### Slice VPN Key Rotation
+Any new slice created using the KubeSlice Manager or a YAML file will have a duration of 30 days to renew the SliceGateway certificates. 
+When creating a slice, you can change the rotation interval by modifying the rotationInterval parameter in the slice configuration YAML file. 
+This interval can be adjusted, with the minimum being 30 days and the maximum being 90 days. You can also update this parameter after 
+the creation of slice.
+
+Create the slice configuration YAML file using the following template.
 
 :::info
 To understand more about the parameters, see [Slice Configuration Parameters](#slice-configuration-parameters).
@@ -163,6 +181,9 @@ spec:
     sliceGatewayType: OpenVPN
     sliceCaType: Local
   sliceIpamType: Local
+  rotationInterval: 60    # If not provided, by default key rotation interval is 30 days
+  vpnConfig:
+     cipher: AES-128-CBC       # If not provided, by default cipher is AES-256-CBC
   clusters:
     - <registered-cluster-name-1>
     - <registered-cluster-name-2>
@@ -184,6 +205,57 @@ spec:
        clusters:
        - '*'
 ```
+
+## Renew Slice Gateway Certificates
+
+You can use the renewBefore option to start the certificate renewal process right away. Using this option, you can start the certificate 
+renewal procedure before the rotation interval expires. The renewBefore parameter in the YAML file can be set to a suitable value to 
+ensure that the certificate renewal process begins right away, maintaining your system's security and compliance.
+
+
+:::warning
+Before you use the renewBefore parameter to renew the gateway certificates, ensure the slice gateways are operational.
+:::
+
+Use the following template to renew your certificates.
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata: 
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>
+  maxClusters: <2 - 32>       #Ex: 5. By default, the maxClusters value is set to 16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  renewBefore: 2023-07-18T14:27:08Z        #only required if you want to renew your certificates before hand 
+  rotationInterval: 60    # If not provided, by default key rotation interval is 30 days
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:
+    queueType: HTB
+    priority: <qos_priority>                      #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+  ```
 
 ## Manage Namespaces
 This section describes how to onboard namespaces to a slice. In Kubernetes, a namespace is a logical separation of resources within a
@@ -576,6 +648,10 @@ spec:
         - cluster-2
 
 ```
+
+## Validate the Installation
+
+Validate the slice configuration on the KubeSlice Controller and the worker clusters.
 
 
 ### Validate the Slice on the Controller Cluster
