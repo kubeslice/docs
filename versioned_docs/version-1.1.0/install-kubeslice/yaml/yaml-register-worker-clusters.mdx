@@ -512,12 +512,6 @@ cluster:
 netop:
   networkInterface: <network interface value>
 
-# Provide your username, password & email values from the KubeSlice Registration email under imagePullSecrets to create a secret
-imagePullSecrets:
-  repository: https://index.docker.io/v1/
-  username: <username from KubeSlice Registration email>
-  password: <accesstoken from KubeSlice Registration email>
-  email: <KubeSlice Registration email ID>
 ```
 
 
@@ -560,7 +554,7 @@ The following information is required to apply the YAML file.
 |`<values>`|The file name with the values.|
 
 
-Apply Slice Operator:
+Apply Slice Operator YAML file:
 
 1. Switch the context to the **worker cluster** for which you have created the `sliceoperator.yaml` file.
    ```
@@ -583,15 +577,19 @@ kubectl get pods -n kubeslice-system
 **Example Output**
 
 ``` 
-NAME                                         READY   STATUS      RESTARTS   AGE
-forwarder-kernel-jx5wm                       1/1     Running     0          3m5s
-kubeslice-dns-6bbd47bbb9-jcgsv               1/1     Running     0          3m6s
-kubeslice-netop-8n9vh                        1/1     Running     0          3m6s
-kubeslice-operator-59657fb5f7-nzsth          2/2     Running     0          3m5s
-nsm-admission-webhook-k8s-7745c9c4d7-cd9sw   1/1     Running     0          3m5s
-nsm-install-crds-h29qp                       0/1     Completed   0          3m18s
-nsmgr-b4gnt                                  2/2     Running     0          3m4s
-registry-k8s-86667b6cd9-4hzg7                1/1     Running     0          3m6s
+NAME                                      READY  STATUS     RESTARTS  AGE
+forwarder-kernel-4cwvc                    1/1    Running    0         95s
+kubeslice-dns-54698f7cd-bdsxw             1/1    Running    0         95s
+kubeslice-install-crds-zjvww              0/1    Completed  0         2m37s
+kubeslice-netop-65jbq                     1/1    Running    0         95s
+kubeslice-netop-976ch                     1/1    Running    0         95s
+kubeslice-operator-74b9f67548-zt2hd       2/2    Running    0         95s
+nsm-admission-webhook-k8s-9bf7d8b5-b6cd7  1/1    Running    0         95s
+nsm-install-crds-482cn                    0/1    Completed  0         2m10s
+nsmgr-fghdh                               2/2    Running    0         95s
+registry-k8s-5b5679ff54-lhs9k             1/1    Running    0         95s
+spire-install-clusterid-cr-klqzj          0/1    Completed  0         112s
+spire-install-crds-pl2m2                  0/1    Completed  0         2m1s
 ```
 
 You can also validate the spire installation using the following command:
