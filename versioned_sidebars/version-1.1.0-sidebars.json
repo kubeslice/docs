@@ -65,6 +65,7 @@
               "get-started/prerequisites/prerequisites-kubeslice-controller-requirements",
               "get-started/prerequisites/prerequisites-worker-cluster-requirements",      
               "get-started/prerequisites/prerequisites-cluster-authentication",
+              "get-started/prerequisites/prerequisites-cluster-networking",
               "get-started/prerequisites/prerequisites-gateway-node-label",
               "get-started/prerequisites/prerequisites-configure-helm-repository",
               "get-started/prerequisites/prerequisites-install-istio"
