@@ -35,13 +35,13 @@ The following are the kubeslice-cli options.
 | --version | -v        | It is the version of the `kubeslice-cli` tool.                               |
 
 :::note
-The kubeslice-cli tool must have access to the clusters you want it to manage. To grant it access, set the KUBECONFIG environment variable to
-a path to the kubeconfig file containing the necessary keys to access those clusters.
-To set the KUBECONFIG environment varible, use these commands:
+The kubeslice-cli tool must have access to the clusters you want it to manage. To grant it access, set the KUBECONFIG environment 
+variable to a path to the kubeconfig file containing the necessary keys to access those clusters.
+To set the KUBECONFIG environment variable, use these commands:
 
 - On Linux/macOS: `export KUBECONFIG=<path to kubeconfig file>`
 - On Windows: `$env:KUBECONFIG = "kubeslice/kubeconfig.yaml"`
-  :::
+:::
 
 :::caution
 
@@ -49,7 +49,7 @@ To set the KUBECONFIG environment varible, use these commands:
   following command to determine which context you are currently in: `kubectx -c`.
 - The currently supported operations are all controller cluster specific. You must run the kubeslice-cli commands on the controller cluster.
   use this command to switch the cluster context: `kubectx <controller-cluster>`.
-  :::
+:::
 
 ## create
 
@@ -593,7 +593,7 @@ Use this command to install the required workloads to run KubeSlice Controller a
 ```
 kubeslice-cli --config <path-to-the-custom-topology-file> <install|i>
 kubeslice-cli install <command-options>
-kubeslice-cli install --profile=<minimal-demo|full-demo>
+kubeslice-cli install --profile=<minimal-demo|full-demo|enterprise-demo >
 ```
 
 ### Options
@@ -602,8 +602,8 @@ The following are the `kubeslice-cli install` command options.
 
 | Option              | Shorthand | Description                                                                                                       | Supported Values                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| --profile           | -p        | It is the profile to install or uninstall KubeSlice.                                                              | **full-demo**: showcases the KubeSlice inter-cluster connectivity by spawning 3 kind clusters, including 1 KubeSlice Controller and 2 worker clusters, and installing iPerf application to generate network traffic. **minimal-demo**: sets up 3 kind clusters, including 1 KubeSlice Controller and 2 worker clusters. Generates the Kubernetes manifests for user to manually apply, and verify the functionality. |
-| --skip              | -s        | It skips the installation steps (comma-separated) with `minimal-demo` and `full-demo` options.                    | **kind**: skips the creation of kind clusters. **calico**: skips the installation of Calico. **controller**: skips the installation of KubeSlice Controller. **worker-registration**: skips the registration of worker clusters with the KubeSlice Controller. **worker**: skips the installation of worker clusters. **demo**: skips the installation of additional example applications.                           |
+| --profile           | -p        | It is the profile to install or uninstall KubeSlice.                                                              | **full-demo**: showcases the KubeSlice inter-cluster connectivity by spawning 3 kind clusters, including 1 KubeSlice Controller and 2 worker clusters, and installing iPerf application to generate network traffic. **minimal-demo**: sets up 3 kind clusters, including 1 KubeSlice Controller and 2 worker clusters. Generates the Kubernetes manifests for user to manually apply, and verify the functionality. **enterprise-demo**: showcases the KubeSlice Enterprise functionality by spawning 3 kind clusters, including 1 KubeSlice Controller and 2 KubeSlice Workers. Installs the Enterprise charts for the controller, the worker(s), the KubeSlice Manager (UI), and iPerf application to generate network traffic. The imagePullSecrets (username and password) listed must be set as environment variables: **KUBESLICE_IMAGE_PULL_USERNAME**: `optional`, the default value is `aveshaenterprise`. **KUBESLICE_IMAGE_PULL_PASSWORD**: `required`.  |
+| --skip              | -s        | It skips the installation steps (comma-separated) with `minimal-demo`, `full-demo`, and `enterprise-demo` options.                    | **kind**: skips the creation of kind clusters. **calico**: skips the installation of Calico. **controller**: skips the installation of KubeSlice Controller. **worker-registration**: skips the registration of worker clusters with the KubeSlice Controller. **worker**: skips the installation of worker clusters. **demo**: skips the installation of additional example applications. **prometheus**: skips the installation of the Prometheus.                          |
 | --config            | -c        | It is a **global** option. The path to the topology configuration YAML file.                                      |
 | --with-cert-manager |           | It installs the cert-manager charts. **This is required for the KubeSlice Controller v0.7.0 and below versions.** |
 | --help              | -h        | It provides information on the install command.                                                                   |
