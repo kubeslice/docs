@@ -55,11 +55,11 @@ The following table describes the helm chart configuration parameters.
 | [cert_manager_chart](#certificate-manager-chart-configuration-parameters) | Object         | The cert-manager chart details.                                                                | Mandatory |
 | [controller_chart](#controller-chart-configuration-parameters)            | Object         | The Kubeslice Controller chart details.                                                        | Mandatory |
 | [worker_chart](#worker-chart-configuration-parameters)                    | Object         | The KubeSlice Worker chart details.                                                            | Mandatory |
-| [ui_chart](#ui-chart-configuration-parameters)                            | Object         | The KubeSlice Manager chart details. Required for Enterprise charts only.                      | Optional  |
-| [prometheus_chart](#prometheus-chart-configuration-parameters)            | Object         | The Prometheus chart details. Required for Enterprise charts only.                             | Optional  |
+| [ui_chart](#ui-chart-configuration-parameters)                            | Object         | The KubeSlice Manager chart details. This object is only required for enterprise charts.                      | Optional  |
+| [prometheus_chart](#prometheus-chart-configuration-parameters)            | Object         | The Prometheus chart details. This object is only required for enterprise charts.                             | Optional  |
 | helm_username                                                             | AlphaNumeric   | The helm username if the repo is private.                                                      | Optional  |
 | helm_password                                                             | AlphaNumeric   | The helm password if the repo is private.                                                      | Optional  |
-| [image_pull_secret](#image-pull-configuration-parameters)                 | Object         | The image pull secrets to pull the Kubernetes dashboard image. Required for Enterprise charts only. | Mandatory |
+| [image_pull_secret](#image-pull-configuration-parameters)                 | Object         | The image pull secrets to pull the Kubernetes dashboard image. This object is only required for enterprise charts. | Mandatory |
 
 ## Certificate Manager Chart Configuration Parameters
 The following table describes the certificate manager chart configuration parameters used to create topology YAML.
