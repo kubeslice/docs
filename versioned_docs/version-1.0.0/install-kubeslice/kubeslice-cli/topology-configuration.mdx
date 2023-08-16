@@ -89,6 +89,7 @@ The following table describes the worker chart configuration parameters used to 
 
 ## UI Chart Configuration Parameters
 The following table describes the UI chart configuration parameters used to create topology YAML.
+These parameters are required for the `enterprise-demo` option only.
 
 | Parameter  | Parameter Type | Description                                                                      | Required  |
 | ---------- | -------------- | -------------------------------------------------------------------------------- | --------- |
@@ -98,6 +99,7 @@ The following table describes the UI chart configuration parameters used to crea
 
 ## Prometheus Chart Configuration parameters
 The following table describes the Prometheus chart configuration parameters used to create topology YAML.
+These parameters are required for the `enterprise-demo` option only.
 
 | Parameter  | Parameter Type | Description                                                                      | Required  |
 | ---------- | -------------- | -------------------------------------------------------------------------------- | --------- |
@@ -105,8 +107,11 @@ The following table describes the Prometheus chart configuration parameters used
 | version    | Numeric        | The version of the chart. Leave it blank for the latest version.                 | Optional  |
 | values     | String         | The additional value that can be passed as --set arguments for **helm install**. | Optional  |
 
+
 ## Image Pull Secret Configuration Parameters
 The following table describes the image pull secret configuration parameters used to create topology YAML.
+These parameters are required for the `enterprise-demo` option only.
+
 
 | Parameter | Parameter Type | Description                                            | Required  |
 | --------- | -------------- | ------------------------------------------------------ | --------- |
@@ -177,7 +182,7 @@ configuration:
       version: #{The version of the chart to use. Leave blank for latest version}
       values: #(Values to be passed as --set arguments to helm install)
     
-    # The ui_chart, prometheus_chart, and image_pull_secret parameters are required for enterprise chart only
+    # The ui_chart, prometheus_chart, and image_pull_secret parameters are required for `enterprise-demo` option (enterprise chart) only
     ui_chart:
       chart_name: #{The name of the UI/Enterprise Chart}
       version: #{The version of the chart to use. Leave blank for latest version}
