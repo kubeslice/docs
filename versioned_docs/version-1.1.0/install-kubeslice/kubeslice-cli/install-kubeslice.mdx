@@ -13,6 +13,16 @@ controller cluster and the worker cluster names. The file should include other r
 as described in the sample configuration file provided below. This file is essential in setting 
 up KubeSlice.
 
+Custom chart values can be specified in the topology configuration. For example, you can add `values:metrics.insecure=true` under 
+**configuration.helm_chart_configuration.worker_chart** for worker charts.
+```
+worker_chart:
+        chart_name: kubeslice-worker
+        values:
+          "metrics.insecure": "true"
+          "some.other.key": "value"
+```
+
 ### Sample Topology Configuration File
 The following a minimal configuration file to install KubeSlice Enterprise on cloud clusters:
 
