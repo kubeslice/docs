@@ -32,6 +32,8 @@
   --ifm-link-color:#0d6efd;
   --ifm-link-hover-color:#0a58ca;
   --ifm-link-hover-decoration:none;
+  --ifm-note-color: #e0d4f4;
+  --ifm-note-border-color: #8d59e9;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -48,6 +50,8 @@
     --ifm-link-color:#879cf8;
   --ifm-link-hover-color:#afbdfb;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-note-color: #452c71;
+  --ifm-note-border-color: #8d59e9;
 }
 
 
@@ -112,8 +116,8 @@
       }
     }
   .admonition.admonition-note {
-    border-color: #8d59e9  !important;
-    background-color: #E0D4F4 !important;
+    border-color: var(--ifm-note-border-color) !important;
+    background-color: var(--ifm-note-color) !important;
   }
 }
 
