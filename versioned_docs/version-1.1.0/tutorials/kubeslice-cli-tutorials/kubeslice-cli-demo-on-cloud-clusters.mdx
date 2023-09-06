@@ -6,11 +6,11 @@ your existing clusters, use the `kubeslice-cli install` command.
 ## Prerequisites
 Before you begin, ensure the following prerequisites are met:
 - You have set up the environment to install the KubeSlice Controller on the cluster. For more information,
-see [Prerequisites](/versioned_docs/version-1.1.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
+see [Prerequisites](/versioned_docs/version-1.1.0/get-started/prerequisites/prerequisites-kubeslice-controller-requirements.mdx).
 - You have set up the environment for the worker clusters. For more information, 
-see [Prerequisites](/versioned_docs/version-1.1.0/getting-started-with-cloud-clusters/prerequisites/prerequisites.mdx).
+see [Prerequisites](/versioned_docs/version-1.1.0/get-started/prerequisites/prerequisites-worker-cluster-requirements.mdx).
 - You have authenticated the worker clusters with the cloud providers. For more information, 
-see [Prepare Clusters](/versioned_docs/version-1.1.0/getting-started-with-cloud-clusters/prerequisites/preparing-the-cloud-clusters-for-registration.mdx).
+see [Prepare Clusters](/versioned_docs/version-1.1.0/get-started/prerequisites/prerequisites-cluster-authentication.mdx).
 
 ## Install KubeSlice
 
@@ -19,8 +19,8 @@ In this demonstration, let us install KubeSlice on cloud clusters using the cust
 ## Install the KubeSlice Controller and Worker Clusters
 
 You must create a topology configuration file that includes the names of the clusters and the cluster contexts that host the 
-KubeSlice Controller, the worker clusters, and a project name. For more information, see the sample 
-[topology configuration](/versioned_docs/version-1.1.0/reference/sample-configuration-file.mdx#create-a-topology-configuration-file-for-cloud-clusters) file.
+KubeSlice Controller, the worker clusters, and a project name. For more information, see the [sample 
+configuration](/versioned_docs/version-1.1.0//install-kubeslice/kubeslice-cli/install-kubeslice.mdx#sample-topology-configuration-file) file.
 
 The following is an example custom topology file for installing KubeSlice in an existing setup.
 ```
@@ -113,7 +113,7 @@ To onboard your existing namespaces (and their applications) onto a slice:
 Use the following template to create a slice configuration YAML file.
 :::info
 To understand more about the configuration parameters, see 
-[Slice Configuration Parameters](/versioned_docs/version-1.1.0/reference/configuration-parameters.mdx#slice-configuration-parameters).
+[Slice Configuration Parameters](/versioned_docs/version-1.1.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx).
 :::
 
 ```
@@ -258,4 +258,4 @@ kubeslice-cli uninstall --config=<file-path-of-topology> --all
 ```
 
 
-To uninstall KubeSlice from your cloud clusters step-by-step, follow the instructions in [Uninstall KubeSlice](/versioned_docs/version-1.1.0/kubeslice-cli/uninstalling-kubeslice.mdx).
+To uninstall KubeSlice from your cloud clusters step-by-step, follow the instructions in [Uninstall KubeSlice](/versioned_docs/version-1.1.0/uninstall-kubeslice.mdx).
