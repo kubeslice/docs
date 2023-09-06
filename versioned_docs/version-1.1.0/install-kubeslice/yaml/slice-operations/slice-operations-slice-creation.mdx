@@ -63,7 +63,6 @@ This parameter is related to the open VPN certificate generation and is configur
 | cipher	  | Alphanumeric	  | This is the type of cipher used to generate the open VPN certificates. The value can be set to `AES_128_CBC`. The default value is `AES_256_CBC`.This parameter is provided as part of the slice configuration during creation. This configuration is immutable during the lifetime of the slice.| Optional |
 
 
-
 #### QOS Profile Parameters
 
 These parameters are related to the QoS profile for the slice inter-cluster traffic configured in the
@@ -162,10 +161,6 @@ This interval can be adjusted, with the minimum being 30 days and the maximum be
 the creation of slice.
 
 Create the slice configuration YAML file using the following template.
-
-:::info
-To understand more about the parameters, see [Slice Configuration Parameters](#slice-configuration-parameters).
-:::
 
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
