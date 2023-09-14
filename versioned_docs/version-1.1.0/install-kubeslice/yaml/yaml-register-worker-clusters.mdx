@@ -1,7 +1,7 @@
 # Register Worker Clusters
 
-Before creating a slice across your Kubernetes clusters, you must register your worker clusters with the KubeSlice Controller. 
-This topic describes the steps to register a worker cluster with the KubeSlice Controller.
+To create a slice across your Kubernetes clusters, register worker clusters with the KubeSlice Controller. 
+This topic describes how to register a worker cluster with the KubeSlice Controller.
 
 ## Cluster Registration Configuration Parameters
 
@@ -172,6 +172,7 @@ The following information is required.
    ```
 
 ### Validate the Registered Clusters
+
 Validate the registered clusters by using the following command:
 
 ```
@@ -222,10 +223,15 @@ To install the Slice Operator, you will require the interface name of the gatewa
 of installation or were created as node pools during the installation process.
 
 :::warning
-The below command does not work for OpenShift clusters.
+The below command does not work with OpenShift clusters.
 :::
 
 Use the following command on the gateway node:
+
+:::warning
+The below command does not work with OpenShift clusters.
+:::
+
 ```
 ip route get <external node IP> | awk '{ print $5 }'
 ```
@@ -241,7 +247,7 @@ ip route get 8.8.8.8 | awk '{ print $5 }'
 eth0
 ```
 
-### Create Script:  `secrets.sh`.
+### Create the `secrets.sh` File.
 
 Copy and save the below script as `secrets.sh`
 
@@ -290,7 +296,7 @@ netop:
   networkInterface: ${networkInterface}             
 ```
 
-### Execute `secrets.sh` script
+### Execute the `secrets.sh` File
 
 The output of the script is required for the slice YAML file creation:
 
@@ -419,10 +425,13 @@ to communicate with the KubeSlice Controller.
 ### Get the Worker Network Interface
 Get the name of the network interface on the gateway nodes that is the egress interface for external traffic.
 
+
+Use the following command on the gateway node:
+
 :::warning
 The below command does not work for OpenShift clusters.
 :::
-Use the following command on the gateway node:
+
 ```
 ip route get <External IP Address> | awk '{ print $5 }'
 ```
@@ -493,10 +502,11 @@ This parameter is related to network operations such as enforcing the QoS profil
 
 ## Create the Slice Operator YAML
 
-Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and
-the `token` from the above secrets retrieved by using the `secret.sh` script or the output following the manual secret retrieval steps to create your `sliceoperator.yaml` file.
+Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `token` from the above 
+secrets retrieved by using the `secret.sh` script or the output following the manual 
+secret retrieval steps to create your `sliceoperator.yaml` file.
 
-### Create YAML template
+### Create a YAML template
 
 Copy and pase the below template into a file called `sliceoperator.yaml`
 
@@ -518,7 +528,8 @@ netop:
 ```
 
 
-### Worker Cluster Control Plane Endpoint
+### Get the Worker Cluster Control Plane Endpoint
+
 Get the control plane's `kube-apiserver` endpoint of the **worker cluster** by using the following command:
 ```
 kubectl cluster-info
@@ -530,7 +541,7 @@ https://34.159.173.186
 ```
 
 
-### Example of the Slice Operator YAML
+The following is the example of the Slice Operator YAML:
 ``` 
 controllerSecret:
   namespace: a3ViZXNsaWNlLWF2ZXNoYQ==

@@ -1,7 +1,6 @@
 # Register Worker Clusters
-Before creating a slice across your Kubernetes clusters, you must
-register your worker clusters with the KubeSlice Controller. This topic describes the steps to register
-your worker cluster with the KubeSlice Controller.
+To create a slice across your Kubernetes clusters, register worker clusters with the KubeSlice Controller. 
+This topic describes how to register a worker cluster with the KubeSlice Controller.
 
 ## Cluster Registration Configuration Parameters
 The following tables describe the configuration parameters used to register the worker cluster with the controller cluster.
@@ -53,10 +52,6 @@ You can list multiple clusters in a single registration YAML file and register t
 
 Create your cluster `registration.yaml` file using the following template:
 
-:::info
-To understand more about the parameters, see [Cluster Registration Configuration Parameters](#cluster-registration-configuration-parameters).
-:::
-
 ```
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -88,12 +83,12 @@ spec:
 ```
 
 :::info
-The IP addresses used for inter-cluster tunnel creation. (Supports IPv4 and IPv6 IP address). If a node IP is not provided, Kubeslice will 
-auto detect it from the gateway nodes.
+The IP addresses are used for inter-cluster tunnel creation (supports IPv4 and IPv6 IP address). If a node IP is not 
+provided, Kubeslice will auto detect it from the gateway nodes.
 :::
 
 
-Example YAML file
+The following is the example YAML file:
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -124,7 +119,7 @@ spec:
     - <IP address -2>   
 ```
 
-Example YAML File Only with Mandatory Parameters
+The following is the example YAML file only with the mandatory parameters:
 
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
@@ -200,7 +195,7 @@ file to install the Slice Operator. By completing these steps, the worker cluste
 integrate with the KubeSlice Controller and utilize its features.
 
 :::info
-** THIS STEP NEEDS TO BE PERFORMED ON ALL WORKER CLUSTERS IN THE CONFIGURATION. **
+This step needs to be performed on all worker clusters in the configuration.
 :::
 
 ## Automated Retrieval of Registered Cluster Secrets
@@ -217,18 +212,19 @@ integrate with the KubeSlice Controller and utilize its features.
 
 ### Getting the Worker Network Interface
 
-To install the Slice Operator, you will require the interface name of the gateway nodes which were either labeled at the time of installation or were created as node pools during the installation process.
+To install the Slice Operator, you will require the interface name of the gateway nodes which were either labeled at the time 
+of installation or were created as node pools during the installation process.
 
+Use the following command on the gateway node:
 :::warning
 The below command does not work for OpenShift clusters.
 :::
 
-Use the following command on the gateway node:
 ```
 ip route get <external node IP> | awk '{ print $5 }'
 ```
 
-Example
+**Example**
 ```
 ip route get 8.8.8.8 | awk '{ print $5 }'
 ```
@@ -415,10 +411,12 @@ to communicate with the KubeSlice Controller.
 ### Get the Worker Network Interface
 Get the name of the network interface on the gateway nodes that is the egress interface for external traffic.
 
+
+Use the following command on the gateway node:
 :::warning
 The below command does not work for OpenShift clusters.
 :::
-Use the following command on the gateway node:
+
 ```
 ip route get <External IP Address> | awk '{ print $5 }'
 ```
@@ -511,7 +509,7 @@ netop:
 ```
 
 
-### Worker Cluster Control Plane Endpoint
+### Get the Worker Cluster Control Plane Endpoint
 Get the control plane's `kube-apiserver` endpoint of the **worker cluster** by using the following command:
 ```
 kubectl cluster-info
@@ -523,7 +521,7 @@ https://34.159.173.186
 ```
 
 
-### Example of the Slice Operator YAML
+The following is the example of the Slice Operator YAML:
 ``` 
 controllerSecret:
   namespace: a3ViZXNsaWNlLWF2ZXNoYQ==
@@ -586,7 +584,7 @@ spire-install-clusterid-cr-klqzj          0/1    Completed  0         112s
 spire-install-crds-pl2m2                  0/1    Completed  0         2m1s
 ```
 
-You can also validate the spire installation using the following command:
+Validate the spire installation using the following command:
 ```
 k get pods -n spire                                                   
 ```
