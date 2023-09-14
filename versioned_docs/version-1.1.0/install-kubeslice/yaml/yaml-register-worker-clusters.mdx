@@ -1,10 +1,11 @@
 # Register Worker Clusters
-Before creating a slice across your Kubernetes clusters, you must
-register your worker clusters with the KubeSlice Controller. This topic describes the steps to register
-your worker cluster with the KubeSlice Controller.
+
+Before creating a slice across your Kubernetes clusters, you must register your worker clusters with the KubeSlice Controller. 
+This topic describes the steps to register a worker cluster with the KubeSlice Controller.
 
 ## Cluster Registration Configuration Parameters
-The following tables describe the configuration parameters used to register the worker cluster with the controller cluster.
+
+The following tables describe the configuration parameters used to register a worker cluster with the controller cluster.
 
 | Parameter                                             | Parameter Type | Required                                                                                    | Description |
 | ----------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------- | ----------- |
@@ -29,7 +30,7 @@ The parameters are related to the specification configured in the
 
 | Parameter                                       | Parameter Type | Description                                                                                                                                                       | Required  |
 | ----------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| networkInterface                                | String         | The name of the network interface for egress traffic on a gateway node. The QoS profile for a slice will be applied to this interface.Default Interface: **eth0** | Mandatory |
+| networkInterface                                | String         | The name of the network interface for egress traffic on a gateway node. The QoS profile for a slice will be applied to this interface. Default Interface: **eth0** | Mandatory |
 | [clusterProperty](#cluster-property-parameters) | Object         | It contains the worker cluster details.                                                                                                                           | Mandatory |
 
 #### Cluster Property Parameters
@@ -44,18 +45,14 @@ The parameters are related to the cluster property configured in the
 
 | Parameter     | Parameter Type | Description                                              | Required |
 | ------------- | -------------- | -------------------------------------------------------- | -------- |
-| cloudProvider | String         | The name of your cloud provider                          | Optional |
+| cloudProvider | String         | The name of your cloud provider.                         | Optional |
 | cloudRegion   | String         | The cloud provider region where your cluster is located. | Optional |
 
 
 ## Create Cluster Registration YAML 
 You can list multiple clusters in a single registration YAML file and register them with the KubeSlice Controller.
 
-Create your cluster `registration.yaml` file using the following template:
-
-:::info
-To understand more about the parameters, see [Cluster Registration Configuration Parameters](#cluster-registration-configuration-parameters).
-:::
+Create the cluster `registration.yaml` file using the following template:
 
 ```
 apiVersion: controller.kubeslice.io/v1alpha1
@@ -88,12 +85,13 @@ spec:
 ```
 
 :::info
-The IP addresses used for inter-cluster tunnel creation. (Supports IPv4 and IPv6 IP address). If a node IP is not provided, Kubeslice will 
-auto detect it from the gateway nodes.
+The IP addresses are used for inter-cluster tunnel creation (supports IPv4 and IPv6 IP address). If a node IP is not 
+provided, Kubeslice will auto detect it from the gateway nodes.
 :::
 
 
-Example YAML file
+The following is the example YAML file:
+
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
 kind: Cluster
@@ -124,7 +122,7 @@ spec:
     - <IP address -2>   
 ```
 
-Example YAML File Only with Mandatory Parameters
+The following is the example YAML file only with the mandatory parameters:
 
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
@@ -152,6 +150,7 @@ spec:
       cloudRegion: "europe-west3"
 
 ```
+
 
 ### Apply the Cluster Registration YAML File 
 
@@ -193,6 +192,7 @@ gke-worker-1   17s
 ```
 
 ## Install the Slice Operator 
+
 To install the Slice Operator on the **worker cluster**, you need to first 
 [register](#create-cluster-registration-yaml) the worker cluster with the KubeSlice Controller 
 as performed in the previous section. After the worker cluster is registered, you can obtain its secrets 
@@ -201,7 +201,7 @@ file to install the Slice Operator. By completing these steps, the worker cluste
 integrate with the KubeSlice Controller and utilize its features.
 
 :::info
-** THIS STEP NEEDS TO BE PERFORMED ON ALL WORKER CLUSTERS IN THE CONFIGURATION. **
+This step needs to be performed on all worker clusters in the configuration.
 :::
 
 ## Automated Retrieval of Registered Cluster Secrets
@@ -218,7 +218,8 @@ integrate with the KubeSlice Controller and utilize its features.
 
 ### Getting the Worker Network Interface
 
-To install the Slice Operator, you will require the interface name of the gateway nodes which were either labeled at the time of installation or were created as node pools during the installation process.
+To install the Slice Operator, you will require the interface name of the gateway nodes which were either labeled at the time 
+of installation or were created as node pools during the installation process.
 
 :::warning
 The below command does not work for OpenShift clusters.
@@ -229,11 +230,13 @@ Use the following command on the gateway node:
 ip route get <external node IP> | awk '{ print $5 }'
 ```
 
-Example
+**Example**
 ```
 ip route get 8.8.8.8 | awk '{ print $5 }'
 ```
+
 **Example Output**
+
 ```
 eth0
 ```
@@ -289,7 +292,7 @@ netop:
 
 ### Execute `secrets.sh` script
 
-The output of the script is **Required** for the Slice YAML file creation:
+The output of the script is required for the slice YAML file creation:
 
 Use the following command to get the secrets of the worker cluster from the **controller cluster**.  
 
@@ -297,7 +300,7 @@ Use the following command to get the secrets of the worker cluster from the **co
 sh secrets.sh <worker-secret-name> <worker-cluster-name> <kubeslice-projectname> <network-interface> <worker-api-endpoint> <docker-username> <docker-password>
 ```
 
-Example
+**Example**
 ```
 sh secrets.sh kubeslice-rbac-worker-gke-worker-1-token-85tmc gke-worker-1 kubeslice-avesha eth0 https://34.105.95.217 user1 5585799-5d5a-48fa-b805-f4a1ffb110
 ```
@@ -337,7 +340,7 @@ to communicate with the KubeSlice Controller.
     kubectl get secrets -n kubeslice-<projectname>
     ```
 
-    Example
+    **Example**
     ``` 
     kubectl get secrets -n kubeslice-avesha
     ```
@@ -424,10 +427,11 @@ Use the following command on the gateway node:
 ip route get <External IP Address> | awk '{ print $5 }'
 ```
 
-Example
+**Example**
 ```
 ip route get 8.8.8.8 | awk '{ print $5 }'
 ```
+
 **Example Output**
 ```
 eth0
@@ -590,7 +594,7 @@ spire-install-clusterid-cr-klqzj          0/1    Completed  0         112s
 spire-install-crds-pl2m2                  0/1    Completed  0         2m1s
 ```
 
-You can also validate the spire installation using the following command:
+Validate the spire installation using the following command:
 ```
 k get pods -n spire                                                   
 ```
