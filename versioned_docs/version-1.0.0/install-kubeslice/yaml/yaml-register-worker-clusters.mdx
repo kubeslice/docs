@@ -233,7 +233,7 @@ ip route get 8.8.8.8 | awk '{ print $5 }'
 eth0
 ```
 
-### Create Script:  `secrets.sh`.
+### Create the secrets.sh File
 
 Copy and save the below script as `secrets.sh`
 
@@ -282,7 +282,7 @@ netop:
   networkInterface: ${networkInterface}             
 ```
 
-### Execute `secrets.sh` script
+### Execute the secrets.sh File
 
 The output of the script is **Required** for the Slice YAML file creation:
 
@@ -350,9 +350,8 @@ to communicate with the KubeSlice Controller.
     ```
 
     The name of the secret is in this format:` kubeslice-rbac-<registered cluster secret name>-token`.
-    For example, `kubeslice-rbac-worker-aks-worker-1-token-hml58` - this
-    secret is meant for a worker cluster that was registered using the
-    name aks-worker-1.
+    For example, the `kubeslice-rbac-worker-aks-worker-1-token-hml58` secret is meant for a worker cluster that
+    is registered using the name `aks-worker-1`.
 
 3.  Retrieve the details of the secret using the following command:
     ``` 
@@ -486,11 +485,12 @@ This parameter is related to network operations such as enforcing the QoS profil
 ## Create the Slice Operator YAML
 
 Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and
-the `token` from the above secrets retrieved by using the `secret.sh` script or the output following the manual secret retrieval steps to create your `sliceoperator.yaml` file.
+the `token` from the above secrets retrieved by using the `secret.sh` script or the output following the manual secret retrieval
+steps to create the `sliceoperator.yaml` file.
 
-### Create YAML template
+### Create the YAML File
 
-Copy and pase the below template into a file called `sliceoperator.yaml`
+Copy and pase the below template into a file called `sliceoperator.yaml`.
 
 ```
 ## Base64 encoded secret values for the namespace, endpoint, ca.crt and token from the controller cluster

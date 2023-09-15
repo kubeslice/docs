@@ -90,7 +90,7 @@ provided, Kubeslice will auto detect it from the gateway nodes.
 :::
 
 
-The following is the example YAML file:
+The following is an example YAML file:
 
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
@@ -122,7 +122,7 @@ spec:
     - <IP address -2>   
 ```
 
-The following is the example YAML file only with the mandatory parameters:
+The following is an example YAML file only with the mandatory parameters:
 
 ``` 
 apiVersion: controller.kubeslice.io/v1alpha1
@@ -222,9 +222,6 @@ This step needs to be performed on all worker clusters in the configuration.
 To install the Slice Operator, you will require the interface name of the gateway nodes which were either labeled at the time 
 of installation or were created as node pools during the installation process.
 
-:::warning
-The below command does not work with OpenShift clusters.
-:::
 
 Use the following command on the gateway node:
 
@@ -247,9 +244,9 @@ ip route get 8.8.8.8 | awk '{ print $5 }'
 eth0
 ```
 
-### Create the `secrets.sh` File.
+### Create the secrets.sh File.
 
-Copy and save the below script as `secrets.sh`
+Copy and save the below script as `secrets.sh`.
 
 ```
 # The script returns a kubeconfig for the service account given
@@ -296,7 +293,7 @@ netop:
   networkInterface: ${networkInterface}             
 ```
 
-### Execute the `secrets.sh` File
+### Execute the secrets.sh File
 
 The output of the script is required for the slice YAML file creation:
 
@@ -364,9 +361,8 @@ to communicate with the KubeSlice Controller.
     ```
 
     The name of the secret is in this format:` kubeslice-rbac-<registered cluster secret name>-token`.
-    For example, `kubeslice-rbac-worker-aks-worker-1-token-hml58` - this
-    secret is meant for a worker cluster that was registered using the
-    name aks-worker-1.
+    For example, the `kubeslice-rbac-worker-aks-worker-1-token-hml58` secret is meant for a worker cluster 
+    that is registered using the name `aks-worker-1`.
 
 3.  Retrieve the details of the secret using the following command:
     ``` 
@@ -475,7 +471,7 @@ These parameters are related to the KubeSlice Controller that are required to in
 | Parameter | Parameter Type | Description                                             | Required  |
 | --------- | -------------- | ------------------------------------------------------- | --------- |
 | namespace | String         | The namespace that you get from the secret.             | Mandatory |
-| endpoint  | String         | The ` controllerEndpoint` that you get from the secret. | Mandatory |
+| endpoint  | String         | The `controllerEndpoint` that you get from the secret. | Mandatory |
 | ca.crt    | String         | The `ca.crt` that you get from the secret.              | Mandatory |
 | token     | String         | The `token` that you get from the secret.               | Mandatory |
 
@@ -504,11 +500,11 @@ This parameter is related to network operations such as enforcing the QoS profil
 
 Use base64 encoded values of the `namespace`, `endpoint`, `ca.crt`, and the `token` from the above 
 secrets retrieved by using the `secret.sh` script or the output following the manual 
-secret retrieval steps to create your `sliceoperator.yaml` file.
+secret retrieval steps to create the `sliceoperator.yaml` file.
 
-### Create a YAML template
+### Create the YAML File
 
-Copy and pase the below template into a file called `sliceoperator.yaml`
+Copy and pase the below template into a file called `sliceoperator.yaml`.
 
 ```
 ## Base64 encoded secret values for the namespace, endpoint, ca.crt and token from the controller cluster
