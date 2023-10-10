@@ -15,7 +15,7 @@ order of operations provided under this topic.
 
 ## Offboard Namespaces
 To offboard the namespaces from slice, you must first delete the serviceexport for each application. For more information, see 
-[offboard Namespaces](/versioned_docs/version-1.0.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/offboarding-namespaces.mdx).
+[offboard Namespaces](/versioned_docs/version-1.1.0/uninstall-kubeslice/uninstall-kubeslice.mdx#offboard-application-namespaces).
 
  
 ## Delete a Slice
@@ -32,7 +32,7 @@ Before deregistering the worker cluster, ensure you have offboarded all namespac
 ::: 
 
 You must first uninstall the Slice Operator from the worker cluster before deregistering it from the KubeSlice Controller. To uninstall
-the Slice Operator, follow the instructions in the [uninstall the Slice Operator](/versioned_docs/version-1.0.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/deregistering-the-worker-cluster.mdx#uninstall-the-slice-operator) 
+the Slice Operator, follow the instructions in the [uninstall the Slice Operator](/versioned_docs/version-1.0.0/uninstall-kubeslice/uninstall-kubeslice.mdx#uninstall-the-slice-operator) 
 section.
 
 Use the following command to delete a registered worker cluster:
@@ -59,4 +59,4 @@ Before deleting a project, ensure all namespaces have been offboarded, the slice
 :::
   
 After deleting all the projects, uninstall the KubeSlice Controller. To uninstall the KubeSlice Controller, see
-[uninstall the KubeSlice Controller](/versioned_docs/version-1.0.0/getting-started-with-cloud-clusters/uninstalling-kubeslice/uninstalling-the-kubeslice-controller.mdx).
+[uninstall the KubeSlice Controller](/versioned_docs/version-1.1.0/uninstall-kubeslice/uninstall-kubeslice.mdx#uninstall-the-kubeslice-controller).
