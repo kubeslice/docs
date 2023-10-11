@@ -27,12 +27,12 @@ applications do not work as expected.
 
 To avoid this breaking change, you must add the corresponding namespace of the existing 
 onboarded application in the slice configuration file. To know more, see 
-[namespace isolation profile parameters](/versioned_docs/version-1.0.0//reference/configuration-parameters.mdx#namespace-isolation-profile-parameters).
+[namespace isolation profile parameters](/versioned_docs/version-1.0.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx#namespace-isolation-profile-parameters).
 :::
 
 To onboard namespaces:
 
-1. Edit the [slice configuration](/versioned_docs/version-1.0.0//getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file) YAML file to add namespaces as part of applicationNamespaces . You can add namespaces in the following ways in the slice configuration YAML file:
+1. Edit the [slice configuration](/versioned_docs/version-1.0.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx#slice-creation) YAML file to add namespaces as part of applicationNamespaces . You can add namespaces in the following ways in the slice configuration YAML file:
 
    * Add namespaces for each worker cluster.
    * Add a wildcard ***** (asterisk) to add all namespaces in the worker clusters.

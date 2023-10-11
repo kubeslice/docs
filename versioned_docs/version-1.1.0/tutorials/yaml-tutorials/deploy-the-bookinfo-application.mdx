@@ -9,8 +9,8 @@ BookInfo application to demonstrate inter-slice communication.
 Before you begin, ensure the following prerequisites are met:
 
 - You have a KubeSlice configuration with two or more clusters registered. For more information, 
-see [Installing KubeSlice](/versioned_docs/version-1.0.0/install-kubeslice/yaml/yaml-controller-install.mdx) 
-and [Registering the Worker Cluster](/versioned_docs/version-1.0.0/install-kubeslice/yaml/yaml-register-worker-clusters.mdx).
+see [Installing KubeSlice](/versioned_docs/version-1.1.0/install-kubeslice/yaml/yaml-controller-install.mdx) 
+and [Registering the Worker Cluster](/versioned_docs/version-1.1.0/install-kubeslice/yaml/yaml-register-worker-clusters.mdx).
 - You have Istio installed in all registered worker clusters. 
 - Before creating a slice, create the `bookinfo` namespace in all the participating worker clusters.
   Use the following command to create the `bookinfo` namespace:
@@ -22,7 +22,7 @@ and [Registering the Worker Cluster](/versioned_docs/version-1.0.0/install-kubes
   kubectl label namespace bookinfo istio-injection=enabled
   ```
 - You have the slice created across the worker clusters. For more information, 
-see [Creating a Slice](/versioned_docs/version-1.0.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx).
+see [Creating a Slice](/versioned_docs/version-1.1.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx).
 
 ## Create the BookInfo Deployment YAML Files
 Using the templates below, create the necessary .yaml files to deploy the BookInfo application.
@@ -592,4 +592,4 @@ You have successfully deployed BookInfo application on a KubeSlice configuration
 
 ## Uninstall Istio BookInfo
 To uninstall BookInfo application from your KubeSlice configuration, follow the 
-instructions in [offboarding namespaces](/versioned_docs/version-1.0.0/uninstall-kubeslice/uninstall-kubeslice.mdx#offboard-application-namespaces).
+instructions in [offboarding namespaces](/versioned_docs/version-1.1.0/uninstall-kubeslice/uninstall-kubeslice.mdx#offboard-application-namespaces).

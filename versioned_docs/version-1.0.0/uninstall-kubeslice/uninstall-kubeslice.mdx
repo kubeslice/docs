@@ -1,7 +1,6 @@
 # Uninstall KubeSlice
 This topic describes how to uninstall KubeSlice. Follow these steps to uninstall the KubeSlice Controller:
 
-- Delete namespace and slice quotas
 - Delete the ServiceExport for each application
 - Offboard all namespaces from the slice
 - Delete a slice
@@ -9,29 +8,6 @@ This topic describes how to uninstall KubeSlice. Follow these steps to uninstall
 - Deregister the worker cluster
 - Delete a project
 - Uninstall the KubeSlice Controller
-
-## Delete Namespace Quotas
-### Namespace Level
-
-To delete namespace quotas from your configuration, follow these steps:
-
-1. Open the `slice-resource-configuration.yaml` file.
-2. Locate the namespace quotas you wish to delete.
-3. Delete the relevant section of the YAML file related to the quotas.
-4. Save the changes to the file.
-5. Apply the updated YAML file to refresh the configuration.
-
-### Slice Level
-To remove slice level quotas from the configuration, follow these steps:
-
-1. Open the `slice-resource-configuration.yaml` file.
-2. Locate the metadata section of the quotas you want to delete.
-3. Note the value of the `name` field.
-4. Use the following command to delete the slice quotas for limits and requests, replacing `<metadata name field value>` and `<project namespace>` with the appropriate values:
-
-```
-kubectl delete SliceResourceQuotaConfig <metadata name field value> -n <project namespace>
-```
 
 ## Delete ServiceExports
 If a ServiceExport was created in the application namespace, it must be deleted first.
@@ -220,13 +196,6 @@ kubeslice-cli delete project <project-name> -n <controller-namespace>
 ```
 
 ## Uninstall the KubeSlice Controller
-### Uninstall the KubeSlice Manager
-
-Uninstall the KubeSlice Manager using the following command:
-
-```
-helm uninstall kubeslice-ui -n kubeslice-controller
-```
 
 ### Uninstall the KubeSlice Controller
 
