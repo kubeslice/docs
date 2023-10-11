@@ -1,0 +1,125 @@
+# Monitor Slice and Cluster Health 
+You can check the health of a slice and the worker clusters connected to it using the 
+corresponding YAML commands. 
+
+## Monitor Slice Health 
+To monitor a slice's health: 
+
+1. Get the list of worker clusters connected to a slice using the following command:
+   ```
+   kubectl get workersliceconfig -n kubeslice-<project>
+   ```
+   Example
+   ```
+   kubectl get workersliceconfig -n kubeslice-avesha
+   ```
+
+   Example Output
+   ```
+   NAME             AGE
+   water-worker-1   54m
+   water-worker-2   54m
+   water-worker-3   54m
+   ```
+
+2. From the output, note down the name of a worker cluster and use it in the following command to 
+   get the slice description:
+   
+   ```
+   kubectl describe workersliceconfig <worker-cluster> -n kubeslice-<project>
+   ```
+   Example
+   ```
+   kubectl describe workersliceconfig water-worker-1 -n kubeslice-avesha
+   ```
+
+   Example Output 
+
+   :::info 
+   The output below is an excerpt of the command output to only show the health status. 
+   :::
+
+   ```
+   Slice Health:
+     Component Statuses:
+       Component:                dns
+       Component Health Status:  Normal
+       Component:                slicegateway
+       Component Health Status:  Normal
+       Component:                slicerouter
+       Component Health Status:  Normal
+     Last Updated:               2023-04-10T08:54:08Z
+     Slice Health Status:        Normal
+
+When all the components are in a healthy state, the corresponding status indicates that 
+the health is **Normal**. 
+
+When a component's health goes bad, the corresponding status indicates the health 
+with a **Warning**. To know how to trace an issue in each component, see [slice and cluster health issues](/versioned_docs/version-1.0.0/troubleshooting/troubleshooting-guide.mdx#slice-and-cluster-health-issues).
+
+## Monitor Cluster Health 
+To monitor a cluster's health: 
+
+1. Get the list of worker clusters using the following command:
+
+   ```
+   kubectl get clusters -n kubeslice-<project>
+   ```
+   
+   Example
+   ```
+   kubectl get clusters -n kubeslice-avesha
+   ```
+   Example Output
+   ```
+   NAME       AGE
+   worker-1   76m
+   worker-2   75m
+   worker-3   76m
+   ```
+
+2. From the output, note down a worker cluster that you want to monitor and use it in the following 
+   command to get the cluster description:
+
+   ```
+   kubectl describe clusters <worker-cluster> -n kubeslice-<project>
+   ```
+
+   Example
+
+   ```
+   kubectl describe clusters worker-1 -n kubeslice-avesha
+   ```
+
+   Example Output 
+
+   :::info 
+   The output below is an excerpt of the command output to only show the health status. 
+   :::
+
+   ```
+   Status:
+     Cluster Health:
+       Cluster Health Status:  Normal
+       Component Statuses:
+         Component:                nsmgr
+         Component Health Status:  Normal
+         Component:                forwarder
+         Component Health Status:  Normal
+         Component:                admission-webhook
+         Component Health Status:  Normal
+         Component:                netop
+         Component Health Status:  Normal
+         Component:                spire-agent
+         Component Health Status:  Normal
+         Component:                spire-server
+         Component Health Status:  Normal
+         Component:                istiod
+         Component Health Status:  Normal
+   ```
+
+When all the components are in a healthy state, the corresponding status indicates that 
+the health is **Normal**. 
+
+When a component's health is bad, the corresponding status indicates the health 
+with a **Warning**. To know how to trace an issue in each component, see [slice and cluster health issues](/versioned_docs/version-1.0.0/troubleshooting/troubleshooting-guide.mdx#slice-and-cluster-health-issues).
