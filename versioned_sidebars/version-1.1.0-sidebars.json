@@ -141,7 +141,8 @@
                       },
                       "items": [
                         "install-kubeslice/yaml/slice-operations/slice-operations-slice-creation",
-                        "install-kubeslice/yaml/slice-operations/slice-operations-slice-deletion"
+                        "install-kubeslice/yaml/slice-operations/slice-operations-slice-deletion",
+                        "install-kubeslice/yaml/slice-operations/slice-cluster-health"
                     ]    
                   },
                   {
