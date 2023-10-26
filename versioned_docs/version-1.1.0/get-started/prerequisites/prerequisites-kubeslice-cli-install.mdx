@@ -32,17 +32,18 @@ To install kubeslice-cli:
    ```
 ### Install kubeslice-cli on Linux
 
-To install kubeslice-cli on Linux or Ubuntu:
-[comment]: <!-- What is the difference between linux or Ubuntu?-->
+To install kubeslice-cli on Linux or Ubuntu (Linux-based OS):
 
-1. Download the latest Linux version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+1. Download the latest macOS version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page
+   using the following command:
 
-2. Create a symlink to access the file:
-   :::info
-   A symlink is a symbolic Linux/ UNIX link that points to another file or folder on your computer, or a connected file system.
-   :::
    ```
-   ln -s <downloaded-binary>  ~/bin/kubeslice-cli
+   sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/<latest version>/kubeslice-cli-<latest-version>-linux-<386 | amd | arm>64  -o /usr/local/bin/kubeslice-cli
+   ```
+2. Execute the file using the following command:
+
+   ```
+   sudo chmod a+x /usr/local/bin/kubeslice-cli
    ```
 3. Ensure the downloaded version is the latest using the following command:
    ```
@@ -53,9 +54,19 @@ To install kubeslice-cli on Linux or Ubuntu:
 
 To install kubeslice-cli:
 
-1. Download the latest macOS version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+1. Download the latest macOS version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page
+   using the following command:
 
-2. Fix the error. When you try to install kubeslice-cli on macOS, you get the **Unverified Developer Error Message**.
+   ```
+   sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/<latest version>/kubeslice-cli-<latest-version>-darwin-<amd | arm>64  -o /usr/local/bin/kubeslice-cli
+   ```
+2. Execute the file using the following command:
+
+   ```
+   sudo chmod a+x /usr/local/bin/kubeslice-cli
+   ```
+
+3. [In case of an error] When you try to install kubeslice-cli on macOS, you get the **Unverified Developer Error Message**.
    This error message appears when you try to install an application from a developer who is not registered with Apple.
 
    ![mac](/images/kubeslice-cli/mac-download.png)
@@ -63,18 +74,12 @@ To install kubeslice-cli:
    
    To fix the `Unverified developer error message`, follow the instructions in [enabling the application for macOS](https://www.alphr.com/cannot-be-opened-because-the-developer-cannot-be-verified/).
 
-3. Create a symlink to access the file:
-   :::info
-   A symlink is a symbolic Linux/ UNIX link that points to another file or folder on your computer, or a connected file system.
-   :::
-   ```
-   ln -s <downloaded-binary>  ~/bin/kubeslice-cli
-   ```
 4. Ensure the downloaded version is the latest using the following command:
    ```
    kubeslice-cli --version
+   ```
 
-### Download kubeslice-cli using Wget
+### Download kubeslice-cli using cURL
 
 See the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page for the latest version. Use the following command to 
 download the latest binary (~6 MB):
