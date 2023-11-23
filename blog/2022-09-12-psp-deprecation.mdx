@@ -1,0 +1,87 @@
+---
+title: KubeSlice Security and PSP Removal
+description: Blog post about KubeSlice Security and PSP Removal
+slug: kubeslice-security-psp-removal
+authors:
+  - name: Leon Nunes
+    url: https://github.com/afro-coder
+hide_table_of_contents: false
+---
+
+#### What are Pod Security Policies?
+> PodSecurityPolicy is a built-in [admission controller](https://kubernetes.io/blog/2019/03/21/a-guide-to-kubernetes-admission-controllers/) that allows a cluster administrator to control security-sensitive aspects of the Pod specification.
+One or more PodSecurityPolicy resources are created in a cluster to define the requirements Pods must meet. Then, RBAC rules are created to control which PodSecurityPolicy applies to a given pod. If a pod meets the requirements of its PSP, it will be admitted to the cluster as usual.
+
+**Note**: The [Kubernetes 1.25 release](https://kubernetes.io/blog/2022/08/04/upcoming-changes-in-kubernetes-1-25/) will remove PSP so if you rely on PSP you should follow the instructions for [migration to Pod Security Admission](https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/)
+
+### How KubeSlice implements Security and PSS?
+
+In Kubeslice security is something that is Step 0 rather than an afterthought.
+
+KubeSlice segregates the Network in Slices as tenants shouldn't need to communicate with all the resources in the cluster.
+A slice is a collection of namespaces, network, or applications over clusters or over different clouds.
+With the creation of such an entity, the effective blast radius during a security incident is reduced.
+
+It also prevents the problem of noisy/nosey neighbours by providing adequate isolation.
+
+Kubernetes defines a standard called [Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/)(PSS),
+>The Pod Security Standards define three different policies to broadly cover the security spectrum. These policies are cumulative and range from highly-permissive to highly-restrictive.
+
+This guide outlines the requirements of each policy.
+
+| Profile | Description
+| -------- | -------- |
+| Privileged | Unrestricted policy, providing the widest possible level of permissions. This policy allows for known privilege escalations.     |
+|Baseline|Minimally restrictive policy which prevents known privilege escalations. Allows the default (minimally specified) Pod configuration.|
+|Restricted|Heavily restricted policy, following current Pod hardening best practices.|
+
+These are Cluster and namespace specific.
+
+However, since Kubeslice creates slices which can span over clusters one can create a secure slice
+by setting the Pod Security Standards (PSS) for a set of namespaces.
+
+The [kubernetes documentation](https://kubernetes.io/docs/tutorials/security/ns-level-pss/#apply-pod-security-standards) has an excellent guide on how Pod Security Policies is applied to a set a namespaces.
+
+Here's how Pod Security Policy can be applied for a namespace:
+
+Create a new namespace called example:
+```
+kubectl create ns example
+```
+
+Output:
+```
+namespace/example created
+```
+
+Enable Pod Security Standards on this namespace using labels supported by built-in Pod Security Admission.
+In this example we will warn on baseline pod security standard as per the latest version (default value)
+```
+kubectl label --overwrite ns example \
+   pod-security.kubernetes.io/warn=baseline \
+   pod-security.kubernetes.io/warn-version=latest
+```
+Output:
+```
+namespace/example labeled
+```
+These can be verified by using `kubectl` and `jq`
+```
+kubectl get ns/example -o json| jq .metadata.labels
+{
+  "kubernetes.io/metadata.name": "example",
+  "pod-security.kubernetes.io/warn": "baseline",
+  "pod-security.kubernetes.io/warn-version": "latest"
+}
+```
+These namespaces will then reside inside a slice.
+
+This is how KubeSlice helps with security and reduces the blast radius while also solving
+issues that occur on multi-tenant clusters and securing the applications.
+
+If you want to know more about the project, we encourage you to raise questions in the #kubeslice channel on the [Kubernetes slack](https://slack.k8s.io/) where we hang out. To receive an invite for the office hours and upcoming events and latest updates about the project, join our [Google Group](https://groups.google.com/g/kubeslice-dev).
+
+#### Further Reading
+- https://kubernetes.io/blog/2021/04/06/podsecuritypolicy-deprecation-past-present-and-future/
+- https://kubernetes.io/docs/concepts/security/pod-security-standards/
+- https://www.tfir.io/avesha-kubeslice-removes-the-complexity-of-kubernetes-multi-tenancy/
