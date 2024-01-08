@@ -252,6 +252,29 @@ spec:
        - '*'
   ```
 
+## Inter-Cluster Connectivity in KubeSlice
+KubeSlice supports cluster connectivity among public and private clusters. Kubeslice extends the support to private clusters 
+using a Load Balancer. In the slice configuration YAML file, the user can specify the type of gateway connectivity to use 
+on a cluster. The type can be either NodePort or LoadBalancer. If you do not use LoadBalancer as the gateway connectivity 
+type, then NodePort is used by default. Like other configuration options in KubeSlice, the * (asterisk) wildcard 
+character is allowed to indicate all clusters of a slice.
+
+Add the gateway service type and protocol and the corresponding clusters under the sliceGatewayServiceType in the slice 
+configuration YAML as illustrated below.
+
+ ```
+ sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceGatewayServiceType:
+      - cluster: <registered-cluster-name-1>
+        type: LoadBalancer   # By default, the gateway service type is NodePort.
+        protocol: TCP        # By default. the gateway protocol is UDP.
+      - cluster: <registered-cluster-name-2>
+        type: LoadBalancer   # By default, the gateway service type is NodePort.
+        protocol: TCP        # By default, the gateway protocol is UDP.   
+```
+
+
 ## Manage Namespaces
 This section describes how to onboard namespaces to a slice. In Kubernetes, a namespace is a logical separation of resources within a
 cluster, where resources like pods and services are associated with a namespace and are guaranteed to be uniquely 

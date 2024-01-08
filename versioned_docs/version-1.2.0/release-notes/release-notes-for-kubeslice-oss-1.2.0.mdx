@@ -1,0 +1,24 @@
+# Release Notes for KubeSlice OSS 1.2.0
+
+*Release date: 9th Jan 2024*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
+in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
+by creating logical application ***slice*** boundaries that enable seamless communication between pods and services across 
+clusters, clouds, edges, and data centers.
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New
+These release notes describe the new changes and enhancements in this version.
+
+
+### KubeSlice Supports Cluster Connectivity between Public and Private Clusters
+KubeSlice now supports cluster connectivity to private clusters. This feature is currently configurable only using YAML.
+
+With this release, we remove the restriction for the cluster to have at least one node with a public IP address to make 
+it part of the KubeSlice overlay network. Enabling a node with a public IP restricted the application of KubeSlice on 
+private cloud clusters where the virtual private clouds filter out external traffic.
+
+With the new feature, KubeSlice extends its usage to such private cloud clusters through a network load balancer which 
+can be provisioned and managed by all major cloud providers.

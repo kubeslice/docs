@@ -82,6 +82,13 @@ installed as a part of the KubeSlice installation itself.
 
 Slice Ingress/Egress Gateways are used for internal East-West traffic (inter-cluster, egress from one cluster, and ingress into another cluster) and Slice North-South Ingress Gateway for external traffic. 
 
+## Slice Gateway Edge
+The Slice Gateway Edge comes into play when the configured gateway connectivity type is LoadBalancer for a cluster of a slice. A network load 
+balancer connects the cluster to the other clusters in the slice. The Slice Gateway Edge is programmed by the Slice Operator to distribute the 
+external traffic coming in through the Load Balancer to the right slice gateway pods. Based on its communication with the Slice Operator, it 
+sets up NAT rules to filter the traffic, and forward to the appropriate slice gateway VPN pod.
+
+
 ## KubeSlice DNS
 The KubeSlice DNS is a DNS server that is used to resolve service names exposed on application slices.
 
