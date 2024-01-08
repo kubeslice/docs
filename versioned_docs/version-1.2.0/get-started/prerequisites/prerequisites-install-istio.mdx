@@ -1,0 +1,41 @@
+# Istio
+[Istio](http://istio.io/) is an open source service mesh that is used frequently to connect and secure 
+microservices within a cluster. The below instructions will install istio from the 
+helm repository chart. 
+
+:::caution
+You can skip these steps if you have already installed the recommended Istio version on the cluster.
+:::
+
+## Install Istio
+Install Istio on all worker cluster(s) participating in the configuration:
+
+1. Switch the context to the worker cluster that will be registered with the KubeSlice Controller.
+   ``` 
+   kubectx <cluster name>
+   ```
+2. Create the `istio-system` namespace using the following command:
+   ``` 
+   kubectl create ns istio-system
+   ```
+3. Install the `istio-base` chart from the helm repository using the following command:
+   ``` 
+   helm install istio-base kubeslice/istio-base -n istio-system
+   ```
+4. Install the `istio-discovery` chart from the helm repository using the following command:
+   ```
+   helm install istiod kubeslice/istio-discovery -n istio-system
+   ```
+## Validate Istio Installation
+
+Validate the installation of Istio by checking the pod status. Use the following command 
+to check if the pods are running:
+```
+kubectl get pods -n istio-system
+```
+
+**Example Output**
+```
+NAME                          READY   STATUS    RESTARTS   AGE
+istiod-66f576dd98-jtshj       1/1     Running   0          60s
+```
