@@ -24,33 +24,33 @@ To integrate KubeSlice alerts with Slack, follow these steps:
 4. You should get the Slack API URL for Slack-based alerts. To create the Slack API URL on the `#kubeslice-events-alerts` channel, 
    click the **Settings** icon and go to **Administration** > **Manage apps**. 
 
-   ![alt](/images/version1.1.0/monitor/slack-channel-admin-option.png)
+   ![alt](/images/version1.2.0/monitor/slack-channel-admin-option.png)
 
 5. On the **slack app directory** page, go to **Installed Apps** in the left sidebar.  
 6. Look for `incoming-webhook` in the **Search** field, and click `incoming-webhook` 
    from the search results. 
 
-   ![alt](/images/version1.1.0/monitor/slack-installed-apps.png)
+   ![alt](/images/version1.2.0/monitor/slack-installed-apps.png)
 
 7. Click **Add to Slack** to add incoming webhooks. 
 
-   ![alt](/images/version1.1.0/monitor/add-to-slack.png)
+   ![alt](/images/version1.2.0/monitor/add-to-slack.png)
 
 8. Under **Post to Channel**, choose **kubeslice-events-alerts** to post the alerts. 
 
-   ![alt](/images/version1.1.0/monitor/slack-post-to-channel.png)
+   ![alt](/images/version1.2.0/monitor/slack-post-to-channel.png)
 
 9. Click **Add Incoming Webhooks integration**. 
 
-   ![alt](/images/version1.1.0/monitor/slack-add-incoming-webhook-integration.png)
+   ![alt](/images/version1.2.0/monitor/slack-add-incoming-webhook-integration.png)
 
 10. You get a webhook URL that you should copy and note it down in a separate file for using it later. 
 
-    ![alt](/images/version1.1.0/monitor/slack-copy-webhook-url.png)
+    ![alt](/images/version1.2.0/monitor/slack-copy-webhook-url.png)
 
 11. Click **Save Settings** to save the webhook integration. 
 
-   ![alt](/images/version1.1.0/monitor/slack-webhook-save.png)
+   ![alt](/images/version1.2.0/monitor/slack-webhook-save.png)
    
 12. This step ensures that the necessary `monitoring` namespace is available for Prometheus. Return to the KubeSlice Controller command terminal. If you already have an existing `monitoring` namespace for Prometheus, you can continue with the next step. If the `monitoring` namespace does not exist, you need to create it by running the following command:
 

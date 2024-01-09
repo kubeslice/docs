@@ -9,8 +9,8 @@ BookInfo application to demonstrate inter-slice communication.
 Before you begin, ensure the following prerequisites are met:
 
 - You have the KubeSlice Controller components and worker cluster components on the same cluster. For more information, 
-see [Installing KubeSlice](/versioned_docs/version-1.1.0/install-kubeslice/yaml/yaml-controller-install.mdx) 
-and [Registering the Worker Cluster](/versioned_docs/version-1.1.0/install-kubeslice/yaml/yaml-register-worker-clusters.mdx).
+see [Installing KubeSlice](/versioned_docs/version-1.2.0/install-kubeslice/yaml/yaml-controller-install.mdx) 
+and [Registering the Worker Cluster](/versioned_docs/version-1.2.0/install-kubeslice/yaml/yaml-register-worker-clusters.mdx).
 - Before creating a slice, create the `bookinfo` namespace in all the participating worker clusters.
   Use the following command to create the `bookinfo` namespace:
   ```
@@ -18,7 +18,7 @@ and [Registering the Worker Cluster](/versioned_docs/version-1.1.0/install-kubes
   ```
 ## Creating the Slice
 To install the BookInfo application on a single cluster, you must create a slice without Istio enabled. For more information, 
-see [Creating a Slice](/versioned_docs/version-1.1.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx).
+see [Creating a Slice](/versioned_docs/version-1.2.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx).
 
 ## Creating the BookInfo Deployment YAML Files
 Using the templates below, create the necessary .yaml files to deploy the BookInfo application. All fields in the 
@@ -582,4 +582,4 @@ You have successfully deployed the BookInfo application on a KubeSlice configura
 
 ## Uninstall Istio BookInfo
 To uninstall Istio BookInfo from your KubeSlice configuration, follow the instructions 
-in [offboarding namespaces](/versioned_docs/version-1.1.0/uninstall-kubeslice/uninstall-kubeslice.mdx#offboard-application-namespaces).
+in [offboarding namespaces](/versioned_docs/version-1.2.0/uninstall-kubeslice/uninstall-kubeslice.mdx#offboard-application-namespaces).
