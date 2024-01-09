@@ -53,6 +53,19 @@ These parameters are related to the slice gateway created for the inter-cluster 
 | ---------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | sliceGatewayType | String         | The slice gateway type for inter cluster communication. The value must be `OpenVPN`.                                                              | Mandatory |
 | sliceCaType      | String         | The slice gateway certificate authority type that provides certificates to secure inter-cluster traffic. The value must be always set to `Local`. | Mandatory |
+| [SliceGatewayServiceType](#slice-gateway-service-type-parameters) |	Object	| The type of gateway connectivity to use on a cluster. The default value is NodePort.	                                                            | Optional  |
+
+
+#### Slice Gateway Service Type Parameters
+
+These parameters are related to the slice gateway service type parameters that provides an option to use the external Load Balancer. The user
+can add the slice gateway type and protocol for each cluster.
+
+| Parameter	    | Parameter	| Description	 | Required |
+| ------------- | --------- | ------------ | -------- |
+| cluster	      | String	  | The name of the worker cluster for which the user configures slice gateway connectivity. This field supports wildcard entries. To configure the slice gateway connectivity for all clusters connected to the slice, specify *(asterisk) as the parameter's value.	| Mandatory |
+| type	        | String	  | It defines the type of inter-cluster connectivity in KubeSlice. It has two options: NodePort and LoadBalancer. The default value is NodePort. The type value set to LoadBalancer is immutable after the slice creation.	| Optional |
+| protocol	    | String	  |It defines the protocol for gateway configuration. It has two options: TCP and UDP. The default value is UDP. The protocol is immutable after the slice creation. | Optional |
 
 
 #### OpenVPN Configuration
