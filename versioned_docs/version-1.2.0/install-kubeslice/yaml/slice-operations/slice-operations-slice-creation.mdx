@@ -287,6 +287,17 @@ configuration YAML as illustrated below.
         protocol: TCP        # By default, the gateway protocol is UDP.   
 ```
 
+### Change the Gateway Provider for Inter-Cluster Connectivity
+
+After the LoadBalancer gateway service type and TCP/UDP gateway protocol are set, they become immutable. 
+However, if you want to change the gateway service type and protocol, then follow these steps:
+
+1. Detach the cluster from the slice by removing it from the attached slice configuration , that is under `clusters` and remove 
+the cluster, its protocol and type under `sliceGatewayServiceType` in the slice configuration YAML.
+2. Apply the slice configuration to completely detach it.
+3. Add the same cluster under `clusters` and set the `sliceGatewayServiceType` for this cluster.
+4. Reapply the slice configuration to connect the cluster to the slice.
+
 
 ## Manage Namespaces
 This section describes how to onboard namespaces to a slice. In Kubernetes, a namespace is a logical separation of resources within a
