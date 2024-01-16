@@ -1,0 +1,70 @@
+# Label KubeSlice Gateway Nodes
+Labeling your gateway nodes on the **worker cluster** is required to ensure proper management 
+of scheduling rules for nodes and enabling node gateway to gateway network communication. 
+
+We recommend using a **dedicated node pool** for your gateway components.
+
+However, if your worker cluster contains only one node pool, follow the instructions below to 
+label worker node pools.
+
+Additionally, we recommend using a dedicated node pool for your gateway components and 
+following the instructions for labeling accordingly.
+
+Perform these steps in each worker cluster that you want to register with 
+the KubeSlice Controller.
+
+### Azure Kubernetes Service
+AKS nodepools can only be set during nodepool creation. The nodepool
+must contain the `kubeslice.io/node-type=gateway` label. For instructions on creating
+a labeled nodepool, see [AKS documentation](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#setting-nodepool-labels).
+
+## AWS Elastic Kubernetes Service 
+Nodepools are called node groups in EKS clusters. You can add or remove the Kubernetes 
+labels by editing a node group configuration as described in 
+[updating managed node groups](https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html). 
+Add the `kubeslice.io/node-type=gateway` label to the EKS node groups.
+
+## Google Kubernetes Engine
+The following information is required to label the GKE cluster nodepools.
+
+|**Variable** |       **Description** |
+|-----|----|
+|<nodepool name\>|   The name of the nodepool being labeled.|
+|<cluster name\>  |  The name of the cluster the nodepool being labeled belongs to.|
+|  <region\>      |    The Compute Engine region for the cluster the nodepool belongs to.|
+|  <zone\>         |   The Compute Engine zone for the cluster the nodepool belongs to.|
+ 
+The following command labels the GKE cluster nodepool: 
+
+``` 
+gcloud container node-pools update <nodepool name> \
+    --node-labels=kubeslice.io/node-type=gateway \
+    --cluster=<cluster name> \
+    [--region=<region> | --zone=<zone>]
+```
+## Other Kubernetes Cloud Clusters 
+Ensure that the nodepools on the Kubernetes clusters are labeled with `kubeslice.io/node-type=gateway`. 
+
+## Verify Your Labels
+To verify the labels of your cluster, perform the following steps on each worker cluster that you wish to register with the KubeSlice Controller.
+
+1.  To verify the label, switch to the context of the cluster that you want to verify.
+    
+    ``` 
+    kubectx <cluster name>
+    ```
+    
+2.  Run the following command to get all nodes with the `kubeslice.io/node-type=gateway` label.
+
+    ```
+    kubectl get no -l kubeslice.io/node-type=gateway
+    ```
+    
+3.  If you successfully set your labels, you  get a list of the labeled nodes in the cluster. 
+<!--  Is this necessary right here?  Does the gateway REQUIRE an EXTERNAL IP?
+Run the following command to verify if each gateway node has an external IP address configured:
+
+    ```
+    kubectl get no -o wide
+    ```
+-->
