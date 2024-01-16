@@ -587,18 +587,24 @@ kubectl get pods -n kubeslice-system
 **Example Output**
 
 ``` 
-NAME                                      READY  STATUS     RESTARTS  AGE
-forwarder-kernel-4cwvc                    1/1    Running    0         95s
-kubeslice-dns-54698f7cd-bdsxw             1/1    Running    0         95s
-kubeslice-install-crds-zjvww              0/1    Completed  0         2m37s
-kubeslice-netop-65jbq                     1/1    Running    0         95s
-kubeslice-operator-74b9f67548-zt2hd       2/2    Running    0         95s
-nsm-admission-webhook-k8s-9bf7d8b5-b6cd7  1/1    Running    0         95s
-nsm-install-crds-482cn                    0/1    Completed  0         2m10s
-nsmgr-fghdh                               2/2    Running    0         95s
-registry-k8s-5b5679ff54-lhs9k             1/1    Running    0         95s
-spire-install-clusterid-cr-klqzj          0/1    Completed  0         112s
-spire-install-crds-pl2m2                  0/1    Completed  0         2m1s
+NAME                                         READY   STATUS      RESTARTS   AGE
+forwarder-kernel-mlff5                       1/1     Running     0          66s
+forwarder-kernel-mwcpc                       1/1     Running     0          66s
+forwarder-kernel-wqj9p                       1/1     Running     0          66s
+kubeslice-dns-77bb868848-4kflc               1/1     Running     0          65s
+kubeslice-install-crds-zs42b                 0/1     Completed   0          2m4s
+kubeslice-netop-jnsn7                        1/1     Running     0          66s
+kubeslice-netop-l7www                        1/1     Running     0          66s
+kubeslice-netop-z9c6c                        1/1     Running     0          66s
+kubeslice-operator-759f849954-jxcmd          2/2     Running     0          65s
+nsm-admission-webhook-k8s-5b99dc99b8-plssn   1/1     Running     0          63s
+nsm-install-crds-s9n6b                       0/1     Completed   0          105s
+nsmgr-jwwhj                                  2/2     Running     0          65s
+nsmgr-mp2ks                                  2/2     Running     0          65s
+nsmgr-qjngs                                  2/2     Running     0          66s
+registry-k8s-b54b6484d-l8kvs                 1/1     Running     0          65s
+spire-install-clusterid-cr-g48jn             0/1     Completed   0          80s
+spire-install-crds-rjnwq                     0/1     Completed   0          99s
 ```
 
 Validate the spire installation using the following command:
