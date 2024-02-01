@@ -271,7 +271,6 @@
 
             },
             "items": [
-              "tutorials/yaml-tutorials/test-network-connectivity",
               "tutorials/yaml-tutorials/deploy-the-bookinfo-application-on-an-intra-cluster-slice",
               "tutorials/yaml-tutorials/deploy-the-bookinfo-application",
               "tutorials/yaml-tutorials/deploy-the-iperf-application-on-an-intra-cluster-slice",
