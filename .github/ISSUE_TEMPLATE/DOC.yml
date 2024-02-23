@@ -3,11 +3,12 @@ name: 📝 Docs issue
 description: Report incorrect or missing content in docs, or a website issue
 labels:
   - status/triage
+  - documentation
 
 body:
   - type: checkboxes
     attributes:
-      label: Is this a docs issue?
+      label: ❓ Is this a docs issue?
       description: |
         Use this issue for reporting issues related to Docker documentation.
         For product issues, refer to the corresponding product repository.
@@ -16,7 +17,7 @@ body:
           required: true
   - type: dropdown
     attributes:
-      label: Type of issue
+      label: 🗄️ Type of issue
       description: What type of problem are you reporting?
       multiple: false
       options:
@@ -28,13 +29,13 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: Description
+      label: 📜 Description
       description: |
         Briefly describe the problem that you found.
     validations:
       required: true
   - type: input
-    id: location
+    id: 📍 location
     attributes:
       label: Location
       description: Where did you find the problem?
@@ -43,6 +44,6 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: Suggestion
+      label: 💭 Suggestion
       description: >
         Let us know if you have specific ideas on how we can fix the issue.
