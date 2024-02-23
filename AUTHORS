@@ -1,0 +1,31 @@
+# Names should be added to this file as
+#	Name or Organization <email address>
+# The email address is not required for organizations.
+
+# You can update this list using the following command:
+#
+#   $ (head -n10 AUTHORS && git shortlog -se | sed -E 's/^\s+[0-9]+\t//') | tee AUTHORS
+
+# Please keep the list sorted.
+26tanishabanik <26tanishabanik@gmail.com>
+AmanSarraf <amansarrafnit@gmail.com>
+Bishal Das <70086051+bishal7679@users.noreply.github.com>
+Divya Mohan <divya.mohan0209@gmail.com>
+Eric Peterson <eric@avesha.io>
+Jonas Brømsø <jonasbn@users.noreply.github.com>
+Lakshya Gupta <lakshya.gupta.1999@gmail.com>
+Md Imran <imranaec@outlook.com>
+Priyank Upadhyay <priyank@aveshasystems.com>
+Richie Sebastian <104349170+richiesebastian@users.noreply.github.com>
+Sayantani Saha <ii.sayantani.ii@gmail.com>
+Tenish-Shrestha <107172285+Tenish-Shrestha@users.noreply.github.com>
+Ubuntu <kranthi@aveshasystems.com>
+Veena <veena@aveshasystems.com>
+amolmote <amolmote201@gmail.com>
+dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+ranjangautam <108670005+ranjangautam@users.noreply.github.com>
+ranjangautam <ranjan.gautam@aveshasystems.com>
+society <tenish.shrestha@aveshasystems.com>
+that-backend-guy <107320806+that-backend-guy@users.noreply.github.com>
+uma-kt <105046156+uma-kt@users.noreply.github.com>
+veenamj-avesha <104770800+veenamj-avesha@users.noreply.github.com>

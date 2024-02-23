@@ -1,9 +1,9 @@
 # https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
-name: 📝 Docs issue
+name: 🐛 Docs issue
 description: Report incorrect or missing content in docs, or a website issue
 labels:
-  - status/triage
   - documentation
+  - bug
 
 body:
   - type: checkboxes
@@ -24,6 +24,8 @@ body:
         - Information is incorrect
         - I can't find what I'm looking for
         - There's a problem with the website
+        - Crash or error
+        - Feature not working as expected
         - Other
     validations:
       required: true
@@ -39,7 +41,7 @@ body:
     attributes:
       label: 🔗 Location
       description: Where did you find the problem?
-      placeholder: "https://docs.docker.com/"
+      placeholder: "https://docs.kubeslice.io/"
     validations:
       required: true
   - type: textarea
