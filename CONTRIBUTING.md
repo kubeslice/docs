@@ -49,7 +49,7 @@ If you encounter a bug, please file an issue in the Github repository. Please pr
 * Write good [commit messages](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#-commit-message-format).
 
 ## Developer Guide
-This guide helps you to get started with developing [kubeslice-controller](https://github.com/kubeslice/docs/blob/master/developer_guide.md).
+This guide helps you to get started with developing [kubeslice-doc](https://github.com/kubeslice/docs/blob/master/developer_guide.md).
 
 ## License
 Apache License 2.0
