@@ -27,13 +27,11 @@ jobs:
         with:
           scan-type: 'repo'
           ignore-unfixed: true
-          format: 'table'
-          output: 'trivy-results'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
           severity: 'CRITICAL'
-          github-pat: ${{ secrets.TOKEN }}
 
-      - name: upload github artifacts
-        uses: actions/upload-artifact@v3
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
         with:
-          name: trivy-results
-          path: ./trivy-results
+          sarif_file: 'trivy-results.sarif'

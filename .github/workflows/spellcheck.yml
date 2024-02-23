@@ -1,28 +1,23 @@
-# This is a basic workflow to help us to get started with Actions
-
-name: Spellcheck CI
-
-# Controls when the action will run.
+name: Spellcheck Action
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   pull_request:
-    branches: [ master ]
-
-  # Allows us to run the workflow manually from the Actions tab
+    branches: [ "master" ]
+  push:
+    branches: [ "master" ]
   workflow_dispatch:
-
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
+    name: Spellcheck
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # The checkout step
       - uses: actions/checkout@v3
-
-      - name: GitHub Spellcheck Action
-        uses: rojopolis/spellcheck-github-actions@0.35.0
+      - uses: rojopolis/spellcheck-github-actions@0.36.0
+        name: Spellcheck
+        with:
+          output_file: spellcheck-output.txt
+      - uses: actions/upload-artifact@v3
+        if: '!cancelled()' # Do not upload artifact if job was cancelled
+        with:
+          name: Spellcheck Output
+          path: spellcheck-output.txt

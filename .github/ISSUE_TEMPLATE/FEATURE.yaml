@@ -1,0 +1,44 @@
+name: 🚀 Enhancement request
+description: Suggest an improvement or a new feature for the documentation
+labels:
+  - documentation
+  - enhancement
+
+body:
+  - type: checkboxes
+    attributes:
+      label: ❓ Is this an enhancement request?
+      description: |
+        Use this template for suggesting improvements or new features for the documentation.
+        For reporting issues, use the "Docs issue" template instead.
+      options:
+        - label: My request is about improving or adding to the documentation content or website
+          required: true
+  - type: dropdown
+    attributes:
+      label: 🗄️ Area of enhancement
+      description: What area of the documentation do you want to improve or add to?
+      multiple: false
+      options:
+        - Concepts
+        - Guides
+        - Reference
+        - Website design
+        - Troubleshooting # This is the new option
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 📜 Description
+      description: |
+        Describe the enhancement or feature that you want to see in the documentation.
+        Explain why it is useful or important for the users or contributors.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 💭 Suggestion
+      description: >
+        If you have any ideas on how to implement the enhancement or feature, share them here.
+        You can also provide links to relevant resources or examples.
