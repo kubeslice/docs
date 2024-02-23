@@ -1,5 +1,5 @@
 # https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
-name: Docs issue
+name: 📝 Docs issue
 description: Report incorrect or missing content in docs, or a website issue
 labels:
   - status/triage
