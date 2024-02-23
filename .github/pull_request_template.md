@@ -6,8 +6,8 @@
      commits if your PR already received reviews or comments.
 
      Before submitting a Pull Request, please ensure you've done the following:
-     - 📖 Read the Contributing Guide: <link-here>
-     - 📖 Read the Code of Conduct: <link-here>
+     - 📖 Read the Contributing Guide: https://github.com/kubeslice/docs/blob/master/CONTRIBUTING.md
+     - 📖 Read the Code of Conduct: https://github.com/kubeslice/docs/blob/master/code_of_conduct.md
      - 👷‍♀️ Create small PRs. In most cases this will be possible.
      - ✅ Provide tests for your changes.
      - 📝 Use descriptive commit messages.
@@ -54,4 +54,4 @@ _If your PR includes UI changes, please utilize this checklist:_
 
 ## [optional] What gif best describes this PR or how it makes you feel?
 
-![alt_text](gif_link)
+![WoW](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmV3dmxidWpiN2Jlb21rOGNjcXZhemN4bGR0cHBpNW1rd2w4dW9haSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tIeCLkB8geYtW/giphy.gif)
