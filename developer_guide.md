@@ -110,10 +110,12 @@ After pushing changes to the working directory, create a PR and share the PR lin
 
 To create the new PR:
 
-1. Click on the **Pull requests** tab.
+1. Click the **Pull requests** tab.
 
-2. Select your working (active) branch.
+2. Click the **Compare & pull request** button for the recently updated branch.
 
-3. Click the **New pull requests** button and add the details.
+  ![createPR](/images/community-dg/createPR.png)
 
-3. Click the **Create pull requests** button to create a PR.
+3. Enter the title and description for the PR.
+
+4. Click the **Create pull requests** button to create a PR.
