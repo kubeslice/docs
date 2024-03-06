@@ -49,7 +49,6 @@ To clone the repository:
    git clone https://github.com/<github-username>/<forked-repo-name>.git
    ```
 
-
 ## Create the Working Directory
 
 You can use any editor that supports the markdown to edit the doc files.
@@ -60,15 +59,13 @@ To create a working directory, navigate to the directory that contains the repos
 cd <forked-repo-name>
 ```
 
-
-
 ## Local Development
 
 To view the changes in the local website, you can use the Docusaurus. 
 
 ### Create a Symlink
 
-Create symlink to the static image folder using mlink.
+Create symlink to the static image folder using `mlink`.
 
 Use the following command to create a symlink:
 
@@ -76,8 +73,7 @@ Use the following command to create a symlink:
 mklink /D C:\<path-to-the-directory>\<repo-name>\static\images C:\<path-to-the-directory>\<repo-name>\images
 ```
 
-
-### 2. Install the Node Modules
+### Install the Node Modules
 
 The following command installs all the dependencies of the project in the local `node_modules` folder.
 
@@ -102,7 +98,6 @@ You can delete the build folder after pushing the changes to the master.
 ```
 npm run build
 ```
-
 
 ## Create a PR
 
