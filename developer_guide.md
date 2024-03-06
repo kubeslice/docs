@@ -50,7 +50,7 @@ To clone the repository:
    ```
 
 
-### Create the Working Directory
+## Create the Working Directory
 
 You can use any editor that supports the markdown to edit the doc files.
 
