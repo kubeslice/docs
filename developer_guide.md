@@ -10,49 +10,51 @@ To use this website, you need
 
 ## Installation
 
-### 1. Fork the Repository
+### Fork the Repository
 
-Fork the project, to try out new ideas.
+Fork the documentation repository to test new ideas.
 
-To fork the project:
+To fork the repository:
 
-1. Go to the project (docs) repository on GitHub.
+1. Go to the **kubeslice/docs** repository on GitHub.
 
-2. click the **Fork** button on the top right side.
+2. Click the **Fork** button on the top right side.
    
    ![fork](/images/community-dg/fork.png)
 
-3. Enter the **Repository name** and click the **Create fork** button.
-  
+3. Enter the name of the repo in the **Repository name** text box.
+
    ![fork](/images/community-dg/fork-2.png)
 
+4. Click the **Create fork** button.
 
-### 2. Clone the Project
+
+### Clone the Project
 
 Get the HTTPS link of the forked repository to clone the project to your local system.
 
-To clone the project:
+To clone the repository:
 
-1. Go to the forked repo (docs).
+1. Go to the forked repository.
 
 2. Click the **Clone** button on the top right side.
 
    ![clone](/images/community-dg/clone.png)
 
-4. Under **Local** >> **HTTPS**, copy the link of the repo.
+4. Under **Local** > **HTTPS** and copy the https link of the repository.
 
-5. Use the following command to clone the repo:
+5. Use the following command to clone the repository:
 
    ```
    git clone https://github.com/<github-username>/<forked-repo-name>.git
    ```
 
 
-### 3. Create the Working Directory
+### Create the Working Directory
 
-Use the editor that supports the markdown to edit the doc files.
+You can use any editor that supports the markdown to edit the doc files.
 
-To create a working directory, navigate to the directory that contains the project from the editor of your choice and update the files.
+To create a working directory, navigate to the directory that contains the repository from the editor of your choice and update the files.
 
 ```
 cd <forked-repo-name>
@@ -62,11 +64,17 @@ cd <forked-repo-name>
 
 ## Local Development
 
-### 1.  Create a Symlink
+To view the changes in the local website, you can use the Docusaurus. 
+
+### Create a Symlink
 
 Create symlink to the static image folder using mlink.
 
-mklink /D C:\Users\HP\Doc-repos\docs-ent\static\images C:\Users\HP\Doc-repos\docs-ent\images
+Use the following command to create a symlink:
+
+```
+mklink /D C:\<path-to-the-directory>\<repo-name>\static\images C:\<path-to-the-directory>\<repo-name>\images
+```
 
 
 ### 2. Install the Node Modules
@@ -77,17 +85,19 @@ The following command installs all the dependencies of the project in the local 
 npm install
 ```
 
-The following command starts a local development server and opens a browser window. The changes are reflected in real-time
-without the need to restart the server.
+The following command starts a local development server and opens a browser window. The changes are reflected in real-time without the need to restart the server.
 
 ```
 npm run start
 ```
 
-### 3. Local Build
+### Local Build
 
-Run the following command to create a local build to verify if there are any errors.
+Run the following command to create a local build to verify if there are any  errors related to images or hyperlinks.
 
+:::info
+You can delete the build folder after pushing the changes to the master.
+:::
 
 ```
 npm run build
@@ -98,12 +108,12 @@ npm run build
 
 After pushing changes to the working directory, create a PR and share the PR link for review.
 
-![createpr](/images/community-dg/create-pr.png)
-
-To create a PR:
+To create the new PR:
 
 1. Click on the **Pull requests** tab.
 
-2. Select your branch and click the **New pull requests** button.
+2. Select your working (active) branch.
 
-3. Add the details and click the **Create pull requests** button.
+3. Click the **New pull requests** button and add the details.
+
+3. Click the **Create pull requests** button to create a PR.
