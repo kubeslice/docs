@@ -20,11 +20,7 @@ To fork the repository:
 
 2. Click the **Fork** button on the top right side.
    
-   ![fork](/images/community-dg/fork.png)
-
-3. Enter the name of the repo in the **Repository name** text box.
-
-   ![fork](/images/community-dg/fork-2.png)
+3. Enter the name of the repository in the **Repository name** text box.
 
 4. Click the **Create fork** button.
 
@@ -39,11 +35,9 @@ To clone the repository:
 
 2. Click the **Clone** button on the top right side.
 
-   ![clone](/images/community-dg/clone.png)
+3. Under **Local** > **HTTPS** and copy the https link of the repository.
 
-4. Under **Local** > **HTTPS** and copy the https link of the repository.
-
-5. Use the following command to clone the repository:
+4. Use the following command to clone the repository:
 
    ```
    git clone https://github.com/<github-username>/<forked-repo-name>.git
@@ -108,8 +102,6 @@ To create the new PR:
 1. Click the **Pull requests** tab.
 
 2. Click the **Compare & pull request** button for the recently updated branch.
-
-  ![createPR](/images/community-dg/createPR.png)
 
 3. Enter the title and description for the PR.
 
