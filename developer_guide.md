@@ -67,7 +67,7 @@ Create symlink to the static image folder using `mlink`.
 
 Use the following command to create a symlink:
 
-**Note**: **You can change the path to the images depending on the OS**
+**Note**: **You can change the path to the images depending on the OS**.
 
 ```
 mklink /D C:\<path-to-the-directory>\<repo-name>\static\images C:\<path-to-the-directory>\<repo-name>\images
@@ -90,7 +90,7 @@ npm run start
 
 ### Local Build
 
-Run the following command to create a local build to verify if there are any  errors related to images or hyperlinks.
+Run the following command to create a local build to verify if there are any  errors related to the images or hyperlinks.
 
 **Note**: **You can delete the build folder after pushing the changes to the master.**
 
@@ -100,7 +100,7 @@ npm run build
 
 ## Create a PR
 
-After pushing changes to the branch, create a PR and share the PR link for review.
+After pushing changes to the branch, create a PR, and share the PR link for review.
 
 To create the new PR:
 
