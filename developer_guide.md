@@ -43,29 +43,36 @@ To clone the repository:
    git clone https://github.com/<github-username>/<forked-repo-name>.git
    ```
 
-## Create the Working Directory
-
-You can use any editor that supports the markdown to edit the doc files.
-
-To create a working directory, navigate to the directory that contains the repository from the editor of your choice and update the files.
-
-```
-cd <forked-repo-name>
-```
 
 ## Local Development
 
-To view the changes in the local website, you can use the Docusaurus. 
+
+### Navigate to Working Directory
+
+You can use any editor that supports the markdown to edit the doc files.
+
+Navigate to the directory that contains the repository from the editor of your choice, create a new branch, and update the files.
+
+```
+cd <forked-repo-name>
+git checkout -b <new-branch>
+```
+
 
 ### Create a Symlink
+
+To view the changes in the local website, you can use the Docusaurus.
 
 Create symlink to the static image folder using `mlink`.
 
 Use the following command to create a symlink:
 
+**Note**: **You can change the path to the images depending on the OS**
+
 ```
 mklink /D C:\<path-to-the-directory>\<repo-name>\static\images C:\<path-to-the-directory>\<repo-name>\images
 ```
+
 
 ### Install the Node Modules
 
@@ -85,9 +92,7 @@ npm run start
 
 Run the following command to create a local build to verify if there are any  errors related to images or hyperlinks.
 
-:::info
-You can delete the build folder after pushing the changes to the master.
-:::
+**Note**: **You can delete the build folder after pushing the changes to the master.**
 
 ```
 npm run build
@@ -95,7 +100,7 @@ npm run build
 
 ## Create a PR
 
-After pushing changes to the working directory, create a PR and share the PR link for review.
+After pushing changes to the branch, create a PR and share the PR link for review.
 
 To create the new PR:
 
