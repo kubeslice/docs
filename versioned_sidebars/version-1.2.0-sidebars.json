@@ -293,6 +293,7 @@
         ]
       },
       "items": [
+        "release-notes/release-notes-for-kubeslice-oss-1.2.1",
         "release-notes/release-notes-for-kubeslice-oss-1.2.0",
         "release-notes/release-notes-for-kubeslice-oss-1.1.0",
         "release-notes/release-notes-for-kubeslice-oss-1.0.0",

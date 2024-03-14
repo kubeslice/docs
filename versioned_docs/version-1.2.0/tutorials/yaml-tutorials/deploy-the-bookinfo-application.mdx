@@ -477,10 +477,9 @@ KubeSlice configuration:
    ```
    Expected Output
    ```
-   kubectl get serviceexport -n bookinfo
-   NAME      SLICE   INGRESS   PORT(S)    ENDPOINTS   STATUS  ALIAS
-   details   white   true      9080/TCP   1           READY
-   reviews   white   true      9080/TCP   1           READY
+   NAME      SLICE   INGRESS  SERVICEPORT(S)   PORT(S)    ENDPOINTS   STATUS  ALIAS
+   details   white   true                      9080/TCP   1           READY
+   reviews   white   true                      9080/TCP   1           READY
    ```
 ### Validate the Productpage on the Cloud Cluster
 
