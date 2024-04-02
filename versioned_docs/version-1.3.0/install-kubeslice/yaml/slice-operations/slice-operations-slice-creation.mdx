@@ -1,0 +1,927 @@
+# Create Slices
+After the worker clusters have been successfully registered with the KubeSlice Controller, 
+the next step is to create a slice that will onboard the application namespaces. It is possible 
+to create a slice across multiple clusters or intra-cluster.
+
+## Slice Configuration Parameters
+The following tables describe the configuration parameters used to create a slice 
+with registered worker cluster(s).
+
+| Parameter                              | Parameter Type | Description                                                                                                                                                       | Required  |
+| -------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| apiVersion                             | String         | The KubeSlice Controller API version. A set of resources that are exposed together, along with the version. The value must be `controller.kubeslice.io/v1alpha1`. | Mandatory |
+| kind                                   | String         | The name of a particular object schema. The value must be `SliceConfig`.                                                                                          | Mandatory |
+| [metadata](#slice-metadata-parameters) | Object         | The metadata describes parameters (names and types) and attributes that have been applied.                                                                        | Mandatory |
+| [spec](#slice-spec-parameters)         | Object         | The specification of the desired state of an object.                                                                                                              | Mandatory |
+
+#### Slice Metadata Parameters
+
+These parameters are related to the metadata configured in the
+[slice configuration YAML file](#slice-creation).
+
+| Parameter | Parameter Type | Description                                                                                                                       | Required  |
+| --------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| name      | String         | The name of the Slice. Each slice **must** have a unique name within a project namespace. | Mandatory |
+| namespace | String         | The project namespace on which you apply the slice configuration file.                                                            | Mandatory |
+
+#### Slice Spec Parameters
+
+These parameters are related to the spec configured in the
+[slice configuration YAML file](#slice-creation).
+
+| Parameter                                                            | Parameter Type                                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Required  |
+| -------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| sliceSubnet                                                          | String (IP/16 Subnet) (**RFC 1918 addresses**) | This subnet is used to assign IP addresses to pods that connect to the slice overlay network. The CIDR range can be re-used for each slice or can be modified as required. Example: 192.168.0.0/16                                                                                                                                                                                                                                                                                                    | Mandatory |
+| maxClusters                                                          | Integer                                        | The maximum number of clusters that are allowed to connect a slice. **The value of maxClusters can only be set during the slice creation**. The maxClusters value is immutable after the slice creation. The minimum value is 2, and the maximum value is 32. The default value is 16. Example: 5. The maxClusters affect the subnetting across the clusters. For example, if the slice subnet is 10.1.0.0/16 and the maxClusters=16, then each cluster would get a subnet of 10.1.x.0/20, x=0,16,32. | Optional  |
+| sliceType                                                            | String                                         | Denotes the type of the slice. The value must be set to `Application`.                                                                                                                                                                                                                                                                                                                                                                                                                                | Mandatory |
+| [sliceGatewayProvider](#slice-gateway-provider-parameters)           | Object                                         | It is the type of slice gateway created for inter cluster communication.                                                                                                                                                                                                                                                                                                                                                                                                                              | Mandatory |
+| sliceIpamType                                                        | String                                         | It is the type of the IP address management for the slice subnet. The value must be always set to `Local`.                                                                                                                                                                                                                                                                                                                                                                                            | Mandatory |
+| rotationInterval	                                                   | Integer                                        | The duration in which SliceGateway certificates are periodically renewed or rotated to ensure security and compliance. The default interval is 30 days and the supported range is 30 to 90 days.|	Optional |
+| renewBefore	                                                         | Time	                                          | The time period before the expiration of SliceGateway certificates during which the renewal process is initiated. It represents the duration prior to certificate expiration when the renewal process is triggered to ensure seamless continuation of secure communication. By setting an appropriate value for renewBefore, certificates can be renewed ahead of time, allowing for any necessary updates or adjustments to be completed before the current certificates expire. This parameter helps avoid potential disruptions by ensuring the availability of valid certificates without waiting until the last moment. If you want to renew it now, provide the current Timestamp. warning: Do not set this parameter during slice creation.| Optional |
+| [vpnConfig](#openvpn-configuration)	                                 | Object	                                        | The Slice VPN Gateway is a slice network service component that provides a secure VPN tunnel between multiple clusters that are a part of the slice configuration.	| Optional |
+| clusters                                                             | List of Strings                                | The names of the worker clusters that would be part of the slice. You can provide the list of worker clusters.                                                                                                                                                                                                                                                                                                                                                                                        | Mandatory |
+| [qosProfileDetails](#qos-profile-parameters)                         | Object                                         | QoS profile for the slice inter cluster traffic.                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Mandatory |
+| [namespaceIsolationProfile](#namespace-isolation-profile-parameters) | Object                                         | It is the configuration to onboard namespaces and/or isolate namespaces with the network policy.                                                                                                                                                                                                                                                                                                                                                                                                      | Mandatory |
+| [externalGatewayConfig](#external-gateway-configuration-parameters)  | Object                                         | It is the slice ingress/egress gateway configuration. It is an optional configuration.                                                                                                                                                                                                                                                                                                                                                                                                                | Optional  |
+
+#### Slice Gateway Provider Parameters
+
+These parameters are related to the slice gateway created for the inter-cluster communication and they are configured in the
+[slice configuration YAML file](#slice-creation).
+
+| Parameter        | Parameter Type | Description                                                                                                                                       | Required  |
+| ---------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| sliceGatewayType | String         | The slice gateway type for inter cluster communication. The value must be `OpenVPN`.                                                              | Mandatory |
+| sliceCaType      | String         | The slice gateway certificate authority type that provides certificates to secure inter-cluster traffic. The value must be always set to `Local`. | Mandatory |
+| [SliceGatewayServiceType](#slice-gateway-service-type-parameters) |	Object	| The type of gateway connectivity to use on a cluster. The default value is NodePort.	                                                            | Optional  |
+
+
+#### Slice Gateway Service Type Parameters
+
+These parameters are related to the slice gateway service type parameters that provides an option to use the external Load Balancer. The user
+can add the slice gateway type and protocol for each cluster.
+
+| Parameter	    | Parameter	| Description	 | Required |
+| ------------- | --------- | ------------ | -------- |
+| cluster	      | String	  | The name of the worker cluster for which the user configures slice gateway connectivity. This field supports wildcard entries. To configure the slice gateway connectivity for all clusters connected to the slice, specify *(asterisk) as the parameter's value.	| Mandatory |
+| type	        | String	  | It defines the type of inter-cluster connectivity in KubeSlice. It has two options: NodePort and LoadBalancer. The default value is NodePort. The type value set to LoadBalancer is immutable after the slice creation.	| Optional |
+| protocol	    | String	  |It defines the protocol for gateway configuration. It has two options: TCP and UDP. The default value is UDP. The protocol is immutable after the slice creation. | Optional |
+
+
+#### OpenVPN Configuration
+This parameter is related to the open VPN certificate generation and is configured in the [slice configuration](#slice-creation) YAML file.
+
+| Parameter	| Parameter Type	| Parameter Description	| Required |
+|-----------|-----------------|-----------------------|----------|
+| cipher	  | Alphanumeric	  | This is the type of cipher used to generate the open VPN certificates. The value can be set to `AES_128_CBC`. The default value is `AES_256_CBC`.This parameter is provided as part of the slice configuration during creation. This configuration is immutable during the lifetime of the slice.| Optional |
+
+
+#### QOS Profile Parameters
+
+These parameters are related to the QoS profile for the slice inter-cluster traffic configured in the
+[slice configuration YAML file](#slice-creation).
+
+| Parameter               | Parameter Type | Description                                                                                                                                                                                                    | Required  |
+| ----------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| queueType               | String         | It is the slice traffic control queue type. The value must be Hierarchical Token Bucket (`HTB`). HTB facilitates guaranteed bandwidth for the slice traffic.                                                   | Mandatory |
+| priority                | Integer        | QoS profiles allows traffic management within a slice as well as prioritization across slices. The value range is 0-3. Integer 0 represents the lowest priority and integer 3 represents the highest priority. | Mandatory |
+| tcType                  | String         | It is the traffic control type. The value must be `BANDWIDTH_CONTROL`.                                                                                                                                         | Mandatory |
+| bandwidthCeilingKbps    | Integer        | The maximum bandwidth in Kbps that is allowed for the slice traffic.                                                                                                                                           | Mandatory |
+| bandwidthGuaranteedKbps | Integer        | The guaranteed bandwidth in Kbps for the slice traffic.                                                                                                                                                        | Mandatory |
+| dscpClass               | Alphanumeric   | DSCP marking code for the slice inter-cluster traffic.                                                                                                                                                         | Mandatory |
+
+#### Namespace Isolation Profile Parameters
+
+These parameters are related to onboarding namespaces, isolating the slice, and allowing external namespaces to
+communicate with the slice. They are configured in the
+[slice configuration YAML file](#slice-configuration).
+
+| Parameter                                                   | Parameter Type | Description                                                                                                                                                                                                                                                                                                         | Required  |
+| ----------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| [applicationNamespaces](#application-namespaces-parameters) | Array object   | Defines the [namespaces that will be onboarded](#manage-namespace) to the slice and their corresponding worker clusters.                                                                                               | Mandatory |
+| [allowedNamespaces](#allowed-namespaces-parameters)         | Array object   | Contains the list of namespaces from which the traffic flow is allowed to the slice. By default, native kubernetes namespaces such as `kube-system` are allowed. If `isolationEnabled ` is set to `true`, then you must include namespaces that you want to allow traffic from.                                     | Optional  |
+| isolationEnabled                                            | Boolean        | Defines if the namespace isolation is enabled. By default, it is set to `false`. The [isolation policy](#isolate-namespaces) only applies to the traffic from the application and allowed namespaces to the same slice. | Optional  |
+
+#### Application Namespaces Parameters
+
+These parameters are related to onboarding namespaces onto a slice, which are configured in the
+[slice configuration YAML file](#slice-configuration).
+
+| Parameter | Parameter Type  | Description                                                                                                                                                 | Required  |
+| --------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| namespace | String          | The namespace that you want to onboard to the slice. These namespaces can be isolated using the namespace isolation feature.                                | Mandatory |
+| clusters  | List of Strings | Corresponding cluster names for the namespaces listed above. To onboard the namespace on all clusters, specify the asterisk `*` as this parameter\'s value. | Mandatory |
+
+#### Allowed Namespaces Parameters
+
+These parameters are related to allowing external namespaces to communicated with the slice, which are configured in the
+[slice configuration YAML file](#slice-creation).
+
+| Parameter | Parameter Type  | Description                                                                                                                                                 | Required |
+| --------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| namespace | Strings         | List of external namespaces that are not a part of the slice from which traffic is allowed into the slice.                                                  | Optional |
+| clusters  | List of Strings | Corresponding cluster names for the namespaces listed above. To onboard the namespace on all clusters, specify the asterisk `*` as this parameter\'s value. | Optional |
+
+#### External Gateway Configuration Parameters
+
+These parameters are related to external gateways, which are configured in the
+[slice configuration YAML file](#slice-configuration).
+
+| Parameter   | Parameter Type  | Description                                                                                                                                                                                                                                                                                                                                                                          | Required  |
+| ----------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| ingress     | Boolean         | To use the ingress gateway for East-West traffic on your slice, set the value to `true`.                                                                                                                                                                                                                                                                                             | Optional  |
+| egress      | Boolean         | To use the egress gateway for East-West traffic on your slice, set the value to `true`.                                                                                                                                                                                                                                                                                              | Optional  |
+| gatewayType | String          | The type of ingress/egress gateways that need to be provisioned for the slice. It can either be `none` or `istio`.If set to `istio`, - The ingress gateway is created for a slice when `ingress` is enabled. - The egress gateway is created for a slice when `egress` is enabled. If set to `istio`, and ingress and egress are set to `false` then Istio gateways are not created. | Mandatory |
+| clusters    | List of Strings | Names of the clusters to which the `externalGateway` configuration should be applied.                                                                                                           ### Create Slice YAML                                                                                                                                                                                    | Optional  |
+
+
+
+### Standard QOS Profile Parameters
+These parameters are related to the QoS profile for the slice inter-cluster traffic configured in the standard QoS profile configuration 
+YAML file.
+
+| Parameter	 | Parameter Type	| Description |	Required |
+|------------|----------------|-------------|----------|
+| apiVersion | String	        | The KubeSlice Controller API version. A set of resources that are exposed together, along with the version. The value must be networking.kubeslice.io/v1beta1.	Mandatory
+| kind	     | String	        | The name of a particular object schema. The value must be SliceQoSConfig.	Mandatory
+| [metadata](#standard-qos-profile-metadata-parameter)	| Object	        | The metadata describes parameters (names and types) and attributes that have been applied.	Mandatory
+| [spec](#standard-qos-profile-specification-parameters)	     | Object	        | The specification of the desired state of an object.	Mandatory
+
+#### Standard QoS Profile Metadata Parameter
+
+| Parameter	| Parameter Type | Description	| Required |
+|-----------|----------------|--------------|----------|
+| name	    | String	       | It is the name of the QoS profile. |	Mandatory |
+|namespace	| String	       | The project namespace on which you apply the slice configuration file. |	Mandatory |
+
+#### Standard QoS Profile Specification Parameters
+| Parameter	| Parameter Type | Description	| Required |
+|-----------|----------------|--------------|----------|
+| queueType	| String	       | It is the slice traffic control queue type. The value must be Hierarchical Token Bucket (HTB). HTB facilitates guaranteed bandwidth for the slice traffic.	| Mandatory |
+| priority	| Integer	       | QoS profiles allows traffic management within a slice as well as prioritization across slices. The value range is 0-3. 0 represents the highest priority and 3 represents the lowest priority. |	Mandatory |
+| tcType	  | String	       | It is the traffic control type. The value must be BANDWIDTH_CONTROL.	| Mandatory |
+| bandwidthCeilingKbps |	Integer |	The maximum bandwidth in Kbps that is allowed for the slice traffic.| Mandatory |
+| bandwidthGuaranteedKbps |	Integer	| The guaranteed bandwidth in Kbps for the slice traffic.	| Mandatory |
+| dscpClass	| Alphanumeric |	DSCP marking code for the slice inter-cluster traffic.	| Mandatory |
+
+
+## Slice Creation
+
+### Slice VPN Key Rotation
+Any new slice created using the KubeSlice Manager or a YAML file will have a duration of 30 days to renew the SliceGateway certificates. 
+When creating a slice, you can change the rotation interval by modifying the rotationInterval parameter in the slice configuration YAML file. 
+This interval can be adjusted, with the minimum being 30 days and the maximum being 90 days. You can also update this parameter after 
+the creation of slice.
+
+Create the slice configuration YAML file using the following template.
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata: 
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>
+  maxClusters: <2 - 32>       #Ex: 5. By default, the maxClusters value is set to 16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  rotationInterval: 60    # If not provided, by default key rotation interval is 30 days
+  vpnConfig:
+     cipher: AES-128-CBC       # If not provided, by default cipher is AES-256-CBC
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:
+    queueType: HTB
+    priority: <qos_priority>                      #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+```
+
+## Renew Slice Gateway Certificates
+
+You can use the renewBefore option to start the certificate renewal process right away. Using this option, you can start the certificate 
+renewal procedure before the rotation interval expires. The renewBefore parameter in the YAML file can be set to a suitable value to 
+ensure that the certificate renewal process begins right away, maintaining your system's security and compliance.
+
+
+:::warning
+Before you use the renewBefore parameter to renew the gateway certificates, ensure the slice gateways are operational.
+:::
+
+Use the following template to renew your certificates.
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata: 
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>
+  maxClusters: <2 - 32>       #Ex: 5. By default, the maxClusters value is set to 16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  renewBefore: 2023-07-18T14:27:08Z        #only required if you want to renew your certificates before hand 
+  rotationInterval: 60    # If not provided, by default key rotation interval is 30 days
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:
+    queueType: HTB
+    priority: <qos_priority>                      #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+  ```
+
+## Inter-Cluster Connectivity in KubeSlice
+KubeSlice supports cluster connectivity among public and private clusters. Kubeslice extends the support to private clusters 
+using a Load Balancer. In the slice configuration YAML file, the user can specify the type of gateway connectivity to use 
+on a cluster. The type can be either NodePort or LoadBalancer. If you do not use LoadBalancer as the gateway connectivity 
+type, then NodePort is used by default. Like other configuration options in KubeSlice, the * (asterisk) wildcard 
+character is allowed to indicate all clusters of a slice.
+
+Add the gateway service type and protocol and the corresponding clusters under the sliceGatewayServiceType in the slice 
+configuration YAML as illustrated below.
+
+ ```
+ sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceGatewayServiceType:
+      - cluster: <registered-cluster-name-1>
+        type: LoadBalancer   # By default, the gateway service type is NodePort.
+        protocol: TCP        # By default. the gateway protocol is UDP.
+      - cluster: <registered-cluster-name-2>
+        type: LoadBalancer   # By default, the gateway service type is NodePort.
+        protocol: TCP        # By default, the gateway protocol is UDP.   
+```
+
+### Change the Gateway Provider for Inter-Cluster Connectivity
+
+After the LoadBalancer gateway service type and TCP/UDP gateway protocol are set, they become immutable. 
+However, if you want to change the gateway service type and protocol, then follow these steps:
+
+1. Detach the cluster from the slice by removing it from the attached slice configuration , that is under `clusters` and remove 
+the cluster, its protocol and type under `sliceGatewayServiceType` in the slice configuration YAML.
+2. Apply the slice configuration to completely detach it.
+3. Add the same cluster under `clusters` and set the `sliceGatewayServiceType` for this cluster.
+4. Reapply the slice configuration to connect the cluster to the slice.
+
+
+## Manage Namespaces
+This section describes how to onboard namespaces to a slice. In Kubernetes, a namespace is a logical separation of resources within a
+cluster, where resources like pods and services are associated with a namespace and are guaranteed to be uniquely 
+identifiable within it. Namespaces created for application deployments can be onboarded onto a slice to form a micro-network segment. 
+Once a namespace is bound to a slice, all pods scheduled in the namespace get connected to the slice.
+
+### Onboard Namespaces
+To onboard namespaces, you must add them as part of `applicationNamespaces` in the 
+[slice configuration](#slice-creation) YAML file. 
+
+In the slice configuration YAML file, add the namespaces using one of these methods:
+
+- Add namespaces for each worker cluster.
+- Add a wildcard * (asterisk) to add all namespaces on the worker clusters.
+
+:::info
+Ensure that the namespace that you want to onboard exists on the worker cluster.
+:::
+
+Add the namespace and the corresponding clusters under the `applicationNamespaces` in the slice 
+configuration file as illustrated below.
+```
+namespaceIsolationProfile:
+  applicationNamespaces:
+   - namespace: iperf
+     clusters:
+      - 'worker-cluster-1'
+   - namespace: bookinfo
+     clusters:
+      - '*'
+```
+:::info
+Adding the asterisk (*) enables the namespace sameness, which means that the namespace 
+is onboarded on all the worker clusters of that slice. This configuration ensures that all the application 
+deployments from that namespace are onboarded automatically on to the slice. Enabling namespace sameness 
+creates that namespace on a worker cluster that does not contain it. Thus, all the worker clusters part 
+of that slice contains that namespace.  
+:::
+
+## Isolate Namespaces
+The namespace isolation feature allows you to confine application namespaces to a slice. The 
+associated namespaces are connected to the slice and are isolated from other namespaces in the cluster. 
+This forms a secure inter-cluster network segment of pods that are isolated from the rest of the pods in 
+the clusters. The slice segmentation isolates and protects applications from each other, and reduces 
+blast radius of failure conditions.
+
+The following figure illustrates how the namespaces are isolated from different namespaces on a worker 
+cluster. Namespaces are isolated with respect to sending and receiving data traffic to other namespaces 
+in a cluster.
+
+![alt](/img/Namespace-Isolation-OS.png)
+
+
+### Enable Namespace Isolation
+To enable the Namespace Isolation on a slice, set the `isolationEnabled` value to **true** in the slice 
+configuration YAML file and to disable the Namespace Isolation set the value to **false**.  
+By default, the `isolationEnabled` value is set to **false**.  
+
+
+## Slice Istio Gateway Configurations
+A slice can be configured to use Istio ingress and egress gateways for East-West traffic(inter-cluster, 
+egress from one cluster, and ingress into another cluster). Gateways operate at the edges of the clusters. 
+Ingress gateway act as an entry point and Egress gateway acts as exit point for East-West traffic in a 
+slice. Ingress/Egress gateway is not a core component of KubeSlice, it is an add-on feature that users can 
+activate if needed.
+
+:::info
+Currently, Istio gateways are the only type of external gateways supported.
+:::
+
+There are different ways to configure a slice that enables you to route the application traffic. 
+Below are the scenarios to configure a slice with/without egress and ingress gateways.
+  
+### Scenario 1: Slice Configuration only with Egress Gateways
+Create the slice configuration file with Istio egress gateway using the
+following template.
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>         #Ex: 10.1.0.0/16
+  maxClusters: <2 - 32>               #Ex: 5. By default, the maxClusters value is set to 16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:<qos-profile>
+    queueType: HTB
+    priority: 1               #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+  externalGatewayConfig:
+    - ingress:
+        enabled: false 
+      egress:
+        enabled: true
+      nsIngress:
+        enabled: false 
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-1>
+    - ingress:
+        enabled: false
+      egress:
+        enabled: false 
+      nsIngress:
+        enabled: false
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-2>
+```
+
+### Scenario 2: Slice Configuration only with Ingress Gateways
+Create the slice configuration file with Istio ingress gateways using
+the following template.
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>         #Ex: 10.1.0.0/16
+  maxClusters: <2 - 32>               #Ex: 5. By default, the maxClusters value is set to 16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:
+    queueType: HTB
+    priority: 1               #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+     - namespace: kube-system
+       clusters:
+       - '*'
+  externalGatewayConfig:
+    - ingress:
+        enabled: false 
+      egress:
+        enabled: false
+      nsIngress:
+        enabled: false 
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-1>
+    - ingress:
+        enabled: true
+      egress:
+        enabled: false 
+      nsIngress:
+        enabled: false
+      gatewayType: istio 
+      clusters:
+        - <cluster-name-2>
+```
+
+### Scenario 3: Slice Configuration with Egress and Ingress Gateways
+Create the slice configuration file with Istio ingress and egress gateways using the following template.
+
+``` 
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata: 
+  name: <slice-name>
+  namespace: kubeslice-<projectname>
+spec:
+  sliceSubnet: <slice-subnet>
+  maxClusters: <2 - 32>         #Ex: 5. By default, the maxClusters value is set to 16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - <registered-cluster-name-1>
+    - <registered-cluster-name-2>
+  qosProfileDetails:
+    queueType: HTB
+    priority: <qos_priority>                      #keep integer values from 0 to 3
+    tcType: BANDWIDTH_CONTROL
+    bandwidthCeilingKbps: 5120
+    bandwidthGuaranteedKbps: 2560
+    dscpClass: AF11
+  namespaceIsolationProfile:
+    applicationNamespaces:
+      - namespace: iperf
+        clusters:
+        - '*'
+    isolationEnabled: false                   #make this true in case you want to enable isolation
+    allowedNamespaces:
+      - namespace: kube-system
+        clusters:
+        - '*'
+  externalGatewayConfig:         #enable which gateway we wanted to and on which cluster
+    - ingress:
+        enabled: false              
+      egress:
+        enabled: true
+        gatewayType: istio
+      clusters:
+        - <cluster-name-1>
+    - ingress:
+        enabled: true
+      egress:
+        enabled: false
+      gatewayType: istio
+      clusters:
+        - <cluster-name-2>
+```
+
+
+## Apply Slice Configuration 
+
+The following information is required.
+
+|Variable|Description|
+|----|----|
+|`<cluster name>`|The name of the cluster.|
+|`<slice configuration>`|The name of the slice configuration file.|
+|`<project namespace>`|The project namespace on which you apply the slice configuration file.|
+ 
+
+Perform these steps:
+
+1. Switch the context to the **KubeSlice Controller** using the following command:
+  ``` 
+  kubectx <cluster name>
+  ```
+
+2. Apply the YAML file on the **project namespace** using the following command:
+
+  ``` 
+  kubectl apply -f <slice configuration>.yaml -n <project namespace>
+  ```
+
+### Create a Standard QoS Profile
+The slice configuration file contains a QoS profile object. To apply a QoS profile to multiple slices, you can create a separate QOS profile YAML file and call it out in other slice configuration.
+
+#### Create a Standard QoS Profile YAML File
+Use the following template to create a standard sliceqosconfig file.
+
+:::info
+To understand more about the configuration parameters, see Standard QoS Profile Parameters.
+:::
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceQoSConfig
+metadata:
+  name: profile1
+spec:
+  queueType: HTB
+  priority: 1
+  tcType: BANDWIDTH_CONTROL
+  bandwidthCeilingKbps: 5120
+  bandwidthGuaranteedKbps: 2562
+  dscpClass: AF11
+```
+
+#### Apply the Standard QOS Profile YAML File
+Apply the slice-qos-config file using the following command.
+
+```
+kubectl apply -f <full path of slice-qos-config.yaml> -n project-namespace
+```
+
+:::info
+You can only add the filename if you are on the project namespace using the following command.
+:::
+
+```
+kubectl apply slice-qos-config.yaml -n project-namespace
+```
+
+### Validate the Standard QoS Profile
+To validate the standard QoS profile that you created, use the following command:
+
+``` 
+kubectl get sliceqosconfigs.controller.kubeslice.io -n project-namespace
+```
+
+Expected Output
+
+```
+NAME       AGE
+profile1   33s
+```
+
+After applying the slice-qos-config.yaml file, add the profile name in a slice configuration. You must add the name of the QoS 
+profile for the standardQosProfileName parameter in a slice configuration YAML file as illustrated in the following examples.
+
+:::info
+In a slice configuration YAML file, the standardQosProfileName parameter and the qosProfileDetails object are mutually exclusive.
+:::
+
+
+#### Example of using the standard QoS Profile without Istio
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: red
+spec:
+  sliceSubnet: 10.1.0.0/16
+  maxClusters: <2 - 32>               #Ex: 5. By default, the maxClusters value is set to 16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - cluster-1
+    - cluster-2
+  standardQosProfileName: profile1
+```
+
+#### Example of using the standard QoS Profile with Istio
+
+```
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: red
+spec:
+  sliceSubnet: 10.1.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - cluster-1
+    - cluster-2
+  standardQosProfileName: profile1
+  externalGatewayConfig:
+    - ingress:
+        enabled: false
+      egress:
+        enabled: false
+      nsIngress:
+        enabled: false
+      gatewayType: none
+      clusters:
+        - "*"
+    - ingress:
+        enabled: true
+      egress:
+        enabled: true
+      nsIngress:
+        enabled: true
+      gatewayType: istio
+      clusters:
+        - cluster-2
+
+```
+
+## Validate the Installation
+
+Validate the slice configuration on the KubeSlice Controller and the worker clusters.
+
+
+### Validate the Slice on the Controller Cluster
+
+To validate the slice configuration on the controller cluster, use the following command:
+``` 
+kubectl get workersliceconfig -n kubeslice-<projectname>
+```
+
+Example
+``` 
+kubectl get workersliceconfig -n kubeslice-avesha
+```
+
+**Example Output**
+``` 
+NAME                        AGE
+red-dev-worker-cluster-1    45s
+red-dev-worker-cluster-2    45s
+```
+
+To validate the slice gateway on the controller cluster, use the following command:
+``` 
+kubectl get workerslicegateway -n kubeslice-<projectname>
+```
+
+Example
+``` 
+kubectl get workerslicegateway -n kubeslice-avesha
+```
+
+**Example Output**
+``` 
+NAME                                            AGE
+red-dev-worker-cluster-1-dev-worker-cluster-2   45s
+red-dev-worker-cluster-2-dev-worker-cluster-1   45s
+```
+
+### Validate the Slice on the Worker Clusters
+To validate the slice creation on each of the worker clusters, use the following command:
+``` 
+kubectl get slice -n kubeslice-system
+```
+
+**Example Output**
+``` 
+NAME    AGE
+red     45s
+```
+
+To validate the slice gateway on each of the worker cluster, use the following command:
+``` 
+kubectl get slicegw -n kubeslice-system
+```
+
+**Example Output**
+``` 
+NAME                                            SUBNET        REMOTE SUBNET   REMOTE CLUSTER        GW STATUS
+red-dev-worker-cluster-1-dev-worker-cluster-2   10.1.1.0/24   10.1.2.0/24     dev-worker-cluster-2  
+```
+
+
+
+To validate the gateway pods on the worker cluster, use the following command:
+```
+k get pods 
+```
+**Example Output**
+```
+NAME                                         READY   STATUS      RESTARTS   AGE
+blue-cluster1-cluster2-0-d948856f9-sqztd     3/3     Running     0          43s
+blue-cluster1-cluster2-1-65f64b67c8-t975h    3/3     Running     0          43s
+forwarder-kernel-g6b67                       1/1     Running     0          153m
+forwarder-kernel-mv52h                       1/1     Running     0          153m
+kubeslice-dns-6976b58b5c-kzbgg               1/1     Running     0          153m
+kubeslice-netop-bfb55                        1/1     Running     0          153m
+kubeslice-netop-c4795                        1/1     Running     0          153m
+kubeslice-operator-7cf497857f-scf4w          2/2     Running     0          79m
+nsm-admission-webhook-k8s-747df4b696-j7zh9   1/1     Running     0          153m
+nsm-install-crds--1-ncvkl                    0/1     Completed   0          153m
+nsmgr-tdx2t                                  2/2     Running     0          153m
+nsmgr-xdwm5                                  2/2     Running     0          153m
+registry-k8s-5b7f5986d5-g88wx                1/1     Running     0          153m
+vl3-slice-router-blue-c9b5fcb64-9n4qp        2/2     Running     0          2m5s
+```
+
+
+### Validate Namespace Isolation
+When the namespace isolation feature is enabled, the namespace isolation policy is 
+applied to isolate the application namespaces. Verify the namespace isolation policy by 
+running the following command to confirm that the namespace isolation feature is enabled:
+```
+kubectl get netpol -n <application_namespace>
+```
+**** Expected Output****
+
+```
+NAME                  POD-SELECTOR            AGE
+peacock-bookinfo      <none>                  15s
+```
+
+In the above output, `peacock` is the slice name and `bookinfo` is the onboarded 
+namespace to which the namespace isolation policy is applied.
+
+:::success
+After creating a slice across the worker clusters, it should be noted that all the slice configuration is applied at the 
+KubeSlice Controller level and the creation process was successful.
+:::
+
+## ServiceExports and ServiceImports
+Service Discovery is implemented using the CRDs ServiceExport and ServiceImport.
+
+If you want the service discoverable across the KubeSlice DNS, you must create a **ServiceExport**.
+
+ServiceExport CRD is used to configure an existing service on the slice to be exposed and discovered across 
+the clusters on the slice. On creating a ServiceExport on a cluster, a corresponding ServiceImport is created 
+on all the clusters that includes the list of endpoints populated from ServiceExport. This CRD contains 
+endpoints aggregated from all the clusters that expose the same service. The reconciler populates the 
+DNS entries and ensures traffic to reach the correct clusters and endpoint.
+
+### Service Export Configuration Parameters
+
+The following tables describe the configuration parameters used to create Service Export.
+
+| Parameter                                      | Parameter Type | Description                                                                                                                                                      | Required                                                                      |
+| ---------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| apiVersion                                     | String         | The KubeSlice Controller API version. A set of resources that are exposed together, along with the version. The value must be `networking.kubeslice.io/v1beta1`. | Mandatory                                                                     |
+| kind                                           | String         | The name of a particular object schema. The value must be `ServiceExport`.                                                                                       | Mandatory                                                                     |
+| [metadata](#serviceexport-metadata-parameters) | Object         | The metadata describes parameters (names and types) and attributes that have been applied.                                                                       | Mandatory                                                                     |
+| [spec](#serviceexport-spec-parameters)         | Object         | The specification of the desired state of an object.                                                                                                             | Mandatory                                                                     |
+
+#### ServiceExport Metadata Parameters
+
+These parameters are related to metadata for exporting a service, which are configured in the
+[ServiceExport YAML file](#create-a-serviceexport-yaml-file). 
+
+| Parameter | Parameter Type | Description                     | Required  |
+| --------- | -------------- | ------------------------------- | --------- |
+| name      | String         | The name of the service export. | Mandatory |
+| namespace | String         | The application namespace.      | Mandatory |
+
+#### ServiceExport Spec Parameters
+
+These parameters are related to the exporting service specification configured in the
+[ServiceExport YAML file](#create-a-serviceexport-yaml-file).
+
+| Parameter                                | Parameter Type | Description                                                                                                                                                                                             | Required  |
+| ---------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| slice                                    | String         | The name of the slice on which the service should be exported.                                                                                                                                          | Mandatory |
+| aliases                                  | String Array   | One or more aliases can be provided for the service being exported from a worker cluster. This parameter is required when the exported services have arbitrary names instead of the `slice.local` name. | Optional  |
+| [selector](#service-selector-parameters) | Object         | The labels used to select the endpoints.                                                                                                                                                                | Mandatory |
+| [port](#service-ports-parameters)        | Object         | The details of the port for the service.                                                                                                                                                                | Mandatory |
+
+#### Service Selector Parameters
+
+These parameters are related to the labels for selecting the endpoints in a service export, which are configured in the
+[ServiceExport YAML file](#create-a-serviceexport-yaml-file).
+
+| Parameter   | Parameter Type | Description                              | Required  |
+| ----------- | -------------- | ---------------------------------------- | --------- |
+| matchLabels | Map            | The labels used to select the endpoints. | Mandatory |
+
+#### Service Ports Parameters
+
+These parameters contains the details of the port for the export service, which are configured in the
+[ServiceExport YAML file](#create-a-serviceexport-yaml-file).
+
+| Parameter     | Parameter Type | Description                                                                                                              | Required  |
+| ------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------ | --------- |
+| name          | String         | It is a unique identifier for the port. **It must be prefixed with `http` for HTTP services or `tcp` for TCP services**. | Mandatory |
+| containerPort | Integer        | The port number for the service.                                                                                         | Mandatory |
+| Protocol      | String         | The protocol type for the service. For example: TCP.                                                                     | Mandatory |
+
+### Create a ServiceExport YAML File
+To export a service, you must create a service export `.yaml` file using the following template.
+
+```
+apiVersion:  networking.kubeslice.io/v1beta1
+kind: ServiceExport
+metadata:
+  name: <serviceexport name>
+  namespace: <application namespace>
+spec:
+  slice: <slice name>
+  aliases:
+    - <alias name>
+    - <alias name>  
+  selector:
+    matchLabels:
+      <key>: <value>
+  ports:
+   - name: <protocol name>
+     containerPort: <port>
+     protocol: <protocol>
+```
+
+### Apply the ServiceExport YAML File
+To apply the serviceexport YAML file, use the following command:
+```
+kubectl apply -f <serviceexport yaml> -n <namespace>
+```
+### Verify ServiceExport
+Verify if the service is exported successfully using the following command:
+```
+kubectl get serviceexport -n <namespace>
+```
+
+### ServiceExport DNS
+The service is exported and reachable through KubeSlice DNS at:
+```
+<serviceexport name>.<namespace>.<slice name>.svc.slice.local
+```
+
+## ServiceImports
+When a ServiceExport is deployed, the corresponding ServiceImport is automatically created on each of the 
+worker clusters that are part of the slice. This populates the necessary DNS entries and ensures your traffic 
+always reaches the correct cluster and endpoint.
+
+To verify that the service is imported on other worker clusters, use the following command:
+```
+kubectl get serviceimport -n <namespace>
+```
+
+:::success
+You have successfully deployed and exported a service to your KubeSlice cluster.
+:::
+
+### Limitations
+:::warning
+A slice configured with the Istio gateway for egress/ingress only supports HTTP services.
+:::
