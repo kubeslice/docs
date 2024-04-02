@@ -1,0 +1,115 @@
+# Key Features
+
+KubeSlice makes Kubernetes simple at scale for multi cluster/multi-tenant/
+multi-region/multi-cloud application deployments. It is a platform that combines
+network, application, Kubernetes, and deployment services to bring uniformity
+across clusters for multi-cluster applications, thus dramatically increasing
+development velocity for platform and product teams. 
+
+KubeSlice bundles the following services into its architecture:
+
+[Comment]: <!-- Need to verify this feature list to make sure it's consistent with the product pdf is that is desired -->
+
+| Services | Feature | Description |
+|----|----|----|
+| Application | Namespace sameness | Allows the freedom to deploy applications across clusters with namespace parity.|
+| | Service exports and Service imports | Automatic service imports and exports allow service discovery across cluster boundaries. |
+| | Isolation | Allows isolation by association of application namespaces with a slice.- | 
+| Network | East-West cluster communication | Enabled by automatically creating tunnels between clusters, on a per slice basis, establishing an overlay network enabling service-to-service communication as a flat Layer 3 network. KubeSlice can also be configured to utilize East-West ingress and egress gateways.|
+| | Remove IP Addressing Complexity- | KubeSlice solves the complex problem of overlapping IP addressing between clusters across cloud providers, data centers, and edge locations. The overlay network is configured with a non-overlapping RFC1918 address space removing overlapping CNI CIDR concerns.| 
+| | QoS Profiling | Slices in a cluster have a QoS profile defined per slice, allowing granular traffic control between clusters. |
+| Security | Cross cluster Layer 3 secure connectivity | KubeSlice gateway nodes establish encrypted VPN tunnels between all registered clusters. |
+| | Network Policy Management | KubeSlice provides Network Policies that are normalized across all clusters. The clusters registered in the slice configuration can be tied to a slice forming network segmentation at Layer 3 that allow/deny traffic to applications external from the slice application and allowed namespaces. |
+| | Multi-Tenancy | KubeSlice manages namespaces that are associated with a slice, creating application isolation and reducing the blast radius. | |
+
+## Multi-Cluster Support
+
+### Application Connectivity
+Enables application connectivity across clusters/clouds
+with zero touch provisioning.
+
+### Virtual Overlay
+Constructs virtual clusters across physical clusters by establishing
+an overlay network.
+
+### Traffic Prioritization
+Guarantees the ability to dependably run high-priority applications
+and traffic with QoS configuration for inter-cluster network connections.
+
+
+## Multi-Tenancy Support
+
+### App Segmentation
+Define QoS profiles on a per slice basis; thus providing the ability
+to isolate microservices on one Slice from another.
+
+### Network Policies
+Auto deploys network policies across clusters participating in the slice
+configuration, marshaling configuration drift.
+
+## Namespace sameness
+
+### Multi-cluster namespace
+Ensures namespace sameness on a Slice across
+multi-cluster/cloud.
+
+### Multi-cluster
+Enables the aggregation of a group of namespaces across clusters
+thus allowing segmentation for multi-tenancy.
+
+### Access Controls
+RBAC functionality is propagated across all clusters participating in
+the Slice configuration.
+
+## Service Discovery
+
+### Auto discovery of services
+Enables automatic service discovery across clusters
+participating in the Slice configuration.
+
+### DNS Entry
+When a service is exported on the Slice by installing a Service Export object,
+the Slice Operator creates a DNS entry for the service in the Slice DNS and a similar entry
+is created in the other clusters that are a part of the Slice.
+
+## IP Address Management
+
+IP Address Management (IPAM) is a method of planning, tracking, and managing the IP address space
+used in a network. On the KubeSlice Manager, the **Maximum Clusters** parameter of the slice creation
+page helps with IPAM. The corresponding YAML parameter is `maxClusters`.
+
+This parameter sets the maximum number of worker clusters that you can connect to a slice. The
+maximum number of worker clusters affects the subnet calculation of a worker cluster. The subnet
+in turn determines the number of host addresses a worker cluster gets for its application pods.
+
+For example, if the slice subnet is 10.1.0.0/16 and the maximum number of clusters is 16, then each
+cluster gets a subnet of 10.1.x.0/20, where x = 0, 16, or 32.
+
+This is a significant parameter that can only be configured during slice creation. If this parameter is
+not set, it defaults to 16.
+
+:::caution
+The subnet of a worker cluster determines the number of host addresses that are available to that
+cluster. Hence, you must be prudent and cautious when you set the maximum worker clusters. The value
+of the maximum number of clusters set remains constant for the entire life of a slice, and it is
+immutable after a slice is created.
+:::
+
+The fewer the clusters, the more IP addresses are available for the application pods
+of every worker cluster that is part of a slice. By default, the value of the **Maximum Clusters**
+parameter is 16. The supported value range is 2 to 32 clusters.
+
+
+## Connectivity to Clusters in Private VPCs
+
+In addition to connecting public clusters, KubeSlice can also be used to connect clusters that are enclosed within a private VPC. 
+Such clusters are accessed through network or application Load Balancer that are provisioned and managed by the cloud provider. 
+KubeSlice relies on network Load Balancers to setup the inter-cluster connectivity to private clusters.
+
+The following picture illustrates the inter-cluster connectivity set up by KubeSlice using a network Load Balancer (LB).
+
+![loadbalancer](/images/version1.3.0/key-features/support-for-private-clusters.png)
+
+Users can specify the type of connectivity for a cluster. If the cluster is in a private VPC, the user can utilize the `LoadBalancer` 
+connectivity type to connect it to other clusters. The default value is `NodePort`. The user can also configure the gateway protocol 
+while configuring the gateway type. The value can be TCP or UDP. The default value is UDP.
