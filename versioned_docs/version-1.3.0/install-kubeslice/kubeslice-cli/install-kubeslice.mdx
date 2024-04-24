@@ -13,8 +13,27 @@ controller cluster and the worker cluster names. The file should include other r
 as described in the sample configuration file provided below. This file is essential in setting 
 up KubeSlice.
 
-Custom chart values can be specified in the topology configuration. For example, you can add `values:metrics.insecure=true` under 
+
+### Air-Gapped Installation
+
+To install KubeSlice in Air-Gapped environment use local helm charts. Upgrade to the latest 
+kubeslice-cli version 0.6.0 to use local charts.
+
+Make sure you set the **use_local** value to `true` in the topology file:  
+
+```
+configuration:
+  helm_chart_configuration:
+    repo_alias: # {The alias of the helm repo for KubeSlice Charts. For local charts provide the local path to the charts.}
+    use_local: # {Use local charts instead of remote charts. Default is false}
+```
+
+### Custom Chart Values
+
+Custom chart values can be specified in the topology configuration, see [Topology Configuration Parameters](/versioned_docs/version-1.3.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx).
+For example, you can add `values:metrics.insecure=true` under 
 **configuration.helm_chart_configuration.worker_chart** for worker charts.
+
 ```
 worker_chart:
         chart_name: kubeslice-worker
@@ -24,7 +43,7 @@ worker_chart:
 ```
 
 ### Sample Topology Configuration File
-The following a minimal configuration file to install KubeSlice Enterprise on cloud clusters:
+The following a minimal configuration file to install KubeSlice on cloud clusters:
 
 Create the topology configuration file using the following template:
 ```yaml
@@ -52,7 +71,35 @@ configuration:
       chart_name: kubeslice-worker
 ```
 
-Custom chart values can be specified in the topology configuration. See [Topology Configuration Parameters](topology-configuration).
+### Sample Topology Configuration File for Air-Gapped Installation
+The following a minimal configuration file to install KubeSlice on cloud clusters:
+
+Create the topology configuration file using the following template:
+```yaml
+configuration:
+  cluster_configuration:
+    kube_config_path: <path to kubeconfig file>
+    controller:
+      name: <cluster name acting as controller>
+      context_name: <controller cluster context name>
+    workers:
+      - name: <cluster name>
+        context_name: <cluster context name>
+      - name: <cluster name>
+        context_name: <cluster context name>
+  kubeslice_configuration:
+    project_name: <create project name>
+  helm_chart_configuration:
+    repo_alias: /usr/local
+    use_local: true
+    cert_manager_chart:
+      chart_name: cert-manager
+    controller_chart:
+      chart_name: kubeslice-controller
+    worker_chart:
+      chart_name: kubeslice-worker
+```
+
 
 ## Apply the Topology Configuration YAML
 To install KubeSlice using the topology YAML file, use the following command:

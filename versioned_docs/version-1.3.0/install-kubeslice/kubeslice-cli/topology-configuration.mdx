@@ -51,7 +51,8 @@ The following table describes the helm chart configuration parameters.
 | Parameter                                                                 | Parameter Type | Description                                                                                    | Required  |
 | ------------------------------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------- | --------- |
 | repo_alias                                                                | String         | The alias of the helm repo for KubeSlice charts.                                               | Optional  |
-| repo_url                                                                  | String         | The URL of the helm charts for KubeSlice.                                                      | Mandatory |
+| repo_url                                                                  | String         | The URL of the helm charts for KubeSlice. To use local chart provide the path to the charts.                                                     | Mandatory |
+| use_local                                                                 | Boolean        | This is to use local helm chart in the Air-Gapped environment. Set the value to true to use local charts. The default value is false. |
 | [cert_manager_chart](#certificate-manager-chart-configuration-parameters) | Object         | The cert-manager chart details.                                                                | Mandatory |
 | [controller_chart](#controller-chart-configuration-parameters)            | Object         | The Kubeslice Controller chart details.                                                        | Mandatory |
 | [worker_chart](#worker-chart-configuration-parameters)                    | Object         | The KubeSlice Worker chart details.                                                            | Mandatory |
@@ -166,8 +167,9 @@ configuration:
     project_name: #{the name of the KubeSlice Project}
     project_users: #{optional: specify KubeSlice Project users with Read-Write access. Default is admin}
   helm_chart_configuration:
-    repo_alias: #{The alias of the helm repo for KubeSlice Charts}
+    repo_alias: #{The alias of the helm repo for KubeSlice Charts. For local charts provide the local path to the charts.}
     repo_url: #{The URL of the Helm Charts for KubeSlice}
+    use_local: # {Use local charts instead of remote charts or repo_url. Default is false}
     cert_manager_chart:
       chart_name: #{The name of the Cert Manager Chart}
       version: #{The version of the chart to use. Leave blank for latest version}
