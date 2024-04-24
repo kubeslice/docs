@@ -50,8 +50,8 @@ The following table describes the helm chart configuration parameters.
 
 | Parameter                                                                 | Parameter Type | Description                                                                                    | Required  |
 | ------------------------------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------- | --------- |
-| repo_alias                                                                | String         | The alias of the helm repo for KubeSlice charts.                                               | Optional  |
-| repo_url                                                                  | String         | The URL of the helm charts for KubeSlice. To use local chart provide the path to the charts.   | Mandatory |
+| repo_alias                                                                | String         | The alias of the helm repo for KubeSlice charts. To use local chart provide the path to the charts.  | Optional  |
+| repo_url                                                                  | String         | The URL of the helm charts for KubeSlice.                                                      | Mandatory |
 | use_local                                                                 | Boolean        | This is to use local helm chart in the Air-Gapped environment. Set the value to true to use local charts. The default value is false. | Optional|
 | [cert_manager_chart](#certificate-manager-chart-configuration-parameters) | Object         | The cert-manager chart details.                                                                | Mandatory |
 | [controller_chart](#controller-chart-configuration-parameters)            | Object         | The Kubeslice Controller chart details.                                                        | Mandatory |
