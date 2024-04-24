@@ -51,24 +51,34 @@ configuration:
   cluster_configuration:
     kube_config_path: <path to kubeconfig file>
     controller:
-      name: <cluster name acting as controller>
-      context_name: <controller cluster context name>
+      name: controller
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/controller-eks-1
+      kube_config_path: /home/user/kuebconfig-eks-1.config
     workers:
-      - name: <cluster name>
-        context_name: <cluster context name>
-      - name: <cluster name>
-        context_name: <cluster context name>
+      - name: worker-1
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/cloud-cluster-eks-1
+      kube_config_path: /home/user/kuebconfig-eks-1.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+      - name: worker-2
+      context_name: gke_avesha-dev_us-central1-cloud_cluster-gke-2
+      kube_config_path: /home/user/kuebconfig-gke-2.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
   kubeslice_configuration:
-    project_name: <create project name>
+    project_name: kubeslice-avesha
   helm_chart_configuration:
     repo_alias: kubeslice
     repo_url: https://kubeslice.github.io/kubeslice/
     cert_manager_chart:
       chart_name: cert-manager
+      version: ''
     controller_chart:
       chart_name: kubeslice-controller
+      version: ''
     worker_chart:
       chart_name: kubeslice-worker
+      version: ''
+      values:
+        metrics.insecure: true
 ```
 
 ### Sample Topology Configuration File for Air-Gapped Installation
@@ -80,24 +90,34 @@ configuration:
   cluster_configuration:
     kube_config_path: <path to kubeconfig file>
     controller:
-      name: <cluster name acting as controller>
-      context_name: <controller cluster context name>
+      name: controller
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/controller-eks-1
+      kube_config_path: /home/user/kuebconfig-eks-1.config
     workers:
-      - name: <cluster name>
-        context_name: <cluster context name>
-      - name: <cluster name>
-        context_name: <cluster context name>
+      - name: worker-1
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/cloud-cluster-eks-1
+      kube_config_path: /home/user/kuebconfig-eks-1.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+      - name: worker-2
+      context_name: gke_avesha-dev_us-central1-cloud_cluster-gke-2
+      kube_config_path: /home/user/kuebconfig-gke-2.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
   kubeslice_configuration:
-    project_name: <create project name>
+    project_name: kubeslice-avesha
   helm_chart_configuration:
     repo_alias: /usr/local
     use_local: true
     cert_manager_chart:
       chart_name: cert-manager
+      version: ''
     controller_chart:
       chart_name: kubeslice-controller
+      version: ''
     worker_chart:
       chart_name: kubeslice-worker
+      version: ''
+      values:
+        metrics.insecure: true
 ```
 
 
