@@ -16,7 +16,7 @@ up KubeSlice.
 
 ### Air-Gapped Installation
 
-To install KubeSlice in Air-Gapped environment use local helm charts. Upgrade to the latest 
+To install KubeSlice in an Air-Gapped environment, use local helm charts. Upgrade to the latest 
 [kubeslice-cli version 0.6.0](https://github.com/kubeslice/kubeslice-cli/releases) to use local charts.
 
 Make sure you set the **use_local** value to `true` in the topology file:  
@@ -24,7 +24,7 @@ Make sure you set the **use_local** value to `true` in the topology file:
 ```
 configuration:
   helm_chart_configuration:
-    repo_alias: # {The alias of the helm repo for KubeSlice Charts. For local charts provide the local path to the charts.}
+    repo_alias: # {The alias of the helm repo for KubeSlice Charts. For local chart helm repositories, provide the local path to the charts.}
     use_local: # {Use local charts instead of remote charts. Default is false}
 ```
 
