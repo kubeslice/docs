@@ -52,6 +52,10 @@ The parameters are related to the cluster property configured in the
 ## Create Cluster Registration YAML 
 You can list multiple clusters in a single registration YAML file and register them with the KubeSlice Controller.
 
+:::warning
+Limit the cluster name and slice name to 15 characters or fewer, as exceeding the limit results in a service export error.
+:::
+
 Create the cluster `registration.yaml` file using the following template:
 
 ```
