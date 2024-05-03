@@ -167,6 +167,10 @@ YAML file.
 
 ## Slice Creation
 
+:::warning
+Limit the cluster name and slice name to 15 characters or fewer, as exceeding the limit results in a service export error.
+:::
+
 ### Slice VPN Key Rotation
 Any new slice created using the KubeSlice Manager or a YAML file will have a duration of 30 days to renew the SliceGateway certificates. 
 When creating a slice, you can change the rotation interval by modifying the rotationInterval parameter in the slice configuration YAML file. 
