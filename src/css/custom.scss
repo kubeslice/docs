@@ -56,16 +56,21 @@
 
 
 #__docusaurus {
-    --ifm-navbar-height: 90px;
+    --ifm-navbar-height: 80px;
     .navbar.navbar--fixed-top { 
-      height: 90px;
-      padding: 0 3.5rem;
+     height: 80px;
+     padding: 0 2rem;
+     @media only screen and (max-width: 500px) {
+           padding: 0 1rem;
+     }
       .navbar__brand {
           .navbar__logo {
             height:auto;
+                display:flex;
+                align-items:center;
               img{
                 // width: 10.08rem;
-                height: 4rem;
+                height: 2.5rem;
               }
           }
         .navbar__title {
@@ -80,7 +85,7 @@
       }
     .main-wrapper {
     
-        padding: 1rem 2rem;
+        padding: 1rem 2rem !important;
         .ks-docs-logo {
             h1{
                 font-size: 3rem;
