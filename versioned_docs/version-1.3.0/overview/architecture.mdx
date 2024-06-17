@@ -1,35 +1,43 @@
 # High-Level Architecture 
 
 ## Introduction
-KubeSlice provides network services to applications that need secure and highly available connectivity between 
-multiple clusters. KubeSlice creates a flat overlay network to connect the clusters. The overlay network can be 
-described as an application slice that provides a slice of connectivity between the pods of an application 
-running in multiple clusters. It can also be described as an application-specific VPC that spans across 
-clusters. Pods can connect to the slice overlay network and communicate with each other seamlessly across 
-cluster boundaries. 
+KubeSlice is an open-source project that simplifies multi-cluster networking for multi-cloud, 
+edge, cloud, hybrid-cloud, and bare-metal Kubernetes clusters. It is a vendor-neutral 
+extensible framework to build flat overlay networks across heterogeneous Kubernetes clusters. 
 
-The connections between the clusters are secured by creating encrypted VPN tunnels that provide a safe passage 
-to inter-cluster traffic. 
+KubeSlice enables and simplifies pod-to-pod communications for L3-L7 protocols across a fleet 
+of clusters by using a construct called **Slice**. Each slice can be associated with a set of 
+clusters with varying topologies and can be associated with one or more namespaces in each 
+cluster. The pods in the Slice namespaces can reach each other over the Slice specific flat 
+overlay network. It can also be described as an application-specific VPC that spans across 
+clusters. KubeSlice allows creating multiple Slices across clusters with each slice having a 
+dedicated set of namespaces in each associated cluster. It enables easy segmentation and 
+isolation of applications using slices. It allows namespace-sameness across the associated 
+clusters in a slice. KubeSlice brings with it software-defined, highly-available and secure 
+connections across clusters using VPN gateways.
 
-KubeSlice can also be used to enable service discovery and reachability across clusters. A Kubernetes service 
-running in a cluster can be exported over the slice overlay network so that it is discovered and reached by 
-pods running in other clusters.
+KubeSlice can also be used to enable service discovery and reachability across clusters. 
+KubeSlice enables service discovery across the Slice using Service Exports and Imports in 
+each cluster. A Slice associated namespace service running in a cluster can be exported over 
+the slice overlay network so that it is discovered and reached by pods running in other 
+clusters associated with the Slice. SliceDNS in each cluster can be used for FQDN based 
+inter-cluster service-service communications across the Slice. Slice DNS has service entries 
+with overlay network IP addresses for service endpoints.
 
-The KubeSlice architecture consists of several components that interact with each other to manage the lifecycle 
-of the slice overlay network. The diagram below shows the primary components of KubeSlice and the connections 
-between them.
+The KubeSlice architecture consists of several components that interact with each other to 
+manage the lifecycle of the slice overlay network. The diagram below shows the primary 
+components of KubeSlice and the connections between them.
+
 ![alt](/img/Architecture-OS.png)
 
+The controller cluster contains the KubeSlice Controller that manages user configuration 
+and orchestrates the creation of the slice overlay network between multiple worker clusters. 
+It defines and owns a number of CRDs that are used to store configuration and operational 
+information in the cluster. The CRDs are also used in the interaction between the controller 
+cluster and the worker clusters. The worker clusters connect to the Kubernetes API server of 
+the controller cluster to fetch configuration that is stored in the custom resource objects.
 
-The controller cluster contains the KubeSlice Controller that manages user configuration and orchestrates the 
-creation of the slice overlay network between multiple worker clusters. It defines and owns a number of CRDs 
-that are used to store configuration and operational information in the cluster. The CRDs are also used in the 
-interaction between the controller cluster and the worker clusters. The worker clusters connect to the 
-Kubernetes API server of the controller cluster to fetch configuration that is stored in the custom resource 
-objects.
-
-The principal component of the worker clusters is the Slice Operator. It interacts with the controller cluster 
-and sets up the needed infra for the slice overlay network on the worker cluster. The worker clusters also 
-contain a DNS server called KubeSlice DNS that is used in inter-cluster service discovery. Users can also 
-create slices with ingress and egress gateways for East-West (E-W) traffic. The Slice Operator provisions the 
-gateways and setup routing rules to funnel traffic between the application pods and the gateway pods.
+The principal component of the worker clusters is the Slice Operator. It interacts with the 
+controller cluster and sets up the needed infrastructure for the slice overlay network on the worker 
+cluster. The Slice Operator provisions the gateways and setup routing rules to funnel traffic 
+between the application pods and the gateway pods.
