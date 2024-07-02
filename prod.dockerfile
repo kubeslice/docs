@@ -1,4 +1,4 @@
-FROM node:20.14-bookworm-slim as builder
+FROM node:16.14.0-alpine3.15 as builder
 WORKDIR /build
 COPY package.json ./
 COPY package-lock.json ./
