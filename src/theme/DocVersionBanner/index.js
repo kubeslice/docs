@@ -7,11 +7,11 @@ import {
   useActivePlugin,
   useDocVersionSuggestions,
 } from '@docusaurus/plugin-content-docs/client';
+import {ThemeClassNames} from '@docusaurus/theme-common';
 import {
-  ThemeClassNames,
   useDocsPreferredVersion,
   useDocsVersion,
-} from '@docusaurus/theme-common';
+} from '@docusaurus/theme-common/internal';
 function UnreleasedVersionLabel({siteTitle, versionMetadata}) {
   return (
     <Translate
@@ -37,7 +37,7 @@ function UnmaintainedVersionLabel({siteTitle, versionMetadata}) {
         versionLabel: <b>{versionMetadata.label}</b>,
       }}>
       {
-        'This is documentation for {siteTitle} {versionLabel}, which is an older version.'
+        'This is documentation for {siteTitle} {versionLabel}, which is no longer actively maintained.'
       }
     </Translate>
   );
@@ -71,7 +71,7 @@ function LatestVersionSuggestionLabel({versionLabel, to, onClick}) {
         ),
       }}>
       {
-        'For the latest documentation, see the {latestVersionLink} ({versionLabel}).'
+        'For up-to-date documentation, see the {latestVersionLink} ({versionLabel}).'
       }
     </Translate>
   );
