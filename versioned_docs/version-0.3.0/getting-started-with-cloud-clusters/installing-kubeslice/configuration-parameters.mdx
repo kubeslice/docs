@@ -192,7 +192,7 @@ These parameters are related to the spec configured  in the
 | sliceIpamType | String | It is the type of the IP address management for the slice subnet. The value must be always set to `Local`. | Mandatory |
 | clusters | List of Strings | The names of the worker clusters that would be part of the slice. You can provide the list of worker clusters. | Mandatory |
 | [qosProfileDetails](#qos-profile-parameters) | Object | QoS profile for the slice inter cluster traffic. Note that `qosProfileDetails` and `standardQosProfileName` are mutually exclusive parameters.  | Mandatory |
-| [standardQosProfileName](#standard-qos-profile-parameters) | String | This [name](#slice-qos-profile-metadata-parameter) of the [external QoS profile](/versioned_docs/version-0.3.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-a-qos-profile) that you can apply for multiple slices. Note that `qosProfileDetails` and `standardQosProfileName` are mutually exclusive parameters. | Mandatory |
+| [standardQosProfileName](#qos-profile-parameters) | String | This name of the external QoS profile that you can apply for multiple slices. Note that `qosProfileDetails` and `standardQosProfileName` are mutually exclusive parameters. | Mandatory |
 | [namespaceIsolationProfile](#namespace-isolation-profile-parameters) | Object | It is the configuration to onboard namespaces and/or isolate namespaces with the network policy. | Mandatory |
 | [externalGatewayConfig](#external-gateway-configuration-parameters) | Object | It is the slice ingress/egress gateway configuration. It is an optional configuration. | Mandatory |
 
