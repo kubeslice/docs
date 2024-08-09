@@ -173,7 +173,7 @@ The following tables describe the configuration parameters used to create the Sl
 
 ### Slice Metadata Parameters
 These parameters are related to the metadata configured in the 
-[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -182,7 +182,7 @@ These parameters are related to the metadata configured in the
 
 ### Slice Spec Parameters
 These parameters are related to the spec configured  in the 
-[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -200,7 +200,7 @@ These parameters are related to the spec configured  in the
 #### Slice Gateway Provider Parameters
 These parameters are related to the slice gateway created for the inter-cluster 
 communication and they are configured in the 
-[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -209,7 +209,7 @@ communication and they are configured in the
 
 #### QOS Profile Parameters
 These parameters are related to the QoS profile for the slice inter-cluster traffic 
-configured in the [slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file). 
+configured in the [slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -223,7 +223,7 @@ configured in the [slice configuration YAML file](/versioned_docs/version-0.4.0/
 #### Namespace Isolation Profile Parameters
 These parameters are related to onboarding namespaces, isolating the slice, and allowing 
 external namespaces to communicate with the slice. They are configured in the 
-[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -233,7 +233,7 @@ external namespaces to communicate with the slice. They are configured in the
 
 #### Application Namespaces Parameters
 These parameters are related to onboarding namespaces onto a slice, which are configured 
-in the [slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file). 
+in the [slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -242,7 +242,7 @@ in the [slice configuration YAML file](/versioned_docs/version-0.4.0/getting-sta
 
 #### Allowed Namespaces Parameters
 These parameters are related to allowing external namespaces to communicated with the slice, 
-which are configured in the [slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file). 
+which are configured in the [slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -251,7 +251,7 @@ which are configured in the [slice configuration YAML file](/versioned_docs/vers
 
 #### External Gateway Configuration Parameters
 These parameters are related to external gateways, which are configured in the 
-[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-the-slice-yaml-file). 
+[slice configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-the-slice-yaml-file). 
 
 |Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
@@ -262,13 +262,13 @@ These parameters are related to external gateways, which are configured in the
 
 ## Standard QOS Profile Parameters
 These parameters are related to the QoS profile for the slice inter-cluster traffic 
-configured in the [standard QoS profile configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#create-a-standard-qos-profile). 
+configured in the [standard QoS profile configuration YAML file](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx). 
 
 Parameter|Parameter Type|Description|Required|
 |----|----|----|----|
 | apiVersion | String | The KubeSlice Controller API version. A set of resources that are exposed together, along with the version. The value must be `networking.kubeslice.io/v1beta1`. | Mandatory |
 | kind | String | The name of a particular object schema. The value must be `SliceQoSConfig`. | Mandatory |
-| [metadata](#standard-qos-profile-metadata-parameters) | Object | The metadata describes parameters (names and types) and attributes that have been applied. | Mandatory |
+| [metadata](#standard-qos-profile-metadata-parameter) | Object | The metadata describes parameters (names and types) and attributes that have been applied. | Mandatory |
 | [spec](#standard-qos-profile-specification-parameters) | Object | The specification of the desired state of an object. | Mandatory |
 
 ### Standard QoS Profile Metadata Parameter
