@@ -297,8 +297,8 @@ Kubernetes Service (AKS) `kubeconfig`.
 
 | **Variable**      |        **Description** |
 |-----|-----|
-| <resource group name\> |  The name of the resource group the cluster belongs to.
-  <cluster name\>         | The name of the cluster you would like to get credentials for.|
+| `<resource group name>` |  The name of the resource group the cluster belongs to.
+  `<cluster name>`         | The name of the cluster you would like to get credentials for.|
 
 The following command retrieves your AKS cluster `kubeconfig` and add it to your default `kubeconfig` path. Complete this step for each
 AKS cluster that you want to work with.
@@ -315,8 +315,8 @@ Service (EKS) `kubeconfig`.
 
 | **Variable**  |     **Description** |
 |-----|----|
-|<cluster name\>  | The name of the cluster you want to get credentials for.|
-|  <cluster region\>       |  The AWS region the cluster belongs to.|
+|`<cluster name>`  | The name of the cluster you want to get credentials for.|
+|  `<cluster region>`       |  The AWS region the cluster belongs to.|
 
 The following command retrieves your EKS cluster `kubeconfig` and adds
 it to your default `kubeconfig` path. Complete this step for each EKS
@@ -334,9 +334,9 @@ Engine (GKE) `kubeconfig`.
 
 | **Variable**  |     **Description** |
 |-----|----|
-|<cluster name\>  | The name of the cluster you want to get credentials for.|
-|  <region\>       |  The region the cluster belongs to.|
-| <project id\>    | The project ID that the cluster belongs to.|
+|`<cluster name>`  | The name of the cluster you want to get credentials for.|
+|  `<region>`       |  The region the cluster belongs to.|
+| `<project id>`    | The project ID that the cluster belongs to.|
  
 
 The following command retrieves your GKE cluster `kubeconfig` and adds
@@ -388,10 +388,10 @@ The following information is required to label the GKE cluster nodepools.
 
 |**Variable** |       **Description** |
 |-----|----|
-|<nodepool name\>|   The name of the nodepool being labeled.|
-|<cluster name\>  |  The name of the cluster the nodepool being labeled belongs to.|
-|  <region\>      |    The Compute Engine region for the cluster the nodepool belongs to.|
-|  <zone\>         |   The Compute Engine zone for the cluster the nodepool belongs to.|
+|`<nodepool name>`|   The name of the nodepool being labeled.|
+|`<cluster name>`  |  The name of the cluster the nodepool being labeled belongs to.|
+|  `<region>`      |    The Compute Engine region for the cluster the nodepool belongs to.|
+|  `<zone>`         |   The Compute Engine zone for the cluster the nodepool belongs to.|
  
 The following command labels the GKE cluster nodepool: 
 
