@@ -208,6 +208,22 @@
         "add-ons/add-ons-slack-metrics"
         ]
     },
+    {
+      "type": "category",
+      "label": "Use Cases",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Add-ons",
+        "description": "The use case section provides details the usecases applicable to kubeslice",
+        "keywords": [
+         "kubeslice"
+        ]
+      },
+      "items": [
+        "use-cases/distributed-mongodb-for-multicloud"
+      ]
+    },
 
     "troubleshooting/troubleshooting-guide", 
     {
