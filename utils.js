@@ -9,8 +9,8 @@ function uniquePath(path) {
 }
 
 
-export function getValidPaths(items, parentPath = "") {
-  return items.flatMap((item) => {
+export function getValidPaths(items) {
+  return items?.flatMap((item) => {
     const paths = [];
 
     if (item?.label) {
@@ -20,8 +20,8 @@ export function getValidPaths(items, parentPath = "") {
       }
     }
 
-    if (item.items) {
-      paths.push(...getValidPaths(item.items, parentPath));
+    if (item?.items) {
+      paths.push(...getValidPaths(item?.items));
     } else if (typeof item === "string") {
       paths.push(uniquePath(item));
     }
