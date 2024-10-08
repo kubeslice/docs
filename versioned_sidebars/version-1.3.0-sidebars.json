@@ -13,7 +13,7 @@
         "slug": "/"
       },
       "items": [
-        "overview",
+        "overview/overview",
         "overview/architecture",
         "overview/components",
         "overview/features"
@@ -190,7 +190,7 @@
           
       ]
     },
-        "uninstall-kubeslice",
+        "uninstall-kubeslice/uninstall-kubeslice",
     {
       "type": "category",
       "label": "Add-ons",
