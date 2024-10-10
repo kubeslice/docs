@@ -4,11 +4,9 @@
 Draft is in progress
 :::
 
-
 This topic demonstrates the steps to setup the distributed MongoDB across multiple clusters using KubeSlice. We will use three 
 Kubernetes clusters to install KubeSlice, create the slice, and onboard application onto the slice to span the application 
 across the multiple clusters.
-
 
 ## Prerequisites
 
@@ -18,198 +16,224 @@ Before you begin, ensure the following prerequisites are met:
    three kubernetes clusters.
 
 2. You have set up the environment to install the KubeSlice Controller and the KubeSlice Worker. For more 
-   information, see [Prerequisites](https://kubeslice.io/documentation/open-source/1.3.0/category/prerequisites)
+   information, see [Prerequisites](https://kubeslice.io/documentation/open-source/1.3.0/category/prerequisites).
 
 3. Install [Kubectx](https://github.com/ahmetb/kubectx) to easily switch context between clusters.
 
- 
-In this demonstration, we will be using three Kubernetes clusters called k8s-cluster-1, k8s-cluster-2, and k8s-cluster-3. In the
-k8s-cluster-1 we will install the KubeSlice Controller,the KubeSlice Worker, the MongoDB Master, and the MongoDB member.
 
+## Configure Distributed MongoDB
 
-## Merge the kubeconfig
+In this demonstration:
+- We will use the three Kubernetes clusters called k8s-cluster-1, k8s-cluster-2, and k8s-cluster-3.
+- Use the cluster-1.config, cluster-2.config, cluster-3.config kubeconfig files for the k8s-cluster-1, k8s-cluster-2, and k8s-cluster-3 respectively.
+- Install KubeSlice using the kubeslice-cli tool. Use the topology file to install the KubeSlice Controller and the 
+  KubeSlice Worker in the k8s-cluster-1 cluster. Install the KubeSlice Worker in the k8s-cluster-2 and k8s-cluster-3 clusters 
+  using the same topology file.
+- Create a slice called mongodb-slice across three worker clusters and onboard the mongodb namespace.
+- Deploy the MongoDB Kubernetes Operator and Ops manager on the k8s-cluster-1 cluster,  where the KubeSlice Controller is installed.
+- Deploy the MongoDB across the three clusters using MongoDBMulti.
+- Create a MongoDB replica set using MongoDBMultiCRD.
+- Create the ServiceExport. The service export will be created in all 3 clusters as each cluster will have one Replicaset.
 
-1. Replace the /path/to/kubeconfig/ path to with your local path to access the kubeconfig file.
+### Step 1: Clone the Examples Repo
+
+Clone the `examples` repo as it contains all the example YAML files in the 
+`examples/distributed-mongodb` directory. You can use these YAML files to configure MongoDB.
+
+Use the following command to clone the `examples` repo:
+
+```
+git clone https://github.com/kubeslice/examples.git
+```
+
+### Step 2: Merge the Kubeconfig Files
+
+1. Replace the `/path/to/kubeconfig/` path to with your local path to access the kubeconfig file.
 
    ```
    export KUBECONFIG=/path/to/kubeconfig/cluster-1.config:/path/to/kubeconfig/cluster-2.config:/path/to/kubeconfig/cluster-3.config 
    kubectl config view --flatten=true > merged.config
    ```
 
-2. Verify the `merged.config` file:
+2. Verify the `merged.config` kubeconfig file:
 
-  ```
-  export KUBECONFIG=/path/to/kubeconfig/merged.config
-  ```
+   ```
+   export KUBECONFIG=/path/to/kubeconfig/merged.config
+   ```
 
- ```
- kubectx
- ```
- Expected Output
- ```
- k8s-cluster-1 # kubeslice controller cluster & kubeslice worker cluster 1 & Mongodb central cluster & mongodb member cluster 1
- k8s-cluster-2 # kubeslice worker cluster 2 & mongodb member cluster 2
- k8s-cluster-3 # kubeslice worker cluster 3 & mongodb member cluster 3
- ```
-
-
-## Install Kubeslice using the Kubeslice-cli Tool
-
-To install the KubeSlice Controller and the worker:
-
-1. Install the latest **kubeslice-cli** tool on your local depending on your OS. 
-   For more information, see [Installing kubeslice-cli](https://kubeslice.io/documentation/open-source/1.3.0/get-started/prerequisites/prerequisites-kubeslice-cli-install).
+   ```
+   kubectx
+   ```
    
-   The following is the command to download the tool:
+   Expected Output
+
+   ```yaml
+   k8s-cluster-1 # kubeslice controller cluster & kubeslice worker cluster 1 & Mongodb central cluster & mongodb member cluster 1
+   k8s-cluster-2 # kubeslice worker cluster 2 & mongodb member cluster 2
+   k8s-cluster-3 # kubeslice worker cluster 3 & mongodb member cluster 3
+   ```
+
+
+### Step 3: Install KubeSlice
+
+To install KubeSlice using the `kubeslice-cli` tool:
+
+1. Download the latest executable version on your local system depending on your OS from the 
+   [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page. For more information, 
+   see [Install kuebslice-cli](https://kubeslice.io/documentation/open-source/1.3.0/install-kubeslice/kubeslice-cli/install-kubeslice-cli).
+
+   You can use the following command to download the tool:
+   
    ```yaml
    sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.4.4/kubeslice-cli-0.4.4-linux-amd64  -o /usr/local/bin/kubeslice-cli 
+   ```
+
+2. Change the file permission using the following command:
+  
+   ```yaml
    sudo chmod a+x /usr/local/bin/kubeslice-cli
+   ```
 
-2. Prepare the Kubeslice cluster topology file that you will use by setup KubeSlice. Refer to the 
-  [sample topology file](https://github.com/kubeslice/kubeslice-cli/blob/master/samples/template.yaml) and update the values 
-  corresponding to your cluster
+3. Prepare the configuration topology file that you will use to install KubeSlice. Refer to the 
+   [sample topology file](https://github.com/kubeslice/kubeslice-cli/blob/master/samples/template.yaml) and update the values 
+   corresponding to your cluster. 
 
-  Sample topology file can be downloaded from here https://github.com/kubeslice/kubeslice-cli/blob/master/samples/template.yaml
+   The following is the sample configuration file:
 
-Replace the values in the above topology file as per your cluster details
+  ```yaml
+  configuration:
+    cluster_configuration:
+      kube_config_path: /path/to/merged/kubeconfig/merged.config #{specify the kube config file to use for topology setup; for topology only}
+      cluster_type: cloud #{optional: specify the type of cluster. Valid values are kind, cloud, data-center}
+      controller:
+        name: controller #{the user defined name of the controller cluster}
+        context_name: k8s-cluster-1 #{the name of the context to use from kubeconfig file; for topology only}
+        control_plane_address: https://35.243.149.48 #{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
+      workers: #{specify the list of worker clusters}
+      - name: worker-1 #{the user defined name of the worker cluster}
+        context_name: k8s-cluster-1 #{the name of the context to use from the kubeconfig file; for topology only}
+        control_plane_address: https://35.243.149.48 #{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
+      - name: worker-2  #{the user defined name of the worker cluster}
+        context_name: k8s-cluster-2 #{the name of the context to use from the kubeconfig file; for topology only}
+        control_plane_address: https://35.231.51.208 #{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
+      - name: worker-3  #{the user defined name of the worker cluster}
+        context_name: k8s-cluster-3 #{the name of the context to use from the kubeconfig file; for topology only}
+        control_plane_address: https://34.73.76.225 #{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
+    kubeslice_configuration:
+      project_name: mongodb-project #{the name of the KubeSlice Project}
+    helm_chart_configuration:
+      repo_alias: kubeslice-helm-ent-prod #{The alias of the helm repo for KubeSlice Charts}
+      repo_url: https://kubeslice.aveshalabs.io/repository/kubeslice-helm-ent-stage/ #{The URL of the Helm Charts for KubeSlice}
+      cert_manager_chart:
+        chart_name: cert-manager #{The name of the Cert Manager Chart}
+        version: #{The version of the chart to use. Leave blank for latest version}
+      controller_chart:
+        chart_name: kubeslice-controller #{The name of the Controller Chart}
+        version: #{The version of the chart to use. Leave blank for latest version}
+        values: #(Values to be passed as --set arguments to helm install)
+      worker_chart:
+        chart_name: kubeslice-worker #{The name of the Worker Chart}
+        version: #{The version of the chart to use. Leave blank for latest version}
+        values: #(Values to be passed as --set arguments to helm install)
+      ui_chart:
+        chart_name: kubeslice-ui #{The name of the UI/Enterprise Chart}
+        version: #{The version of the chart to use. Leave blank for latest version}
+        values: #(Values to be passed as --set arguments to helm install)
+      helm_username: #{Helm Username if the repo is private}
+      helm_password: #{Helm Password if the repo is private}
+      image_pull_secret: #{The image pull secrets. Optional for OpenSource, required for enterprise}
+        registry: https://index.docker.io/v1/ #{The endpoint of the OCI registry to use}
+        username: aveshaenterprise #{The username to authenticate against the OCI registry}
+        password: <token > #{The password to authenticate against the OCI registry}
+        email: richie@aveshasystems.com #{The email to authenticate against the OCI registry}
+  ```
 
-
-The following the sample configuration file:
-
-```yaml
-configuration:
-  cluster_configuration:
-    kube_config_path: /path/to/merged/kubeconfig/merged.config #{specify the kube config file to use for topology setup; for topology only}
-    cluster_type: cloud #{optional: specify the type of cluster. Valid values are kind, cloud, data-center}
-    controller:
-      name: controller #{the user defined name of the controller cluster}
-      context_name: k8s-cluster-1 #{the name of the context to use from kubeconfig file; for topology only}
-      control_plane_address: https://35.243.149.48 #{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
-    workers: #{specify the list of worker clusters}
-    - name: worker-1 #{the user defined name of the worker cluster}
-      context_name: k8s-cluster-1 #{the name of the context to use from the kubeconfig file; for topology only}
-      control_plane_address: https://35.243.149.48 #{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
-    - name: worker-2  #{the user defined name of the worker cluster}
-      context_name: k8s-cluster-2 #{the name of the context to use from the kubeconfig file; for topology only}
-      control_plane_address: https://35.231.51.208 #{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
-    - name: worker-3  #{the user defined name of the worker cluster}
-      context_name: k8s-cluster-3 #{the name of the context to use from the kubeconfig file; for topology only}
-      control_plane_address: https://34.73.76.225 #{the address of the control plane kube-apiserver. kubeslice-cli determines the address from kubeconfig}
-  kubeslice_configuration:
-    project_name: mongodb-project #{the name of the KubeSlice Project}
-  helm_chart_configuration:
-    repo_alias: kubeslice-helm-ent-prod #{The alias of the helm repo for KubeSlice Charts}
-    repo_url: https://kubeslice.aveshalabs.io/repository/kubeslice-helm-ent-stage/ #{The URL of the Helm Charts for KubeSlice}
-    cert_manager_chart:
-      chart_name: cert-manager #{The name of the Cert Manager Chart}
-      version: #{The version of the chart to use. Leave blank for latest version}
-    controller_chart:
-      chart_name: kubeslice-controller #{The name of the Controller Chart}
-      version: #{The version of the chart to use. Leave blank for latest version}
-      values: #(Values to be passed as --set arguments to helm install)
-    worker_chart:
-      chart_name: kubeslice-worker #{The name of the Worker Chart}
-      version: #{The version of the chart to use. Leave blank for latest version}
-      values: #(Values to be passed as --set arguments to helm install)
-    ui_chart:
-      chart_name: kubeslice-ui #{The name of the UI/Enterprise Chart}
-      version: #{The version of the chart to use. Leave blank for latest version}
-      values: #(Values to be passed as --set arguments to helm install)
-    helm_username: #{Helm Username if the repo is private}
-    helm_password: #{Helm Password if the repo is private}
-    image_pull_secret: #{The image pull secrets. Optional for OpenSource, required for enterprise}
-      registry: https://index.docker.io/v1/ #{The endpoint of the OCI registry to use}
-      username: aveshaenterprise #{The username to authenticate against the OCI registry}
-      password: <token > #{The password to authenticate against the OCI registry}
-      email: richie@aveshasystems.com #{The email to authenticate against the OCI registry}
-
-```
-
-2. Use the following command to apply the topology file to install Kubeslice:
+4. Use the following command to apply configuration topology file:
 
    ```
    kubeslice-cli --config kubeslice-topology.yaml install
    ```
 
 
-## Create a Slice
+### Step 4: Create a Slice
 
-1. Create a slice and onboard mongodb namespace on it, set the context to your kubeslice controller cluster. 
+After installing KubeSlice successfully, you can create a slice and onboard the `mongodb` namespace on it.
+To create a slice:
 
-  Example
-
-  ```
-  export KUBECONFIG=</path/to/the/controller/cluster/kubeconfig>
-  ```
-
-
-The following is the sample slice configuration yaml file: 
-
-```
-apiVersion: controller.kubeslice.io/v1alpha1
-kind: SliceConfig
-metadata:
-  name: mongodb-slice
-  namespace: kubeslice-mongodb-project
-spec:
-  sliceSubnet: 192.168.0.0/16
-  sliceType: Application
-  sliceGatewayProvider:
-    sliceGatewayType: OpenVPN
-    sliceCaType: Local
-  sliceIpamType: Local
-  clusters:
-    - worker-1
-    - worker-2
-    - worker-3
-  qosProfileDetails:
-    queueType: HTB
-    priority: 1
-    tcType: BANDWIDTH_CONTROL
-    bandwidthCeilingKbps: 5120
-    bandwidthGuaranteedKbps: 2560
-    dscpClass: AF11
-  namespaceIsolationProfile:
-    applicationNamespaces:
-    - namespace: mongodb
-      clusters:
-      - worker-1
-      - worker-2
-      - worker-3
-    isolationEnabled: false                   #make this true in case you want to enable isolation
-    allowedNamespaces:
-     - namespace: kube-system
-       clusters:
-       - worker-1
-       - worker-2
-       - worker-3
-```
-
-2. Apply the slice configuration yaml file in the project namespace on the controller cluster
+1. Set the context to the controller cluster.
    
    Example
 
    ```
-   kubectl apply -f mongodb-slice.yaml -n kubeslice-mongodb-project
+   export KUBECONFIG=</path/to/the/controller/cluster/kubeconfig>
+   ```
+
+
+2. Create the sample configuration YAML. he following is the sample slice configuration yaml file: 
+
+   ```
+   apiVersion: controller.kubeslice.io/v1alpha1
+   kind: SliceConfig
+   metadata:
+     name: demo-slice
+     namespace: kubeslice-mongodb-project
+   spec:
+     sliceSubnet: 192.168.0.0/16
+     sliceType: Application
+     sliceGatewayProvider:
+       sliceGatewayType: OpenVPN
+       sliceCaType: Local
+     sliceIpamType: Local
+     clusters:
+       - worker-1
+       - worker-2
+       - worker-3
+     qosProfileDetails:
+       queueType: HTB
+       priority: 1
+       tcType: BANDWIDTH_CONTROL
+       bandwidthCeilingKbps: 5120
+       bandwidthGuaranteedKbps: 2560
+       dscpClass: AF11
+     namespaceIsolationProfile:
+       applicationNamespaces:
+       - namespace: mongodb
+         clusters:
+         - worker-1
+         - worker-2
+         - worker-3
+       isolationEnabled: false                   #make this true in case you want to enable isolation
+       allowedNamespaces:
+        - namespace: kube-system
+          clusters:
+          - worker-1
+         - worker-2
+         - worker-3
+    ```
+
+2. Apply the slice configuration yaml file on the project namespace.
+   
+   Example
+
+   ```
+   kubectl apply -f demo-slice.yaml -n kubeslice-mongodb-project
    ```
 
    Example Output
 
    ```
-   sliceconfig.controller.kubeslice.io/mongodb-slice created
+   sliceconfig.controller.kubeslice.io/demo-slice created
    ```
 
-## Deploy the MongoDB Enterprise Kubernetes Operator
+### Step 5: Deploy the MongoDB Enterprise Kubernetes Operator
 
-Reference Documentation : Deploying the MongoDB Enterprise Kubernetes Operator on Google Cloud | MongoDB 
-
-1. Set the kubernetes context to your mongodb master cluster for example
+1. Set the Kubernetes context to your mongodb master cluster (or the controller cluster) for example
 
    ```
    kubectx
-   k8s-cluster-1
-   k8s-cluster-2
-   k8s-cluster-3 
+   ```
+   ```
+   k8s-cluster-1 
    ```
 
 2. Add the Mongo db helm repo to your local
@@ -225,7 +249,7 @@ Reference Documentation : Deploying the MongoDB Enterprise Kubernetes Operator o
    kubectl create ns "${NAMESPACE}"
    ```
    
-4. Install the MongoDB Kubernetes Operator and set it to watch only the mongodb-operator namespace
+4. Install the MongoDB Kubernetes Operator and set it to watch only the mongodb-operator namespace.
 
    ```
    HELM_CHART_VERSION=1.16.3
@@ -235,7 +259,7 @@ Reference Documentation : Deploying the MongoDB Enterprise Kubernetes Operator o
    --set operator.watchNamespace="${NAMESPACE}"
    ```
 
-5. Verify the Namespaces
+5. Verify the Namespaces.
 
    Example
 
@@ -267,12 +291,12 @@ Reference Documentation : Deploying the MongoDB Enterprise Kubernetes Operator o
    kubectl get pods -n mongodb-operator
    ```
   
-  Example Output
+   Example Output
 
-  ```
-  NAME                                           READY   STATUS    RESTARTS   AGE
-  mongodb-enterprise-operator-68cb5dd658-v2wrf   1/1     Running   0          6m44s
-  ```
+   ```
+   NAME                                           READY   STATUS    RESTARTS   AGE
+   mongodb-enterprise-operator-68cb5dd658-v2wrf   1/1     Running   0          6m44s
+   ```
 
 7. Verify if the helm installation is successful 
 
@@ -286,7 +310,7 @@ Reference Documentation : Deploying the MongoDB Enterprise Kubernetes Operator o
    ```
    NAME               	NAMESPACE       	REVISION	UPDATED                                	STATUS  	CHART                     	APP VERSION
    enterprise-operator	mongodb-operator	1       	2023-03-13 16:24:25.368968635 +0530 IST	deployed	enterprise-operator-1.16.3
-
+   ```
   
 8. Verify the Custom Resource Definitions installed in the step above in the watched namespace.
 
@@ -325,20 +349,19 @@ Reference Documentation : Deploying the MongoDB Enterprise Kubernetes Operator o
     kubectl describe deployments mongodb-enterprise-operator -n "mongodb-operator"
     ```
 
+### Step 6: Deploy the MongoDB Ops Manager
 
 
-## Deploy the MongoDB Ops Manager
+1. Switch the kubernetes context to your mongodb master cluster i.e same as the cluster above where the mongodb enterprise operator is deployed.
 
-Reference Documentation :  Mastering MongoDB Ops Manager on Kubernetes | MongoDB 
+   ```
+   kubectx
+   ```
+   ```
+   k8s-cluster-1
+   ```
 
-Set the kubernetes context to your mongodb master cluster for example i.e same as the cluster above where the mongodb enterprise operator was deployed
-
-$ kubectx
-k8s-cluster-1
-k8s-cluster-2
-k8s-cluster-3
-
-1. Make sure that the operator is in the runningstate.
+2. Make sure that the operator is in the running state.
 
    Example
    ```
@@ -367,36 +390,36 @@ k8s-cluster-3
 
    Replace the values in the above command as per your input
 
-```
-kubectl apply -f 
-apiVersion: mongodb.com/v1
-kind: MongoDBOpsManager
-metadata:
-  name: ops-manager
-  namespace: mongodb-operator
-spec:
-  version: 6.0.5
-  # the name of the secret containing admin user credentials.
-  adminCredentials: om-admin-secret
-  externalConnectivity:
-    type: LoadBalancer
-  configuration:
-    mms.ignoreInitialUiSetup: "true"
-    automation.versions.source: mongodb
-    mms.adminEmailAddr: richie@aveshasystems.com
-    mms.fromEmailAddr: richie@aveshasystems.com
-    mms.replyToEmailAddr: richie@aveshasystems.com
-    mms.mail.hostname: aveshasystems.com
-    mms.mail.port: "465"
-    mms.mail.ssl: "false"
-    mms.mail.transport: smtp
-  # the Replica Set backing Ops Manager.
-  applicationDatabase:
-    members: 3
-    version: 5.0.5-ent
-```
+   ```yaml
+   kubectl apply -f 
+   apiVersion: mongodb.com/v1
+   kind: MongoDBOpsManager
+   metadata:
+     name: ops-manager
+     namespace: mongodb-operator
+   spec:
+     version: 6.0.5
+     # the name of the secret containing admin user credentials.
+     adminCredentials: om-admin-secret
+     externalConnectivity:
+       type: LoadBalancer
+     configuration:
+       mms.ignoreInitialUiSetup: "true"
+       automation.versions.source: mongodb
+       mms.adminEmailAddr: richie@aveshasystems.com
+       mms.fromEmailAddr: richie@aveshasystems.com
+       mms.replyToEmailAddr: richie@aveshasystems.com
+       mms.mail.hostname: aveshasystems.com
+       mms.mail.port: "465"
+       mms.mail.ssl: "false"
+       mms.mail.transport: smtp
+     # the Replica Set backing Ops Manager.
+     applicationDatabase:
+       members: 3
+       version: 5.0.5-ent
+   ```
 
-4. Verify Ops Manager and Ops Manager MongoDB application database pods running.
+4. Verify Ops Manager and Ops Manager MongoDB application database pods are running.
 
 
    Example
@@ -413,7 +436,7 @@ spec:
    ops-manager-db-0                               3/3     Running   0          2m55s
    ops-manager-db-1                               3/3     Running   0          3m49s
    ops-manager-db-2                               3/3     Running   0          4m30s
-
+   ```
 5. Verify the created volumes for ops manager.
 
    Example
@@ -428,7 +451,7 @@ spec:
    data-ops-manager-db-1              Bound    pvc-c0962ecc-b374-4e36-a17a-d7f404176c30   15Gi       RWO            standard       22m
    data-ops-manager-db-2              Bound    pvc-b237acf9-6333-415c-9115-175f67ded4d6   15Gi       RWO            standard       21m
    head-ops-manager-backup-daemon-0   Bound    pvc-2bd40fdf-2971-4250-b0d8-47315485b4bf   30Gi       RWO            standard       4m2s
-
+   ```
 6. (Optional) Verify the statefulsets created by the operator.
 
    Example
@@ -442,6 +465,7 @@ spec:
    ops-manager                 1/1     12m
    ops-manager-backup-daemon   1/1     6m
    ops-manager-db              3/3     13m
+   ```
 
 7. (Optional) Verify the external service created for accessing the ops manager.
 
@@ -459,6 +483,7 @@ spec:
   ops-manager-svc                 ClusterIP      None          <none>         8080/TCP                         13m
   ops-manager-svc-ext             LoadBalancer   10.7.32.125   34.23.212.14   8080:31348/TCP,25999:31914/TCP   13m
   ```
+
 8. To generate Ops Manager URL address if service is exposed as a loadbalancer, execute:
  
    The below command will only work if your service is exposed as a loadbalancer in case it is exposed as nodeport service then kindly 
@@ -487,26 +512,26 @@ spec:
 
 10. Using the username and password stored in the om-admin-secret (as created in step 5a ), we can log in to the Ops Manager User Interface using the address in the $URL variable.
 
+    ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-manager-ui.png)
+
+11. Kubernetes Operator was in the Ops Manager `ops-manager-db` organization and the `ops-manager-db` project.
+
+    ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-organizations.png)
+
+12. If we click on the `ops-manager-db` project, we will be redirected to the panel where we can see the database pods of the Ops 
+    Manager application. Ops Manager monitors this database.
+
+    ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-manager-db.png)
+
+    ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-deployment.png)
 
 
-11. Kubernetes Operator was in the Ops Manager ops-manager-db organization and the ops-manager-db project.
-
-Open Screenshot from 2023-03-13 17-38-42-20230313-120842.png
-
-12. If we click on the project ops-manager-db, we will be redirected to the panel where we can see the database pods of the Ops Manager application. Ops Manager monitors this database.
-
-Open Screenshot from 2023-03-13 17-41-55-20230313-121155.png
-
-Open Screenshot from 2023-03-13 17-47-18-20230313-121718.png
-
-
-## Deploying MongoDB Across Multiple Kubernetes Clusters With MongoDBMulti
-Reference Documentation: Deploying MongoDB Across Multiple Kubernetes Clusters With MongoDBMulti | MongoDB 
+### Step 7: Deploying MongoDB Across Multiple Kubernetes Clusters With MongoDBMulti
 
 Pre-requisites
 
 Set the environment variables as mentioned. We need to create the required variables: MASTER for a master Kubernetes cluster, 
-and MDB_1, MDB_2, and MDB_3 for clusters which will host MongoDB replica set members. These variables must contain the 
+and `MDB_1`, `MDB_2`, and `MDB_3` for clusters which will host MongoDB replica set members. These variables must contain the 
 full Kubernetes cluster names. 
 
 For example, if you have following clusters
@@ -538,13 +563,13 @@ k8s-cluster-1 k8s-cluster-1 k8s-cluster-2 k8s-cluster-3
    ```
 
 2. Change to the directory to which you cloned the Kubernetes Operator repository, and then to the directory that contains 
-   the multcluster-cli
+   the multcluster-cli.
 
    ```
    cd mongodb-enterprise-kubernetes/
    ```
 
-3. Run the multi-cluster CLI
+3. Run the multi-cluster CLI.
 
 
    ```
@@ -557,7 +582,7 @@ k8s-cluster-1 k8s-cluster-1 k8s-cluster-2 k8s-cluster-3
      -central-cluster-namespace="mongodb"
    ```
 
-In case this script fails due to the k8s cluster version is greater than 1.23 as service accounts don't automatically creates secrets 
+In case if the script fails due to the k8s cluster version is greater than 1.23 as service accounts don't automatically creates secrets 
 then create the secret manually again in the three clusters using below yaml file and run the go script again. 
 
 ```
@@ -582,6 +607,7 @@ metadata:
     creating member roles in cluster: gke_avesha-dev2_us-east1-c_demo-cluster-3-third
     Ensured ServiceAccounts and Roles.
     Creating KubeConfig secret mongodb/mongodb-enterprise-operator-multi-cluster-kubeconfig in cluster gke_avesha-dev2_us-east1-c_demo-cluster-1-third
+    ```
 
 5. Verify the service account is created in all the three clusters. Repeat the same command and verify that the service account 
    is created in all the three mongodb member clusters 
@@ -595,17 +621,17 @@ metadata:
    k8s-cluster-3
   ```
 
-  Example
-  ``` 
-  kubectl -n mongodb get sa
-  ```
+   Example
+   ``` 
+   kubectl -n mongodb get sa
+   ```
 
-  Example Output
-  ```
-  NAME                                        SECRETS   AGE
-  default                                     1         141m
-  mongodb-enterprise-operator-multi-cluster   1         6m
-  ```
+   Example Output
+   ```
+   NAME                                        SECRETS   AGE
+   default                                     1         141m
+   mongodb-enterprise-operator-multi-cluster   1         6m
+   ```
 
 ## Installing the MongoDB Multi-cluster Kubernetes Operator
 
@@ -614,11 +640,11 @@ metadata:
 
    kubectx $MASTER
 
-  example:  set the current k8s context to k8s-cluster-1
+   example:  set the current k8s context to k8s-cluster-1
 
-  ```
-  kubectx k8s-cluster-1
-  ```
+   ```
+   kubectx k8s-cluster-1
+   ```
 
 2. Verify the current context using the following command:
 
@@ -632,8 +658,9 @@ metadata:
    ```
 
 
-  Example
-  
+   Example
+   
+   ```yaml
    helm upgrade --install mongodb-enterprise-operator-multi-cluster mongodb/enterprise-operator \
      --namespace mongodb \
      --set namespace=mongodb \
@@ -642,7 +669,7 @@ metadata:
      --set "multiCluster.clusters={${CLUSTERS}}" \
      --set operator.createOperatorServiceAccount=false \
      --set multiCluster.performFailover=false
-   
+   ```
 
 3. Check if the MongoDB Enterprise Operator multi cluster pod on the master cluster is running.
 
@@ -659,7 +686,7 @@ metadata:
     ```
 
 4. It's now time to link all those clusters together using the MongoDB Multi CRD. The Kubernetes API has already been extended 
-  with a MongoDB-specific object - mongodbmulti.
+   with a MongoDB-specific object - mongodbmulti.
 
    Example
    ```
@@ -681,25 +708,31 @@ metadata:
 
 6. We need to configure the required service accounts for each member cluster.
 
-make sure the following environment variables are set to the context of your member clusters as covered in step 6 prerequisites 
+   make sure the following environment variables are set to the context of your member clusters as covered in step 6 prerequisites 
 
-example:
+   example:
 
-$ echo $MASTER $MDB_1 $MDB_2 $MDB_3
-k8s-cluster-1 k8s-cluster-1 k8s-cluster-2 k8s-cluster-3
+   ```
+   echo $MASTER $MDB_1 $MDB_2 $MDB_3
+   ```
 
-if yes then execute the following commands
+   Example Output
+   ```
+   k8s-cluster-1 k8s-cluster-1 k8s-cluster-2 k8s-cluster-3
+   ```
 
-```
-helm template --show-only templates/database-roles.yaml mongodb/enterprise-operator --namespace "mongodb" | kubectl apply -f - --context=$MDB_1 --namespace mongodb;
-helm template --show-only templates/database-roles.yaml mongodb/enterprise-operator --namespace "mongodb" | kubectl apply -f - --context=$MDB_2 --namespace mongodb;
-helm template --show-only templates/database-roles.yaml mongodb/enterprise-operator --namespace "mongodb" | kubectl apply -f - --context=$MDB_3 --namespace mongodb;
-```
+  If yes, then execute the following commands
+
+  ```
+  helm template --show-only templates/database-roles.yaml mongodb/enterprise-operator --namespace "mongodb" | kubectl apply -f - --context=$MDB_1 --namespace mongodb;
+  helm template --show-only templates/database-roles.yaml mongodb/enterprise-operator --namespace "mongodb" | kubectl apply -f - --context=$MDB_2 --namespace mongodb;
+  helm template --show-only templates/database-roles.yaml mongodb/enterprise-operator --namespace "mongodb" | kubectl apply -f - --context=$MDB_3 --namespace mongodb;
+  ```
 
 7. (Optional) : Verify the Expected sample output after executing the above command
 
 
-   ```
+   ```yaml
    WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /home/richie/mongo-setup/kubeconfig/merged.config
    WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /home/richie/mongo-setup/kubeconfig/merged.config
    Warning: resource serviceaccounts/mongodb-enterprise-appdb is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
@@ -728,9 +761,10 @@ helm template --show-only templates/database-roles.yaml mongodb/enterprise-opera
    rolebinding.rbac.authorization.k8s.io/mongodb-enterprise-appdb created
   ```
 
-8. let's generate Ops Manager API keys and add our IP addresses to the Ops Manager access list. Get the Ops Manager  URL as explained in step 5g.
+8. let's generate Ops Manager API keys and add our IP addresses to the Ops Manager access list. Get the Ops Manager URL as explained in step 5g.
 
- Make sure you switch the context to master cluster
+
+  Make sure you switch the context to master cluster
 
 The below command will only work if your service is exposed as a loadbalancer in case it is exposed as nodeport service then kindly use the URL as given below
 
@@ -760,17 +794,17 @@ To do so, log in to the Ops Manager and go to ops-manager-db organization.
 
 11. Click Access Manager on the left-hand side, and choose Organization Access then choose Create API KEY  in the top right corner.
 
-Open Screenshot from 2023-03-13 19-32-59-20230313-140259.png
+   ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-access-manager.png)
 
 12. The key must have a name (example avesha) and permissions must be set to Organization Owner
 
-Open Screenshot from 2023-03-13 19-34-28-20230313-140428.png
+  ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/create-api-key.png)
 
 13. When you click Next, you will see your Public Keyand Private Key. Copy those values and save them 
 
 you will not be able to see the private key again. Also, make sure you added your current IP address to the API access list.
 
-Open Screenshot from 2023-03-13 19-36-52-20230313-140652.png
+![mongodb](/images/version1.3.0/use-cases/configure-mongodb/save-api-key-info.png)
 
 14. Get the public and private keys generated by the API key creator and paste them into the Kubernetes secret 
 
@@ -793,6 +827,7 @@ EOF
 
 15. You also need an  Organization ID. You can see the organization ID by clicking on the gear icon in the top left corner.
 
+   ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/organization-settings.png)
 
 16. Copy the Organization ID and paste to the Kubernetes config map below.
 
@@ -812,7 +847,7 @@ data:
 EOF
 ```
 
-## Create a MongoDB replica set using the MongoDBMultiCRD
+### Step 8: Create a MongoDB replica set using the MongoDBMultiCRD
 Make sure the following environment variables are set for MDB_1 MDB_2 MDB_3 in your shell as per your mongodb member clusters
 
 example:
@@ -880,155 +915,165 @@ Example Output
 {"level":"info","ts":1678717472.9217105,"caller":"operator/mongodbmultireplicaset_controller.go:95","msg":"-> MultiReplicaSet.Reconcile","MultiReplicaSet":"mongodb/multi-replica-set"}
 ```
 
-Open Screenshot from 2023-03-13 19-57-58-20230313-142758.png
+![mongodb](/images/version1.3.0/use-cases/configure-mongodb/api-access-list.png)
 
-3. Verify our multi cluster ready is for use! We can verify this by displaying the 'mongodb multi' object.
-
-In our case it is in reconciling state as replicaset is not able to communicate with each other 
-
+3. Verify our multi cluster ready is for use! We can verify this by displaying the 'mongodb multi' object. In our case it is in reconciling 
+   state as replicaset is not able to communicate with each other 
 
 
-$ kubectl -n mongodb get mdbm
-NAME                PHASE         AGE
-multi-replica-set   Reconciling   10m
+   Example
+   ```
+   kubectl -n mongodb get mdbm
+   ```
+
+   Example
+   ```
+   NAME                PHASE         AGE
+   multi-replica-set   Reconciling   10m
+   ```
 
 
-
-## Create Service export for each member cluster as given below
+### Step 9: Create the Service export for each member cluster as given below
 
 1. Apply the following command in member cluster where multi-replica-set-0-0 is running
 
-example: 
-```
-kubectx k8s-cluster-1 
-```
+   ```
+   kubectx k8s-cluster-2
+   ```
 
-
-```
-kubectl apply -f - <<EOF
-apiVersion: networking.kubeslice.io/v1beta1
-kind: ServiceExport
-metadata:
- name: multi-replica-set-0-0
- namespace: mongodb
-spec:
- slice: mongodb-slice
- selector:
-   matchLabels:
-     statefulset.kubernetes.io/pod-name: multi-replica-set-0-0
- ingressEnabled: false
- aliases:
- - multi-replica-set-0-0-svc.mongodb.svc.cluster.local
- ports:
- - name: tcp
-   containerPort: 27017
-   protocol: TCP
-EOF
-```
+   ```
+   kubectl apply -f - <<EOF
+   apiVersion: networking.kubeslice.io/v1beta1
+   kind: ServiceExport
+   metadata:
+    name: multi-replica-set-0-0
+    namespace: mongodb
+   spec:
+    slice: mongodb-slice
+    selector:
+      matchLabels:
+        statefulset.kubernetes.io/pod-name: multi-replica-set-0-0
+    ingressEnabled: false
+    aliases:
+    - multi-replica-set-0-0-svc.mongodb.svc.cluster.local
+    ports:
+    - name: tcp
+      containerPort: 27017
+      protocol: TCP
+   EOF
+   ```
 
 2. Apply the following command in member cluster where multi-replica-set-1-0 is running
 
-example 
+   Example 
 
-```
-kubectx k8s-cluster-2
-```
+   ```
+   kubectx k8s-cluster-2
+   ```
 
-```
-kubectl apply -f - <<EOF
-apiVersion: networking.kubeslice.io/v1beta1
-kind: ServiceExport
-metadata:
- name: multi-replica-set-1-0
- namespace: mongodb
-spec:
- slice: mongodb-slice
- selector:
-   matchLabels:
-     statefulset.kubernetes.io/pod-name: multi-replica-set-1-0
- ingressEnabled: false
- aliases:
- - multi-replica-set-1-0-svc.mongodb.svc.cluster.local
- ports:
- - name: tcp
-   containerPort: 27017
-   protocol: TCP
-EOF
-```
+  ```
+  kubectl apply -f - <<EOF
+  apiVersion: networking.kubeslice.io/v1beta1
+  kind: ServiceExport
+  metadata:
+   name: multi-replica-set-1-0
+   namespace: mongodb
+  spec:
+   slice: mongodb-slice
+   selector:
+     matchLabels:
+       statefulset.kubernetes.io/pod-name: multi-replica-set-1-0
+    ingressEnabled: false
+    aliases:
+    - multi-replica-set-1-0-svc.mongodb.svc.cluster.local
+    ports:
+    - name: tcp
+      containerPort: 27017
+      protocol: TCP
+   EOF
+   ```
 
 3. Apply the following command in member cluster where multi-replica-set-2-0 is running
 
-Example 
-```
-kubectx k8s-cluster-3
-```
+   Example 
+   ```
+   kubectx k8s-cluster-3
+   ```
 
-```
-kubectl apply -f - <<EOF
-apiVersion: networking.kubeslice.io/v1beta1
-kind: ServiceExport
-metadata:
- name: multi-replica-set-2-0
- namespace: mongodb
-spec:
- slice: mongodb-slice
- selector:
-   matchLabels:
-     statefulset.kubernetes.io/pod-name: multi-replica-set-2-0
- ingressEnabled: false
- aliases:
- - multi-replica-set-2-0-svc.mongodb.svc.cluster.local
- ports:
- - name: tcp
-   containerPort: 27017
-   protocol: TCP
-EOF
-```
+   ```
+   kubectl apply -f - <<EOF
+   apiVersion: networking.kubeslice.io/v1beta1
+   kind: ServiceExport
+   metadata:
+    name: multi-replica-set-2-0
+    namespace: mongodb
+   spec:
+    slice: mongodb-slice
+    selector:
+      matchLabels:
+        statefulset.kubernetes.io/pod-name: multi-replica-set-2-0
+    ingressEnabled: false
+    aliases:
+    - multi-replica-set-2-0-svc.mongodb.svc.cluster.local
+    ports:
+    - name: tcp
+      containerPort: 27017
+      protocol: TCP
+   EOF
+   ```
 4.After the service exports are applied in all three clusters then verify the service imports in all three clusters 
 
+  ```
+  k get serviceimport -n mongodb --context=$MDB_1
+  ```
+  
+  ```
+  NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
+  multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
+  multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
+  multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
+  ```
 
-```
-k get serviceimport -n mongodb --context=$MDB_1
-```
-```
-NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
-multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
-multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
-multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
-```
+  ```
+  k get serviceimport -n mongodb --context=$MDB_2
+  ```
+  ```
+  NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
+  multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
+  multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
+  multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
+  ```
 
-```
-k get serviceimport -n mongodb --context=$MDB_2
-```
-```
-NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
-multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
-multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
-multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
-```
-
-```
-k get serviceimport -n mongodb --context=$MDB_3
-```
-```
-NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
-multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
-multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
-multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
-```
-Please make sure service imports are in ready state and endpoints are available  
+  ```
+  k get serviceimport -n mongodb --context=$MDB_3
+  ```
+  ```
+  NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
+  multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
+  multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
+  multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
+  ```
+  Please make sure service imports are in ready state and endpoints are available  
 
 5. Verify the host mapping for multi replicaset deployment is pointing to nsm IP’s from ops manager console 
 
+  ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/host-mapping.png)
 
+6. Now in master cluster again verify the multi cluster is ready is for use! We can verify this by displaying the 
+   'mongodb multi' object as discussed in step 7c now as you can observe the state is running
 
-6. Now in master cluster again verify the multi cluster is ready is for use! We can verify this by displaying the 'mongodb multi' object as discussed in step 7c now as you can observe the state is running
+   Example
+   ```
+   kubectl -n mongodb get mdbm 
+   ```
 
-
-
-$ kubectl -n mongodb get mdbm
-NAME                PHASE     AGE
-multi-replica-set   Running   31m
+   Example Output
+   ```
+   NAME                PHASE     AGE
+   multi-replica-set   Running   31m
+   ```
 
 
 7. Verify the multi replicaset deployment from ops manager console
+
+   ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/replicaset-deployment.png):
