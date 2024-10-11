@@ -24,16 +24,17 @@ Before you begin, ensure the following prerequisites are met:
 ## Configure Distributed MongoDB
 
 In this demonstration:
-- We will use the three Kubernetes clusters called k8s-cluster-1, k8s-cluster-2, and k8s-cluster-3.
-- Use the cluster-1.config, cluster-2.config, cluster-3.config kubeconfig files for the k8s-cluster-1, k8s-cluster-2, and k8s-cluster-3 respectively.
-- Install KubeSlice using the kubeslice-cli tool. Use the topology file to install the KubeSlice Controller and the 
+- We will use the three Kubernetes clusters called `k8s-cluster-1`, `k8s-cluster-2`, and `k8s-cluster-3`.
+- Use the `cluster-1.config`, `cluster-2.config`, `cluster-3.config` kubeconfig files for the `k8s-cluster-1`, `k8s-cluster-2`, 
+  and `k8s-cluster-3` respectively.
+- Install KubeSlice using the `kubeslice-cli` tool. Use the topology file to install the KubeSlice Controller and the 
   KubeSlice Worker in the k8s-cluster-1 cluster. Install the KubeSlice Worker in the k8s-cluster-2 and k8s-cluster-3 clusters 
   using the same topology file.
-- Create a slice called mongodb-slice across three worker clusters and onboard the mongodb namespace.
+- Create a slice called `demo-slice` across three worker clusters and onboard the `mongodb` namespace.
 - Deploy the MongoDB Kubernetes Operator and Ops manager on the k8s-cluster-1 cluster,  where the KubeSlice Controller is installed.
 - Deploy the MongoDB across the three clusters using MongoDBMulti.
 - Create a MongoDB replica set using MongoDBMultiCRD.
-- Create the ServiceExport. The service export will be created in all 3 clusters as each cluster will have one Replicaset.
+- Create the ServiceExport. The service export will be created in all 3 clusters as each cluster will have one replica set.
 
 ### Step 1: Clone the Examples Repo
 
@@ -386,7 +387,7 @@ To create a slice:
      --from-literal=LastName="Manager"
     ```
 
-3. Deploy the Ops Manager using the opsmanagers Custom Resource, creating MongoDBOpsManager object, using the following manifest:
+3. Deploy the Ops Manager using the Ops managers Custom Resource, creating MongoDBOpsManager object, using the following manifest:
 
    Replace the values in the above command as per your input
 
@@ -421,7 +422,6 @@ To create a slice:
 
 4. Verify Ops Manager and Ops Manager MongoDB application database pods are running.
 
-
    Example
    ```
    kubectl get pods -n mongodb-operator
@@ -437,7 +437,7 @@ To create a slice:
    ops-manager-db-1                               3/3     Running   0          3m49s
    ops-manager-db-2                               3/3     Running   0          4m30s
    ```
-5. Verify the created volumes for ops manager.
+5. Verify the created volumes for Ops Manager.
 
    Example
    ```
@@ -467,7 +467,7 @@ To create a slice:
    ops-manager-db              3/3     13m
    ```
 
-7. (Optional) Verify the external service created for accessing the ops manager.
+7. (Optional) Verify the external service created for accessing the Ops Manager.
 
   Example
   ```
@@ -493,7 +493,7 @@ To create a slice:
    URL=http://<External Node IP>:<NodePort>
    ```
 
-   where External Node IP of the worker node where Ops Manager is deployed & NodePort is the nodeport on which ops-manager-svc-ext 
+   where <External Node IP> of the worker node where Ops Manager is deployed & <NodePort> is the nodeport on which `ops-manager-svc-ext` 
    is exposed.
 
    ```
@@ -502,15 +502,16 @@ To create a slice:
    ```
 
 9. Update the Ops Manager Kubernetes manifest to include an external IP address created by Load Balancer in 
-   the spec.configuration.mms.centralUrl through kubectl patch
+   the `spec.configuration.mms.centralUrl` through kubectl patch.
 
    ```
    kubectl -n "mongodb-operator" patch om ops-manager --type=merge -p "{\"spec\":{\"configuration\":{\"mms.centralUrl\":\"${URL}\"}}}" mongodbopsmanager.mongodb.com/ops-manager patched
    ```
 
-   Wait for few minutes. The Ops Manager pod must be restarted, so wait until the ops-manager-0 pod is in the running state again.
+   Wait for few minutes. The Ops Manager pod must be restarted, so wait until the `ops-manager-0` pod is in the running state again.
 
-10. Using the username and password stored in the om-admin-secret (as created in step 5a ), we can log in to the Ops Manager User Interface using the address in the $URL variable.
+10. Using the username and password stored in the om-admin-secret (as created in step 5a ), we can log in to the Ops Manager 
+    User Interface using the address in the $URL variable.
 
     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-manager-ui.png)
 
@@ -949,7 +950,7 @@ Example Output
     name: multi-replica-set-0-0
     namespace: mongodb
    spec:
-    slice: mongodb-slice
+    slice: demo-slice
     selector:
       matchLabels:
         statefulset.kubernetes.io/pod-name: multi-replica-set-0-0
