@@ -103,9 +103,10 @@ To install KubeSlice using the `kubeslice-cli` tool:
    examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-template.yaml
    ```
    
-  :::node
-  Modify the values corresponding to your clusters. For more information on configuration parameters, see [topology parameters](/versioned_docs/version-1.3.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx).
-
+   :::node
+   Modify the values corresponding to your clusters. For more information on configuration parameters, 
+   see [topology parameters](/versioned_docs/version-1.3.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx).
+   ::: 
 
   The following is the sample configuration file:
 
@@ -163,8 +164,8 @@ To install KubeSlice using the `kubeslice-cli` tool:
    kubeslice-cli --config examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-template.yaml install
    ```
 
-  The above command installs the KubeSlice Controller on the k8s-cluster-1 and registers the worker cluster 
-  worker-1 (k8s-cluster-1), worker-2 (k8s-cluster-2), and worker-3 (k8s-cluster-3) with the KubeSlice Controller.
+   The above command installs the KubeSlice Controller on the k8s-cluster-1 and registers the worker cluster 
+   worker-1 (k8s-cluster-1), worker-2 (k8s-cluster-2), and worker-3 (k8s-cluster-3) with the KubeSlice Controller.
 
 ### Step 4: Create a Slice
 
@@ -182,13 +183,13 @@ To create a slice:
 
 2. Use the following template to create a slice:
 
-  ```
-  kubectl apply -f distributed-mongodb/mongodb-slice/demo-slice.yaml
-  ```
+   ```
+   kubectl apply -f distributed-mongodb/mongodb-slice/demo-slice.yaml
+   ```
  
-  The `mongodb-slice.yaml` file contains the configuration to create a namespace called `mongodb`, and also onboard it onto the demo-slice. 
-  The configuration also enables namespace sameness, which means that the `mongodb` slice will be onboarded onto any worker cluster that is 
-  connected to the `demo-slice`.
+   The `mongodb-slice.yaml` file contains the configuration to create a namespace called `mongodb`, and also onboard it onto the demo-slice. 
+   The configuration also enables namespace sameness, which means that the `mongodb` slice will be onboarded onto any worker cluster that is 
+   connected to the `demo-slice`.
 
   The following is the sample slice configuration yaml file: 
 
@@ -350,18 +351,18 @@ To create a slice:
 
 9. Verify All required service accounts has been created in watched namespace.
   
-  Example
-  ```
-  kubectl -n mongodb-operator get sa | grep -E '^(mongo)'
-  ```
+   Example
+   ```
+   kubectl -n mongodb-operator get sa | grep -E '^(mongo)'
+   ```
 
-  Example Output
-  ```
-  mongodb-enterprise-appdb           1         11m
-  mongodb-enterprise-database-pods   1         11m
-  mongodb-enterprise-operator        1         11m
-  mongodb-enterprise-ops-manager     1         11m
-  ```
+   Example Output
+   ```
+   mongodb-enterprise-appdb           1         11m
+   mongodb-enterprise-database-pods   1         11m
+   mongodb-enterprise-operator        1         11m
+   mongodb-enterprise-ops-manager     1         11m
+   ```
 
 10. Verify if the Kubernetes Operator was installed correctly by running the following command and verify the output.
 
@@ -549,13 +550,15 @@ To create a slice:
 
 ### Step 7: Deploying MongoDB Across Multiple Kubernetes Clusters With MongoDBMulti
 
-Pre-requisites
+::note
+Setting the environment variables is prerequisite.
+:::
 
 Set the environment variables as mentioned. We need to create the required variables: MASTER for a master Kubernetes cluster, 
 and `MDB_1`, `MDB_2`, and `MDB_3` for clusters which will host MongoDB replica set members. These variables must contain the 
 full Kubernetes cluster names. 
 
-For example, if you have following clusters
+For example, if you have following clusters:
 
 ```
 kubectx
@@ -576,6 +579,8 @@ Verify the environment variables
 echo $MASTER $MDB_1 $MDB_2 $MDB_3
 k8s-cluster-1 k8s-cluster-1 k8s-cluster-2 k8s-cluster-3
 ```
+
+Follow these steps after you set the environment variables:
 
 1. Download the MongoDB Enterprise Kubernetes Operator golang scripts for setting up multicluster configs.
 
