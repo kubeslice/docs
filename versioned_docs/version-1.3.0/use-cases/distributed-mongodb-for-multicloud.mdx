@@ -20,6 +20,8 @@ Before you begin, ensure the following prerequisites are met:
 
 3. Install [Kubectx](https://github.com/ahmetb/kubectx) to easily switch context between clusters.
 
+4. Kubeconfig files to access the Kubernetes clusters.
+
 
 ## Configure Distributed MongoDB
 
@@ -28,10 +30,10 @@ In this demonstration:
 - Use the `cluster-1.config`, `cluster-2.config`, `cluster-3.config` kubeconfig files for the `k8s-cluster-1`, `k8s-cluster-2`, 
   and `k8s-cluster-3` respectively.
 - Install KubeSlice using the `kubeslice-cli` tool. Use the topology file to install the KubeSlice Controller and the 
-  KubeSlice Worker in the k8s-cluster-1 cluster. Install the KubeSlice Worker in the k8s-cluster-2 and k8s-cluster-3 clusters 
+  KubeSlice Worker in the k8s-cluster-1 cluster. Install the KubeSlice Worker in the `k8s-cluster-2` and `k8s-cluster-3` clusters 
   using the same topology file.
 - Create a slice called `demo-slice` across three worker clusters and onboard the `mongodb` namespace.
-- Deploy the MongoDB Kubernetes Operator and Ops manager on the k8s-cluster-1 cluster,  where the KubeSlice Controller is installed.
+- Deploy the MongoDB Kubernetes Operator and Ops manager on the `k8s-cluster-1` cluster,  where the KubeSlice Controller is installed.
 - Deploy the MongoDB across the three clusters using MongoDBMulti.
 - Create a MongoDB replica set using MongoDBMultiCRD.
 - Create the ServiceExport. The service export will be created in all 3 clusters as each cluster will have one replica set.
@@ -47,16 +49,20 @@ Use the following command to clone the `examples` repo:
 git clone https://github.com/kubeslice/examples.git
 ```
 
+After cloning the repo, use the files from the `examples/distributed-mongodb` directory.
+
 ### Step 2: Merge the Kubeconfig Files
 
 1. Replace the `/path/to/kubeconfig/` path to with your local path to access the kubeconfig file.
 
    ```
-   export KUBECONFIG=/path/to/kubeconfig/cluster-1.config:/path/to/kubeconfig/cluster-2.config:/path/to/kubeconfig/cluster-3.config 
+   export KUBECONFIG=/path/to/kubeconfig/cluster-1.config:/path/to/kubeconfig/cluster-2.config:/path/to/kubeconfig/cluster-3.config
+   ```
+   ```
    kubectl config view --flatten=true > merged.config
    ```
 
-2. Verify the `merged.config` kubeconfig file:
+2. Verify the `merged.config` kubeconfig file using the command:
 
    ```
    export KUBECONFIG=/path/to/kubeconfig/merged.config
@@ -95,11 +101,17 @@ To install KubeSlice using the `kubeslice-cli` tool:
    sudo chmod a+x /usr/local/bin/kubeslice-cli
    ```
 
-3. Prepare the configuration topology file that you will use to install KubeSlice. Refer to the 
-   [sample topology file](https://github.com/kubeslice/kubeslice-cli/blob/master/samples/template.yaml) and update the values 
-   corresponding to your cluster. 
+3. Prepare the configuration topology file that you will use to install KubeSlice. Use the following template to install the
+   KubeSlice Controller and register worker cluster:
+   ```
+   examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-template.yaml
+   ```
+   
+  :::node
+  Modify the values corresponding to your clusters. For more information on configuration parameters, see [topology parameters](/versioned_docs/version-1.3.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx).
 
-   The following is the sample configuration file:
+
+  The following is the sample configuration file:
 
   ```yaml
   configuration:
@@ -152,16 +164,18 @@ To install KubeSlice using the `kubeslice-cli` tool:
 4. Use the following command to apply configuration topology file:
 
    ```
-   kubeslice-cli --config kubeslice-topology.yaml install
+   kubeslice-cli --config examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-template.yaml install
    ```
 
+  The above command installs the KubeSlice Controller on the k8s-cluster-1 and registers the worker cluster 
+  worker-1 (k8s-cluster-1), worker-2 (k8s-cluster-2), and worker-3 (k8s-cluster-3) with the KubeSlice Controller.
 
 ### Step 4: Create a Slice
 
 After installing KubeSlice successfully, you can create a slice and onboard the `mongodb` namespace on it.
 To create a slice:
 
-1. Set the context to the controller cluster.
+1. Set the context to the controller cluster to create a slice called `demo-slice` using the following command:
    
    Example
 
@@ -170,7 +184,17 @@ To create a slice:
    ```
 
 
-2. Create the sample configuration YAML. he following is the sample slice configuration yaml file: 
+2. Use the following template to create a slice:
+
+  ```
+  kubectl apply -f distributed-mongodb/mongodb-slice/demo-slice.yaml
+  ```
+ 
+  The `mongodb-slice.yaml` file contains the configuration to create a namespace called `mongodb`, and also onboard it onto the demo-slice. 
+  The configuration also enables namespace sameness, which means that the `mongodb` slice will be onboarded onto any worker cluster that is 
+  connected to the `demo-slice`.
+
+  The following is the sample slice configuration yaml file: 
 
    ```
    apiVersion: controller.kubeslice.io/v1alpha1
@@ -217,7 +241,7 @@ To create a slice:
    Example
 
    ```
-   kubectl apply -f demo-slice.yaml -n kubeslice-mongodb-project
+   kubectl apply -f examples/distributed-mongodb/demo-slice.yaml -n kubeslice-mongodb-project
    ```
 
    Example Output
@@ -489,11 +513,11 @@ To create a slice:
    The below command will only work if your service is exposed as a loadbalancer in case it is exposed as nodeport service then kindly 
    use the URL as given below
    
-   ```
+   ```yaml
    URL=http://<External Node IP>:<NodePort>
    ```
 
-   where <External Node IP> of the worker node where Ops Manager is deployed & <NodePort> is the nodeport on which `ops-manager-svc-ext` 
+   where `External Node IP` of the worker node where Ops Manager is deployed & `NodePort` is the nodeport on which `ops-manager-svc-ext` 
    is exposed.
 
    ```
