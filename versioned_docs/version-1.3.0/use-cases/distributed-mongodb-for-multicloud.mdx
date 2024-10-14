@@ -47,7 +47,7 @@ git clone https://github.com/kubeslice/examples.git
 
 After cloning the repo, use the files from the `examples/distributed-mongodb` directory.
 
-### Step 2: Merge the Kubeconfig Files
+### Step 2: Merge Kubeconfig Files
 
 1. Replace the `/path/to/kubeconfig/` path to with your local path to access the kubeconfig file.
 
@@ -58,7 +58,7 @@ After cloning the repo, use the files from the `examples/distributed-mongodb` di
    kubectl config view --flatten=true > merged.config
    ```
 
-2. Verify the `merged.config` kubeconfig file using the command:
+2. Verify the `merged.config` kubeconfig file using the following command:
 
    ```
    export KUBECONFIG=/path/to/kubeconfig/merged.config
@@ -98,7 +98,7 @@ To install KubeSlice using the `kubeslice-cli` tool:
    ```
 
 3. Prepare the configuration topology file that you will use to install KubeSlice. Use the following template to install the
-   KubeSlice Controller and register worker cluster:
+   KubeSlice Controller and register worker clusters:
    ```
    examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-template.yaml
    ```
@@ -249,7 +249,8 @@ To create a slice:
 
 ### Step 5: Deploy the MongoDB Enterprise Kubernetes Operator
 
-1. Set the Kubernetes context to your mongodb master cluster (or the controller cluster) for example
+1. Set the Kubernetes context to your `MongoDB` master cluster (or the controller cluster) using the following command:
+
 
    ```
    kubectx
@@ -258,20 +259,20 @@ To create a slice:
    k8s-cluster-1 
    ```
 
-2. Add the Mongo db helm repo to your local
+2. Add the MongoDB helm repo to your local system using the following command:
 
    ```
    helm repo add mongodb https://kubeslice.aveshalabs.io/repository/kubeslice-helm-ent-stage/
    ```
 
-3. create the mongodb-operatornamespace.
+3. create the `mongodb-operator` namespace using the following command:
 
    ```
    NAMESPACE=mongodb-operator
    kubectl create ns "${NAMESPACE}"
    ```
    
-4. Install the MongoDB Kubernetes Operator and set it to watch only the mongodb-operator namespace.
+4. Install the MongoDB Kubernetes Operator and set it only watch the `mongodb-operator` namespace using the following command:
 
    ```
    HELM_CHART_VERSION=1.16.3
@@ -281,10 +282,9 @@ To create a slice:
    --set operator.watchNamespace="${NAMESPACE}"
    ```
 
-5. Verify the Namespaces.
+5. Verify the namespaces using the following command:
 
    Example
-
    ```
    kubectl get ns
    ```
@@ -306,7 +306,7 @@ To create a slice:
    mongodb-operator            Active   5m21s
    spire                       Active   111m
 
-6. Verify the pods in the `mongodb-operator` namespace
+6. Verify the pods on the `mongodb-operator` namespace using the following command:
 
    Example
    ```
@@ -320,7 +320,7 @@ To create a slice:
    mongodb-enterprise-operator-68cb5dd658-v2wrf   1/1     Running   0          6m44s
    ```
 
-7. Verify if the helm installation is successful 
+7. Verify the helm installation is using the following command:
 
    Example
    ```
@@ -334,7 +334,7 @@ To create a slice:
    enterprise-operator	mongodb-operator	1       	2023-03-13 16:24:25.368968635 +0530 IST	deployed	enterprise-operator-1.16.3
    ```
   
-8. Verify the Custom Resource Definitions installed in the step above in the watched namespace.
+8. Verify the Custom Resource Definitions installed in the previous above in the `mongodb` namespace using the following command:
 
    Example
    ```
@@ -349,7 +349,7 @@ To create a slice:
    opsmanagers.mongodb.com                               2023-03-13T10:54:21Z
    ```
 
-9. Verify All required service accounts has been created in watched namespace.
+9. Verify all the required service accounts has been created in `mongodb` namespace.
   
    Example
    ```
@@ -364,40 +364,44 @@ To create a slice:
    mongodb-enterprise-ops-manager     1         11m
    ```
 
-10. Verify if the Kubernetes Operator was installed correctly by running the following command and verify the output.
+10. Verify if the Kubernetes Operator is installed correctly using the following command: 
 
-    Use the following command:
     ```
     kubectl describe deployments mongodb-enterprise-operator -n "mongodb-operator"
     ```
 
 ### Step 6: Deploy the MongoDB Ops Manager
 
+  :::info
+  To know more, see [mastering MongoDB Ops Manager](https://www.mongodb.com/developer/products/connectors/mastering-ops-manager/).
+  The master must contain the MongoDB Enterprise Operator  deployed.
+  :::
 
-1. Switch the kubernetes context to your mongodb master cluster i.e same as the cluster above where the mongodb enterprise operator is deployed.
+ 1. Switch the kubernetes context to your MongoDB master cluster using the following command:
 
-   ```
-   kubectx
-   ```
-   ```
-   k8s-cluster-1
-   ```
+     ```
+     kubectx
+     ```
+   
+     ```
+     k8s-cluster-1
+     ```
 
-2. Make sure that the operator is in the running state.
+  2. Make sure that the operator is in the running state.
 
-   Example
-   ```
-   kubectl get po -n mongodb-operator
-   ```
+     Example
+     ```
+     kubectl get po -n mongodb-operator
+     ```
 
-   Example Output
-   ```
-   NAME                                           READY   STATUS    RESTARTS   AGE
-   mongodb-enterprise-operator-68cb5dd658-v2wrf   1/1     Running   0          22m
-   ```
+     Example Output
+     ```
+     NAME                                           READY   STATUS    RESTARTS   AGE
+     mongodb-enterprise-operator-68cb5dd658-v2wrf   1/1     Running   0          22m
+     ```
 
-2. Create a secret containing the username and password on the master Kubernetes cluster for accessing the Ops Manager user interface 
-   after installation. Replace the values in the above command as per your input
+2. To access the Operator Manager user interface after installation, create a 
+   secret containing the username and password on the master Kubernetes cluster using the following command:
 
 
    ```
@@ -406,11 +410,9 @@ To create a slice:
      --from-literal=Password="avesha@2023" \
      --from-literal=FirstName="Ops" \
      --from-literal=LastName="Manager"
-    ```
+   ```
 
 3. Deploy the Ops Manager using the Ops managers Custom Resource, creating MongoDBOpsManager object, using the following manifest:
-
-   Replace the values in the above command as per your input
 
    ```yaml
    kubectl apply -f 
@@ -458,7 +460,7 @@ To create a slice:
    ops-manager-db-1                               3/3     Running   0          3m49s
    ops-manager-db-2                               3/3     Running   0          4m30s
    ```
-5. Verify the created volumes for Ops Manager.
+5. Verify the created volumes for Ops Manager using the following command:
 
    Example
    ```
@@ -473,7 +475,7 @@ To create a slice:
    data-ops-manager-db-2              Bound    pvc-b237acf9-6333-415c-9115-175f67ded4d6   15Gi       RWO            standard       21m
    head-ops-manager-backup-daemon-0   Bound    pvc-2bd40fdf-2971-4250-b0d8-47315485b4bf   30Gi       RWO            standard       4m2s
    ```
-6. (Optional) Verify the statefulsets created by the operator.
+6. (Optional) Verify the statefulsets created by the operator using the following command:
 
    Example
    ```
@@ -488,25 +490,26 @@ To create a slice:
    ops-manager-db              3/3     13m
    ```
 
-7. (Optional) Verify the external service created for accessing the Ops Manager.
+7. (Optional) Verify the external service created for accessing the Ops Manager using the following command:
 
-  Example
-  ```
-  kubectl -n "mongodb-operator" get svc
-  ```
+   Example
+   ```
+   kubectl -n "mongodb-operator" get svc
+   ```
 
-  Example Output
-  ```
-  NAME                            TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)                          AGE
-  operator-webhook                ClusterIP      10.7.47.251   <none>         443/TCP                          56m
-  ops-manager-backup-daemon-svc   ClusterIP      None          <none>         8443/TCP                         7m13s
-  ops-manager-db-svc              ClusterIP      None          <none>         27017/TCP                        14m
-  ops-manager-svc                 ClusterIP      None          <none>         8080/TCP                         13m
-  ops-manager-svc-ext             LoadBalancer   10.7.32.125   34.23.212.14   8080:31348/TCP,25999:31914/TCP   13m
-  ```
+   Example Output
+   ```
+   NAME                            TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)                          AGE
+   operator-webhook                ClusterIP      10.7.47.251   <none>         443/TCP                          56m
+   ops-manager-backup-daemon-svc   ClusterIP      None          <none>         8443/TCP                         7m13s
+   ops-manager-db-svc              ClusterIP      None          <none>         27017/TCP                        14m
+   ops-manager-svc                 ClusterIP      None          <none>         8080/TCP                         13m
+   ops-manager-svc-ext             LoadBalancer   10.7.32.125   34.23.212.14   8080:31348/TCP,25999:31914/TCP   13m
+   ```
 
-8. To generate Ops Manager URL address if service is exposed as a loadbalancer, execute:
+8. To generate Ops Manager URL address if service is exposed as a LoadBalancer using the following command:
  
+   :::caution
    The below command will only work if your service is exposed as a loadbalancer in case it is exposed as nodeport service then kindly 
    use the URL as given below
    
@@ -516,27 +519,35 @@ To create a slice:
 
    where `External Node IP` of the worker node where Ops Manager is deployed & `NodePort` is the nodeport on which `ops-manager-svc-ext` 
    is exposed.
+   :::
 
+   Example
    ```
    URL=http://$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].ip}:{.spec.ports[0].port}') echo $URL
+   ```
+   
+   Example Output
+   ```
    http://34.23.212.14:8080
    ```
 
-9. Update the Ops Manager Kubernetes manifest to include an external IP address created by Load Balancer in 
-   the `spec.configuration.mms.centralUrl` through kubectl patch.
+9. Update the Ops Manager Kubernetes manifest to include an external IP address created by LoadBalancer in 
+   the `spec.configuration.mms.centralUrl` through `kubectl patch` using the following command:
 
    ```
    kubectl -n "mongodb-operator" patch om ops-manager --type=merge -p "{\"spec\":{\"configuration\":{\"mms.centralUrl\":\"${URL}\"}}}" mongodbopsmanager.mongodb.com/ops-manager patched
    ```
 
+   :::caution
    Wait for few minutes. The Ops Manager pod must be restarted, so wait until the `ops-manager-0` pod is in the running state again.
+   :::
 
-10. Using the username and password stored in the om-admin-secret (as created in step 5a ), we can log in to the Ops Manager 
+10. Using the username and password stored in the `om-admin-secret` (as created under the third sub-step of Step 6), log in to the Ops Manager 
     User Interface using the address in the $URL variable.
 
     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-manager-ui.png)
 
-11. Kubernetes Operator was in the Ops Manager `ops-manager-db` organization and the `ops-manager-db` project.
+11. Kubernetes Operator is in the Ops Manager `ops-manager-db` organization and the `ops-manager-db` project.
 
     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-organizations.png)
 
@@ -826,15 +837,13 @@ To do so, log in to the Ops Manager and go to ops-manager-db organization.
 
   ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/create-api-key.png)
 
-13. When you click Next, you will see your Public Keyand Private Key. Copy those values and save them 
-
-you will not be able to see the private key again. Also, make sure you added your current IP address to the API access list.
+13. Click the project `ops-manager-db`. You are redirected to the panel that displays the database pods 
+    of the Ops Manager application. The Ops Manager monitors this database.
 
 ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/save-api-key-info.png)
 
-14. Get the public and private keys generated by the API key creator and paste them into the Kubernetes secret 
-
-Apply the below command in the master cluster 
+14. Get the public and private keys generated by the API key creator and paste them into the Kubernetes secret. Apply the 
+  below command in the master cluster 
 
 $ kubectx k8s-cluster-1
 
@@ -873,7 +882,9 @@ data:
 EOF
 ```
 
-### Step 8: Create a MongoDB replica set using the MongoDBMultiCRD
+### Step 8: Create a MongoDB ReplicaSet using MongoDBMultiCRD
+
+:::caution
 Make sure the following environment variables are set for MDB_1 MDB_2 MDB_3 in your shell as per your mongodb member clusters
 
 example:
@@ -882,8 +893,9 @@ example:
 echo $MDB_1 $MDB_2 $MDB_3
 k8s-cluster-1 k8s-cluster-2 k8s-cluster-3
 ```
+:::
 
-1. Apply the following command in the master cluster after setting the environment variables as discussed above
+1. Apply the following command on the master cluster after setting the environment variables using the following command:
 
 
 ```
@@ -916,35 +928,34 @@ spec:
 EOF
 ```
 
-In case after applying the above manifests the replicas are not created in the member clusters then kindly verify the operator logs 
-to see if you are not getting any error for example as show below if yes, then we need to white list the IP as discussed in step 6q
+2. (Optional) If the replicas are not created, then verify the operator logs to see any connection error.
 
-2. (Optional) :  
-```
-POD=$(kubectl -n mongodb get po|grep operator|awk '{ print $1 }')
-```
+   Use the following command to view the operator logs:
+   ```
+   POD=$(kubectl -n mongodb get po|grep operator|awk '{ print $1 }')
+   ```
 
-```
-kubectl -n mongodb logs -f po/$POD -c mongodb-enterprise-operator |grep IP_ADDRESS_NOT_ON_ACCESS_LIST
-```
+   ```
+   kubectl -n mongodb logs -f po/$POD -c mongodb-enterprise-operator |grep IP_ADDRESS_NOT_ON_ACCESS_LIST
+   ```
 
-Example Output
+   Example Output
 
-```yaml
-{"level":"error","ts":1678717432.7588468,"caller":"workflow/failed.go:72","msg":"Error establishing connection to Ops Manager: error reading or creating project in Ops Manager: organization with id 640f0bf457082e60d2620022 not found: Status: 403 (Forbidden), ErrorCode: IP_ADDRESS_NOT_ON_ACCESS_LIST, Detail: IP address 10.6.0.5 is not allowed to access this resource.","MultiReplicaSet":"mongodb/multi-replica-set","stacktrace":"github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow.failedStatus.Log\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow/failed.go:72\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileCommonController).updateStatus\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/common_controller.go:152\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileMongoDbMultiReplicaSet).Reconcile\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/mongodbmultireplicaset_controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:311\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:227"}
-{"level":"info","ts":1678717442.7705624,"caller":"operator/mongodbmultireplicaset_controller.go:95","msg":"-> MultiReplicaSet.Reconcile","MultiReplicaSet":"mongodb/multi-replica-set"}
-{"level":"error","ts":1678717442.807198,"caller":"workflow/failed.go:72","msg":"Error establishing connection to Ops Manager: error reading or creating project in Ops Manager: organization with id 640f0bf457082e60d2620022 not found: Status: 403 (Forbidden), ErrorCode: IP_ADDRESS_NOT_ON_ACCESS_LIST, Detail: IP address 10.6.0.5 is not allowed to access this resource.","MultiReplicaSet":"mongodb/multi-replica-set","stacktrace":"github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow.failedStatus.Log\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow/failed.go:72\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileCommonController).updateStatus\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/common_controller.go:152\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileMongoDbMultiReplicaSet).Reconcile\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/mongodbmultireplicaset_controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:311\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:227"}
-{"level":"info","ts":1678717452.8275588,"caller":"operator/mongodbmultireplicaset_controller.go:95","msg":"-> MultiReplicaSet.Reconcile","MultiReplicaSet":"mongodb/multi-replica-set"}
-{"level":"error","ts":1678717452.859466,"caller":"workflow/failed.go:72","msg":"Error establishing connection to Ops Manager: error reading or creating project in Ops Manager: organization with id 640f0bf457082e60d2620022 not found: Status: 403 (Forbidden), ErrorCode: IP_ADDRESS_NOT_ON_ACCESS_LIST, Detail: IP address 10.6.0.5 is not allowed to access this resource.","MultiReplicaSet":"mongodb/multi-replica-set","stacktrace":"github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow.failedStatus.Log\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow/failed.go:72\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileCommonController).updateStatus\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/common_controller.go:152\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileMongoDbMultiReplicaSet).Reconcile\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/mongodbmultireplicaset_controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:311\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:227"}
-{"level":"info","ts":1678717462.8728528,"caller":"operator/mongodbmultireplicaset_controller.go:95","msg":"-> MultiReplicaSet.Reconcile","MultiReplicaSet":"mongodb/multi-replica-set"}
-{"level":"error","ts":1678717462.9028342,"caller":"workflow/failed.go:72","msg":"Error establishing connection to Ops Manager: error reading or creating project in Ops Manager: organization with id 640f0bf457082e60d2620022 not found: Status: 403 (Forbidden), ErrorCode: IP_ADDRESS_NOT_ON_ACCESS_LIST, Detail: IP address 10.6.0.5 is not allowed to access this resource.","MultiReplicaSet":"mongodb/multi-replica-set","stacktrace":"github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow.failedStatus.Log\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow/failed.go:72\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileCommonController).updateStatus\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/common_controller.go:152\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileMongoDbMultiReplicaSet).Reconcile\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/mongodbmultireplicaset_controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:311\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:227"}
-{"level":"info","ts":1678717472.9217105,"caller":"operator/mongodbmultireplicaset_controller.go:95","msg":"-> MultiReplicaSet.Reconcile","MultiReplicaSet":"mongodb/multi-replica-set"}
-```
+  ```yaml
+  {"level":"error","ts":1678717432.7588468,"caller":"workflow/failed.go:72","msg":"Error establishing connection to Ops Manager: error reading or creating project in Ops Manager: organization with id 640f0bf457082e60d2620022 not found: Status: 403 (Forbidden), ErrorCode: IP_ADDRESS_NOT_ON_ACCESS_LIST, Detail: IP address 10.6.0.5 is not allowed to access this resource.","MultiReplicaSet":"mongodb/multi-replica-set","stacktrace":"github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow.failedStatus.Log\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow/failed.go:72\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileCommonController).updateStatus\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/common_controller.go:152\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileMongoDbMultiReplicaSet).Reconcile\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/mongodbmultireplicaset_controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:311\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:227"}
+  {"level":"info","ts":1678717442.7705624,"caller":"operator/mongodbmultireplicaset_controller.go:95","msg":"-> MultiReplicaSet.Reconcile","MultiReplicaSet":"mongodb/multi-replica-set"}
+  {"level":"error","ts":1678717442.807198,"caller":"workflow/failed.go:72","msg":"Error establishing connection to Ops Manager: error reading or creating project in Ops Manager: organization with id 640f0bf457082e60d2620022 not found: Status: 403 (Forbidden), ErrorCode: IP_ADDRESS_NOT_ON_ACCESS_LIST, Detail: IP address 10.6.0.5 is not allowed to access this resource.","MultiReplicaSet":"mongodb/multi-replica-set","stacktrace":"github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow.failedStatus.Log\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow/failed.go:72\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileCommonController).updateStatus\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/common_controller.go:152\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileMongoDbMultiReplicaSet).Reconcile\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/mongodbmultireplicaset_controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:311\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:227"}
+  {"level":"info","ts":1678717452.8275588,"caller":"operator/mongodbmultireplicaset_controller.go:95","msg":"-> MultiReplicaSet.Reconcile","MultiReplicaSet":"mongodb/multi-replica-set"}
+  {"level":"error","ts":1678717452.859466,"caller":"workflow/failed.go:72","msg":"Error establishing connection to Ops Manager: error reading or creating project in Ops Manager: organization with id 640f0bf457082e60d2620022 not found: Status: 403 (Forbidden), ErrorCode: IP_ADDRESS_NOT_ON_ACCESS_LIST, Detail: IP address 10.6.0.5 is not allowed to access this resource.","MultiReplicaSet":"mongodb/multi-replica-set","stacktrace":"github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow.failedStatus.Log\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow/failed.go:72\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileCommonController).updateStatus\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/common_controller.go:152\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileMongoDbMultiReplicaSet).Reconcile\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/mongodbmultireplicaset_controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:311\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:227"}
+  {"level":"info","ts":1678717462.8728528,"caller":"operator/mongodbmultireplicaset_controller.go:95","msg":"-> MultiReplicaSet.Reconcile","MultiReplicaSet":"mongodb/multi-replica-set"}
+  {"level":"error","ts":1678717462.9028342,"caller":"workflow/failed.go:72","msg":"Error establishing connection to Ops Manager: error reading or creating project in Ops Manager: organization with id 640f0bf457082e60d2620022 not found: Status: 403 (Forbidden), ErrorCode: IP_ADDRESS_NOT_ON_ACCESS_LIST, Detail: IP address 10.6.0.5 is not allowed to access this resource.","MultiReplicaSet":"mongodb/multi-replica-set","stacktrace":"github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow.failedStatus.Log\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/workflow/failed.go:72\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileCommonController).updateStatus\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/common_controller.go:152\ngithub.com/10gen/ops-manager-kubernetes/controllers/operator.(*ReconcileMongoDbMultiReplicaSet).Reconcile\n\t/go/src/github.com/10gen/ops-manager-kubernetes/controllers/operator/mongodbmultireplicaset_controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:114\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:311\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.11.2/pkg/internal/controller/controller.go:227"}
+  {"level":"info","ts":1678717472.9217105,"caller":"operator/mongodbmultireplicaset_controller.go:95","msg":"-> MultiReplicaSet.Reconcile","MultiReplicaSet":"mongodb/multi-replica-set"}
+  ```
+  
+   Whitelist an IP to resolve connection errors.
+  ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/api-access-list.png)
 
-![mongodb](/images/version1.3.0/use-cases/configure-mongodb/api-access-list.png)
-
-3. Verify our multi cluster ready is for use! We can verify this by displaying the 'mongodb multi' object. In our case it is in reconciling 
-   state as replicaset is not able to communicate with each other 
+3. Verify that the multi cluster is ready by using the following command:
 
 
    Example
