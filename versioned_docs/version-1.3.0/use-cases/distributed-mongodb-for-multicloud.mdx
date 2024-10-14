@@ -970,147 +970,98 @@ EOF
    ```
 
 
-### Step 9: Create the Service export for each member cluster as given below
+ 4. Create Service Export for each member cluster as described below:
 
-1. Apply the following command in member cluster where multi-replica-set-0-0 is running
+    1. Switch context to the k8s-cluster-1 and apply the following command:
 
-   ```
-   kubectx k8s-cluster-2
-   ```
+       ```
+       kubectl apply -f examples/distributed-mongodb/service-export/k8s-cluster-1.yaml -n mongodb
+       ```
 
-   ```
-   kubectl apply -f - <<EOF
-   apiVersion: networking.kubeslice.io/v1beta1
-   kind: ServiceExport
-   metadata:
-    name: multi-replica-set-0-0
-    namespace: mongodb
-   spec:
-    slice: demo-slice
-    selector:
-      matchLabels:
-        statefulset.kubernetes.io/pod-name: multi-replica-set-0-0
-    ingressEnabled: false
-    aliases:
-    - multi-replica-set-0-0-svc.mongodb.svc.cluster.local
-    ports:
-    - name: tcp
-      containerPort: 27017
-      protocol: TCP
-   EOF
-   ```
+    2. Switch context to the k8s-cluster-2 and apply the following command:
 
-2. Apply the following command in member cluster where multi-replica-set-1-0 is running
+       ```
+       kubectl apply -f examples/distributed-mongodb/service-export/k8s-cluster-2.yaml -n mongodb
+       ```
 
-   Example 
+    3. Switch context to the k8s-cluster-3 and apply the following command:
+      
+       ```
+       kubectl apply -f examples/distributed-mongodb/service-export/k8s-cluster-3.yaml -n mongodb
+       ```
 
-   ```
-   kubectx k8s-cluster-2
-   ```
+  5. After applying the service exports in all the three clusters, verify the service imports in all of them using the following command:
 
-  ```
-  kubectl apply -f - <<EOF
-  apiVersion: networking.kubeslice.io/v1beta1
-  kind: ServiceExport
-  metadata:
-   name: multi-replica-set-1-0
-   namespace: mongodb
-  spec:
-   slice: mongodb-slice
-   selector:
-     matchLabels:
-       statefulset.kubernetes.io/pod-name: multi-replica-set-1-0
-    ingressEnabled: false
-    aliases:
-    - multi-replica-set-1-0-svc.mongodb.svc.cluster.local
-    ports:
-    - name: tcp
-      containerPort: 27017
-      protocol: TCP
-   EOF
-   ```
+     :::info
+     Ensure that service imports are in ready state and endpoints are available.
+     :::
+   
+     Example (k8s-cluster-1)
+     ```
+     k get serviceimport -n mongodb --context=$MDB_1
+     ```
+   
+     Example Output
+     ```
+     NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
+     multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
+     multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
+     multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
+     ```
+   
+     Example (k8s-cluster-2)
+     ```
+     k get serviceimport -n mongodb --context=$MDB_2
+     ```
+     Example Output
+     ```
+     NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
+     multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
+     multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
+     multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
+     ```
+   
+     Example (k8s-cluster-3)
+     ```
+     k get serviceimport -n mongodb --context=$MDB_3
+     ```
+   
+     Example Output
+     ```
+     NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
+     multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
+     multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
+     multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
+     ```
+     :::info
+     Make sure service imports are in ready state and endpoints are available.
+     :::
+ 
+  6. Go to the Ops Manager console, and verify the host mapping for multi replica set deployment is pointing to NSM IP addresses.
 
-3. Apply the following command in member cluster where multi-replica-set-2-0 is running
+     To verify:
+     1. On the Ops Manager console, go to **Organizations** on the left sidebar, and click `ops-manager-db`.
+     2. Choose **multiple-replica** set from the left drop-down list.
+     3. Go to **Deployments** on the left sidebar.
+     4. On the **Host Mappings** page, verify the NSM IP addresses.
 
-   Example 
-   ```
-   kubectx k8s-cluster-3
-   ```
+  7. On the master cluster, verify the multi cluster is ready using the following command:
 
-   ```
-   kubectl apply -f - <<EOF
-   apiVersion: networking.kubeslice.io/v1beta1
-   kind: ServiceExport
-   metadata:
-    name: multi-replica-set-2-0
-    namespace: mongodb
-   spec:
-    slice: mongodb-slice
-    selector:
-      matchLabels:
-        statefulset.kubernetes.io/pod-name: multi-replica-set-2-0
-    ingressEnabled: false
-    aliases:
-    - multi-replica-set-2-0-svc.mongodb.svc.cluster.local
-    ports:
-    - name: tcp
-      containerPort: 27017
-      protocol: TCP
-   EOF
-   ```
-4.After the service exports are applied in all three clusters then verify the service imports in all three clusters 
+     ``` 
+     kubectl -n mongodb get mdbm
+     ```
 
-  ```
-  k get serviceimport -n mongodb --context=$MDB_1
-  ```
-  
-  ```
-  NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
-  multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
-  multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
-  multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
-  ```
+    Example Output
+    ```
+    NAME                PHASE     AGE
+    multi-replica-set   Running   31m
+    ```
+  8. Go the Ops Manager console and verify the multi replica set.
 
-  ```
-  k get serviceimport -n mongodb --context=$MDB_2
-  ```
-  ```
-  NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
-  multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
-  multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
-  multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
-  ```
+     1. Go to the ops-manager-db project and select multi-replica-set from the drop down list, and go to Deployments.
+   
+        ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/host-mapping.png)
 
-  ```
-  k get serviceimport -n mongodb --context=$MDB_3
-  ```
-  ```
-  NAME                    SLICE           PORT(S)     ENDPOINTS   STATUS   ALIAS
-  multi-replica-set-0-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-0-0-svc.mongodb.svc.cluster.local"]
-  multi-replica-set-1-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-1-0-svc.mongodb.svc.cluster.local"]
-  multi-replica-set-2-0   mongodb-slice   27017/TCP   1           READY    ["multi-replica-set-2-0-svc.mongodb.svc.cluster.local"]
-  ```
-  Please make sure service imports are in ready state and endpoints are available  
+     2. Verify each multi-replica-set that you created.
 
-5. Verify the host mapping for multi replicaset deployment is pointing to nsm IP’s from ops manager console 
-
-  ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/host-mapping.png)
-
-6. Now in master cluster again verify the multi cluster is ready is for use! We can verify this by displaying the 
-   'mongodb multi' object as discussed in step 7c now as you can observe the state is running
-
-   Example
-   ```
-   kubectl -n mongodb get mdbm 
-   ```
-
-   Example Output
-   ```
-   NAME                PHASE     AGE
-   multi-replica-set   Running   31m
-   ```
-
-
-7. Verify the multi replicaset deployment from ops manager console
-
-   ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/replicaset-deployment.png):
+        ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/replicaset-deployment.png):
