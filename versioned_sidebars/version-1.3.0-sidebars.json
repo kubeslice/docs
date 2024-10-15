@@ -215,7 +215,7 @@
       "link": {
         "type": "generated-index",
         "title": "Add-ons",
-        "description": "The use case section provides details the usecases applicable to kubeslice",
+        "description": "The use case section provides details the use cases applicable to kubeslice",
         "keywords": [
          "kubeslice"
         ]
