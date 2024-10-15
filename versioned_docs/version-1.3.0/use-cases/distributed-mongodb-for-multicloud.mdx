@@ -18,21 +18,12 @@ Before you begin, ensure the following prerequisites are met:
 
 4. Kubeconfig files to access the Kubernetes clusters.
 
+5. Install [kubeSlice-cli](/versioned_docs/version-1.13.0/get-started/prerequisites/prerequisites-kubeslice-cli-install) based on the OS.
+
 
 ## Configure Distributed MongoDB
 
-In this demonstration:
-- We will use the three Kubernetes clusters called `k8s-cluster-1`, `k8s-cluster-2`, and `k8s-cluster-3`.
-- Use the `cluster-1.config`, `cluster-2.config`, `cluster-3.config` kubeconfig files for the `k8s-cluster-1`, `k8s-cluster-2`, 
-  and `k8s-cluster-3` respectively.
-- Install KubeSlice using the `kubeslice-cli` tool. Use the topology file to install the KubeSlice Controller and the 
-  KubeSlice Worker in the k8s-cluster-1 cluster. Install the KubeSlice Worker in the `k8s-cluster-2` and `k8s-cluster-3` clusters 
-  using the same topology file.
-- Create a slice called `demo-slice` across three worker clusters and onboard the `mongodb` namespace.
-- Deploy the MongoDB Kubernetes Operator and Ops manager on the `k8s-cluster-1` cluster,  where the KubeSlice Controller is installed.
-- Deploy the MongoDB across the three clusters using MongoDBMulti.
-- Create a MongoDB replica set using MongoDBMultiCRD.
-- Create the ServiceExport. The service export will be created in all 3 clusters as each cluster will have one replica set.
+Let us configure the distributed MongoDB on multi cloud using KubeSlice.
 
 ### Step 1: Clone the Examples Repo
 
@@ -79,35 +70,22 @@ After cloning the repo, use the files from the `examples/distributed-mongodb` di
 
 ### Step 3: Install KubeSlice
 
-To install KubeSlice using the `kubeslice-cli` tool:
+Identify a controller cluster to install the KubeSlice Controller. Identify three worker clusters, `worker-1`, `worker-2`, and `worker-3` 
+with the KubeSlice Controller.
 
-1. Download the latest executable version on your local system depending on your OS from the 
-   [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page. For more information, 
-   see [Install kuebslice-cli](https://kubeslice.io/documentation/open-source/1.3.0/install-kubeslice/kubeslice-cli/install-kubeslice-cli).
-
-   You can use the following command to download the tool:
+1. Use the following template to install the KubeSlice Controller and register the worker clusters:
    
-   ```yaml
-   sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.4.4/kubeslice-cli-0.4.4-linux-amd64  -o /usr/local/bin/kubeslice-cli 
-   ```
-
-2. Change the file permission using the following command:
-  
-   ```yaml
-   sudo chmod a+x /usr/local/bin/kubeslice-cli
-   ```
-
-3. Use the following template to install the KubeSlice Controller and register worker clusters:
    ```
    examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-template.yaml
    ```
+
+2. Modify the values corresponding to your clusters
    
-   :::node
-   Modify the values corresponding to your clusters. For more information on configuration parameters, 
-   see [topology parameters](/versioned_docs/version-1.3.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx).
+   :::note
+ . For more information on configuration parameters, see [topology parameters](/versioned_docs/version-1.3.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx).
    :::
 
-4. Use the following command to apply configuration topology file:
+4. Install KubeSlice using the following command:
 
    ```
    kubeslice-cli --config examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-template.yaml install
