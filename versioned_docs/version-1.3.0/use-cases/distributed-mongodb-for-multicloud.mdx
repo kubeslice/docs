@@ -1,8 +1,8 @@
-# Distributed MongoDB for Multicloud
+# Distributed MongoDB Spanning Multi Cloud/Cluster using KubeSlice 
 
-This topic demonstrates the steps to setup the distributed MongoDB across multiple clusters using KubeSlice. We will use three 
-Kubernetes clusters to install KubeSlice, create the slice, and onboard application onto the slice to span the application 
-across the multiple clusters.
+This topic demonstrates the steps to setup the distributed MongoDB across multiple cloud/clusters using KubeSlice. 
+We will use three Kubernetes clusters to install KubeSlice, create a slice, and onboard application onto the slice
+to span the application across the multiple clusters.
 
 ## Prerequisites
 
@@ -17,6 +17,13 @@ Before you begin, ensure the following prerequisites are met:
 3. Install [Kubectx](https://github.com/ahmetb/kubectx) to easily switch context between clusters.
 
 4. Kubeconfig files to access the Kubernetes clusters.
+   
+   Example
+   ```yaml
+   k8s-cluster-1.config # kubeslice controller cluster, kubeslice worker cluster 1 and Mongodb master cluster & mongodb  member cluster 1 
+   k8s-cluster-2.config # kubeslice worker cluster 2 and mongodb  member cluster 2
+   k8s-cluster-3.config # kubeslice worker cluster 3 and mongodb  member cluster 3
+  ```
 
 5. Install [kubeSlice-cli](/versioned_docs/version-1.13.0/get-started/prerequisites/prerequisites-kubeslice-cli-install) based on the OS.
 
@@ -40,7 +47,11 @@ After cloning the repo, use the files from the `examples/distributed-mongodb` di
 
 ### Step 2: Merge Kubeconfig Files
 
-1. Replace the `/path/to/kubeconfig/` path with your local path to access the kubeconfig file.
+1. Use the following commands to merge the Kubeconfig files:
+
+   :::note
+   Replace the `/path/to/kubeconfig/` path with your local path to access the kubeconfig file.
+   :::
 
    ```
    export KUBECONFIG=/path/to/kubeconfig/cluster-1.config:/path/to/kubeconfig/cluster-2.config:/path/to/kubeconfig/cluster-3.config
@@ -59,7 +70,7 @@ After cloning the repo, use the files from the `examples/distributed-mongodb` di
    kubectx
    ```
    
-   Expected Output
+   Example Output
 
    ```yaml
    k8s-cluster-1 # kubeslice controller cluster & kubeslice worker cluster 1 & Mongodb central cluster & mongodb member cluster 1
@@ -76,19 +87,17 @@ with the KubeSlice Controller.
 1. Use the following template to install the KubeSlice Controller and register the worker clusters:
    
    ```
-   examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-template.yaml
+   examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-oss-template.yaml
    ```
 
-2. Modify the values corresponding to your clusters
-   
-   :::note
- . For more information on configuration parameters, see [topology parameters](/versioned_docs/version-1.3.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx).
-   :::
+2. Modify the values corresponding to your clusters. For more information on configuration parameters, 
+   see [topology parameters](/versioned_docs/version-1.3.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx).
+
 
 4. Install KubeSlice using the following command:
 
    ```
-   kubeslice-cli --config examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-template.yaml install
+   kubeslice-cli --config examples/distributed-mongodb/kubeslice-cli-topology-template/kubeslice-cli-topology-oss-template.yaml install
    ```
 
    The above command installs the KubeSlice Controller on the k8s-cluster-1 and registers the worker cluster 
@@ -97,6 +106,7 @@ with the KubeSlice Controller.
 ### Step 4: Create a Slice
 
 After installing KubeSlice successfully, you can create a slice and onboard the `mongodb` namespace on it.
+
 To create a slice:
 
 1. Set the context to the controller cluster to create a slice called `demo-slice` using the following command:
@@ -108,15 +118,17 @@ To create a slice:
    ```
 
 
-2. Use the following template to create a slice:
+2. Create a slice called demo-slice using one of the following command based on the Slice Gateway Type:
 
-   ```
-   kubectl apply -f distributed-mongodb/mongodb-slice/demo-slice.yaml
-   ```
- 
-   The `mongodb-slice.yaml` file contains the configuration to create a namespace called `mongodb`, and also onboard it onto the demo-slice. 
-   The configuration also enables namespace sameness, which means that the `mongodb` slice will be onboarded onto any worker cluster that is 
-   connected to the `demo-slice`.
+   - With OpenVPN SliceGateway Type:
+
+     ```
+     kubectl apply -f distributed-mongodb/mongodb-slice/mongodb-slice.yaml
+     ```
+   
+   The `mongodb-slice.yaml` or `mongo-slice-lb.yaml` file contains the configuration to create a namespace called `mongodb`, and 
+   also onboard it onto the demo-slice. The configuration also enables namespace sameness, which means that the `mongodb` slice 
+   will be onboarded onto any worker cluster that is connected to the `demo-slice`.
 
 2. Apply the slice configuration yaml file on the project namespace.
    
@@ -134,7 +146,7 @@ To create a slice:
 
 ### Step 5: Deploy the MongoDB Enterprise Kubernetes Operator
 
-1. Set the Kubernetes context to your `MongoDB` master cluster (or the controller cluster) using the following command:
+1. Set the Kubernetes context to your MongoDB    master cluster (or the controller cluster) using the following command:
 
 
    ```
@@ -143,6 +155,7 @@ To create a slice:
    ```
    k8s-cluster-1 
    ```
+   Replace k8s-cluster-1 with your MongoDB master cluster if its different.
 
 2. Add the MongoDB helm repo to your local system using the following command:
 
@@ -205,7 +218,7 @@ To create a slice:
    mongodb-enterprise-operator-68cb5dd658-v2wrf   1/1     Running   0          6m44s
    ```
 
-7. Verify the helm installation is using the following command:
+7. Verify the helm installation using the following command:
 
    Example
    ```
@@ -272,7 +285,7 @@ To create a slice:
      k8s-cluster-1
      ```
 
-2. Make sure that the operator is in the running state.
+2. Make sure that the MongoDB Enterprise Operator is running using the following command:
 
      Example
      ```
@@ -297,10 +310,10 @@ To create a slice:
      --from-literal=LastName="Manager"
    ```
 
-4. Deploy the Ops Manager using the Ops managers Custom Resource, creating object, using the following command:
+4. Deploy the Ops Manager using the Ops Manager using the following command by replacing the values as required:
 
    ```yaml
-   kubectl apply -f 
+   kubectl apply -f <<EOF
    apiVersion: mongodb.com/v1
    kind: MongoDBOpsManager
    metadata:
@@ -326,6 +339,7 @@ To create a slice:
      applicationDatabase:
        members: 3
        version: 5.0.5-ent
+   EOF 
    ```
 
 5. Verify the Ops Manager and check its MongoDB application database pods using the following command:
@@ -360,7 +374,7 @@ To create a slice:
    data-ops-manager-db-2              Bound    pvc-b237acf9-6333-415c-9115-175f67ded4d6   15Gi       RWO            standard       21m
    head-ops-manager-backup-daemon-0   Bound    pvc-2bd40fdf-2971-4250-b0d8-47315485b4bf   30Gi       RWO            standard       4m2s
    ```
-7. (Optional) Verify the statefulsets created by the operator using the following command:
+7. (Optional) Verify the statefulsets created by the Ops Manager using the following command:
 
    Example
    ```
@@ -392,10 +406,11 @@ To create a slice:
    ops-manager-svc-ext             LoadBalancer   10.7.32.125   34.23.212.14   8080:31348/TCP,25999:31914/TCP   13m
    ```
 
-9. To generate Ops Manager URL address if service is exposed as a LoadBalancer, use the following command:
+9. To generate Ops Manager URL address if the service is exposed as a LoadBalancer, use the following command:
  
    :::caution
-   The command below works if your service is exposed as a LoadBalancer. In case, it is exposed as Nodeport service use the URL as given below;
+   The command below works if your service is exposed as a LoadBalancer. In case, it is exposed as Nodeport service use the URL 
+   as given below;
    
    ```yaml
    URL=http://<External Node IP>:<NodePort>
@@ -431,16 +446,18 @@ To create a slice:
 
     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-manager-ui.png)
 
-12. Kubernetes Operator is in the Ops Manager `ops-manager-db` organization and the `ops-manager-db` project.
+12. Kubernetes Operator is in the Ops Manager **ops-manager-db** organization and the **ops-manager-db** project.
 
     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-organizations.png)
 
-13. If we click on the `ops-manager-db` project, we will be redirected to the panel where we can see the database pods of the Ops 
-    Manager application. Ops Manager monitors this database.
+13. Click the ops-manager-db project. You are redirected to the panel that displays the database pods of the Ops Manager application. 
+    The Ops Manager monitors this database. Under Deployment, go to the Servers tab.
 
     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-manager-db.png)
 
     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-deployment.png)
+
+14. Click a deployment to see the details.
 
 
 ### Step 7: Deploying MongoDB Across Multiple Kubernetes Clusters With MongoDBMulti
@@ -494,15 +511,20 @@ Setting the environment variables is a prerequisite.
    ```
    wget https://kubeslice.aveshalabs.io/repository/avesha-file-store/devops/mongodb-enterprise-kubernetes.tar.xz
    ```
+3. Extract the downloaded `mongodb-enterprise-kubernetes.tar.xz* file using the following command:
 
-3. Change the directory to which you cloned the Kubernetes Operator repository, and then to the directory that contains the multi-cluster-cli 
+   ```
+   tar -xvf mongodb-enterprise-kubernetes.tar.xz
+   ```
+
+4. Change the directory to which you cloned the Kubernetes Operator repository, and then to the directory that contains the multi-cluster-cli 
    using the following command:
 
    ```
    cd mongodb-enterprise-kubernetes/
    ```
 
-4. Run the multi cluster CLI using the following command:
+5. Run the multi cluster CLI using the following command:
 
 
    ```
@@ -520,6 +542,7 @@ Setting the environment variables is a prerequisite.
   :::
 
   ```
+  kubectl apply -f - <<EOF
   apiVersion: v1
   kind: Secret
   type: kubernetes.io/service-account-token
@@ -528,22 +551,24 @@ Setting the environment variables is a prerequisite.
     namespace: mongodb
     annotations:
       kubernetes.io/service-account.name: "mongodb-enterprise-operator-multi-cluster"
+  type: kubernetes.io/service-account-token
+  EOF
   ```
 
-5. Verify the output of the previous command:
+6. Verify the output of the previous command:
 
-    Example Output
-    ```
-    Ensured namespaces exist in all clusters.
-    creating central cluster roles in cluster: gke_avesha-dev2_us-east1-c_demo-cluster-1-third
-    skipping creation of member roles in cluster (it is also the central cluster): gke_avesha-dev2_us-east1-c_demo-cluster-1-third
-    creating member roles in cluster: gke_avesha-dev2_us-east1-c_demo-cluster-2-third
-    creating member roles in cluster: gke_avesha-dev2_us-east1-c_demo-cluster-3-third
-    Ensured ServiceAccounts and Roles.
-    Creating KubeConfig secret mongodb/mongodb-enterprise-operator-multi-cluster-kubeconfig in cluster gke_avesha-dev2_us-east1-c_demo-cluster-1-third
-    ```
+   Example Output
+   ```
+   Ensured namespaces exist in all clusters.
+   creating central cluster roles in cluster: gke_avesha-dev2_us-east1-c_demo-cluster-1-third
+   skipping creation of member roles in cluster (it is also the central cluster): gke_avesha-dev2_us-east1-c_demo-cluster-1-third
+   creating member roles in cluster: gke_avesha-dev2_us-east1-c_demo-cluster-2-third
+   creating member roles in cluster: gke_avesha-dev2_us-east1-c_demo-cluster-3-third
+   Ensured ServiceAccounts and Roles.
+   Creating KubeConfig secret mongodb/mongodb-enterprise-operator-multi-cluster-kubeconfig in cluster gke_avesha-dev2_us-east1-c_demo-cluster-1-third
+   ```
 
-6. Using kubectx switch to each cluster and verify that the service account is created in all of them using the following command:
+7. Using kubectx switch to each cluster and verify that the service account is created in all of them using the following command:
    ```
    kubectx
    ```
@@ -566,7 +591,8 @@ Setting the environment variables is a prerequisite.
    mongodb-enterprise-operator-multi-cluster   1         6m
    ```
 
-7. Install the MongoDB Multi Cluster Kubernetes Operator on the master cluster. Verify that you are on the master cluster by using `kubectx`.
+8. Install the MongoDB Multi Cluster Kubernetes Operator on the master cluster. Verify that you are on the master cluster by 
+   using `kubectx`.
 
    On the master cluster, install the MongoDB Multi Cluster Kubernetes Operator using the following command:
 
@@ -583,20 +609,20 @@ Setting the environment variables is a prerequisite.
      --set multiCluster.performFailover=false
    ```
 
-8. Check if the MongoDB Enterprise Operator multi cluster pod on the master cluster is running using the following command:
+9. Check if the MongoDB Enterprise Operator multi cluster pod on the master cluster is running using the following command:
 
-  Example
-  ```
-  kubectl get pods -n mongodb
-  ```
+   Example
+   ```
+   kubectl get pods -n mongodb
+   ```
 
-  Example Output
-  ```
-  NAME                                                         READY   STATUS    RESTARTS   AGE
-  mongodb-enterprise-operator-multi-cluster-7fd7c6766d-pcpf9   2/2     Running   0          2m28s
-  ```
+   Example Output
+   ```
+   NAME                                                         READY   STATUS    RESTARTS   AGE
+   mongodb-enterprise-operator-multi-cluster-7fd7c6766d-pcpf9   2/2     Running   0          2m28s
+   ```
 
-9. Link all the clusters together using the MongoDB Multi CRD. The Kubernetes API has already been extended with a MongoDB-specific 
+10. Link all the clusters together using the MongoDB Multi CRD. The Kubernetes API has already been extended with a MongoDB-specific 
    object `mongodbmulti`. Use the following command to link the clusters:
 
 
@@ -612,18 +638,15 @@ Setting the environment variables is a prerequisite.
    multidimpodautoscalers.autoscaling.gke.io             2023-03-13T06:06:57Z
    ```
 
-10.[Optional] Review the installation logs and ensure that there are no issues or errors using the following command:
+11.[Optional] Review the installation logs and ensure that there are no issues or errors using the following command:
 
    Example
    ```
    POD=$(kubectl -n mongodb get po|grep operator|awk '{ print $1 }')
-   ```
-   Example Output
-   ```
    kubectl -n mongodb logs -f po/$POD -c mongodb-enterprise-operator
    ```
 
-11. Configure the required service accounts for each member cluster using the following command:
+12. Configure the required service accounts for each member cluster using the following command:
    
     Caution
     ```
@@ -649,7 +672,7 @@ Setting the environment variables is a prerequisite.
     helm template --show-only templates/database-roles.yaml mongodb/enterprise-operator --namespace "mongodb" | kubectl apply -f - --context=$MDB_3 --namespace mongodb;
     ```
 
-12. (Optional): Verify the command output after executing the previous command for service accounts:
+13. (Optional) Verify the command output after executing the previous command for service accounts.
  
 
      ```yaml
@@ -681,7 +704,8 @@ Setting the environment variables is a prerequisite.
      rolebinding.rbac.authorization.k8s.io/mongodb-enterprise-appdb created
      ```
 
-13. Switch to the master cluster and generate Ops Manager API keys and add our IP addresses to the Ops Manager access list using the following steps:
+14. Switch to the master cluster and generate Ops Manager API keys and add our IP addresses to the Ops Manager access list using 
+    the following steps:
 
    1. Get the Ops Manager URL using the following command:
       
@@ -693,14 +717,15 @@ Setting the environment variables is a prerequisite.
    2. On the master cluster, use the following command to generate Ops Manager API keys and add IP addresses to the Ops Manager access list:
 
       :::note
-      The command below works only if your service is exposed as a LoadBalancer. In case, it is exposed as nodeport service, use 
+      The command below works only if your service is exposed as a LoadBalancer. In case, it is exposed as node port service, use 
       the URL as given below.
       
       ```
       URL=http://<External Node IP>:<NodePort> 
       ```
-      where External Node IP of the worker node where Ops Manager is deployed & NodePort is the nodeport on which `ops-manager-svc-ext` is exposed.
-      :::
+      where External Node IP of the worker node where Ops Manager is deployed & NodePort is the node port on which `ops-manager-svc-ext` 
+      is exposed.
+      ::: 
 
       
       ```
@@ -715,22 +740,30 @@ Setting the environment variables is a prerequisite.
       http://34.23.212.14:8080
       ```
 
-14. Log in to Ops Manager, and generate public and private API keys. When you create API keys, be sure to add your current IP address to the API access list. 
+15. Log in to Ops Manager, and generate public and private API keys. When you create API keys, be sure to add your current IP address to the API access list. 
     To do so, log in to the Ops Manager and go to `ops-manager-db` organization.
 
-15. Click **Access Manager** on the left side bar, and choose Organization Access > Create API KEY in the top-right corner.
+16. Click **Access Manager** on the left side bar, and choose Organization Access > Create API KEY in the top-right corner.
 
     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/ops-access-manager.png)
 
-16. On the **Create API Key** page, enter the name for the key and set permission to Organization Owner and click **Next**.
+17. On the **Create API Key** page, enter the name for the key and set permission to Organization Owner and click **Next**.
 
     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/create-api-key.png)
 
-17. On the **Create API Key** page, under **Save API Key Information**, copy the public and private keys for later use.
+18. On the **Create API Key** page, under **Save API Key Information**, copy the public and private keys for later use.
 
-    ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/save-api-key-info.png)
+   :::caution
+   You cannot see the private and public keys again. So, you must save both the keys securely.
+   :::
 
-18. Switch to the master cluster and add the public and private keys that you copied from the Ops Manager DB to the Kubernetes 
+   ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/save-api-key-info.png)
+
+   Ensure that you have added your current IP address to the API access list.
+
+   ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/add-access-list-entry.png)
+
+19. Switch to the master cluster and add the public and private keys that you copied from the Ops Manager DB to the Kubernetes 
     secret using the following command:
 
     ```
@@ -746,7 +779,7 @@ Setting the environment variables is a prerequisite.
     EOF
     ```
 
-19 You need Organizations ID to add to the Kubernetes secret. To get the ID:
+20. You need Organizations ID to add to the Kubernetes secret. To get the ID:
 
    1. Go to the Ops Manager and go to **Organizations** on the left sidebar.
    2. Click **ops-manager-db**.
@@ -755,7 +788,7 @@ Setting the environment variables is a prerequisite.
    
      ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/organization-settings.png)
 
-20. On the master cluster, add the Organization ID that you copied and saved in the following command and apply it.
+21. Apply the following command on the master cluster after replacing the Organization ID and base URL as per your setup:
 
     ```
     kubectl apply -f - <<EOF
@@ -931,6 +964,8 @@ k8s-cluster-1 k8s-cluster-2 k8s-cluster-3
      2. Choose **multiple-replica** set from the left drop-down list.
      3. Go to **Deployments** on the left sidebar.
      4. On the **Host Mappings** page, verify the NSM IP addresses.
+
+     ![mongodb](/images/version1.3.0/use-cases/configure-mongodb/host-mapping.png)  
 
   7. On the master cluster, verify the multi cluster is ready using the following command:
 

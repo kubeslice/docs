@@ -214,14 +214,31 @@
       "collapsed": true,
       "link": {
         "type": "generated-index",
-        "title": "Add-ons",
+        "title": "use-case",
         "description": "The use case section provides details the use cases applicable to kubeslice",
         "keywords": [
          "kubeslice"
         ]
       },
       "items": [
+        {
+          "type": "category",
+          "label": "Distributed MongoDB",
+          "collapsed": true,
+          "link": {
+            "type": "generated-index",
+            "title": "use-case",
+            "description": "The use case section provides details the use cases applicable to kubeslice",
+            "keywords": [
+             "kubeslice"
+            ]
+          },
+
+        "items":[
+        "use-cases/overview",
         "use-cases/distributed-mongodb-for-multicloud"
+        ]
+        }
       ]
     },
 
