@@ -235,8 +235,9 @@
           },
 
         "items":[
-        "use-cases/overview",
-        "use-cases/distributed-mongodb-for-multicloud"
+        "use-cases/mongodb/overview",
+        "use-cases/mongodb/distributed-mongodb-for-multicloud",
+        "use-cases/mongodb/replicas-access-methods"
         ]
         }
       ]
