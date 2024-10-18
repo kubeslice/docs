@@ -1,0 +1,24 @@
+# Replicas Access Methods
+
+Once the MongoDB replica sets are deployed over the slice across multiple clusters, there are different deployment models 
+that can be used to access the replicas.
+
+Access replicas from within the clusters
+In this deployment model, services deployed in different namespaces within the same slice can access any of the replica sets for 
+read and write to the primary replica set.
+
+![mongodb](/images/version1.3.0/use-cases/configure-mongodb/replicaset-within-clusters.png)
+
+DR failover: When the primary replica set fails over to a secondary replica set, the services can connect to the new primary and 
+continue to write to the primary.
+
+Access replica sets from outside the cluster
+In this deployment model, MongoDB replicas will be offered as a service to external clients. The replica sets - primary and 
+secondary - are accessed from clients via MongoDB service access points.
+
+![mongodb](/images/version1.3.0/use-cases/configure-mongodb/replicaset-outside-clusters.png)
+
+MongoDB replica set services will be exposed via LB service in each cluster with each replica set with its own FQDN. MongoDB 
+clients can use the connection string to query the replica sets to determine the primary/secondary status of the replica sets 
+and connect to primary for writes and reads for any of the replicas. With appropriate global DNS LB policies the read requests 
+can connect to low-latency or geolocation based read replica set endpoints.
