@@ -1,0 +1,112 @@
+# Replica Access Methods
+
+Once the MongoDB replica sets are deployed over the slice across multiple clusters, there are different deployment models 
+that can be used to access the replicas.
+
+## Access Replicas from within the Clusters
+
+In this deployment model, services deployed in different namespaces within the same slice can access any of the replica sets for 
+read and write to the primary replica set.
+
+![mongodb](/images/version1.3.0/use-cases/configure-mongodb/replicaset-within-clusters.png)
+
+### Step 1: Create the mongo.sh Namespace on the Master Cluster
+
+ 1. On the master cluster, create the mongo-sh namespace using the following command:
+
+    ```
+    kubectl create ns mongo-sh
+    ```
+
+2. Onboard the namespace to the slice by applying the MongoDB slice configuration using the following command:
+ 
+   ``` 
+   kubectl apply -f examples/distributed-mongodb/mongodb-slice/mongodb-slice-lb-mongo-sh.yaml
+   ```
+
+### Step 2: Deploy a MongoDB Shell Pod in the mongo-sh Namespace
+
+Create and deploy a mongodb-sh pod in the mongo-sh namespace with the following configuration:
+
+```
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb-sh
+  namespace: mongo-sh
+spec:
+  containers:
+    - name: mongodb-shell
+      image: mongo:4.4.6 # You can adjust the version as needed
+      command: ["sleep"]
+      args: ["3600"]
+      stdin: true
+      tty: true
+EOF
+```
+
+### Step 3: Connect to the MongoDB Multi-Replica Set from the MongoDB Shell Pod
+
+1. Execute into the mongodb-sh container using the following command:
+
+   
+   ```
+   kubectl exec -it mongodb-sh -c mongodb-shell -n mongo-sh -- sh
+   ```
+
+2. Inside the shell, connect to your MongoDB multi-replica set using the following command:
+
+   ```
+   mongo mongodb://multi-replica-set-0-0.mongodb.svc.slice.local:27017,multi-replica-set-1-0.mongodb.svc.slice.local:27017,multi-replica-set-2-0.mongodb.svc.slice.local:27017
+   ```
+
+
+   
+   Example Output
+   
+   ```
+   MongoDB shell version v4.4.6
+   connecting to: mongodb://multi-replica-set-0-0.mongodb.svc.slice.local:27017,multi-replica-set-1-0.mongodb.svc.slice.local:27017,multi-replica-set-2-0.mongodb.svc.slice.local:27017/?compressors=disabled&gssapiServiceName=mongodb
+   Implicit session: session { "id": UUID("5265d73a-ecde-4608-8fb6-713dd35203ff") }
+   MongoDB server version: 6.0.2
+   WARNING: shell and server versions do not match
+   Welcome to the MongoDB shell.
+   For interactive help, type "help".
+   For more comprehensive documentation, see
+	      https://docs.mongodb.com/
+    Questions? Try the MongoDB Developer Community Forums
+	        https://community.mongodb.com
+    ---
+    The server generated these startup warnings when booting: 
+            2024-10-16T13:55:22.237+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+            2024-10-16T13:55:23.025+00:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+            2024-10-16T13:55:23.025+00:00: vm.max_map_count is too low
+            2024-10-16T13:55:23.025+00:00:         currentValue: 524288
+            2024-10-16T13:55:23.025+00:00:         recommendedMinimum: 1677720
+            2024-10-16T13:55:23.025+00:00:         maxConns: 838860
+    ---
+    MongoDB Enterprise multi-replica-set:PRIMARY> 
+    ```
+
+### Step 4: Perform Write Operations in the MongoDB Shell
+
+After you are connected, you can perform write actions in the MongoDB shell and validate that the data is replicated across 
+your MongoDB replica set deployment.
+
+#### Disaster Recovery Failover
+
+When the primary replica set fails over to a secondary replica set, the services can connect to the new primary and 
+continue writing to it.
+
+## Access Replicas from outside the Cluster
+
+In this deployment model, MongoDB replicas will be offered as a service to external clients. The replica sets - primary and 
+secondary - are accessed from clients via MongoDB service access points.
+
+![mongodb](/images/version1.3.0/use-cases/configure-mongodb/replicaset-outside-clusters.png)
+
+MongoDB replica set services will be exposed via LB service in each cluster with each replica set with its own FQDN. MongoDB 
+clients can use the connection string to query the replica sets to determine the primary/secondary status of the replica sets 
+and connect to primary for writes and reads for any of the replicas. With appropriate global DNS LB policies the read requests 
+can connect to low-latency or geolocation based read replica set endpoints.

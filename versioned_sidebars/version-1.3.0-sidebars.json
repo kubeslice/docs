@@ -208,6 +208,40 @@
         "add-ons/add-ons-slack-metrics"
         ]
     },
+    {
+      "type": "category",
+      "label": "Use Cases",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "use-case",
+        "description": "The use case section provides details the use cases applicable to kubeslice",
+        "keywords": [
+         "kubeslice"
+        ]
+      },
+      "items": [
+        {
+          "type": "category",
+          "label": "Distributed MongoDB",
+          "collapsed": true,
+          "link": {
+            "type": "generated-index",
+            "title": "use-case",
+            "description": "The use case section provides details the use cases applicable to kubeslice",
+            "keywords": [
+             "kubeslice"
+            ]
+          },
+
+        "items":[
+        "use-cases/mongodb/overview",
+        "use-cases/mongodb/distributed-mongodb-for-multicloud",
+        "use-cases/mongodb/replicas-access-methods"
+        ]
+        }
+      ]
+    },
 
     "troubleshooting/troubleshooting-guide", 
     {
