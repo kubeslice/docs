@@ -408,7 +408,7 @@ To create a slice:
  
    :::caution
    The command below works if your service is exposed as a LoadBalancer. In case, it is exposed as Nodeport service use the URL 
-   as given below;
+   as given below:
    
    ```yaml
    URL=http://<External Node IP>:<NodePort>
@@ -434,7 +434,6 @@ To create a slice:
    ```
    kubectl -n "mongodb-operator" patch om ops-manager --type=merge -p "{\"spec\":{\"configuration\":{\"mms.centralUrl\":\"${URL}\"}}}" mongodbopsmanager.mongodb.com/ops-manager patched
    ```
-
    :::caution
    Wait for few minutes. The Ops Manager pod must be restarted, so wait until the `ops-manager-0` pod is in the running state again.
    :::
@@ -645,7 +644,7 @@ Setting the environment variables is a prerequisite.
 
 12. Configure the required service accounts for each member cluster using the following command:
    
-    :::Caution
+    :::caution
     Before running the commands below, be sure that the environment variables are set to the context of your member clusters as before.
     :::
 

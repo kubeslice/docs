@@ -3,7 +3,7 @@
 Once the MongoDB replica sets are deployed over the slice across multiple clusters, there are different deployment models 
 that can be used to access the replicas.
 
-## Access replicas from within the clusters
+## Access Replicas from within the Clusters
 
 In this deployment model, services deployed in different namespaces within the same slice can access any of the replica sets for 
 read and write to the primary replica set.
@@ -24,7 +24,7 @@ read and write to the primary replica set.
    kubectl apply -f examples/distributed-mongodb/mongodb-slice/mongodb-slice-lb-mongo-sh.yaml
    ```
 
-## Step 2: Deploy a MongoDB Shell Pod in the mongo-sh Namespace
+### Step 2: Deploy a MongoDB Shell Pod in the mongo-sh Namespace
 
 Create and deploy a mongodb-sh pod in the mongo-sh namespace with the following configuration:
 
@@ -46,7 +46,7 @@ spec:
 EOF
 ```
 
-#### Step 3: Connect to the MongoDB Multi-Replica Set from the MongoDB Shell Pod
+### Step 3: Connect to the MongoDB Multi-Replica Set from the MongoDB Shell Pod
 
 1. Execute into the mongodb-sh container using the following command:
 
@@ -99,7 +99,8 @@ your MongoDB replica set deployment.
 When the primary replica set fails over to a secondary replica set, the services can connect to the new primary and 
 continue writing to it.
 
-## Access replica sets from outside the cluster
+## Access Replicas from outside the Cluster
+
 In this deployment model, MongoDB replicas will be offered as a service to external clients. The replica sets - primary and 
 secondary - are accessed from clients via MongoDB service access points.
 
