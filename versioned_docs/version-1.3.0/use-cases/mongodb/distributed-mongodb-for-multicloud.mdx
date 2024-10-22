@@ -302,7 +302,7 @@ To create a slice:
 
    ```
    kubectl -n mongodb-operator create secret generic om-admin-secret \
-     --from-literal=Username="richie@aveshasystems.com" \
+     --from-literal=Username="user@domain.com" \
      --from-literal=Password="avesha@2023" \
      --from-literal=FirstName="Ops" \
      --from-literal=LastName="Manager"
@@ -326,9 +326,9 @@ To create a slice:
      configuration:
        mms.ignoreInitialUiSetup: "true"
        automation.versions.source: mongodb
-       mms.adminEmailAddr: richie@aveshasystems.com
-       mms.fromEmailAddr: richie@aveshasystems.com
-       mms.replyToEmailAddr: richie@aveshasystems.com
+       mms.adminEmailAddr: user@aveshasystems.com
+       mms.fromEmailAddr: user@domain.com
+       mms.replyToEmailAddr: user@domain.com
        mms.mail.hostname: aveshasystems.com
        mms.mail.port: "465"
        mms.mail.ssl: "false"
