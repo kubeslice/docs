@@ -118,11 +118,17 @@ To create a slice:
    ```
 
 
-2. Create a slice called `demo-slice` using the OpenVPN Slice Gateway Type:
+2. Create a slice called `demo-slice` using  one of the following command based on the Slice Gateway Type:
 
-     ```
-     kubectl apply -f distributed-mongodb/mongodb-slice/mongodb-slice.yaml
-     ```
+    - With OpenVPN SliceGateway Type:
+      ```
+      kubectl apply -f examples/distributed-mongodb/mongodb-slice/mongodb-slice.yaml
+      ```
+    - With LoadBalancer SliceGateway Type:
+
+      ```
+      kubectl apply -f examples/distributed-mongodb/mongodb-slice/mongodb-slice-lb.yamlslice/mongodb-slice.yaml
+      ```
    
    The `mongodb-slice.yaml` or `mongo-slice-lb.yaml` file contains the configuration to create a namespace called `mongodb`, and 
    also onboard it onto the demo-slice. The configuration also enables namespace sameness, which means that the `mongodb` slice 
