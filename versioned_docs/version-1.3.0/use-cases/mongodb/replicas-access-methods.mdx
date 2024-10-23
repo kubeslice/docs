@@ -1,7 +1,7 @@
 # Replica Access Methods
 
-Once the MongoDB replica sets are deployed over the slice across multiple clusters, there are different deployment models 
-that can be used to access the replicas.
+After you deploy  MongoDB replica sets over the slice across multiple clusters, there are different deployment models 
+you can use to access the replicas.
 
 ## Access Replicas from within the Clusters
 
@@ -26,7 +26,7 @@ read and write to the primary replica set.
 
 ### Step 2: Deploy a MongoDB Shell Pod in the mongo-sh Namespace
 
-Create and deploy a mongodb-sh pod in the mongo-sh namespace with the following configuration:
+Create and deploy a `mongodb-sh` pod in the mongo-sh namespace with the following configuration:
 
 ```
 kubectl apply -f - <<EOF

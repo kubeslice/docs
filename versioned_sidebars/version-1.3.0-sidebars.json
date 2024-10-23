@@ -69,8 +69,6 @@
               "get-started/prerequisites/prerequisites-gateway-node-label",
               "get-started/prerequisites/prerequisites-configure-helm-repository",
               "get-started/prerequisites/prerequisites-install-istio"
-
-               
                   ]
                 }
                 
@@ -214,8 +212,8 @@
       "collapsed": true,
       "link": {
         "type": "generated-index",
-        "title": "use-case",
-        "description": "The use case section provides details the use cases applicable to kubeslice",
+        "title": "Use Cases",
+        "description": "This section describes use cases for KubeSlice. Use cases offer a framework for articulating functional requirements within the framework of business and system processes. We will continue adding more KubeSlice use cases to this section.",
         "keywords": [
          "kubeslice"
         ]
@@ -227,8 +225,8 @@
           "collapsed": true,
           "link": {
             "type": "generated-index",
-            "title": "use-case",
-            "description": "The use case section provides details the use cases applicable to kubeslice",
+            "title": "Distributed MongoDB",
+            "description": "This section provides the use case related to distributed MongoDB over multi cloud/clusters.",
             "keywords": [
              "kubeslice"
             ]
