@@ -410,8 +410,7 @@ To create a slice:
    ops-manager-svc-ext             LoadBalancer   10.7.32.125   34.23.212.14   8080:31348/TCP,25999:31914/TCP   13m
    ```
 
-9. To generate Ops Manager URL address if the service is exposed as a LoadBalancer, use the following command 
-   when the LoadBalancer assigns a DNS name to the service:
+9. To generate the Ops Manager URL address if the service is exposed as a LoadBalancer, use the following command:
  
    :::caution
    The command below works if your service is exposed as a LoadBalancer. In case, it is exposed as Nodeport service use the URL 
@@ -425,22 +424,22 @@ To create a slice:
    is exposed.
    :::
 
-   Example
-   ```
-   URL=http://$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].hostname}:{.spec.ports[0].port}') echo $URL
-   ```
+   - When the LoadBalancer assigns an a DNS Name to the services, use hostname in the following command:
+     ```
+     URL=http://$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].hostname}:{.spec.ports[0].port}') echo $URL
+     ```
 
-   Use the host name when the LoadBalancer assigns an external IP address in the following command:
+   - When the LoadBalancer assigns an external IP address to the services, use the IP address in the following command:
 
-   ```
-   URL=http://$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.spec.ports[0].port}')
-   echo $URL
-   ```
-   
-   Example Output
-   ```
-   http://34.23.212.14:8080
-   ```
+     ```
+     URL=http://$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.spec.ports[0].port}')
+     echo $URL
+     ```
+
+     Example Output
+     ```
+     http://34.23.212.14:8080
+     ```
 
 10. Update the Ops Manager Kubernetes manifest to include an external IP address created by LoadBalancer in 
    the `spec.configuration.mms.centralUrl` through `kubectl patch` using the following command:
