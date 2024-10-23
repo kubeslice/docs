@@ -429,6 +429,13 @@ To create a slice:
    ```
    URL=http://$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].hostname}:{.spec.ports[0].port}') echo $URL
    ```
+
+   Use the host name when the LoadBalancer assigns an external IP address in the following command:
+
+   ```
+   URL=http://$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.spec.ports[0].port}')
+   echo $URL
+   ```
    
    Example Output
    ```
