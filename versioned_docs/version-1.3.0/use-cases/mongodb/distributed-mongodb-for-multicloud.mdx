@@ -410,7 +410,8 @@ To create a slice:
    ops-manager-svc-ext             LoadBalancer   10.7.32.125   34.23.212.14   8080:31348/TCP,25999:31914/TCP   13m
    ```
 
-9. To generate Ops Manager URL address if the service is exposed as a LoadBalancer, use the following command:
+9. To generate Ops Manager URL address if the service is exposed as a LoadBalancer, use the following command 
+   when the LoadBalancer assigns a DNS name to the service:
  
    :::caution
    The command below works if your service is exposed as a LoadBalancer. In case, it is exposed as Nodeport service use the URL 
@@ -426,7 +427,7 @@ To create a slice:
 
    Example
    ```
-   URL=http://$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].ip}:{.spec.ports[0].port}') echo $URL
+   URL=http://$(kubectl -n "mongodb-operator" get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].hostname}:{.spec.ports[0].port}') echo $URL
    ```
    
    Example Output
@@ -718,8 +719,8 @@ Setting the environment variables is a prerequisite.
     2. On the master cluster, use the following command to generate Ops Manager API keys and add IP addresses to the Ops Manager access list:
 
       :::note
-      The command below works only if your service is exposed as a LoadBalancer. In case, it is exposed as node port service, use 
-      the URL as given below.
+      The command below only works if your service is exposed as a LoadBalancer. In case, it is exposed as node port service, use 
+      the URL as given below:
       
       ```
       URL=http://<External Node IP>:<NodePort> 
@@ -727,19 +728,32 @@ Setting the environment variables is a prerequisite.
       where External Node IP of the worker node where Ops Manager is deployed & NodePort is the node port on which `ops-manager-svc-ext` 
       is exposed.
       ::: 
-
       
-      ```
-      kubectx $MASTER
-      URL=http://$(kubectl -n mongodb-operator get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].ip}:{.spec.ports[0].port}') 
-      echo $URL
-      ```
+      :::note
+      Use the host name in the command when the LoadBalancer assigns a DNS Name to the service.
+      :::
+  
+      
+      - Use the IP address in the following command when the LoadBalancer assigns an external IP address to the service:
+        ```
+        kubectx $MASTER
+        URL=http://$(kubectl -n mongodb-operator get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].ip}:{.spec.ports[0].port}') 
+        echo $URL
+        ```
 
-      Example Output
-      ```
-      Switched to context "k8s-cluster-1".
-      http://34.23.212.14:8080
-      ```
+        Example Output
+        ```
+        Switched to context "k8s-cluster-1".
+        http://34.23.212.14:8080
+        ```
+      
+      - Use the host name in the following command when the LoadBalancer assigns a DNS name to the service:
+      
+        ```
+        kubectx $MASTER
+        URL=http://$(kubectl -n mongodb-operator get svc ops-manager-svc-ext -o jsonpath='{.status.loadBalancer.ingress[0].hostname}:{.spec.ports[0].port}')
+        echo $URL
+        ```
 
 15. Log in to Ops Manager, and generate public and private API keys. When you create API keys, be sure to add your current IP address to the API access list. 
     To do so, log in to the Ops Manager and go to `ops-manager-db` organization.
