@@ -69,8 +69,6 @@
               "get-started/prerequisites/prerequisites-gateway-node-label",
               "get-started/prerequisites/prerequisites-configure-helm-repository",
               "get-started/prerequisites/prerequisites-install-istio"
-
-               
                   ]
                 }
                 
@@ -207,6 +205,40 @@
         "add-ons/add-ons-slack-events",
         "add-ons/add-ons-slack-metrics"
         ]
+    },
+    {
+      "type": "category",
+      "label": "Use Cases",
+      "collapsed": true,
+      "link": {
+        "type": "generated-index",
+        "title": "Use Cases",
+        "description": "This section describes use cases for KubeSlice. Use cases offer a framework for articulating functional requirements within the framework of business and system processes. We will continue adding more KubeSlice use cases to this section.",
+        "keywords": [
+         "kubeslice"
+        ]
+      },
+      "items": [
+        {
+          "type": "category",
+          "label": "Distributed MongoDB",
+          "collapsed": true,
+          "link": {
+            "type": "generated-index",
+            "title": "Distributed MongoDB",
+            "description": "This section provides the use case related to distributed MongoDB over multi cloud/clusters.",
+            "keywords": [
+             "kubeslice"
+            ]
+          },
+
+        "items":[
+        "use-cases/mongodb/overview",
+        "use-cases/mongodb/distributed-mongodb-for-multicloud",
+        "use-cases/mongodb/replicas-access-methods"
+        ]
+        }
+      ]
     },
 
     "troubleshooting/troubleshooting-guide", 
