@@ -2,8 +2,16 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 const { themes } = require('prism-react-renderer');
+const data = require("./versioned_sidebars/version-1.3.0-sidebars.json");
+import version from './versions.json'
+import { getValidPaths } from './utils.js';
+
+
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
+
+const validPaths = getValidPaths(data?.version3);
+const latestVersion =version[0];
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -160,7 +168,24 @@ const config = {
       {
         id: 'GTM-N7K6NGB', // GTM Container ID
       }
-    ]
+    ],
+    [
+      "@docusaurus/plugin-client-redirects",
+      {
+        fromExtensions: ["html", "htm"], 
+        toExtensions: ["exe", "zip"], 
+        redirects: validPaths?.map((path) => ({
+          from: `/latest/${path}`,
+          to: `/${latestVersion}/${path}`,
+        })),
+        createRedirects(existingPath) {
+          if (existingPath.includes("/latest")) {
+            return [existingPath.replace("/latest", `/${latestVersion}`)];
+          }
+          return undefined; 
+        },
+      },
+    ],
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
