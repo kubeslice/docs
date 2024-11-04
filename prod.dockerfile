@@ -1,4 +1,4 @@
-FROM node:22.6.0-slim as builder
+FROM node:18.2.0-alpine as builder
 WORKDIR /build
 COPY package.json ./
 COPY package-lock.json ./
