@@ -861,8 +861,7 @@ Before you begin, ensure the following prerequisites are met:
 
 - You have the KubeSlice Controller installed on a separate cluster. For more information, 
 see [Installing the KubeSlice Controller](#installing-the-kubeslice-controller).
-- You have registered two or more worker clusters with the KubeSlice Controller. For more 
-information, see [Registering the Worker Cluster](#registering-the-worker-cluster).
+- You have registered two or more worker clusters with the KubeSlice Controller.
 
 ### Creating the Slice YAML File 
 After successfully registering the worker clusters with the KubeSlice Controller, create 
@@ -874,7 +873,7 @@ Create the slice configuration .yaml file using the following template.
 
 :::info
 If you want to add a standard QoS profile configuration for multiple slices, 
-[create a standard QoS profile](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx#creating-a-qos-profile). 
+[create a standard QoS profile](/versioned_docs/version-0.4.0/getting-started-with-cloud-clusters/installing-kubeslice/creating-a-slice.mdx). 
 Add the name of the external QoS profile as the value of `standardQosProfileName` in the slice configuration YAML file. 
 
 In a slice configuration YAML file, the `standardQosProfileName` parameter and the `qosProfileDetails` 

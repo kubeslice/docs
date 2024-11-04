@@ -1,4 +1,4 @@
-FROM node:20.15-bookworm-slim as builder
+FROM node:18.20.4-alpine as builder
 WORKDIR /build
 COPY . ./
 COPY ./images/ ./static/images
