@@ -21,22 +21,6 @@
     },
     {
       "type": "category",
-      "label": "Playground",
-      "collapsed": true,
-      "link": {
-        "type": "generated-index",
-        "title": "Playground",
-        "description": "Welcome to the KubeSlice Playground, a limited-time sandbox environment that allows you to explore and experiment with KubeSlice Enterprise on kind clusters. This playground provides a preconfigured setup with all the necessary tool sets and is available for a duration of 4 hours. With this installation guide, you will be guided through the process of setting up KubeSlice on kind clusters, creating slices across the clusters, and testing connectivity using the iPerf tool.",
-        "keywords": [
-          "playground", "kubeslice"
-        ]
-      },
-      "items": [
-        "playground/sandbox" 
-        ]
-    },
-    {
-      "type": "category",
       "label": "Get Started",
       "collapsed": true,
       "link": {
