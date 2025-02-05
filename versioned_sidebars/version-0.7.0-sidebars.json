@@ -5,7 +5,6 @@
       "label": "GET STARTED",
       "collapsed": false,
       "items": [    
-          "register-to-try",
           "cloud-cluster-quick-start"  
     ]
      }, 
