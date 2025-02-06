@@ -297,6 +297,7 @@ cluster:
   endpoint: ${worker_endpoint}
 netop:
   networkInterface: ${networkInterface}
+"
 ```
 
 ### Execute the secrets.sh File
@@ -306,7 +307,7 @@ The output of the script is required for the slice YAML file creation:
 Use the following command to get the secrets of the worker cluster from the **controller cluster**.
 
 ```
-sh secrets.sh <worker-secret-name> <worker-cluster-name> <kubeslice-projectname> <network-interface> <worker-api-endpoint> <docker-username> <docker-password>
+sh secrets.sh <worker-secret-name> <worker-cluster-name> <kubeslice-projectname> <network-interface> <worker-api-endpoint>
 ```
 
 **Example**
