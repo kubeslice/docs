@@ -1,0 +1,375 @@
+# Controller Events
+The KubeSlice Controller generates events that represent an operation on the controller
+cluster. All of these generated events are specific to KubeSlice operations.
+
+By default,the KubeSlice Controller logs the events in the following namespaces:
+
+- [kubeslice-controller](#kubeslice-controller-namespace-events)
+- [kubeslice-project](#kubeslice-project-namespace-events)
+
+## kubeslice-controller Namespace Events
+This section describes the events that are generated on the `kubeslice-controller` namespace.
+Use the following command to get the `kubeslice-controller` namespace events:
+
+```
+kubectl get events -n kubeslice-controller
+```
+
+### Project
+These events are related to the KubeSlice projects that you create on the controller cluster.
+
+| Sl. No | Event                 | Type    | Description                      |
+| ------ | --------------------- | ------- | -------------------------------- |
+| 1      | ProjectDeleted        | WARNING | The project has been deleted.    |
+| 2      | ProjectDeletionFailed | WARNING | The project deletion has failed. |
+
+### Namespace
+These events are related to the project namespace in the controller cluster.
+
+| Sl. No | Event                   | Type    | Description                        |
+| ------ | ----------------------- | ------- | ---------------------------------- |
+| 1      | NamespaceCreated        | NORMAL  | The namespace has been created.    |
+| 2      | NamespaceCreationFailed | WARNING | The namespace creation has failed. |
+| 3      | NamespaceDeleted        | WARNING | The namespace has been deleted.    |
+| 4      | NamespaceDeletionFailed | WARNING | The namespace deletion has failed. |
+
+### Licensing
+
+These events are related to the KubeSlice license in the controller cluster.
+
+| Sl. No | Event                            | Type    | Description                                                                                                                                |
+| ------ | -------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1      | ClusterMetadataCollectionFailed  | WARNING | The automatic license creation has failed. The cluster details could not be collected.                                                     |
+| 2      | ClusterMetadataCollectionSuccess | NORMAL  | The cluster details have been collected.                                                                                                   |
+| 3      | ConfigMapErr                     | WARNING | The license is invalid. Please contact Avesha Support at support@avesha.io.                                                                |
+| 4      | GotConfigMap                     | NORMAL  | The ConfigMap and KubeSlice-license public keys have been collected.                                                                       |
+| 5      | GotMachineFingerPrint            | NORMAL  | The Machine Key has been collected.                                                                                                        |
+| 6      | LicenseDataFetchError            | WARNING | The automatic license creation has failed. Please contact Avesha Support at support@avesha.io.                                             |
+| 7      | LicenseDataFetchSuccess          | NORMAL  | The license is received from Avesha.                                                                                                       |
+| 8      | LicenseExpired                   | WARNING | The license has expired. You cannot make any changes. Please contact Avesha Support at support@avesha.io.                                  |
+| 9      | LicenseExpiredGracePeriodOn      | WARNING | The license has expired. Please contact Avesha Support at support@avesha.io.                                                               |
+| 10     | LicenseKeyInvalid                | WARNING | The license is invalid. Please contact Avesha Support at support@avesha.io.                                                                |
+| 11     | LicenseProxyUnreachable          | WARNING | The automatic license creation has failed. You are unable to reach the license server. Please contact Avesha Support at support@avesha.io. |
+| 12     | LicenseSecretCreationFailed      | WARNING | The automatic license creation has failed. Please contact Avesha Support at support@avesha.io.                                             |
+| 13     | LicenseSecretCreationSuccess     | NORMAL  | The license has been created.                                                                                                              |
+| 14     | LicenseSecretNotFound            | WARNING | The license is not found.                                                                                                                  |
+| 15     | MachineFingerPrintErr            | WARNING | The Machine Key could not be collected.                                                                                                    |
+| 16     | MachineFileNotFound              | WARNING | The license is invalid. Please contact Avesha Support at support@avesha.io.                                                                |
+| 17     | MachineFileInvalid               | WARNING | The license is invalid. Please contact Avesha Support at support@avesha.io.                                                                |
+
+## kubeslice-project Namespace Events
+This section describes the events that are generated on the `kubeslice-<project>` namespace.
+Use the following command to get the `kubeslice-<project>` namespace events:
+
+```
+kubectl get events -n kubeslice-<project>
+```
+
+### Access Control
+These events are associated with Kubernetes RBAC on the controller cluster.
+
+| Sl. No | Event                                | Type    | Description                                       |
+| ------ | ------------------------------------ | ------- | ------------------------------------------------- |
+| 1      | WorkerClusterRoleCreated             | NORMAL  | The worker cluster role has been created.         |
+| 2      | WorkerClusterRoleCreationFailed      | WARNING | The worker cluster role creation has failed.      |
+| 3      | WorkerClusterRoleUpdated             | NORMAL  | The worker cluster role has been updated.         |
+| 4      | WorkerClusterRoleUpdateFailed        | WARNING | The worker cluster role update has failed.        |
+| 5      | ReadOnlyRoleCreated                  | NORMAL  | The read-only role has been created.              |
+| 6      | ReadOnlyRoleCreationFailed           | WARNING | The read-only role creation has failed.           |
+| 7      | ReadOnlyRoleUpdated                  | NORMAL  | The read-only role has been updated.              |
+| 8      | ReadOnlyRoleUpdateFailed             | WARNING | The read-only role update has failed.             |
+| 9      | ReadWriteRoleCreated                 | NORMAL  | The read-write role has been created.             |
+| 10     | ReadWriteRoleCreationFailed          | WARNING | The read-write role creation has failed.          |
+| 11     | ReadWriteRoleUpdated                 | NORMAL  | The read-write role has been updated.             |
+| 12     | ReadWriteRoleUpdateFailed            | WARNING | The read-write role update has failed.            |
+| 13     | ServiceAccountCreated                | NORMAL  | The service account has been created.             |
+| 14     | ServiceAccountCreationFailed         | WARNING | The service account creation has failed.          |
+| 15     | ServiceAccountSecretCreated          | NORMAL  | The service account secret has been updated.      |
+| 16     | ServiceAccountSecretCreationFailed   | WARNING | The service account secret creation has failed.   |
+| 17     | DefaultRoleBindingCreated            | NORMAL  | The default role binding has been created.        |
+| 18     | DefaultRoleBindingCreationFailed     | WARNING | The default role binding creation has failed.     |
+| 19     | DefaultRoleBindingUpdated            | NORMAL  | The default role binding has been deleted.        |
+| 20     | DefaultRoleBindingDeleted            | WARNING | The service account creation has failed.          |
+| 21     | InactiveRoleBindingDeleted           | WARNING | The inactive role binding has been deleted.       |
+| 22     | InactiveRoleBindingDeletionFailed    | WARNING | The inactive role binding deletion has failed.    |
+| 23     | InactiveServiceAccountDeleted        | WARNING | The inactive service account has been deleted.    |
+| 24     | InactiveServiceAccountDeletionFailed | WARNING | The inactive service account deletion has failed. |
+| 25     | ServiceAccountDeleted                | WARNING | The service account has been deleted.             |
+| 26     | ServiceAccountDeletionFailed         | WARNING | The service account deletion has failed.          |
+| 27     | SecretDeleted                        | WARNING | The service account secret has been deleted.      |
+| 28     | SecretDeletionFailed                 | WARNING | The service account secret deletion has failed.   |
+
+### Cluster
+
+These events associated with worker cluster deletion are listed below.
+
+| Sl. No | Event                 | Type    | Description                                            |
+| ------ | --------------------- | ------- | ------------------------------------------------------ |
+| 1      | ClusterDeleted        | WARNING | The worker cluster has been deleted from KubeSlice.    |
+| 2      | ClusterDeletionFailed | WARNING | The worker cluster deletion from KubeSlice has failed. |
+
+### ServiceExportConfig
+These events are related to the [service export](../slice-operations/slice-operations-slice-creation#serviceexports-and-serviceimports)
+of a worker cluster.
+
+| Sl. No | Event                             | Type    | Description                                           |
+| ------ | --------------------------------- | ------- | ----------------------------------------------------- |
+| 1      | ServiceExportConfigDeleted        | WARNING | The service export configuration has been deleted.    |
+| 2      | ServiceExportConfigDeletionFailed | WARNING | The service export configuration deletion has failed. |
+
+### SliceConfig
+These events are related to a slice deletion.
+
+| Sl. No | Event                     | Type    | Description                    |
+| ------ | ------------------------- | ------- | ------------------------------ |
+| 1      | SliceConfigDeleted        | WARNING | The slice has been deleted.    |
+| 2      | SliceConfigDeletionFailed | WARNING | The slice deletion has failed. |
+
+### SliceNodeAffinity
+These events are related to the slice node affinity. 
+
+| Sl. No | Event                                             | Type    | Description                                                                      |
+| ------ | ------------------------------------------------- | ------- | -------------------------------------------------------------------------------- |
+| 1      | SliceNodeAffinityDeletionFailed                   | WARNING | The slice node affinity deletion has failed.                                     |
+| 2      | SliceNodeAffinityDeleted                          | WARNING | The slice node affinity has been deleted.                                        |
+| 3      | SetSliceConfigAsOwnerOfSliceNodeAffinityFailed    | WARNING | The slice configuration could not be set as the owner of the slice node affinity |
+| 4      | SetSliceConfigAsOwnerOfSliceNodeAffinitySucceeded | NORMAL  | The slice configuration is set as the owner of the slice node affinity.          |
+
+### SliceQoSConfig
+These events are related to a slice quality-of-service (QoS) profile.
+
+| Sl. No | Event                        | Type    | Description                                      |
+| ------ | ---------------------------- | ------- | ------------------------------------------------ |
+| 1      | SliceQoSConfigDeleted        | WARNING | The slice QoS configuration has been deleted.    |
+| 2      | SliceQoSConfigDeletionFailed | WARNING | The slice QoS configuration deletion has failed. |
+
+### SliceResourceQuotaConfig
+These events are related to the slice resource quota configuration. 
+
+| Sl. No | Event                                                        | Type    | Description                                                                        |
+| ------ | ------------------------------------------------------------ | ------- | ---------------------------------------------------------------------------------- |
+| 1      | SliceResourceQuotaCreationFailed                             | WARNING | The slice role quota creation has failed.                                          |
+| 2      | SliceResourceQuotaCreatedOnSliceConfigCreation               | NORMAL  | The slice role quota has been created on the slice configuration.                  |
+| 3      | SliceResourceQuotaDeletionFailed                             | WARNING | The slice role quota deletion has failed.                                          |
+| 4      | SliceResourceQuotaDeleted                                    | WARNING | The slice role quota has been deleted.                                             |
+| 5      | SliceResourceQuotaRecreationFailed                           | WARNING | The slice role quota recreation has failed.                                        |
+| 6      | SliceResourceQuotaRecreated                                  | NORMAL  | The slice role quota has been recreated.                                           |
+| 7      | SetSliceConfigAsOwnerOfSliceResourceQuotaFailed              | WARNING | The slice configuration could not be set as the owner of the slice resource quota. |
+| 8      | SetSliceConfigAsOwnerOfSliceResourceQuotaSucceeded           | NORMAL  | The slice configuration is set as the owner of the slice role quota.               |
+| 9      | SliceResourceQuotaCreated                                    | NORMAL  | The slice role quota is created.                                                   |
+| 10     | SliceResourceQuotaUpdated                                    | NORMAL  | The slice role quota is updated.                                                   |
+| 11     | AllRQSpecificationViolationMetricsResetSuccess               | NORMAL  | All the resource quota violation metrics have been reset.                          |
+| 12     | SliceRQSpecificationViolationMetricsResetSuccess             | NORMAL  | The slice resource quota violation metrics have been reset.                        |
+| 13     | ClusterRQSpecificationViolationMetricsResetSuccess           | NORMAL  | The slice resource quota violation metrics have been reset.                        |
+| 14     | OutdatedNamespaceRQSpecificationViolationMetricsResetSuccess | NORMAL  | The outdated namespace resource quota violation metrics have been reset.           |
+| 15     | OutdatedClusterRQSpecificationViolationMetricsResetSuccess   | NORMAL  | The outdated cluster resource quota violation metrics have been reset.             |
+
+### SliceRoleBinding
+These events are related to the slice role assignment. 
+
+| Sl. No | Event                                            | Type    | Description                                                                                    |
+| ------ | ------------------------------------------------ | ------- | ---------------------------------------------------------------------------------------------- |
+| 1      | SliceRoleBindingDeletingFailed                   | WARNING | The slice role binding or the slice RBAC deletion has failed.                                  |
+| 2      | SliceRoleBindingDeleted                          | WARNING | The slice role binding or the slice RBAC has been deleted.                                     |
+| 3      | SetSliceConfigAsOwnerOfSliceRoleBindingFailed    | WARNING | The slice configuration could not be set as owner of the slice role binding or the slice RBAC. |
+| 4      | SetSliceConfigAsOwnerOfSliceRoleBindingSucceeded | NORMAL  | The slice configuration is set as the owner of the slice role binding or the slice RBAC.       |
+
+### SliceRoleTemplate
+These events are related to the slice RBAC role. 
+
+| Sl. No | Event                                            | Type    | Description                                            |
+| ------ | ------------------------------------------------ | ------- | ------------------------------------------------------ |
+| 1      | DefaultDeploymentSliceRoleTemplateCreationFailed | WARNING | The slice role template creation has failed.           |
+| 2      | DefaultDeploymentSliceRoleTemplateCreated        | NORMAL  | The slice role template has been created.              |
+| 3      | DefaultReaderSliceRoleTemplateCreationFailed     | WARNING | The read-only slice role template creation has failed. |
+| 4      | DefaultReaderSliceRoleTemplateCreated            | NORMAL  | The read-only slice role template has been created.    |
+| 5      | SliceRoleTemplateDeletionFailed                  | WARNING | The slice role template deletion has failed.           |
+| 6      | SliceRoleTemplateDeleted                         | WARNING | The slice role template has been deleted.              |
+
+### WorkerServiceImport
+These events are related to the worker objects of [service import](../slice-operations/slice-operations-slice-creation#serviceimports)
+of a worker cluster.
+
+| Sl. No | Event                                | Type    | Description                                                              |
+| ------ | ------------------------------------ | ------- | ------------------------------------------------------------------------ |
+| 1      | WorkerServiceImportDeletedForcefully | WARNING | The worker service import has been deleted forcefully.                   |
+| 2      | WorkerServiceImportRecreationFailed  | WARNING | The worker service import recreation has failed after forceful deletion. |
+| 3      | WorkerServiceImportRecreated         | NORMAL  | The worker service import has been recreated after forceful deletion.    |
+| 4      | WorkerServiceImportCreationFailed    | WARNING | The worker service import creation has failed.                           |
+| 5      | WorkerServiceImportCreated           | NORMAL  | The worker service import has been created.                              |
+| 6      | WorkerServiceImportUpdateFailed      | WARNING | The worker service import update has failed.                             |
+| 7      | WorkerServiceImportUpdated           | NORMAL  | The worker service import has been updated.                              |
+| 8      | WorkerServiceImportDeleted           | WARNING | The worker service import has been deleted.                              |
+| 9      | WorkerServiceImportDeletionFailed    | WARNING | The worker service import deletion has failed.                           |
+
+### WorkerSliceConfig
+These events are related to the worker objects of a slice. A worker object is automatically generated after slice creation.
+A worker object is created for every worker cluster connected to a slice.
+
+| Sl. No | Event                              | Type    | Description                                                                   |
+| ------ | ---------------------------------- | ------- | ----------------------------------------------------------------------------- |
+| 1      | WorkerSliceConfigDeletedForcefully | WARNING | The worker slice configuration has been deleted forcefully.                   |
+| 2      | WorkerSliceConfigRecreationFailed  | WARNING | The worker slice configuration recreation has failed after forceful deletion. |
+| 3      | WorkerSliceConfigRecreated         | NORMAL  | The worker slice configuration has been recreated after forceful deletion.    |
+| 4      | WorkerSliceConfigCreationFailed    | WARNING | The worker slice configuration creation has failed.                           |
+| 5      | WorkerSliceConfigCreated           | NORMAL  | The worker slice configuration has been created.                              |
+| 6      | WorkerSliceConfigUpdateFailed      | WARNING | The worker slice configuration update has failed.                             |
+| 7      | WorkerSliceConfigUpdated           | NORMAL  | The worker slice configuration has been updated.                              |
+| 8      | WorkerSliceConfigDeleted           | WARNING | The worker slice configuration has been deleted.                              |
+| 9      | WorkerSliceConfigDeletionFailed    | WARNING | The worker slice configuration deletion has failed.                           |
+
+### WorkerSliceGateway
+These events are related to the worker slice gateways for a slice with more than one worker cluster. The number
+of worker slice gateways on a slice is equal to `n * (n-1)`, where `n` is the total number of worker
+clusters on that slice.
+
+| Sl. No | Event                               | Type    | Description                                                             |
+| ------ | ----------------------------------- | ------- | ----------------------------------------------------------------------- |
+| 1      | WorkerSliceGatewayDeletedForcefully | WARNING | The worker slice gateway has been deleted forcefully.                   |
+| 2      | WorkerSliceGatewayRecreationFailed  | WARNING | The worker slice gateway recreation has failed after forceful deletion. |
+| 3      | WorkerSliceGatewayRecreated         | NORMAL  | The worker slice gateway has been recreated after forceful deletion.    |
+| 4      | WorkerSliceGatewayCreationFailed    | WARNING | The worker slice gateway creation has failed.                           |
+| 5      | WorkerSliceGatewayCreated           | NORMAL  | The worker slice gateway has been created.                              |
+| 6      | SliceGatewayJobCreationFailed       | WARNING | The worker slice gateway job creation has failed.                       |
+| 7      | SliceGatewayJobCreated              | NORMAL  | The worker slice gateway job has been created.                          |
+| 8      | WorkerSliceGatewayDeleted           | WARNING | The worker slice gateway has been deleted.                              |
+| 9      | WorkerSliceGatewayDeletionFailed    | WARNING | The worker slice gateway deletion has failed.                           |
+
+### WorkerSliceNodeAffinity
+These events are related to the worker objects of the slice node affinity (node labels). A worker 
+object is automatically generated after the slice node affinity is created.
+
+| Sl. No | Event                                    | Type    | Description                                                                   |
+| ------ | ---------------------------------------- | ------- | ----------------------------------------------------------------------------- |
+| 1      | WorkerSliceNodeAffinityDeletedForcefully | WARNING | The worker slice node affinity has been deleted forcefully.                   |
+| 2      | WorkerSliceNodeAffinityRecreationFailed  | WARNING | The worker slice node affinity recreation has failed after forceful deletion. |
+| 3      | WorkerSliceNodeAffinityRecreated         | NORMAL  | The worker slice node affinity has been recreated after forceful deletion.    |
+| 4      | NodeAffinityRilesExpansionFailed         | WARNING | The worker slice node affinity rules expansion has failed.                    |
+| 5      | SliceNodeAffinityConfigDeepCopyFailed    | WARNING | The deep copy of the worker slice node affinity configuration has failed.     |
+| 6      | WorkerSliceNodeAffinityCreationFailed    | WARNING | The worker slice node affinity creation has failed.                           |
+| 7      | WorkerSliceNodeAffinityCreated           | NORMAL  | The worker slice node affinity has been created.                              |
+| 8      | WorkerSliceNodeAffinityUpdateFailed      | WARNING | The worker slice node affinity update has failed.                             |
+| 9      | WorkerSliceNodeAffinityUpdated           | NORMAL  | The worker slice node affinity has been updated.                              |
+| 10     | WorkerSliceNodeAffinityDeletionFailed    | WARNING | The worker slice node affinity deletion failed.                               |
+| 11     | WorkerSliceNodeAffinityDeleted           | WARNING | The worker slice node affinity has been deleted.                              |
+
+### WorkerSliceResourceQuota
+These events are related to the worker objects of the slice resource quota. A worker object is 
+automatically generated after the slice resource quota is created.
+
+These events also include the events generated when a resource is violated at namespace, cluster, 
+and slice levels. 
+
+| Sl. No | Event                                      | Type    | Description                                                                    |
+| ------ | ------------------------------------------ | ------- | ------------------------------------------------------------------------------ |
+| 1      | WorkerSliceResourceQuotaDeletedForcefully  | WARNING | The worker slice resource quota has been deleted forcefully.                   |
+| 2      | WorkerSliceResourceQuotaRecreationFailed   | WARNING | The worker slice resource quota recreation has failed after forceful deletion. |
+| 3      | WorkerSliceResourceQuotaRecreated          | NORMAL  | The worker slice resource quota has been recreated after forceful deletion.    |
+| 4      | OffBoardedNamespaceUtilizationMetricsReset | NORMAL  | The utilization metrics of off-boarded namespaces have been reset.             |
+| 5      | ResourceQuotaMetricsPopulated              | NORMAL  | The resource quota metrics have been populated.                                |
+| 6      | ClusterCPULimitViolated                    | WARNING | The CPU limit is violated at the cluster level.                                |
+| 7      | ClusterMemoryLimitViolated                 | WARNING | The memory limit is violated at the cluster level.                             |
+| 8      | ClusterPodCountViolated                    | WARNING | The pod count is violated at the cluster level.                                |
+| 9      | ClusterEphemeralStorageLimitViolated       | WARNING | The ephemeral storage limit is violated at the cluster level.                  |
+| 10     | ClusterCPURequestViolated                  | WARNING | The CPU request is violated at the cluster level.                              |
+| 11     | ClusterMemoryRequestViolated               | WARNING | The memory request is violated at the cluster level.                           |
+| 12     | ClusterEphemeralStorageRequestViolated     | WARNING | The ephemeral storage request is violated at the cluster level.                |
+| 13     | NamespaceCPULimitViolated                  | WARNING | The CPU limit is violated at the namespace level.                              |
+| 14     | NamespaceMemoryLimitViolated               | WARNING | The memory limit is violated at the namespace level.                           |
+| 15     | NamespacePodCountViolated                  | WARNING | The pod count is violated at the namespace level.                              |
+| 16     | NamespaceEphemeralStorageLimitViolated     | WARNING | The ephemeral storage limit is violated at the namespace level.                |
+| 17     | NamespaceCPURequestViolated                | WARNING | The CPU request is violated at the namespace level.                            |
+| 18     | NamespaceMemoryRequestViolated             | WARNING | The memory request is violated at the namespace level.                         |
+| 19     | NamespaceEphemeralStorageRequestViolated   | WARNING | The ephemeral storage request is violated at the namespace level.              |
+| 20     | SliceCPULimitViolated                      | WARNING | The CPU limit is violated at the slice level.                                  |
+| 21     | SliceMemoryLimitViolated                   | WARNING | The memory limit is violated at the slice level.                               |
+| 22     | SlicePodCountViolated                      | WARNING | The pod count is violated at the slice level.                                  |
+| 23     | SliceEphemeralStorageLimitViolated         | WARNING | The ephemeral storage limit is violated at the slice level.                    |
+| 24     | SliceCPURequestViolated                    | WARNING | The CPU request is violated at the slice level.                                |
+| 25     | SliceMemoryRequestViolated                 | WARNING | The memory request is violated at the slice level.                             |
+| 26     | SliceEphemeralStorageRequestViolated       | WARNING | The ephemeral storage request is violated at the slice level.                  |
+| 27     | WorkerSliceResourceQuotaCreationFailed     | WARNING | The worker slice resource quota creation has failed.                           |
+| 28     | WorkerSliceResourceQuotaCreated            | NORMAL  | The worker slice resource quota has been created.                              |
+| 29     | WorkerSliceResourceQuotaUpdateFailed       | WARNING | The worker slice resource quota update has failed.                             |
+| 30     | WorkerSliceResourceQuotaUpdated            | NORMAL  | The worker slice resource quota has been updated.                              |
+| 31     | WorkerSliceResourceQuotaDeletionFailed     | WARNING | The worker slice resource quota deletion has failed.                           |
+| 32     | WorkerSliceResourceQuotaDeleted            | WARNING | The worker slice resource quota has been deleted.                              |
+
+### WorkerSliceRoleBinding
+These events are related to the worker objects of the slice role assignment. A worker object is 
+automatically generated after the slice role assignment.
+
+| Sl. No | Event                                       | Type    | Description                                                                                                    |
+| ------ | ------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| 1      | WorkerSliceRoleBindingReconciliationSuccess | NORMAL  | The reconciliation of the worker slice role assignment is successful due to the change in slice role template. |
+| 2      | WorkerSliceRoleBindingDeletedForcefully     | WARNING | The worker slice role assignment has been deleted forcefully.                                                  |
+| 3      | WorkerSliceRoleBindingRecreationFailed      | WARNING | The worker slice role assignment recreation has failed.                                                        |
+| 4      | WorkerSliceRoleBindingRecreated             | NORMAL  | The worker slice role assignment has been recreated after forceful deletion.                                   |
+| 5      | WorkerSliceRoleBindingCreationFailed        | WARNING | The worker slice role assignment creation has failed.                                                          |
+| 6      | WorkerSliceRoleBindingCreated               | NORMAL  | The worker slice role assignment has been created successfully.                                                |
+| 7      | WorkerSliceRoleBindingUpdateFailed          | WARNING | The worker slice role assignment update has failed.                                                            |
+| 8      | WorkerSliceRoleBindingUpdated               | NORMAL  | The worker slice role assignment has been updated successfully.                                                |
+| 9      | WorkerSliceRoleBindingDeletionFailed        | WARNING | The worker slice role assignment deletion has failed.                                                          |
+| 10     | WorkerSliceRoleBindingDeleted               | WARNING | The worker slice role assignment has been deleted successfully.                                                |
+
+## Disable the KubeSlice Controller Events
+You can disable all the KubeSlice Controller events or a few of them. 
+
+### Disable All the KubeSlice Controller Events 
+If you want to disable all the events, then edit the KubeSlice Controller configuration 
+file and set the following configuration for `events`. 
+
+```
+  events:
+    disabled: true
+```
+After changing the configuration, use the following command to update the KubeSlice Controller: 
+
+```
+helm upgrade kubeslice-controller kubeslice/kubeslice-controller -f <full path of the values.yaml> -n kubeslice-controller
+```
+
+Where `values.yaml` is the KubeSlice Controller configuration file. 
+
+### Disable a Few KubeSlice Controller Events
+If you do not want to see a KubeSlice Controller event, then you can list it under `disabledEvents` in
+the `kubeslice-controller-event-schema-conf` file that is located in the `kubeslice-controller`
+namespace.
+
+For example, if you do not want to see the `WorkerSliceConfigCreated` event, then go to
+the `kubeslice-controller-event-schema-conf` file using the following command:
+
+```
+kubectl edit cm kubeslice-controller-event-schema-conf -n kubeslice-controller
+```
+
+In the `kubeslice-controller-event-schema-conf` file, add the `WorkerSliceConfigCreated` event that you want
+to hide under `disabledEvents` as illustrated below.
+
+```
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+data:
+  controller.yaml: |-
+    disabledEvents:
+      - WorkerSliceConfigCreated
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kubeslice-controller
+    meta.helm.sh/release-namespace: kubeslice-controller
+  creationTimestamp: "2023-04-10T07:32:57Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    name: event-schema
+  name: kubeslice-controller-event-schema-conf
+  namespace: kubeslice-controller
+  resourceVersion: "201971"
+  uid: 6cbcaba7-08b8-4d2e-b880-7516f594950f
+```
+
+Save the file after adding the events that you want to disable. 
+
