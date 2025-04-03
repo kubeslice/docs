@@ -1,7 +1,8 @@
 # Register Worker Clusters
 
-To create a slice across your Kubernetes clusters, register worker clusters with the KubeSlice Controller.
-This topic describes how to register a worker cluster with the KubeSlice Controller.
+
+This topic describes how to register a worker cluster with the KubeSlice Controller. Register your worker clusters with the 
+KubeSlice Controller to create a slice. 
 
 ## Cluster Registration Configuration Parameters
 
@@ -50,9 +51,9 @@ The parameters are related to the cluster property configured in the
 | cloudProvider | String         | The name of your cloud provider.                         | Optional |
 | cloudRegion   | String         | The cloud provider region where your cluster is located. | Optional |
 
-## Create Cluster Registration YAML
+## Create a Cluster Registration YAML
 
-You can list multiple clusters in a single registration YAML file and register them with the KubeSlice Controller.
+You can list multiple clusters in a single registration YAML file and register these clusters with the KubeSlice Controller.
 
 :::warning
 Limit the cluster name and slice name to 15 characters or fewer, as exceeding the limit results in a service export error.
@@ -200,15 +201,15 @@ gke-worker-1   17s
 
 ## Install the Slice Operator
 
-To install the Slice Operator on the **worker cluster**, you need to first
+To install the Slice Operator on the **worker cluster**, you must first
 [register](#create-cluster-registration-yaml) the worker cluster with the KubeSlice Controller
-as performed in the previous section. After the worker cluster is registered, you can obtain its secrets
-manually from the KubeSlice Controller. These secrets will then need to be used in the `slice-operator.yaml`
-file to install the Slice Operator. By completing these steps, the worker cluster can fully
+as performed in the previous section. After registration, you can manually retrieve its secrets 
+from the KubeSlice Controller. These secrets must be added to the `slice-operator.yaml`
+file to complete the installation. By completing these steps, the worker cluster can fully
 integrate with the KubeSlice Controller and utilize its features.
 
 :::info
-THIS STEP NEEDS TO BE PERFORMED ON ALL WORKER CLUSTERS IN THE CONFIGURATION.
+THIS STEP NEEDS TO BE PERFORMED ON ALL WORKER CLUSTERS IN THE THAT WILL PART OF KUBESLICE CONFIGURATION.
 :::
 
 ## Automated Retrieval of Registered Cluster Secrets
@@ -297,6 +298,7 @@ cluster:
   endpoint: ${worker_endpoint}
 netop:
   networkInterface: ${networkInterface}
+"
 ```
 
 ### Execute the secrets.sh File
@@ -306,7 +308,7 @@ The output of the script is required for the slice YAML file creation:
 Use the following command to get the secrets of the worker cluster from the **controller cluster**.
 
 ```
-sh secrets.sh <worker-secret-name> <worker-cluster-name> <kubeslice-projectname> <network-interface> <worker-api-endpoint> <docker-username> <docker-password>
+sh secrets.sh <worker-secret-name> <worker-cluster-name> <kubeslice-projectname> <network-interface> <worker-api-endpoint>
 ```
 
 **Example**
