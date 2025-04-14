@@ -1,0 +1,97 @@
+# Install kubeslice-cli
+
+## Introduction 
+kubeslice-cli is a command-line tool that allows you to perform KubeSlice operations on Kubernetes and cloud clusters. 
+It simplifies the process to install and uninstall the workloads needed to run KubeSlice Controller and Slice Operator in the specified clusters. 
+This tool registers those clusters as part of a KubeSlice multi-cluster, and administer slices across those clusters.
+
+The tool takes input in the form of YAML files that describe the membership of clusters in the multi-cluster (the `topology` YAML file) 
+as well as the definition of slices across those clusters (the `slice configuration` YAML file). Given those YAML files, it simplifies 
+installation of KubeSlice by performing all of the necessary configuration steps to apply the appropriate config to each cluster. 
+You can install KubeSlice on your existing kind or cloud clusters. 
+
+Alternatively, to get familiar with KubeSlice, you can create a multicluster using kind clusters. Use the 
+`kubeslice-cli install —profile` option to create a demo setup consisting of one controller and two worker clusters.
+
+## Install the kubeslice-cli Tool
+To install the `kubeslice-cli` tool on different operating systems, download an executable version from the 
+[Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+### Install kubeslice-cli on Windows
+
+To install kubeslice-cli:
+
+1. Download the latest Windows version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+   After downloading the executable file, rename it to **kubeslice-cli.exe** for ease of use.
+
+2. Navigate to the directory where you have downloaded the executable file or provide the absolute path to run the `kubeslice-cli` command.
+
+3. Ensure the downloaded version is the latest using the following command:
+   ```
+   .\kubeslice-cli.exe --version
+   ```
+### Install kubeslice-cli on Linux
+
+To install kubeslice-cli on Linux or Ubuntu:
+
+1. Download the latest Linux version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+2. Create a symlink to access the file:
+   :::info
+   A symlink is a symbolic Linux/ UNIX link that points to another file or folder on your computer, or a connected file system.
+   :::
+   ```
+   ln -s <downloaded-binary>  ~/bin/kubeslice-cli
+   ```
+3. Ensure the downloaded version is the latest using the following command:
+   ```
+   kubeslice-cli --version
+   ```
+
+### Install kubeslice-cli on macOS
+
+To install kubeslice-cli:
+
+1. Download the latest macOS version from the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page.
+
+2. Fix the error. When you try to install kubeslice-cli on macOS, you get the **Unverified Developer Error Message**.
+   This error message appears when you try to install an application from a developer who is not registered with Apple.
+
+   ![mac](/images/kubeslice-cli/mac-download.png)
+   
+   To fix the `Unverified developer error message`, follow the instructions 
+   in [enabling the application for macOS](https://www.alphr.com/cannot-be-opened-because-the-developer-cannot-be-verified/).
+
+3. Create a symlink to access the file:
+   :::info
+   A symlink is a symbolic Linux/ UNIX link that points to another file or folder on your computer, or a connected file system.
+   :::
+   ```
+   ln -s <downloaded-binary>  ~/bin/kubeslice-cli
+   ```
+4. Ensure the downloaded version is up-to-date using the following command:
+   ```
+   kubeslice-cli --version
+   ```
+
+### Download kubeslice-cli using Wget
+
+See the [Releases](https://github.com/kubeslice/kubeslice-cli/releases) page for the latest version. Use the following command to 
+download the latest binary (~6 MB):
+
+```
+sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/<latest-version>/kubeslice-cli-<latest-version>-linux-amd64 -o /usr/local/bin/kubeslice-cli
+```
+
+Example
+```
+sudo curl -fL https://github.com/kubeslice/kubeslice-cli/releases/download/0.5.4/kubeslice-cli-0.5.4-linux-amd64  -o /usr/local/bin/kubeslice-cli
+```
+Make the binary executable using the following command:
+```
+sudo chmod a+x /usr/local/bin/kubeslice-cli
+```
+Ensure the downloaded version is the latest using the following command:
+```
+kubeslice-cli -v
+```
