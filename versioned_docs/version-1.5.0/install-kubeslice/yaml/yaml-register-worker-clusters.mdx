@@ -18,7 +18,7 @@ The following tables describe the configuration parameters used to register a wo
 #### Cluster Registration Metadata Parameters
 
 The parameters are related to metadata configured in the
-[worker cluster registration YAML file](#create-cluster-registration-yaml).
+[worker cluster registration YAML file](#create-a-cluster-registration-yaml).
 
 | Parameter | Parameter Type | Description                                                              | Required  |
 | --------- | -------------- | ------------------------------------------------------------------------ | --------- |
@@ -202,7 +202,7 @@ gke-worker-1   17s
 ## Install the Slice Operator
 
 To install the Slice Operator on the **worker cluster**, you must first
-[register](#create-cluster-registration-yaml) the worker cluster with the KubeSlice Controller
+[register](#create-a-cluster-registration-yaml) the worker cluster with the KubeSlice Controller
 as performed in the previous section. After registration, you can manually retrieve its secrets 
 from the KubeSlice Controller. These secrets must be added to the `slice-operator.yaml`
 file to complete the installation. By completing these steps, the worker cluster can fully
