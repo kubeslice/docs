@@ -1,10 +1,13 @@
 # Install the Kubeslice Controller
 The KubeSlice Controller orchestrates the creation and management of
-slices on the worker clusters. The KubeSlice Controller components and the
-worker cluster components can coexist on a cluster. Hence, the cluster
+slices across worker clusters. The KubeSlice Controller components and the
+worker components can coexist within the same cluster. Hence, the cluster
 running the KubeSlice Controller can also be used as a worker cluster.
-**We recommend that you run the KubeSlice Controller on a separate
-cluster**.
+
+:::info
+We recommend that you run the KubeSlice Controller on a separate
+cluster. This separation ensures better isolation, scalability, and manageability of the system.
+:::
 
 ## KubeSlice Controller Components
 
@@ -12,13 +15,14 @@ KubeSlice Controller installs the following:
 
 - KubeSlice Controller specific ClusterResourceDefinitions(CRDs)
 - ClusterRole, ServiceAccount and ClusterRoleBinding for KubeSlice Controller
-- A Role and RoleBinding for KubeSlice Controller Leader Election
-- KubeSlice Controller workload
-- KubeSlice Controller API Gateway
+- A Role and RoleBinding for the KubeSlice Controller Leader Election
+- The KubeSlice Controller workload
+- The KubeSlice Controller API Gateway
 
 ## Create a KubeSlice Controller YAML
 
-To install the KubeSlice Controller on one of the clusters, you need to create a `controller.yaml` file that requires the endpoint of the controller cluster. The endpoint is the location on which you install the KubeSlice Controller.
+To install the KubeSlice Controller on one of the clusters, you need to create a `controller.yaml` file that requires the 
+endpoint of the controller cluster. The endpoint is the location on which you install the KubeSlice Controller.
 
 ### Get the Cluster Endpoint
 
@@ -137,7 +141,7 @@ project do not clash with the resources of another project.
 For example, a slice with the same name can exist across multiple projects but with different
 configurations. Changes to the slice in one project will not affect the slice in another
 project. For more information, see the
-[KubeSlice Architecture](/versioned_docs/version-1.3.0/overview/architecture.mdx).
+[KubeSlice Architecture](/versioned_docs/version-1.5.0/overview/architecture.mdx).
 
 ### Project Namespace Configuration Parameters
 
