@@ -1,0 +1,31 @@
+# Controller Metrics
+The KubeSlice Controller metrics provide insights into the operations and events performed 
+by the controller for various components. The `kubeslice_controller_events_counter` metric 
+is a counter that tracks the count of events raised for a specific action on an object. Each 
+component has its own set of labels, allowing you to distinguish and analyze metrics based on 
+the corresponding component. These labels include the slice name, project, cluster, namespace, 
+reporting controller, action, event, object name, and object kind. By monitoring these metrics, 
+you can gain visibility into the events and actions performed by the KubeSlice Controller, 
+enabling you to track resource quotas and effectively manage your KubeSlice deployments.
+
+The metric below is common for all the components, which is distinguished by the corresponding label for each component.
+
+| Sl. No | Name                                | Type    | Labels                                                                                                                         | Description                                                                                   |
+| ------ | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| 1      | kubeslice_controller_events_counter | Counter | slice_name, slice_project, slice_cluster, slice_namespace, slice_reporting_controller, action, event, object_name, object_kind | This metric provides the count of all the events raised for a particular action in an object. |
+
+
+## Labels
+The following table describes the labels that are attached to the KubeSlice Controller metrics.
+
+| Label                      | Description                                                                                                                  |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| action                     | The action which triggered the metric record.                                                                                |
+| event                      | The event title to which the metric is attached to.                                                                          |
+| object_kind                | The kind of the object on which the metric is recorded.                                                                      |
+| object_name                | The name of the object on which the metric is recorded.                                                                      |
+| slice_cluster              | The name of the cluster the metric is attached to. The value is controller for all the KubeSlice Controller related metrics. |
+| slice_name                 | The name of the slice which the metric is attached to. The value is `NA` if the metric is unrelated to any slice.            |
+| slice_namespace            | The namespace of the object for which the metric is recorded.                                                                |
+| slice_project              | The name of the project on which the slice is created.                                                                       |
+| slice_reporting_controller | The name of the reporting controller. The value is `controller` for all the KubeSlice Controller related metrics.            |

@@ -1,0 +1,26 @@
+# Release Notes for KubeSlice OSS 1.2.1
+
+*Release date: 13th Mar 2024*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
+in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
+by creating logical application ***slice*** boundaries that enable seamless communication between pods and services across 
+clusters, clouds, edges, and data centers.
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New :speaker:
+These release notes describe the new changes and enhancements in this version.
+
+
+### Controller Module Version Upgrade 
+We have upgraded the controller-runtime module to the latest version 0.16 from version 0.11 to 
+enable future development of new reconcilers.
+
+### Cluster Slice Connectivity 
+We have created pod disruption budget to prevent connectivity loss between clusters of a slice 
+during disruptions. At least one pair of slice gateway pods should be present between a pair of 
+clusters.
+
+## Issues fixed :wrench:
+* The webhook error that occurred during an application deployment on a slice is fixed. 

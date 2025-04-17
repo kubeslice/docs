@@ -1,0 +1,9 @@
+# Cluster Networking
+To ensure the proper functioning of the KubeSlice Gateway Nodes in both public and 
+private clusters, please open the required UDP ports.
+
+| Kubernetes Service             | CNI with Network Policy Support                                                                                                                                    | Open UDP Ports | Reachability Options                 |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- | ------------------------------------ |
+| Azure Kubernetes Service       | [Enable Calico for Azure AKS](https://projectcalico.docs.tigera.io/getting-started/kubernetes/managed-public-cloud/aks#install-aks-with-calico-for-network-policy) | 30000-33000    | Public Node IP with NodePort Service |
+| AWS Elastic Kubernetes Service | [Enable Calico for Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/calico.html)                                                                       | 30000-33000    | Public Node IP with NodePort Service |
+| Google Kubernetes Engine       | [Enable Calico for Google GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy#enabling_network_policy_enforcement)                          | 30000-33000    | Public Node IP with NodePort Service |

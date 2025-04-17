@@ -1,0 +1,225 @@
+# Slice Operator Events
+
+The Slice Operator generates events that are specific to KubeSlice operations, representing various operations on the worker cluster. These events are logged in the `kubeslice-system` namespace.
+
+To retrieve the Worker Operator events, use the following command:
+
+```
+kubectl get events -n kubeslice-system
+```
+
+## Slice
+
+These events are related to slice creation and management.
+
+| Sl. No | Event                               | Type    | Description                                                                                            |
+| ------ | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
+| 1      | SliceCreated                        | NORMAL  | The slice has been created.                                                                            |
+| 2      | SliceUpdated                        | NORMAL  | The slice has been updated.                                                                            |
+| 3      | SliceDeleted                        | WARNING | The slice has been deleted.                                                                            |
+| 4      | SliceCreationFailed                 | WARNING | The slice creation has failed. Please check the slice configuration.                                   |
+| 5      | SliceUpdateFailed                   | WARNING | The slice update has failed. Please check the slice configuration.                                     |
+| 6      | SliceDeletionFailed                 | WARNING | The slice deletion has failed. Please check the slice configuration.                                   |
+| 7      | SliceQoSProfileWithNetOpsSyncFailed | WARNING | The slice QoS profile sync with NetOp has failed. Please ask the admin to check the Slice QoS Profile. |
+| 8      | SliceIngressInstallFailed           | WARNING | The slice ingress installation has failed.                                                             |
+| 9      | SliceEgressInstallFailed            | WARNING | The slice egress installation has failed.                                                              |
+| 10     | SliceAppPodsListUpdateFailed        | WARNING | The slice application pods list is not updated. Please ask the admin to check slice configuration.     |
+| 11     | SliceRouterDeploymentFailed         | WARNING | The slice router deployment has failed.                                                                |
+| 12     | SliceRouterServiceFailed            | WARNING | The slice router service has failed.                                                                   |
+
+## Cluster
+
+These events are related to the worker cluster health and node IP.
+
+| Sl. No | Event                               | Type    | Description                                                                                                   |
+| ------ | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------- |
+| 1      | ClusterHealthy                      | NORMAL  | The cluster is in a healthy state.                                                                            |
+| 1      | ClusterUnhealthy                    | WARNING | The cluster is in an unhealthy state. Please check if all worker components are running as expected.          |
+| 3      | ClusterNodeIpAutoDetected           | NORMAL  | The auto-detection of the cluster node IP address was successful due to changes detected in the worker nodes. |
+| 4      | ClusterNodeIpAutoDetectionFailed    | WARNING | The auto-detection of the cluster node IP address has failed.                                                 |
+| 5      | ClusterProviderUpdateInfoSuccesfull | NORMAL  | The cluster cloud provider or physical location info has been updated.                                        |
+| 6      | ClusterProviderUpdateInfoFailed     | WARNING | The cluster cloud provider or physical location info update has failed.                                       |
+| 7      | ClusterCNISubnetUpdateSuccessfull   | NORMAL  | The cluster CNI subnet has been updated.                                                                      |
+| 8      | ClusterCNISubnetUpdateFailed        | WARNING | The cluster cloud provider or physical location info update has failed.                                       |
+| 9      | ClusterDashboardCredsUpdated        | NORMAL  | The cluster dashboard credentials have been updated.                                                          |
+| 10     | ClusterDashboardCredsUpdateFailed   | WARNING | The cluster dashboard credentials update has failed.                                                          |
+| 11     | ClusterHealthStatusUpdated          | NORMAL  | The cluster health status has been updated.                                                                   |
+| 12     | ClusterHealthStatusUpdateFailed     | WARNING | The cluster health status update has failed.                                                                  |
+
+## SliceGateway
+
+These events are related to the Slice Gateway that is used to communicate between worker clusters.
+
+| Sl. No | Event                              | Type    | Description                                      |
+| ------ | ---------------------------------- | ------- | ------------------------------------------------ |
+| 1      | SliceGWCreated                     | NORMAL  | The Slice Gateway has been created.              |
+| 2      | SliceGWUpdated                     | NORMAL  | The Slice Gateway has been updated.              |
+| 3      | SliceGWDeleted                     | WARNING | The Slice Gateway has been deleted.              |
+| 4      | SliceGWCreateFailed                | WARNING | The Slice Gateway creation has failed.           |
+| 5      | SliceGWUpdateFailed                | WARNING | The Slice Gateway update has failed.             |
+| 6      | SliceGWDeleteFailed                | WARNING | The Slice Gateway deletion has failed.           |
+| 7      | SliceGWPodReconcileFailed          | WARNING | The Slice Gateway pod reconciliation has failed. |
+| 8      | SliceGWConnectionContextFailed     | WARNING | The Slice Gateway connection context has failed. |
+| 9      | SliceRouterConnectionContextFailed | WARNING | The Slice Gateway router context has failed.     |
+| 10     | SliceNetopQoSSyncFailed            | WARNING | The Slice Netop and QoS profile sync has failed. |
+| 11     | SliceGWRebalancingFailed           | WARNING | The Slice Gateway rebalancing has failed.        |
+| 12     | SliceGWRemotePodSyncFailed         | WARNING | The Slice Gateway remote pod sync has failed.    |
+| 13     | SliceGWRebalancingSuccess          | NORMAL  | The Slice Gateway rebalancing is successful.     |
+| 14     | SliceGWServiceCreationFailed       | WARNING | The Slice Gateway service creation has failed.   |
+| 15     | SliceGWNodePortUpdateFailed        | WARNING | The Slice Gateway node port update has failed.   |
+
+## ServiceExport
+
+These events are related to [service export](../slice-operations/slice-operations-slice-creation#serviceexports-and-serviceimports)
+of a worker cluster.
+
+| Sl. No | Event                                       | Type    | Description                                                     |
+| ------ | ------------------------------------------- | ------- | --------------------------------------------------------------- |
+| 1      | ServiceExportSliceFetchFailed               | WARNING | The slice service export's slice fetch has failed.              |
+| 2      | ServiceExportStatusPending                  | WARNING | The slice service export status has been pending.               |
+| 3      | ServiceExportInitialStatusUpdated           | NORMAL  | The slice service export's initial status has been updated.     |
+| 4      | SliceServiceExportInitialStatusUpdateFailed | WARNING | The slice service export's initial status has failed.           |
+| 5      | ServiceExportDeleted                        | WARNING | The slice service export has been deleted.                      |
+| 6      | ServiceExportDeleteFailed                   | WARNING | The slice service export deletion has failed.                   |
+| 7      | ServiceExportUpdatePortsFailed              | WARNING | The update of the slice service export's ports has failed.      |
+| 8      | IngressGWPodReconciledSuccessfully          | NORMAL  | The slice service export's gateway pod has been reconciled.     |
+| 9      | IngressGWPodReconcileFailed                 | WARNING | The slice service export gateway pod reconciliation has failed. |
+| 10     | SyncServiceExportStatusFailed               | WARNING | The slice service export status sync has failed.                |
+| 11     | SyncServiceExportStatusSuccessfully         | NORMAL  | The slice service export status has been synced.                |
+
+## ServiceImport
+
+These events are related to [service import](../slice-operations/slice-operations-slice-creation#serviceimports)
+of a worker cluster.
+
+| Sl. No | Event                                            | Type    | Description                                                     |
+| ------ | ------------------------------------------------ | ------- | --------------------------------------------------------------- |
+| 1      | SliceServiceImportCreated                        | NORMAL  | The slice service import has been created.                      |
+| 2      | SliceServiceImportCreateFailed                   | WARNING | The slice service import creation has failed.                   |
+| 3      | SliceServiceImportUpdateAvailableEndpointsFailed | WARNING | The slice service import available endpoints update has failed. |
+| 4      | SliceServiceImportDeleted                        | WARNING | The slice service import has been deleted.                      |
+| 5      | SliceServiceImportUpdatePorts                    | NORMAL  | The slice service import's ports have been updated.             |
+
+## WorkerSliceConfig
+
+These events are related to the worker objects of a slice. A worker object is automatically generated after slice creation.
+A worker object is created for every worker cluster connected to a slice.
+
+| Sl. No | Event                         | Type    | Description                                         |
+| ------ | ----------------------------- | ------- | --------------------------------------------------- |
+| 1      | WorkerSliceConfigCreated      | NORMAL  | The worker slice configuration has been created.    |
+| 2      | WorkerSliceConfigCreateFailed | WARNING | The worker slice configuration creation has failed. |
+| 3      | WorkerSliceConfigUpdated      | NORMAL  | The worker slice configuration has been updated.    |
+| 4      | WorkerSliceHealthUpdated      | NORMAL  | The worker slice health has been updated.           |
+| 5      | WorkerSliceHealthUpdateFailed | WARNING | The worker slice health update has failed.          |
+
+## WorkerServiceImport
+
+These events are related to the worker objects of [service import](../slice-operations/slice-operations-slice-creation#serviceimports)
+of a worker cluster.
+
+| Sl. No | Event                           | Type    | Description                                    |
+| ------ | ------------------------------- | ------- | ---------------------------------------------- |
+| 1      | WorkerServiceImportCreated      | NORMAL  | The worker service import has been created.    |
+| 2      | WorkerServiceImportCreateFailed | WARNING | The worker service import creation has failed. |
+
+## WorkerSliceGWRecycler
+
+These events are related to the WorkerSliceGWRecycler, which is an object
+used for recycling gateways using a finite-state machine.
+
+| Sl. No | Event                       | Type    | Description                                                   |
+| ------ | --------------------------- | ------- | ------------------------------------------------------------- |
+| 1      | FSMNewGWSpawned             | NORMAL  | The Slice Gateway Recycler's new gateway has been spawned.    |
+| 2      | FSMRoutingTableUpdated      | NORMAL  | The Slice Gateway Recycler's routing table has been updated.  |
+| 3      | FSMDeleteOldGW              | WARNING | The Slice Gateway Recycler's old gateway has been deleted.    |
+| 4      | FSMNewGWSpawnFailed         | WARNING | The Slice Gateway Recycler's new gateway has failed to spawn. |
+| 5      | FSMRoutingTableUpdateFailed | WARNING | The Slice Gateway Recycler's routing table update has failed. |
+| 6      | FSMDeleteOldGWFailed        | WARNING | The Slice Gateway Recycler's old gateway deletion has failed. |
+
+## Namespace
+
+These events are related to the namespace events of the worker cluster.
+
+| Sl. No | Event                                 | Type    | Description                                                                   |
+| ------ | ------------------------------------- | ------- | ----------------------------------------------------------------------------- |
+| 1      | UpdatedNamespaceInfoToController      | NORMAL  | The namespace information has been updated to the KubeSlice Controller.       |
+| 2      | UpdateNamespaceInfoToControllerFailed | WARNING | The namespace information update to the KubeSlice Controller has failed.      |
+| 3      | DeleteNamespaceInfoToController       | NORMAL  | The namespace information has been deleted from the KubeSlice Controller.     |
+| 4      | DeleteNamespaceInfoToControllerFailed | WARNING | The namespace information could not be deleted from the KubeSlice Controller. |
+
+## NetworkPolicy
+
+These events are related to the slice network policy.
+
+| Sl. No | Event                       | Type    | Description                                                                                                                       |
+| ------ | --------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 1      | NetPolAdded                 | NORMAL  | The slice network policy is added.                                                                                                |
+| 2      | NetPolScopeWidenedNamespace | WARNING | The slice network policy scope has been widened due to namespace violation.                                                       |
+| 3      | NetPolScopeWidenedIPBlock   | WARNING | The slice network policy scope has been widened due to IP address block violation.                                                |
+| 4      | NetPolViolation             | WARNING | The slice network policy has been violated. Please ask the admin to check the network policy configuration on the worker cluster. |
+
+## Disable the Worker Operator Events
+
+You can disable all the Worker Operator events or a few of them.
+
+### Disable All the Worker Operator Events
+
+If you want to disable all the events, then edit the Worker Operator configuration
+file and set the following configuration for `events`.
+
+```
+  events:
+    disabled: true
+```
+
+After changing the configuration, use the following command to update the Worker Operator:
+
+```
+helm upgrade kubeslice-worker kubeslice/kubeslice-worker -f <full path of the values.yaml> -n kubeslice-system
+```
+
+Where `values.yaml` is the Worker Operator configuration file.
+
+### Disable a Few Worker Operator Events
+
+If you do not want to see a Worker Operator event, then you can list it under `disabledEvents` in
+the `kubeslice-worker-event-schema-conf` file that is located in the `kubeslice-system`
+namespace.
+
+For example, if you don't want to see the `SliceGWUpdated` event, then go to
+the `kubeslice-worker-event-schema-conf` file using the following command:
+
+```
+kubectl edit cm kubeslice-worker-event-schema-conf -n kubeslice-system
+```
+
+In the `kubeslice-worker-event-schema-conf` file, add the `SliceGWUpdated` event that you want
+to hide under `disabledEvents` as illustrated below.
+
+```
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+data:
+  worker.yaml: |-
+    disabledEvents:
+    - SliceGWUpdated
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kubeslice-worker
+    meta.helm.sh/release-namespace: kubeslice-system
+  creationTimestamp: "2023-05-08T12:06:33Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    name: event-schema
+  name: kubeslice-worker-event-schema-conf
+  namespace: kubeslice-system
+  resourceVersion: "163809"
+  uid: 0d0a88c2-b856-460e-bda3-ec443917ca44
+```
+
+Save the file after adding the events that you want to disable.

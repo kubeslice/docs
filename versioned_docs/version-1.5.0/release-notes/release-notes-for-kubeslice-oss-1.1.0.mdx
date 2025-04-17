@@ -1,0 +1,51 @@
+# Release Notes for KubeSlice OSS 1.1.0
+
+*Release date: 28th July 2023*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
+in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
+by creating logical application ***slice*** boundaries that enable seamless communication between pods and services across 
+clusters, clouds, edges, and data centers.
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New
+These release notes describe the new changes and enhancements in this version.
+
+
+## New features
+
+### Slice VPN Key rotation
+
+The slice VPN Gateway is an essential component of the slice network service, allowing the slice to connect to secure VPN networks. 
+By default, any new slice created using the KubeSlice Manager or the YAML file will have a duration of 30 days to renew the SliceGateway 
+certificates. You can customize the rotation interval when creating a slice by setting the rotationInterval parameter in the slice 
+configuration YAML file. This interval range is 30 to 90 days.
+
+Additionally, if you need to update the rotation interval at any time, you can modify the rotationInterval parameter in the slice 
+configuration file. This flexibility allows you to align the certificate renewal process with your specific security requirements. 
+Moreover, if you want to initiate the certificate renewal process immediately, you can use the renewBefore option. This option allows 
+you to trigger the certificate renewal process before the expiration of the rotation interval. By specifying an appropriate value for 
+renewBefore parameter in the YAML file, you can ensure that the certificate renewal process starts promptly, helping to maintain the 
+security and compliance of your system.
+
+The VPN cipher can be configured during slice creation using the cipher parameter in the slice configuration YAML file. The cipher 
+value can be set to AES_128_CBC. The default value is AES_256_CBC. This configuration is immutable during the lifetime of a slice.
+
+
+## Issues Fixed
+
+Added a security context at the container level to the NSM init container to enable it to modify the `resolv.conf` file when there 
+is a security context at the pod level that is too restrictive.
+
+## Known Issues
+
+* Users can trigger VPN Key Rotation with the `RenewBefore` parameter even before the slice gateways are up and running. 
+  This premature rotation attempt often results in failures during the rotation process. Please refrain from triggering VPN 
+  Key rotation before the gateways are in a healthy condition to ensure a successful rotation process.
+* After detaching a worker cluster from a slice, gateway pods are not deleted.
+* In the current version, the rebalancing feature of gateway redundancy is disabled.
+* We have identified a scenario where, during a Helm upgrade on Kubeslice Worker, the NSM (Network Service Mesh) admission 
+  webhook pod might not be automatically cleaned up in case of a failure. As a result, there could be potential issues 
+  with the old NSM webhook pod lingering from the previous release. So users are advised to manually delete the 
+  old NSM webhook pod until the issue is resolved.
