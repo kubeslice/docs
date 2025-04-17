@@ -16,7 +16,7 @@ KubeSlice Controller installs the following:
 - KubeSlice Controller workload
 - KubeSlice Controller API Gateway
 
-## Create KubeSlice Controller YAML
+## Create a KubeSlice Controller YAML
 
 To install the KubeSlice Controller on one of the clusters, you need to create a `controller.yaml` file that requires the endpoint of the controller cluster. The endpoint is the location on which you install the KubeSlice Controller.
 
@@ -55,14 +55,14 @@ The following tables describe the configuration parameters used to install the K
 #### KubeSlice Parameters
 
 This parameter contains the configuration object used in the
-[KubeSlice Controller YAML file](#create-controller-yaml).
+[KubeSlice Controller YAML file](#create-a-controller-yaml).
 
 | Parameter                            | Parameter Type | Description                                                            | Required  |
 | ------------------------------------ | -------------- | ---------------------------------------------------------------------- | --------- |
 | [controller](#controller-parameters) | Object         | The cluster where the KubeSlice Controller is installed.               | Mandatory |
 
 #### Controller Parameters
-This object contains the different parameters used in the [KubeSlice Controller YAML file](#create-controller-yaml).
+This object contains the different parameters used in the [KubeSlice Controller YAML file](#create-a-controller-yaml).
 
 | Parameter          | Parameter Type | Description                                                                                        | Required  |
 | ------------------ | -------------- | -------------------------------------------------------------------------------------------------- | --------- |
@@ -72,7 +72,7 @@ This object contains the different parameters used in the [KubeSlice Controller 
 | endpoint           | AlphaNumeric   | The URL of the Kubernetes control plane.                                                           | Mandatory |
 
 
-### Create Controller YAML
+### Create a Controller YAML
 Create the `controller.yaml` file using the following template.
 
 :::info
@@ -92,7 +92,7 @@ kubeslice:
     endpoint: <endpoint of your cluster>
 ```
 
-### Apply Controller YAML
+### Apply a Controller YAML
 
 ```
 helm install kubeslice-controller kubeslice/kubeslice-controller -f <full path of the controller>.yaml --namespace kubeslice-controller --create-namespace
@@ -127,7 +127,7 @@ NAME                                               READY   STATUS      RESTARTS 
 kubeslice-controller-manager-74f4d9cb8b-8spsq      2/2     Running     0          31s
 ```
 
-## Create Project Namespace
+## Create a Project Namespace
 
 A project may represent an individual customer or an organization or a
 department within an organization. Each project would have a dedicated
@@ -153,7 +153,7 @@ The following tables describe the parameters in the configuration file used to c
 #### Project Metadata Parameters
 
 These parameters are required for configuring the metadata in the
-[project YAML file](#create-project-yaml).
+[project YAML file](#create-a-project-yaml).
 
 | Parameter | Parameter Type | Description                                                                                                | Required  |
 | --------- | -------------- | ---------------------------------------------------------------------------------------------------------- | --------- |
@@ -170,14 +170,14 @@ These parameters are required for configuring the metadata in the
 
 A service account provides an identity for running processes in application pods. It
 contains the list of users configured in the
-[project YAML file](#create-project-yaml).
+[project YAML file](#create-a-project-yaml).
 
 | Parameter | Parameter Type  | Description                                        | Required |
 | --------- | --------------- | -------------------------------------------------- | -------- |
 | readOnly  | List of Strings | The user to be created with read-only permission.  | Optional |
 | readWrite | List of Strings | The user to be created with read-write permission. | Optional |
 
-### Create Project YAML
+### Create a Project YAML
 
 Create a project namespace by creating a `<project_name>.yaml` file using the following template:
 
