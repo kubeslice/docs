@@ -84,16 +84,17 @@ To understand more about the parameters, see [Controller Configuration Parameter
 :::
 
 ```
-# user can configure labels or annotations that KubeSlice Controller namespaces should have
-namespaceConfig:
-  labels: {}       # The label for the namespace. 
-  annotations: {}  # The annotations for the namespace.
 kubeslice:
-  controller:
-    loglevel: info
-    rbacResourcePrefix: kubeslice-rbac
-    projectnsPrefix: kubeslice
-    endpoint: <endpoint of your cluster>
+kubeslice:
+   # user can configure labels or annotations that Kubetally Controller namespaces should have
+   namespaceConfig:
+     labels: {}
+     annotations: {}
+   controller:
+     logLevel: info
+     rbacResourcePrefix: kubeslice-rbac
+     projectnsPrefix: kubeslice
+     endpoint: <endpoint of your cluster>
 ```
 
 ### Apply a Controller YAML
