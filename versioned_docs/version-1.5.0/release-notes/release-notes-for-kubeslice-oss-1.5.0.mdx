@@ -12,6 +12,19 @@ We continue to add new features and enhancements to KubeSlice.
 ## What's New :speaker:
 These release notes describe the new changes and enhancements in this version.
 
-* Support for ARM64 
+* Support for ARM64
+  
+  Multi-architecture Docker image support: Our Docker images now support both `amd64` and `arm64` architectures, enabling seamless 
+  deployment on a wider range of systems, including:
+  - Apple Silicon (M1/M2) Macs
+  - ARM-based cloud environments (e.g., AWS Graviton, Raspberry Pi)
+  - Edge devices and other low-power platforms
+
+  Benefits:
+  - One image for multiple architectures:no need for separate builds
+  - Improved performance and lower power consumption on ARM devices
+  - Better support for local development on Apple M-series Macs
+  - Broader compatibility for cloud-native and edge deployments
+
 * Support for labeling/annotations of user-defined namespaces in KubeSlice Controller HELM chart.
   For more information, see [Install the KubeSlice Controller](/versioned_docs/version-1.5.0/install-kubeslice/yaml/yaml-controller-install.mdx#create-a-kubeslice-controller-yaml).
