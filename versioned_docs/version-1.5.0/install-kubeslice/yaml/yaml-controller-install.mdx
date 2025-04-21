@@ -54,16 +54,29 @@ The following tables describe the configuration parameters used to install the K
 
 | Parameter                                                    | Parameter Type | Description                                                                  | Required  |
 | ------------------------------------------------------------ | -------------- | ---------------------------------------------------------------------------- | --------- |
-| Kubeslice                                                    | Object         | The cluster where the KubeSlice Controller is installed.                     | Mandatory |
+| Kubeslice                                                    | Object         | This contains the controller and the namespace configuration parameters.     | Mandatory |
 
 #### KubeSlice Parameters
 
 This parameter contains the configuration object used in the
 [KubeSlice Controller YAML file](#create-a-controller-yaml).
 
-| Parameter                            | Parameter Type | Description                                                            | Required  |
-| ------------------------------------ | -------------- | ---------------------------------------------------------------------- | --------- |
-| [controller](#controller-parameters) | Object         | The cluster where the KubeSlice Controller is installed.               | Mandatory |
+| Parameter                                              | Parameter Type | Description                                                            | Required  |
+| ------------------------------------                   | -------------- | ---------------------------------------------------------------------- | --------- |
+| [namespaceConfig](#namespace-configuration-parameters) | Object         | The labels and annotations associated with the namespace.              | Mandatory |
+| [controller](#controller-parameters)                   | Object         | The cluster where the KubeSlice Controller is installed.               | Mandatory |
+
+
+#### Namespace Configuration Parameters
+
+This object contains the labels and annotations associated with the namespace used in the [KubeSlice Controller YAML file](#create-a-controller-yaml).
+
+
+| Parameter   | Parameter Type   | Description           | Required |
+| ---------   | --------------   | -----------           | ---------|
+| labels      | String           | The namespace labels. | Mandatory |  
+| annotations | String           | The namespace labels. | Mandatory |
+
 
 #### Controller Parameters
 This object contains the different parameters used in the [KubeSlice Controller YAML file](#create-a-controller-yaml).
@@ -84,7 +97,6 @@ To understand more about the parameters, see [Controller Configuration Parameter
 :::
 
 ```
-kubeslice:
 kubeslice:
    # user can configure labels or annotations that Kubetally Controller namespaces should have
    namespaceConfig:
