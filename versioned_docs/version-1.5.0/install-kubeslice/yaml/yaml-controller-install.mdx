@@ -64,7 +64,7 @@ This parameter contains the configuration object used in the
 
 | Parameter                                              | Parameter Type | Description                                                            | Required  |
 | ------------------------------------                   | -------------- | ---------------------------------------------------------------------- | --------- |
-| [namespaceConfig](#namespace-configuration-parameters) | Object         | The labels and annotations associated with the namespace.              | Mandatory |
+| [namespaceConfig](#namespace-configuration-parameters) | Object         | The labels and annotations associated with the namespace.              | Optional  |
 | [controller](#controller-parameters)                   | Object         | The cluster where the KubeSlice Controller is installed.               | Mandatory |
 
 
@@ -75,8 +75,8 @@ This object contains the labels and annotations associated with the namespace us
 
 | Parameter   | Parameter Type   | Description                | Required |
 | ---------   | --------------   | -----------                | ---------|
-| labels      | String           | The namespace labels.      | Mandatory |  
-| annotations | String           | The namespace annotations. | Mandatory |
+| labels      | Dictionary       | The labels the KubeSlice Controller should have.      | Mandatory |  
+| annotations | Dictionary       | The annotations the KubeSlice Controller should have. | Mandatory |
 
 
 #### Controller Parameters
@@ -99,7 +99,7 @@ To understand more about the parameters, see [Controller Configuration Parameter
 
 ```
 kubeslice:
-   # user can configure labels or annotations that Kubetally Controller namespaces should have
+   # user can configure labels or annotations that KubeSlice Controller namespaces should have
    namespaceConfig:
      labels: {}
      annotations: {}
