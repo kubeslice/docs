@@ -1,0 +1,64 @@
+# Frequently Asked Questions 
+
+This topic describes the questions that are categorized based on KubeSlice features. The FAQs also include a 
+separate category for generic questions related to KubeSlice. 
+
+## General
+
+<details>
+<summary>What is the difference between KubeSlice Open Source and Enterprise Editions?  </summary>
+<p>
+The list below includes KubeSlice open source features, followed by a table that outlines 
+both open source and enterprise-only features.
+
+<p id="os">**KubeSlice Open Source Features**</p>
+
+* Multi-cluster connectivity
+  * On-prem, EKS, GKE, AKS, OCP, LKE, etc.
+    * Slice specific L3 overlay network, CNI agnostic, slice subnet, IPAM, and QoS/priority
+  * Full mesh connectivity
+  * Micro-segmentation and isolation
+  * Automation of Gateways, OpenVPN tunnels, redundant tunnels, and key rotation
+  * NSM overlay network in clusters
+  * Pod-to-pod connectivity over the overlay network
+* Namespace association
+  * Application namespaces
+    - One or more namespaces can be associated with a slice.
+  * Allowed namespaces
+* Application onboarding
+  * Application services/pods are onboarded on to a slice.
+* Network policy, isolation, and monitoring
+  * Network policies applied to all the associated application namespaces across all 
+    clusters associated with a slice.
+  * Worker Operator monitors for drifts, alerts, and remediation
+* Service discovery across a slice
+  * Service export and import
+  * Service-to-service connectivity over the slice overlay network
+* Istio service mesh integration 
+  * Control plane per cluster
+* Service imports as virtual services
+  * E/W ingress/egress gateways
+  * mTLS across clusters
+* KubeSlice Controller
+  * KubeSlice Control Plane and GitOps
+  * Extends Kubernetes Control Plane
+  * Multiple projects/tenants
+  * Configuration/state managed using CRDs 
+  * Slice management, operations, and policies
+
+**KubeSlice Enterprise Features**
+
+| **Open Source Core Features** | **Enterprise-only Features**             |
+|------------------------------|-------------------------------------------
+| Secure network/service connectivity, service discovery, observability, multi-tenancy, isolation, and OpenVPN | Additional clouds' support: GCP, AWS, Azure, Akamai, OCI, Rancher, OpenShift, and so on. |
+| All the [open source features](#os) listed above. | Slice Resource Quota |
+| | Slice Node Affinity |
+| | Slice RBAC |
+| | Replicate (replication of namespace objects/data across clusters) |
+| | External IDP/OIDC integrations |
+| | Slice Single overlay net, Slice multi-network, and  no-network Slice |
+| | Multiple deployment options |
+| | Fleet Management |
+| | KubeSlice Manager, a user interface for multi-cluster and multi-slice management. |
+</p>
+</details>
