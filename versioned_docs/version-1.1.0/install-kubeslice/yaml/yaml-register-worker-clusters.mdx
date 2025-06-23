@@ -451,7 +451,7 @@ The following tables describe the configuration parameters used to install the S
 | [operator](#slice-operator-parameters)                 | Object         | This contains the Slice Operator information.                                                                        | Optional  |
 | [controllerSecret](#controller-secret-parameters)      | Object         | This contains the secrets to connect to controller cluster.                                                          | Optional  |
 | [cluster](#cluster-parameters)                         | Object         | This contains the information about the worker cluster.                                                              | Optional  |
-| [netop](#network-operator)                             | Object         | This contains the parameters related to network operations such as enforcing the QoS profile configured for a slice. | Mandatory |
+| [netop](#network-operator-parameters)                             | Object         | This contains the parameters related to network operations such as enforcing the QoS profile configured for a slice. | Mandatory |
 
 
 #### Slice Operator Parameters
@@ -486,7 +486,7 @@ These parameters are related to the worker cluster that are configured in the
 | endpoint  | String         | The control plane's kube-apiserver endpoint of the worker cluster that you get in the output after running the `kubectl cluster-info` command. | Mandatory |
                                                                     
 
-#### Network Operator Parameter
+#### Network Operator Parameters
 
 This parameter is related to network operations such as enforcing the QoS profile configured for a slice and is configured in the
 [Slice Operator YAML file](#create-the-slice-operator-yaml).

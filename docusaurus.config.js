@@ -1,8 +1,17 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const { themes } = require('prism-react-renderer');
+const data = require("./versioned_sidebars/version-1.3.0-sidebars.json");
+import version from './versions.json'
+import { getValidPaths } from './utils.js';
+
+
+const lightCodeTheme = themes.github;
+const darkCodeTheme = themes.dracula;
+
+const validPaths = getValidPaths(data?.version3);
+const latestVersion =version[0];
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -18,6 +27,7 @@ const config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'kubeslice', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
+  staticDirectories:['static', 'images'],
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -40,7 +50,7 @@ const config = {
             'https://github.com/kubeslice/docs/tree/master/',
           routeBasePath: '/',
           includeCurrentVersion: false,
-          lastVersion: '1.3.0',
+          lastVersion: '1.4.0',
           versions:{
 
             /***
@@ -55,6 +65,11 @@ const config = {
              * }
              * 
              */
+            '1.4.0':{
+              label: '1.4.0',
+              path: '1.4.0',
+              banner: 'none'
+            },
             '1.3.0':{
               label: '1.3.0',
               path: '1.3.0',
@@ -158,7 +173,24 @@ const config = {
       {
         id: 'GTM-N7K6NGB', // GTM Container ID
       }
-    ]
+    ],
+    [
+      "@docusaurus/plugin-client-redirects",
+      {
+        fromExtensions: ["html", "htm"], 
+        toExtensions: ["exe", "zip"], 
+        redirects: validPaths?.map((path) => ({
+          from: `/latest/${path}`,
+          to: `/${latestVersion}/${path}`,
+        })),
+        createRedirects(existingPath) {
+          if (existingPath.includes("/latest")) {
+            return [existingPath.replace("/latest", `/${latestVersion}`)];
+          }
+          return undefined; 
+        },
+      },
+    ],
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */

@@ -12,7 +12,7 @@ Before you begin, ensure the following prerequisites are met:
 
 ## Install KubeSlice
 
-The `kubeslice-cli install —profile=<minimal-demo|full-demo>` command creates a demo topology consisting of one controller and 
+The `kubeslice-cli install --profile=<minimal-demo|full-demo>` command creates a demo topology consisting of one controller and 
 two worker clusters. The **full-demo** deploys the application on the `demo` slice, whereas the **minimal-demo** requires that an application 
 be deployed on the `demo` slice.
 
@@ -20,7 +20,7 @@ In this demonstration, install KubeSlice on kind clusters using kubeslice-cli, u
 
 The `kubeslice-cli install` command with the `--profile=minimal-demo` option does the following:
 
-1. Creates three kind clusters. One controller cluster with the name `ks-ctrl` and two worker clusters with the names `ks-w-1` and `ks-w-1`.
+1. Creates three kind clusters. One controller cluster with the name `ks-ctrl` and two worker clusters with the names `ks-w-1` and `ks-w-2`.
 2. Installs Calico Networking on controller and worker clusters.
 3. Downloads the opensource KubeSlice helm charts.
 4. Installs KubeSlice Controller on a `ks-ctrl` cluster.
@@ -84,7 +84,7 @@ You have successfully installed the KubeSlice Controller on the controller clust
 :::
 
 
-The `kubeslice-cli install —profile=minimal-demo` command creates a slice called `demo` after successfully installing KubeSlice Controller 
+The `kubeslice-cli install --profile=minimal-demo` command creates a slice called `demo` after successfully installing KubeSlice Controller 
 and the Slice Operator on the worker clusters. To validate the demo slice, see [Validate the Slice](#validate-the-slice).
 
 You can now onboard the iperf application on the `demo` slice. To onboard the application on the slice, see

@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 @mixin font($font-family, $font-file) {
-  @font-face {
-    font-family: $font-family;
-    // src: url($font-file+'.eot');
-    // src: url($font-file+'.eot?#iefix') format('embedded-opentype'),
-    //      url($font-file+'.woff') format('woff'),
-    //      url($font-file+'.ttf') format('truetype'),
-    //      url($font-file+'.svg#'+$font-family) format('svg');
-    src: url($font-file+'.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
+    @font-face {
+        font-family: $font-family;
+        // src: url($font-file+'.eot');
+        // src: url($font-file+'.eot?#iefix') format('embedded-opentype'),
+        //      url($font-file+'.woff') format('woff'),
+        //      url($font-file+'.ttf') format('truetype'),
+        //      url($font-file+'.svg#'+$font-family) format('svg');
+        src: url($font-file+'.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
 }
 
 
@@ -20,60 +20,69 @@
 :root {
     font-family: 'Bai Jamjuree', sans-serif;
     font-size: 16px;
-  --ifm-color-primary: #375AF4;
-  --ifm-color-primary-dark: #2c48c3;
-  --ifm-color-primary-darker: #213692;
-  --ifm-color-primary-darkest: #162462;
-  --ifm-color-primary-light: #5f7bf6;
-  --ifm-color-primary-lighter: #879cf8;
-  --ifm-color-primary-lightest: #afbdfb;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --ifm-link-color:#0d6efd;
-  --ifm-link-hover-color:#0a58ca;
-  --ifm-link-hover-decoration:none;
-  --ifm-note-color: #e0d4f4;
-  --ifm-note-border-color: #8d59e9;
+    --ifm-color-primary: #375AF4;
+    --ifm-color-primary-dark: #2c48c3;
+    --ifm-color-primary-darker: #213692;
+    --ifm-color-primary-darkest: #162462;
+    --ifm-color-primary-light: #5f7bf6;
+    --ifm-color-primary-lighter: #879cf8;
+    --ifm-color-primary-lightest: #afbdfb;
+    --ifm-code-font-size: 95%;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+    --ifm-link-color: #0d6efd;
+    --ifm-link-hover-color: #0a58ca;
+    --ifm-link-hover-decoration: none;
+    --ifm-note-color: #e0d4f4;
+    --ifm-note-border-color: #8d59e9;
+    --ifm-footer-background-color: #12153e;
+    --ifm-footer-bottom-background-color: #0E1136;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #375AF4;
-  --ifm-color-primary-dark: #2c48c3;
-  --ifm-color-primary-darker: #213692;
-  --ifm-color-primary-darkest: #162462;
-  --ifm-color-primary-light: #5f7bf6;
-  --ifm-color-primary-lighter: #879cf8;
-  --ifm-color-primary-lightest: #afbdfb;
-  --ifm-menu-color-active: #879cf8;
-  --ifm-breadcrumb-color-active: #879cf8;
-    --ifm-link-color:#879cf8;
-  --ifm-link-hover-color:#afbdfb;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --ifm-note-color: #452c71;
-  --ifm-note-border-color: #8d59e9;
+    --ifm-color-primary: #375AF4;
+    --ifm-color-primary-dark: #2c48c3;
+    --ifm-color-primary-darker: #213692;
+    --ifm-color-primary-darkest: #162462;
+    --ifm-color-primary-light: #5f7bf6;
+    --ifm-color-primary-lighter: #879cf8;
+    --ifm-color-primary-lightest: #afbdfb;
+    --ifm-menu-color-active: #879cf8;
+    --ifm-breadcrumb-color-active: #879cf8;
+    --ifm-link-color: #879cf8;
+    --ifm-link-hover-color: #afbdfb;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+    --ifm-note-color: #452c71;
+    --ifm-note-border-color: #8d59e9;
+    --ifm-footer-background-color: #111112;
+    --ifm-footer-bottom-background-color: #000000;
 }
 
 
 #__docusaurus {
     --ifm-navbar-height: 80px;
-    .navbar.navbar--fixed-top { 
-     height: 80px;
-     padding: 0 2rem;
-     @media only screen and (max-width: 500px) {
-           padding: 0 1rem;
-     }
-      .navbar__brand {
-          .navbar__logo {
-            height:auto;
-                display:flex;
-                align-items:center;
-              img{
-                // width: 10.08rem;
-                height: 2.5rem;
-              }
-          }
-        .navbar__title {
+
+    .navbar.navbar--fixed-top {
+        height: 80px;
+        padding: 0 2rem;
+
+        @media only screen and (max-width: 500px) {
+            padding: 0 1rem;
+        }
+
+        .navbar__brand {
+            .navbar__logo {
+                height: auto;
+                display: flex;
+                align-items: center;
+
+                img {
+                    // width: 10.08rem;
+                    height: 2.5rem;
+                }
+            }
+
+            .navbar__title {
                 font-size: 2rem;
                 line-height: 2.4rem;
                 font-weight: 800;
@@ -82,15 +91,17 @@
                 transform: translateY(5%);
             }
         }
-      }
+    }
+
     .main-wrapper {
-    
         padding: 1rem 2rem !important;
+
         .ks-docs-logo {
-            h1{
+            h1 {
                 font-size: 3rem;
                 font-weight: 400;
                 font-family: 'Cherry';
+
                 span {
                     color: #69bdfa;
                 }
@@ -106,23 +117,24 @@
             text-align: center;
             line-height: 1.5;
             white-space: nowrap;
-            .menu__link{
+
+            .menu__link {
                 background-color: transparent;
-                &.menu__link--active {
 
-                }
-            } 
+                &.menu__link--active {}
+            }
         }
-        
-    }
-  ul.theme-doc-sidebar-menu.menu__list {
-    li.theme-doc-sidebar-item-link.theme-doc-sidebar-item-link-level-1.menu__list-item{
-        font-weight: inherit;
-      }
-    }
-  .admonition.admonition-note {
-    border-color: var(--ifm-note-border-color) !important;
-    background-color: var(--ifm-note-color) !important;
-  }
-}
 
+    }
+
+    ul.theme-doc-sidebar-menu.menu__list {
+        li.theme-doc-sidebar-item-link.theme-doc-sidebar-item-link-level-1.menu__list-item {
+            font-weight: inherit;
+        }
+    }
+
+    .admonition.admonition-note {
+        border-color: var(--ifm-note-border-color) !important;
+        background-color: var(--ifm-note-color) !important;
+    }
+}

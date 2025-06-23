@@ -72,18 +72,18 @@ These parameters are related to the QoS profile for the slice inter-cluster traf
 
 These parameters are related to onboarding namespaces, isolating the slice, and allowing external namespaces to
 communicate with the slice. They are configured in the
-[slice configuration YAML file](#slice-configuration).
+[slice configuration YAML file](#slice-creation).
 
 | Parameter                                                   | Parameter Type | Description                                                                                                                                                                                                                                                                                                         | Required  |
 | ----------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| [applicationNamespaces](#application-namespaces-parameters) | Array object   | Defines the [namespaces that will be onboarded](#manage-namespace) to the slice and their corresponding worker clusters.                                                                                               | Mandatory |
+| [applicationNamespaces](#application-namespaces-parameters) | Array object   | Defines the [namespaces that will be onboarded](#manage-namespaces) to the slice and their corresponding worker clusters.                                                                                               | Mandatory |
 | [allowedNamespaces](#allowed-namespaces-parameters)         | Array object   | Contains the list of namespaces from which the traffic flow is allowed to the slice. By default, native kubernetes namespaces such as `kube-system` are allowed. If `isolationEnabled ` is set to `true`, then you must include namespaces that you want to allow traffic from.                                     | Optional  |
 | isolationEnabled                                            | Boolean        | Defines if the namespace isolation is enabled. By default, it is set to `false`. The [isolation policy](#isolate-namespaces) only applies to the traffic from the application and allowed namespaces to the same slice. | Optional  |
 
 #### Application Namespaces Parameters
 
 These parameters are related to onboarding namespaces onto a slice, which are configured in the
-[slice configuration YAML file](#slice-configuration).
+[slice configuration YAML file](#slice-creation).
 
 | Parameter | Parameter Type  | Description                                                                                                                                                 | Required  |
 | --------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
@@ -103,7 +103,7 @@ These parameters are related to allowing external namespaces to communicated wit
 #### External Gateway Configuration Parameters
 
 These parameters are related to external gateways, which are configured in the
-[slice configuration YAML file](#slice-configuration).
+[slice configuration YAML file](#slice-creation).
 
 | Parameter   | Parameter Type  | Description                                                                                                                                                                                                                                                                                                                                                                          | Required  |
 | ----------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
