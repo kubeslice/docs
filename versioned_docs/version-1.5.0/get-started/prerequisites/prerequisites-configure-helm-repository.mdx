@@ -1,0 +1,65 @@
+# Configure Helm Repository
+The KubeSlice repository serves as a centralized hub for accessing and distributing 
+essential resources, including charts, templates, and configurations, specifically designed 
+for the KubeSlice monitoring and observability solution in Kubernetes. By offering a curated 
+collection of KubeSlice-specific charts, the repository simplifies the deployment and 
+management process, allowing users to seamlessly set up and monitor their Kubernetes clusters. 
+With comprehensive charts for monitoring, metrics, and alerting systems, the repository ensures 
+efficient monitoring and observability while promoting versioning, distribution, and 
+collaboration among users. Overall, the KubeSlice repository acts as a valuable resource, 
+enabling users to effortlessly deploy and manage KubeSlice components, facilitating effective 
+monitoring and observability within Kubernetes environments.
+
+## Add Repository
+
+Add the helm repository information to your local system.
+
+   ```
+   helm repo add kubeslice https://kubeslice.github.io/kubeslice/
+   ```
+
+   **Expected Output**
+
+   ``` 
+   "kubeslice" has been added to your repositories
+   ```
+
+## Update Repository
+Update the repositories on your system with the following command:
+
+   ``` 
+   helm repo update
+   ```
+
+   **Expected Output**
+
+   ``` 
+   Hang tight while we grab the latest from your chart repositories...
+   ...Successfully got an update from the "kubeslice" chart repository
+   Update Complete. ⎈Happy Helming!⎈
+   ```
+## Verify Repository
+To verify if the repository was added successfully, view the KubeSlice
+charts using the following command:
+
+   ``` 
+   helm search repo kubeslice
+   ```
+
+   **Expected Output**
+
+   ```
+   
+   NAME                            CHART VERSION   APP VERSION     DESCRIPTION
+   kubeslice/botkube               v1.0.0          v1.0.0          Controller for the Kubeslice Botkube Slack app ...
+   kubeslice/cert-manager          v1.7.0          v1.7.0          A Helm chart for cert-manager
+   kubeslice/istio-base            1.16.0          1.16.0          Helm chart for deploying Istio cluster resource...
+   kubeslice/istio-discovery       1.16.0          1.16.0          Helm chart for istio control plane
+   kubeslice/kubeslice-controller  1.5.0           1.5.0           A Helm chart for kubeslice-controller
+   kubeslice/kubeslice-worker      1.5.0           1.5.0           A Helm chart for kubeslice-worker
+   kubeslice/prometheus            19.3.0          v2.41.0         Prometheus is a monitoring system and time seri...
+   ```
+ 
+:::success
+You have successfully prepared your clusters to install the KubeSlice.
+:::

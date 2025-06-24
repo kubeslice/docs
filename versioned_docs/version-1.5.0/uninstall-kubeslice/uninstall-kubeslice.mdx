@@ -1,0 +1,228 @@
+# Uninstall KubeSlice
+This topic describes how to uninstall KubeSlice. Follow these steps to uninstall the KubeSlice Controller:
+
+- Delete the ServiceExport for each application
+- Offboard all namespaces from the slice
+- Delete a slice
+- Uninstall Slice operator
+- Deregister the worker cluster
+- Delete a project
+- Uninstall the KubeSlice Controller
+
+## Delete ServiceExports
+If a ServiceExport was created in the application namespace, it must be deleted first.
+
+Deleting the ServiceExport removes the corresponding ServiceImport automatically on all the clusters of the slice.
+
+The below variables are required to delete the service export.
+
+| Variables | Description |
+|-------------------------|--------------------------------------------------------- 
+| `<cluster name>` | The name of the cluster the application is deployed on.
+| `<service export name>` | The name of the service export that you want to delete.
+| `<namespace>` | The namespace the application is deployed on.
+
+Switch the contexts to the cluster you deployed the application on:
+
+```
+kubectx <cluster name>
+```
+
+Use the following command to delete the ServiceExport from the cluster:
+
+``` 
+kubectl delete serviceexport <serviceexport name> -n <application namespace>
+```
+## Offboard Application Namespaces
+To offboard the namespace from a slice, delete the `namespace` and the associated 
+`clusters` under the `applicationNamespaces` in the slice configuration file as 
+illustrated below.
+
+``` 
+  namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+     - namespace: bookinfo
+       clusters:
+       - '*'
+```
+
+For example, in the above slice configuration YAML file, if you want to offboard the 
+BookInfo namespace from all clusters, edit the slice configuration YAML file and remove it 
+from `applicationNamespaces` as illustrated below.
+
+```
+namespaceIsolationProfile:
+    applicationNamespaces:
+     - namespace: iperf
+       clusters:
+       - '*'
+```
+
+To delete a slice, you must remove all the namespaces and the corresponding clusters. So, 
+edit the slice configuration YAML file to remove them. After you remove the namespaces 
+and the corresponding clusters, the application namespace configuration looks as 
+illustrated below.
+
+``` 
+namespaceIsolationProfile:
+    applicationNamespaces:
+```
+
+Apply the slice configuration YAML to update the offboarded namespaces.
+
+``` 
+kubectl apply -f <slice configuration>.yaml -n <project namespace>
+```
+
+:::success
+You have successfully offboarded the namespaces from the slice.
+:::
+
+## Delete Slices
+
+:::caution
+This step **must** be completed before uninstalling the Slice Operator. Failing to do so 
+can result in slices and resources not being cleaned up properly.
+:::
+
+Switch the context to the controller cluster using the following command:
+
+```
+kubectx <cluster name>
+```
+
+To delete an individual slice, use the following command:
+
+```
+kubectl delete sliceconfig <slice-name> -n kubeslice-<project-name>
+```
+
+To delete all the slices, use the following command:
+
+``` 
+kubectl delete sliceconfig --all -n kubeslice-<project-name>
+```
+
+:::success
+You have successfully deleted the slice(s).
+:::
+
+## Uninstall the Slice Operator
+:::caution
+You **must** remove the cluster from all the slices it is connected to before uninstalling the 
+Slice Operator in the worker cluster. Failing to do so can result in slices and 
+resources not being cleaned up properly.
+:::
+
+After removing a cluster from all the slices, you can uninstall the Slice Operator 
+in the worker cluster.
+
+Switch the context to the worker cluster using the following command:
+
+``` 
+kubectx <cluster name>
+```
+
+Uninstall the Slice Operator using the following command:
+
+```
+helm uninstall [RELEASE_NAME] -n kubeslice-system
+```
+
+### Delete Slice Operator CRDs
+Delete the CRDs of the Slice Operator using the following commands:
+
+``` 
+kubectl delete crd serviceexports.networking.kubeslice.io
+kubectl delete crd serviceimports.networking.kubeslice.io
+kubectl delete crd slices.networking.kubeslice.io
+kubectl delete crd slicegateways.networking.kubeslice.io
+```
+### Delete kubeslice-system Namespace
+Delete the `kubeslice-system` namespace using the following command:
+
+``` 
+kubectl delete ns kubeslice-system
+```
+:::success
+You have now uninstalled the Slice Operator from your registered cluster.
+:::
+
+## Deregister Worker Clusters
+After uninstalling the Slice Operator successfully, deregister your worker cluster from 
+the KubeSlice Controller.
+
+Switch the context to the KubeSlice Controller cluster.
+
+```
+kubectx <cluster name>
+```
+
+Deregister a worker cluster using the following command:
+
+``` 
+kubectl delete clusters <cluster-name> -n kubeslice-<project-name>
+```
+
+To deregister all worker clusters, use the following command:
+
+```
+kubectl delete clusters --all -n kubeslice-<project-name>
+```
+
+:::success
+You have now successfully deregistered the cluster from the KubeSlice Controller.
+:::
+
+## Delete a Project
+
+:::caution
+Before deleting a project, ensure all namespaces have been offboarded and the slice has been deleted.
+:::
+
+Delete a project after deregistering the worker cluster. The service account, namespaces, clusters, secrets, certificates, and tokens 
+are all deleted when the project is deleted from the KubeSlice Controller.
+   
+Use the following command to delete the project:
+
+```
+kubeslice-cli delete project <project-name> -n <controller-namespace>
+```
+
+## Uninstall the KubeSlice Controller
+
+
+### Uninstall the KubeSlice Controller
+
+Uninstall the KubeSlice Controller using the following command:
+
+``` 
+helm uninstall kubeslice-controller -n kubeslice-controller
+```
+### Delete the kubeslice-controller Namespace
+
+Delete the `kubeslice-controller` namespace using the following command:
+
+```
+kubectl delete ns kubeslice-controller
+```
+### Delete the Certificate Manager
+Delete the Certificate Manager using the following command:
+
+``` 
+helm uninstall cert-manager -n cert-manager
+```
+### Delete the Certificate Manager Namespace
+
+Delete the namespace `cert-manager` using the following command:
+
+```
+kubectl delete ns cert-manager
+```
+
+:::success
+All set! KubeSlice Controller has been uninstalled from your cluster.
+:::

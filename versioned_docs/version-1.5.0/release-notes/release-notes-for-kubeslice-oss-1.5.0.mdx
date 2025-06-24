@@ -1,0 +1,28 @@
+# Release Notes for KubeSlice OSS 1.5.0
+
+*Release date: 19th Apr 2025*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
+in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
+by creating logical application ***slice*** boundaries that enable seamless communication between pods and services across 
+clusters, clouds, edges, and data centers.
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New :speaker:
+These release notes describe the new changes and enhancements in this version.
+
+* KubeSlice now supports multi-architecture Docker images for both amd64 and arm64, enabling seamless 
+  deployment on a wider range of systems, including:
+  - Apple Silicon (M1/M2) Macs
+  - ARM-based cloud environments (For example, AWS Graviton, and Raspberry Pi)
+  - Edge devices and other low-power platforms
+
+  Benefits:
+  - One image for multiple architectures eliminates the need for separate builds
+  - Optimized performance and lower power consumption on ARM devices
+  - Better support for local development on Apple M-series Macs
+  - Broader compatibility for cloud-native and edge deployments
+
+* The KubeSlice Controller Helm chart now supports labeling or annotation of user-defined namespaces. 
+  For more information, see [Install the KubeSlice Controller](/versioned_docs/version-1.5.0/install-kubeslice/yaml/yaml-controller-install.mdx#create-a-kubeslice-controller-yaml).  
