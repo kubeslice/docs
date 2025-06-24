@@ -226,6 +226,7 @@
     },
 
     "troubleshooting/troubleshooting-guide", 
+    "faqs",
     {
       "type": "category",
       "label": "Reference",
