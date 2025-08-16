@@ -6,4 +6,4 @@ services:
       dockerfile: prod.dockerfile
     restart: always
     ports:
-      - "3000:3000"
+      - "80:80"
