@@ -1,0 +1,134 @@
+# Install KubeSlice
+Kubeslice-cli is a command-line tool designed to simplify KubeSlice operations on Kubernetes 
+and cloud clusters. With this tool, you can easily install the necessary workloads to run the 
+KubeSlice Controller and Slice Operator on specific clusters. Additionally, it registers these 
+clusters as part of a KubeSlice multi-cluster and manages slices across them.
+
+To use the tool, you provide input in the form of YAML files. The topology YAML file describes 
+the cluster membership in the multi-cluster. 
+
+## Create Topology YAML file
+To install KubeSlice, you need to create a topology configuration file that specifies the 
+controller cluster and the worker cluster names. The file should include other relevant details 
+as described in the sample configuration file provided below. This file is essential in setting 
+up KubeSlice.
+
+
+### Air-Gapped Installation
+
+To install KubeSlice in an Air-Gapped environment, use local helm charts. Upgrade to the latest 
+[kubeslice-cli version 0.6.0](https://github.com/kubeslice/kubeslice-cli/releases) to use local charts.
+
+Make sure you set the **use_local** value to `true` in the topology file:  
+
+```
+configuration:
+  helm_chart_configuration:
+    repo_alias: # {The alias of the helm repo for KubeSlice Charts. For local chart helm repositories, provide the local path to the charts.}
+    use_local: # {Use local charts instead of remote charts. Default is false}
+```
+
+### Custom Chart Values
+
+Custom chart values can be specified in the topology configuration, see [Topology Configuration Parameters](/versioned_docs/version-1.5.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx).
+For example, you can add `values:metrics.insecure=true` under 
+**configuration.helm_chart_configuration.worker_chart** for worker charts.
+
+```
+worker_chart:
+        chart_name: kubeslice-worker
+        values:
+          "metrics.insecure": "true"
+          "some.other.key": "value"
+```
+
+### Sample Topology Configuration File
+The following is a minimal configuration file to install KubeSlice on cloud clusters:
+
+Create the topology configuration file using the following template:
+```yaml
+configuration:
+  cluster_configuration:
+    kube_config_path: <path to kubeconfig file>
+    controller:
+      name: controller
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/controller-eks-1
+      kube_config_path: /home/user/kuebconfig-eks-1.config
+    workers:
+      - name: worker-1
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/cloud-cluster-eks-1
+      kube_config_path: /home/user/kuebconfig-eks-1.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+      - name: worker-2
+      context_name: gke_avesha-dev_us-central1-cloud_cluster-gke-2
+      kube_config_path: /home/user/kuebconfig-gke-2.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+  kubeslice_configuration:
+    project_name: kubeslice-avesha
+  helm_chart_configuration:
+    repo_alias: kubeslice
+    repo_url: https://kubeslice.github.io/kubeslice/
+    cert_manager_chart:
+      chart_name: cert-manager
+      version: ''
+    controller_chart:
+      chart_name: kubeslice-controller
+      version: ''
+    worker_chart:
+      chart_name: kubeslice-worker
+      version: ''
+      values:
+        metrics.insecure: true
+```
+
+### Sample Topology Configuration File for Air-Gapped Installation
+
+The following is a minimal configuration file to install KubeSlice on cloud clusters:
+
+Create the topology configuration file using the following template:
+```yaml
+configuration:
+  cluster_configuration:
+    kube_config_path: <path to kubeconfig file>
+    controller:
+      name: controller
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/controller-eks-1
+      kube_config_path: /home/user/kuebconfig-eks-1.config
+    workers:
+      - name: worker-1
+      context_name: arn:aws:eks:us-east-1:776106081964:cluster/cloud-cluster-eks-1
+      kube_config_path: /home/user/kuebconfig-eks-1.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+      - name: worker-2
+      context_name: gke_avesha-dev_us-central1-cloud_cluster-gke-2
+      kube_config_path: /home/user/kuebconfig-gke-2.config
+                        #{This takes precedence over configuration.cluster_configuration.kube_config_path}
+  kubeslice_configuration:
+    project_name: kubeslice-avesha
+  helm_chart_configuration:
+    repo_alias: <file_path_to_helm_charts>
+    use_local: true
+    cert_manager_chart:
+      chart_name: cert-manager
+      version: ''
+    controller_chart:
+      chart_name: kubeslice-controller
+      version: ''
+    worker_chart:
+      chart_name: kubeslice-worker
+      version: ''
+      values:
+        metrics.insecure: true
+```
+
+
+## Apply the Topology Configuration YAML
+To install KubeSlice using the topology YAML file, use the following command:
+
+```
+kubeslice-cli --config <path-to-the-topology.yaml> install
+```
+
+:::success
+You have successfully installed KubeSlice.
+:::

@@ -1,0 +1,57 @@
+# Enable Dynamic IPAM For a Slice
+
+This topic describes how to create a slice with Dynamic IP Address Management (IPAM) enabled.
+
+:::info
+Dynamic IPAM is supported in KubeSlice version 1.5.0 and later.
+:::
+
+:::warning
+You can enable Dynamic IPAM only when creating a new slice. Dynamic IPAM cannot be enabled for existing slices. If you want to use 
+Dynamic IPAM, you must create a new slice with Dynamic IPAM enabled and migrate your workloads to the new slice.
+::: 
+
+To create a slice with Dynamic IPAM enabled, follow these steps:
+ 
+1. Create a slice configuration file  called `slice-config-dynamic-ipam.yaml` file with the required parameters for Dynamic IPAM.  
+  Add the`sliceIpamType: "Dynamic"` parameter to your SliceConfig:
+
+   ```yaml
+   apiVersion: controller.kubeslice.io/v1alpha1
+   kind: SliceConfig
+   metadata:
+     name: my-slice
+     namespace: kubeslice-cisco
+   spec:
+     sliceSubnet: "10.1.0.0/16" # Required: CIDR for subnet pool
+     sliceIpamType: "Dynamic" # Enable dynamic allocation
+     subnetSize: 24 # Optional: default is 24
+     clusters:
+       - worker-1
+       - worker-2
+   ``` 
+2. Apply the `slice-config-dynamic-ipam.yaml` file using the following command:
+
+   ```bash
+   kubectl apply -f slice-config-dynamic-ipam.yaml
+   ```
+
+## Verify Dynamic IPAM Configuration
+
+To verify that Dynamic IPAM is enabled for the slice, run the following command:
+
+```bash
+kubectl get sliceconfig my-slice -n kubeslice-cisco -o yaml
+```
+In the output, check for the `sliceIpamType: Dynamic` parameter in the `spec` section:
+
+```yaml
+spec:
+  sliceIpamType: Dynamic
+  sliceSubnet: "10.1.0.0/16"
+    subnetSize: 24
+    clusters:
+      - worker-1
+      - worker-2
+```
+

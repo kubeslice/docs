@@ -1,0 +1,210 @@
+# Slack Event Monitoring
+In this topic, you discover the step-by-step process of creating a vibrant Slack app 
+and seamlessly integrating both kube-state-metrics (KSM) events and KubeSlice events into 
+a dynamic Slack channel. Unleash the power of real-time updates and vibrant notifications, 
+making your Slack workspace a hub of insightful information. Let's dive in and explore 
+this exciting integration journey!
+
+## Create an App
+
+Create an app using the Slack API in your workspace. 
+
+To create an app:
+
+1. Open the [Slack API](https://api.slack.com/apps) console.
+
+2. Click the **Create an App** button.
+
+![events](/images/version-1.15.0/monitoring-events/kubernetes-events1.png)
+
+3. Select **From an app manifest** to configure your app scopes and settings.
+   
+![events](/images/version-1.15.0/monitoring-events/kubernetes-events2.png)
+
+4. Select a workspace where you want to create an app and click **Next**.
+
+![events](/images/version-1.15.0/monitoring-events/kubernetes-events3.png)
+
+5. In the **Enter app manifest below** section, click on the **YAML** tab and enter the following manifest:
+
+   ```yaml
+   display_information:
+     name: Botkube
+     description: Botkube
+     background_color: "#a653a6"
+   features:
+     bot_user:
+       display_name: Botkube
+       always_online: false
+   oauth_config:
+     scopes:
+       bot:
+         - channels:read
+         - app_mentions:read
+         - chat:write
+         - files:write
+         - users:read # Remote configuration only: Used to get Real Name for audit reporting
+   settings:
+     event_subscriptions:
+       bot_events:
+         - app_mention
+     interactivity:
+       is_enabled: true
+     org_deploy_enabled: false
+     socket_mode_enabled: true
+     token_rotation_enabled: false
+   ```
+
+6. Click **Next**.
+
+7. In the **Review summary & create your app** section, review the details and click **Create**.
+
+![events](/images/version-1.15.0/monitoring-events/kubernetes-events4.png)
+
+
+## Install an App
+
+Once you have successfully created your app, you will be directed to an application details page that provides you with the option to install the app in your desired workspace. 
+
+To install an app to your workspace:
+
+1. Go to **Settings** > **Basic Information** on the left sidebar.
+
+2. In the  **Building Apps for Slack** section, under **Install your app**, click the **Install to workspace** button.
+
+3. Click **Allow** to finish the installation.
+
+
+## Get an OAuth Token
+
+During the configuration process of botkube in Slack, it is essential to provide the OAuth token for authentication purposes. This token serves as a secure credential that verifies the identity of the botkube integration and enables seamless communication between Slack and botkube.
+
+To get an oauth token for your workspace:
+
+1. Go to **Features** > **OAuth & Permissions** on the left sidebar.
+
+2. Copy the **Bot User OAuth Token** and save the token for later use while deploying the 
+   **kubeslice-botkube** bundle on the controller and worker clusters.
+   
+ ![events](/images/version-1.15.0/monitoring-events/bot-user-oauth-token.png)
+
+
+## Get an App-Level Token
+
+To establish a web socket connection with Slack App using Socket Mode, you need an 
+App-Level token. This token is specifically required to facilitate the communication and interaction between your Slack App and the web socket, ensuring a smooth and uninterrupted connection.
+
+To get an app-level token:
+
+1. Go to **Settings** > **Basic Information** on the left sidebar.
+
+2. Click the **Generate Token and Scopes** button.
+   
+![events](/images/version-1.15.0/monitoring-events/app-level-token.png)
+
+3. In the **Generate an app-level token** section, enter a token name. For example, `botkube` is a token name.
+
+![events](/images/version-1.15.0/monitoring-events/generate-app-level-token.png)
+
+4. Click **Add Scope** and select **connections:write scope**.
+
+5. Click **Generate**.
+
+6. Review the details and click **Done**. Copy the app-level token for later use while deploying the 
+   **kubeslice-botkube** bundle on the controller and worker clusters.
+
+## Create Slack Channel for Events
+
+Once you have successfully installed the Botkube application, you will notice a new bot user named `botkube` added to your workspace.
+
+Next, proceed to create **two channels** within your workspace to receive KSM and KubeSlice events.  Save the channel names for later use.
+
+![events](/images/version-1.15.0/monitoring-events/create-channel1.png)
+
+To receive notifications in a specific Slack channel, you need to add the Botkube bot. This can be done by inviting the **@Botkube** user to the desired channel.
+
+![events](/images/version-1.15.0/monitoring-events/add-bot-to-channel.png)
+
+
+
+## Deploy the kubeslice-botkube Bundle
+
+To deploy the **kubeslice-botkube** bundle:
+
+1. Switch the context to controller cluster.
+   
+   ```
+   kubectx <cluster_name>
+   ```
+
+2. Add the **kubeslice-botkube** repo using the following command:
+   
+   ```
+   helm repo add kubeslice/botkube
+   ```
+
+3. Use the following command to create the `botkube` namespace on the controller and worker clusters.
+   
+   ```
+   kubectl create ns botkube
+   ```
+
+4. Use the following command to deploy the **kubeslice-botkube** bundle on the **controller cluster**:
+ 
+   :::note
+   Replace the `ksm_channel_name`, `kubeslice_event_channel_name`, `cluster_name`, `app_token`, and `bot_token` in the command below with your values.
+   ::: 
+
+   ```
+   helm install kubeslice-botkube kubeslice/botkube  --set "sources.k8s-controller-events.botkube/kubernetes.enabled=true" --namespace botkube \
+   --set communications.default-group.socketSlack.enabled=true \
+   --set communications.default-group.socketSlack.channels.default.name=<ksm_channel_name> \
+   --set communications.default-group.socketSlack.channels.kubeslice.name=<kubeslice_event_channel_name> \
+   --set communications.default-group.socketSlack.appToken=<app_token> \
+   --set communications.default-group.socketSlack.botToken=<bot_token> \
+   --set settings.clusterName=<cluster_name> \
+   --set 'executors.k8s-default-tools.botkube/kubectl.enabled'=true \
+   --set 'executors.k8s-default-tools.botkube/helm.enabled'=true
+   ```
+
+5. Switch the context to worker cluster(s).
+   
+   ```
+   kubectx <cluster_name>
+   ```
+
+6. Use the following command to deploy the **kubeslice-botkube** bundle on each of the **worker cluster(s)**:
+   
+   :::note
+   Replace the `ksm_channel_name`, `kubeslice_event_channel_name`, `cluster_name`, `app_token`, and `bot_token` in the command below with your values.
+   :::
+
+   ```
+   helm install kubeslice-botkube kubeslice/botkube  --set "sources.k8s-worker-events.botkube/kubernetes.enabled=true" --namespace botkube \
+   --set communications.default-group.socketSlack.enabled=true \
+   --set communications.default-group.socketSlack.channels.default.name=<ksm_channel_name> \
+   --set communications.default-group.socketSlack.channels.kubeslice.name=<kubeslice_event_channel_name> \
+   --set communications.default-group.socketSlack.appToken=<app_token> \
+   --set communications.default-group.socketSlack.botToken=<bot_token> \
+   --set settings.clusterName=<cluster_name> \
+   --set 'executors.k8s-default-tools.botkube/kubectl.enabled'=true \
+   --set 'executors.k8s-default-tools.botkube/helm.enabled'=true
+   ```
+
+### Slack KSM Events
+
+After deploying the charts in the workspace, you will start receiving notifications. The KSM events received in the Slack channel are depicted in the figures below:
+
+
+![events](/images/version-1.5.0/monitoring-events/ksm-events.png)
+
+### Slack KubeSlice Events
+#### Controller Events
+The Slack channel displays the KubeSlice events for the controller cluster, as depicted in the following figure.
+
+ ![events](/images/version-1.5.0/monitoring-events/kubeslice-controller-events.png)
+
+#### Worker Events
+The Slack channel displays the KubeSlice events for the worker cluster, as depicted in the following figure.
+
+![events](/images/version-1.5.0/monitoring-events/kubeslice-worker-events.png)
