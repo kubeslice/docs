@@ -1,0 +1,76 @@
+# Frequently Asked Questions 
+
+This topic describes the questions that are categorized based on KubeSlice features. The FAQs also include a 
+separate category for generic questions related to KubeSlice. 
+
+## General
+
+<details>
+<summary>What are the KubeSlice Open Source features?  </summary>
+<p>
+**KubeSlice Open Source Features**
+
+* Multi-cluster connectivity
+  * On-prem, EKS, GKE, AKS, OCP, LKE, etc.
+    * Slice specific L3 overlay network, CNI agnostic, slice subnet, IPAM, and QoS/priority
+  * Full mesh connectivity
+  * Micro-segmentation and isolation
+  * Automation of Gateways, OpenVPN tunnels, redundant tunnels, and key rotation
+  * NSM overlay network in clusters
+  * Pod-to-pod connectivity over the overlay network
+* Namespace association
+  * Application namespaces
+    - One or more namespaces can be associated with a slice.
+  * Allowed namespaces
+* Application onboarding
+  * Application services/pods are onboarded on to a slice.
+* Network policy, isolation, and monitoring
+  * Network policies applied to all the associated application namespaces across all 
+    clusters associated with a slice.
+  * Worker Operator monitors for drifts, alerts, and remediation
+* Service discovery across a slice
+  * Service export and import
+  * Service-to-service connectivity over the slice overlay network
+* Istio service mesh integration 
+  * Control plane per cluster
+* Service imports as virtual services
+  * E/W ingress/egress gateways
+  * mTLS across clusters
+* KubeSlice Controller
+  * KubeSlice Control Plane and GitOps
+  * Extends Kubernetes Control Plane
+  * Multiple projects/tenants
+  * Configuration/state managed using CRDs 
+  * Slice management, operations, and policies
+</p>
+</details>
+
+## Usage and Benefits
+
+<details>
+<summary>How is KubeSlice useful to me?</summary>
+<p>
+KubeSlice creates a flat, secure virtual network overlay for streamlined data distribution and communication between 
+distributed workloads. It enables multi-tenancy and reduces deployment time, complexity, and costs for multi-cloud, hybrid 
+cloud, and edge environments. KubeSlice seamlessly integrates with the Kubernetes ecosystem.
+</p>
+</details>
+
+
+<details>
+<summary>How do I use KubeSlice to onboard applications?</summary>
+<p>
+KubeSlice supports slice creation. A slice can be connected to worker clusters, and 
+applications from those connected clusters can be onboarded onto the slice. 
+To learn more, see [onboarding applications](/versioned_docs/version-1.4.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx#onboard-namespaces).
+</p>
+</details>
+
+<details>
+<summary>How do I distribute my applications across clusters?</summary>
+<p>
+You can onboard applications from your cluster onto a slice by onboarding namespaces and create a service export to 
+distribute applications across clusters. The other clusters must also be part of that slice.
+To learn more, see [Service Export](/versioned_docs/version-1.4.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx#serviceexports-and-serviceimports).
+</p>
+</details>
