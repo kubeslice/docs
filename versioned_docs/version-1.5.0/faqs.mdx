@@ -74,3 +74,42 @@ distribute applications across clusters. The other clusters must also be part of
 To learn more, see [Service Export](/versioned_docs/version-1.5.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx#serviceexports-and-serviceimports).
 </p>
 </details>
+
+
+## Dynamic IPAM
+
+<details>
+<summary> Can I change `sliceIpamType` on an existing slice? </summary>
+<p>
+No. You cannot change this setting. The `sliceIpamType` parameter is immutable. To use Dynamic IPAM, create a new slice. For more information, see [create slices](/versioned_docs/version-1.5.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx).
+</p>
+</details>
+
+<details>
+<summary>I receive `ErrNoAvailableSubnets`. What should I do? ?</summary>
+<p>
+This occurs when no subnets are available for allocation. Remove unused clusters from the slice or create a new slice.
+</p>
+</details>
+
+<details>
+<summary>Are released subnets reused?</summary>
+<p>
+Yes. Released subnets are persisted, so when a cluster rejoins, it receives the same subnet as before.
+</p>
+</details>
+
+<details>
+<summary> Does enabling Dynamic IPAM for a new slice will impact existing slices?</summary>
+<p>
+No. enabling Dynamic IPAM for a new slice does not affect a existing slice. Existing slices continue to operate using Static IPAM. 
+Dynamic IPAM is fully backward compatible.
+</p>
+</details>
+
+<details>
+<summary>How long are released subnets retained?</summary>
+<p>
+Released subnets are preserved for 24 hours before cleanup, allowing clusters to rejoin within the grace period.
+</p>
+</details>

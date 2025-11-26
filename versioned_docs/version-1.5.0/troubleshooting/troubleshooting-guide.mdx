@@ -2,7 +2,8 @@
 
 ## Introduction
 
-This guide aims to provide a comprehensive overview of potential troubleshooting scenarios that may arise when installing and configuring KubeSlice.
+This guide aims to provide a comprehensive overview of potential troubleshooting scenarios that may arise when installing and 
+configuring KubeSlice.
 
 ## Installation Issues
 
@@ -10,6 +11,8 @@ This guide aims to provide a comprehensive overview of potential troubleshooting
 
 On Ubuntu OS, if you have too many files open and try installing KubeSlice on kind clusters,
 then you face issues.
+
+#### Resolution
 
 You must increase the `ulimit` to `2048` or `unlimited` and try installing KubeSlice on kind
 clusters. If you still face issues, see [errors due to too many open files](https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files).
@@ -38,8 +41,10 @@ Patch ValidatingWebhookConfiguration "kubeslice-controller-validating-webhook-co
 Error: UPGRADE FAILED: cannot patch "kubeslice-controller-manager" with kind Deployment: Internal error occurred: failed calling webhook "mdeploy.avesha.io": failed to call webhook: Post "https://kubeslice-webhook-service.kubeslice-system.svc:443/mutate-appsv1-deploy?timeout=10s": no endpoints available for service "kubeslice-webhook-service"
 ```
 
-To resolve this error, manually delete the mutating webhook configuration as described
-below:
+
+#### Resolution 
+
+Manually delete the mutating webhook configuration as described below:
 
 1. Get the name of the `MutatingWebhookConfiguration` webhook using the following command:
 
@@ -75,8 +80,11 @@ below:
 
 ### Why is my registered cluster not connected to the KubeSlice Controller?
 
-There could be an issue during the installation of the Slice Operator on the registered
-cluster. Try these steps:
+There could be an issue during the installation of the Slice Operator on the registered cluster. 
+
+
+#### Resolution
+Try these steps:
 
 1. Switch context to the registered cluster on which you are facing
    connectivity issues using the following command:
@@ -102,11 +110,15 @@ cluster. Try these steps:
 Each instance of the cluster is registered separately as two different clusters and
 Kubernetes ignores duplication of the cluster's name.
 
+#### Resolution
 It is best to avoid the duplication of the clusters names as Kubernetes inherently ignores
 the duplication of cluster names.
 
 ### The KubeSlice Controller was successfully installed with a controller endpoint that is not reachable by a slice.
 
+Slice is unable to reach the KubeSlice Controller
+
+#### Resolution
 Check if the controller endpoint is correct during the installation of the Slice Operator
 on the worker cluster. Check if the controller cluster's secret token and ca-cert installed on the
 worker cluster is correct. To know more, see [Getting the Secrets of the Registered
@@ -114,54 +126,68 @@ Cluster](/versioned_docs/version-1.5.0/install-kubeslice/yaml/yaml-register-work
 
 ### Node IP address on the registered cluster was changed but the KubeSlice components were not cleaned up.
 
-When the Node IP address is changed on a registered cluster, then a manual clean-up is
-required for the worker cluster configuration to use the updated IP. So, we recommend not
-to change the Node IP manually when it is already configured or add an invalid Node IP
-address.
+While registering a cluster, the Node IP is configured by pulling the value from the cluster. When the Node IP address is changed on a 
+registered cluster, then a manual clean-up is required for the worker cluster configuration to use the updated IP. 
 
-While registering a cluster, the Node IP is configured by pulling the value from the cluster.
+#### Resolution
+
+We recommend not to change the Node IP manually when it is already configured or add an invalid Node IP address.
+
 
 ### A cluster registration failed with a correct cluster YAML file.
 
-The registration fails when a `cluster.yaml` file is applied to register more than one
-clusters.
+The registration fails when a `cluster.yaml` file is applied to register more than one clusters.
 
-Ensure that a`cluster.yaml`file is applied to only one cluster and not multiple clusters.
+#### Resolution
+
+Ensure that a `cluster.yaml`file is applied to only one cluster and not multiple clusters.
 
 ### Why do I experience router connectivity issues when one or more nodes are restarted in the worker clusters?
 
-There is a connection disruption in some routers when one or more nodes are restarted in
-the worker clusters. You must restart the application pod to restore the router
-connectivity.
+There is a connection disruption in some routers when one or more nodes are restarted in the worker clusters. 
+
+#### Resolution
+
+You must restart the application pod to restore the router connectivity.
 
 ## Cluster Issues
 
 ### The error/warning states that the CRD object is stuck.
 
+KubeSlice reports that a CRD object is stuck, preventing normal operations
+
+#### Resolution
+
 1. Patch an empty finalizer with the failing object CRD warning as shown in this example.
 
-   (`serviceexportconfigs.hub.kubeslice.io` is a failing CRD object in this
-   example.)
+   (`serviceexportconfigs.hub.kubeslice.io` is a failing CRD object in this example.)
 
    ```
    kubectl patch crd/serviceexportconfigs.hub.kubeslice.io -p '{"metadata":{"finalizers":[]}}' --type=merge
    ```
 
-2. Uninstall and reinstall the KubeSlice Controller.
+2.  Uninstall the existing KubeSlice Controller and then reinstall it to restore normal operatons.
 
 ### The error states that the project namespace is stuck.
+
+KubeSlice reports that a project namespace is stuck, preventing normal operations.
+
+#### Resolution:
+
+Patch the namespace to clear its finalizers. 
 
 1. Delete the stuck namespace by running the following command:
 
    ```
    kubectl patch ns/<stuck-namespace> -p '{"metadata":{"finalizers":[]}}' --type=merge
    ```
-
-2. Uninstall and reinstall the KubeSlice Controller.
+   You msut replace `<stuck-namespace>` with the actual namespace.
+  
+2. Uninstall the existing KubeSlice Controller and then reinstall it to restore normal functionality.
 
 ## Slice and Cluster Health Issues
 
-### What should I do when nsmgr is down?
+### What should I do when `nsmgr` is down?
 
 Identify the worker cluster on which `nsmgr` is down.
 
@@ -657,9 +683,9 @@ You must reboot the application pod that has more than one NSM interface to rest
 connectivity among the application pods.
 
 
-## kubeslice-cli
+## kubeslice-cli Tool
 
-This guide describes troubleshooting scenarios that you could face during installing and while using the `kubeSlice-cli` tool.
+This following are the scenarios that you could face during installing and while using the `kubeSlice-cli` tool.
 
 ### Unable to Install Kubeslice using the kubeslice-cli Tool on Ubuntu
 
@@ -677,7 +703,7 @@ Command Output:
 
 There could be a memory/disk space issue.
 
-**To resolve**:
+#### Resolution
 
 - Remove unused clusters (other than the ones used in the demo).
 - Increase disk space/memory resources.
@@ -697,7 +723,7 @@ error: the server doesn't have a resource type "sliceconfigs"
 2022/10/04 08:26:40 Process failed exit status 1
 ```
 
-**To resolve**:
+#### Resolution
 
 - Ensure you are on the controller cluster to run the commands: `kubectx -c`.
 - Export the configuration file using this command: `export KUBECONFIG=kubeslice/<path-to-the-kubeconfig-file>`.
@@ -707,6 +733,57 @@ error: the server doesn't have a resource type "sliceconfigs"
 When you try to install kubeslice-cli on macOS, you get the `Unverified Developer Error Message`.
 This error message appears when you try to install an application from a developer who is not registered with Apple.
 
-**To resolve**:
+#### Resolution
 
 Follow the instructions in [Enabling the Application for macOS](https://www.alphr.com/cannot-be-opened-because-the-developer-cannot-be-verified/).
+
+
+## Dynamic IPAM
+
+### 1.Subnet pool is exhausted and no subnets are available for allocation.
+
+All 256 subnets in the slice’s pool have already been allocated, resulting in a `no available subnets` error.
+
+#### Resolution
+
+Remove unused clusters from the slice or create a new slice with a fresh subnet pool.
+
+### 2. The SliceIpam resource is missing because Dynamic IPAM is not enabled.
+
+The sliceipam resource is not created because `sliceIpamType` parameter was not set to Dynamic in the `SliceConfig`.
+
+#### Resolution
+
+Create a new SliceConfig with sliceIpamType: Dynamic to enable Dynamic IPAM.
+
+### 3. Subnet allocation is not triggered, so the cluster is added but no subnet is assigned.
+
+A cluster is present in the SliceConfig but no subnet is allocated in the SliceIpam status due to controller issues, missing CRDs, or webhook validation failures.
+
+#### Resolution 
+
+Check controller logs for errors, verify the SliceIpam exists, confirm the cluster is listed in SliceConfig, and ensure the controller pod, CRD, and validation webhook are functioning correctly.
+
+### 4. The update failed because multiple processes attempted to modify the resource simultaneously.
+
+The update fails with `the object has been modified;please apply your changes to the latest version and try again` because multiple processes attempted to update SliceIpam at the same time.
+
+#### Resolution 
+
+Allow the controller to retry automatically. If conflicts persist, ensure only one controller pod is running and scale down extra replicas.
+
+### 5. Previous subnet allocation was not preserved, causing the cluster to get a different subnet on rejoin.
+
+A cluster receives a new subnet upon rejoining because the previous allocation was not preserved within the 24-hour grace period or the SliceIpam state was lost.
+
+#### Resolution 
+
+Check if the original subnet is still in the Released state and verify the timestamp. Ensure the SliceIpam resource was not deleted or manually modified.
+
+### 6. The SliceConfig failed validation because an invalid CIDR was provided.
+
+The webhook rejects the `SliceConfig` because the provided `sliceSubnet` is not a valid private IP range.
+
+#### Resolution 
+
+Use only valid private CIDR ranges such as `10.0.0.0/8`, `172.16.0.0/12`, or `192.168.0.0/16`.
