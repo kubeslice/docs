@@ -80,10 +80,17 @@ KubeSlice supports dynamic IP Address Management (IPAM) for efficient utilizatio
 With dynamic IPAM, subnets are allocated on-demand when clusters join a slice, rather than being pre-allocated during slice creation.
 This approach optimizes IP address usage and simplifies network management in multi-cluster environments.
 
-### Key Differences Between Static and Dynamic IPAM
+KubeSlice offers two IPAM modes:
 
-- **Static IPAM**: Pre-allocates all 256 subnets at the time of slice creation, resulting in significant inefficiency—typically more than 99% of the allocated IP space remains unused.
-- **Dynamic IPAM**: Allocates subnets only when clusters join the slice, achieving near 0% IP waste and ensuring optimal utilization of the IP pool.
+- **Static IPAM**: Pre-allocates all 256 subnets at the time of slice creation, resulting in significant inefficiency.
+- **Dynamic IPAM**: Allocates subnets only when clusters join the slice, achieving near 0% IP waste and ensuring optimal utilization of 
+                    the IP pool. Dynamic IPAM eliminates IP address waste while preserving full backward compatibility for existing 
+                    Static IPAM–based slices.
+                
+:::info 
+KubeSlice uses Static IPAM by default. * KubeSlice uses Static IPAM by default. You must set the `sliceIPAMType` parameter to `Dynamic` in the slice 
+configuration to use the dynamic IPAM feature.
+::: 
 
-Dynamic IPAM eliminates IP address waste while preserving full backward compatibility for existing Static IPAM–based slices.
+
 
