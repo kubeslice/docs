@@ -11,7 +11,12 @@ Dynamic IPAM is supported in KubeSlice version 1.5.0 and later.
 :::warning
 You can enable Dynamic IPAM only when creating a new slice. Dynamic IPAM cannot be enabled for existing slices. If you want to use 
 Dynamic IPAM, you must create a new slice with Dynamic IPAM enabled and migrate your workloads to the new slice.
-::: 
+:::
+
+:::note
+The `sliceIPAMType` value `Local` is deprecated. Starting from KubeSlice 1.15.0, use `Static` for static IPAM or `Dynamic` for dynamic IPAM. 
+Existing slices configured with Local IPAM will continue to be supported, but this type will be removed in future releases.
+:::
 
 ## Slice Configuration Parameters
 
@@ -63,7 +68,7 @@ These parameters are related to the slice gateway created for the inter-cluster 
 
 | Parameter                                                         | Parameter Type | Description                                                                                                                                       | Required  |
 | ----------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| sliceGatewayType                                                  | String         | The slice gateway type for inter cluster communication. The value must be `OpenVPN`.                                                              | Mandatory |
+| sliceGatewayType                                                  | String         | The slice gateway type for inter cluster communication. Set the gateway type to `OpenVPN` or `Wiregaurd`.                                         | Mandatory |
 | sliceCaType                                                       | String         | The slice gateway certificate authority type that provides certificates to secure inter-cluster traffic. The value must be always set to `Local`. | Mandatory |
 | [SliceGatewayServiceType](#slice-gateway-service-type-parameters) | Object         | The type of gateway connectivity to use on a cluster. The default value is NodePort.                                                              | Optional  |
 
@@ -201,7 +206,7 @@ spec:
   maxClusters: <2 - 32>       #Ex: 5. By default, the maxClusters value is set to 16
   sliceType: Application
   sliceGatewayProvider:
-    sliceGatewayType: OpenVPN
+    sliceGatewayType: OpenVPN  # Set this value to Wiregaurd if you want to use Wireguard as your VPN provider
     sliceCaType: Local
   sliceIpamType: Local #  The default value is 
   rotationInterval: 60    # If not provided, by default key rotation interval is 30 days
@@ -253,7 +258,7 @@ spec:
   maxClusters: <2 - 32>       #Ex: 5. By default, the maxClusters value is set to 16
   sliceType: Application
   sliceGatewayProvider:
-    sliceGatewayType: OpenVPN
+    sliceGatewayType: OpenVPN # # Set this value to Wiregaurd if you want to use Wireguard as your VPN provider
     sliceCaType: Local
   sliceIpamType: Local    The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
   renewBefore: 2023-07-18T14:27:08Z        #only required if you want to renew your certificates before hand
