@@ -31,7 +31,8 @@ KubeSlice bundles the following services into its architecture:
 |	                       | Multi-Network Overlay	                      | Uses ingress or egress gateways managed through Gateway API for inter-cluster connectivity at L7 (HTTP/HTTPS). No flat L3 network; service discovery uses local cluster IP services.                                                                                                  |
 | Service Discovery	       | Auto Discovery of Services                   | Enables automatic service discovery across clusters participating in a slice, simplifying cross-cluster communication.                                                                                                                                                                |
 |	                       | DNS Entry Management	                      | When a service is exported within a slice, the Slice Operator creates and distributes DNS entries across all participating clusters, ensuring seamless and consistent service resolution.                                                                                             |
-| Dynamic IPAM             | On-Demand Subnet Allocation                  | Replaces static subnet pre-allocation with intelligent, on-demand allocation. Subnets are assigned only when clusters join a slice, not upfront during slice creation.
+
+
 
 ## IP Address Management
 
@@ -60,22 +61,7 @@ The fewer the clusters, the more IP addresses are available for the application 
 of every worker cluster that is part of a slice. By default, the value of the **Maximum Clusters**
 parameter is 16. The supported value range is 2 to 32 clusters.
 
-
-## Connectivity to Clusters in Private VPCs
-
-In addition to connecting public clusters, KubeSlice can also be used to connect clusters that are enclosed within a private VPC. 
-Such clusters are accessed through network or application Load Balancer that are provisioned and managed by the cloud provider. 
-KubeSlice relies on network Load Balancers to setup the inter-cluster connectivity to private clusters.
-
-The following picture illustrates the inter-cluster connectivity set up by KubeSlice using a network Load Balancer (LB).
-
-![loadbalancer](/images/version1.3.0/key-features/support-for-private-clusters.png)
-
-Users can specify the type of connectivity for a cluster. If the cluster is in a private VPC, the user can utilize the `LoadBalancer` 
-connectivity type to connect it to other clusters. The default value is `NodePort`. The user can also configure the gateway protocol 
-while configuring the gateway type. The value can be TCP or UDP. The default value is UDP.
-
-## Dynamic IPAM 
+### Dynamic IPAM 
 KubeSlice supports dynamic IP Address Management (IPAM) for efficient utilization of IP address space across multiple clusters. 
 With dynamic IPAM, subnets are allocated on-demand when clusters join a slice, rather than being pre-allocated during slice creation.
 This approach optimizes IP address usage and simplifies network management in multi-cluster environments.
@@ -93,4 +79,17 @@ configuration to use the dynamic IPAM feature.
 ::: 
 
 
+## Connectivity to Clusters in Private VPCs
+
+In addition to connecting public clusters, KubeSlice can also be used to connect clusters that are enclosed within a private VPC. 
+Such clusters are accessed through network or application Load Balancer that are provisioned and managed by the cloud provider. 
+KubeSlice relies on network Load Balancers to setup the inter-cluster connectivity to private clusters.
+
+The following picture illustrates the inter-cluster connectivity set up by KubeSlice using a network Load Balancer (LB).
+
+![loadbalancer](/images/version1.3.0/key-features/support-for-private-clusters.png)
+
+Users can specify the type of connectivity for a cluster. If the cluster is in a private VPC, the user can utilize the `LoadBalancer` 
+connectivity type to connect it to other clusters. The default value is `NodePort`. The user can also configure the gateway protocol 
+while configuring the gateway type. The value can be TCP or UDP. The default value is UDP.
 

@@ -51,8 +51,8 @@ These parameters are related to the spec configured in the
 | maxClusters                                                          | Integer                                        | The maximum number of clusters that are allowed to connect a slice. **The value of maxClusters can only be set during the slice creation**. The maxClusters value is immutable after the slice creation. The minimum value is 2, and the maximum value is 32. The default value is 16. Example: 5. The maxClusters affect the subnetting across the clusters. For example, if the slice subnet is 10.1.0.0/16 and the maxClusters=16, then each cluster would get a subnet of 10.1.x.0/20, x=0,16,32.                                                                                                                                                                                                                                              | Optional  |
 | sliceType                                                            | String                                         | Denotes the type of the slice. The value must be set to `Application`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Mandatory |
 | [sliceGatewayProvider](#slice-gateway-provider-parameters)           | Object                                         | It is the type of slice gateway created for inter cluster communication.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Mandatory |
-| sliceIpamType                                                        | String                                         | It is the type of the IP address management for the slice subnet. The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Mandatory |
-| subnetSize                                                           | Integer                                        | The subnet size to be allocated to each cluster when a cluster joins the slice. The default subnet size is /24. The range is `16` to `30`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Optional  |
+| sliceIpamType                                                        | String                                         | It is the type of the IP address management for the slice subnet. The default values is `Static`. Set the value to `Dynamic` if you want to enable Dynamic IPAM.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Mandatory |
+| subnetSize                                                           | Integer                                        | The subnet size to be allocated to each cluster when a cluster joins the slice. The default subnet size is `/24`. The range is `16` to `30`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Optional  |
 | rotationInterval                                                     | Integer                                        | The duration in which SliceGateway certificates are periodically renewed or rotated to ensure security and compliance. The default interval is 30 days and the supported range is 30 to 90 days.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Optional  |
 | renewBefore                                                          | Time                                           | The time period before the expiration of SliceGateway certificates during which the renewal process is initiated. It represents the duration prior to certificate expiration when the renewal process is triggered to ensure seamless continuation of secure communication. By setting an appropriate value for renewBefore, certificates can be renewed ahead of time, allowing for any necessary updates or adjustments to be completed before the current certificates expire. This parameter helps avoid potential disruptions by ensuring the availability of valid certificates without waiting until the last moment. If you want to renew it now, provide the current Timestamp. warning: Do not set this parameter during slice creation. | Optional  |
 | [vpnConfig](#openvpn-configuration)                                  | Object                                         | The Slice VPN Gateway is a slice network service component that provides a secure VPN tunnel between multiple clusters that are a part of the slice configuration.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Optional  |
@@ -207,8 +207,8 @@ spec:
   sliceType: Application
   sliceGatewayProvider:
     sliceGatewayType: OpenVPN  # Set this value to Wiregaurd if you want to use Wireguard as your VPN provider
-    sliceCaType: Local
-  sliceIpamType: Local #  The default value is 
+    sliceCaType: Local  
+  sliceIpamType: Static # The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
   rotationInterval: 60    # If not provided, by default key rotation interval is 30 days
   vpnConfig:
      cipher: AES-128-CBC       # If not provided, by default cipher is AES-256-CBC
@@ -260,7 +260,7 @@ spec:
   sliceGatewayProvider:
     sliceGatewayType: OpenVPN # # Set this value to Wiregaurd if you want to use Wireguard as your VPN provider
     sliceCaType: Local
-  sliceIpamType: Local    The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
+  sliceIpamType: Static  #  The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
   renewBefore: 2023-07-18T14:27:08Z        #only required if you want to renew your certificates before hand
   rotationInterval: 60    # If not provided, by default key rotation interval is 30 days
   clusters:
@@ -415,7 +415,7 @@ spec:
   sliceGatewayProvider:
     sliceGatewayType: OpenVPN
     sliceCaType: Local   
-  sliceIpamType: Local # The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
+  sliceIpamType: Static # The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
   clusters:
     - <registered-cluster-name-1>
     - <registered-cluster-name-2>
@@ -475,7 +475,7 @@ spec:
   sliceGatewayProvider:
     sliceGatewayType: OpenVPN
     sliceCaType: Local
-  sliceIpamType: Local  The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
+  sliceIpamType: Static  The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
   clusters:
     - <registered-cluster-name-1>
     - <registered-cluster-name-2>
@@ -534,7 +534,7 @@ spec:
   sliceGatewayProvider:
     sliceGatewayType: OpenVPN
     sliceCaType: Local
-  sliceIpamType: Local    The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
+  sliceIpamType: Static    The default values is Static. Set the value to Dynamic if you want to enable Dynamic IPAM
   clusters:
     - <registered-cluster-name-1>
     - <registered-cluster-name-2>
@@ -674,7 +674,7 @@ spec:
   sliceGatewayProvider:
     sliceGatewayType: OpenVPN
     sliceCaType: Local
-  sliceIpamType: Local
+  sliceIpamType: Static
   clusters:
     - cluster-1
     - cluster-2
@@ -694,7 +694,7 @@ spec:
   sliceGatewayProvider:
     sliceGatewayType: OpenVPN
     sliceCaType: Local
-  sliceIpamType: Local
+  sliceIpamType: Static
   clusters:
     - cluster-1
     - cluster-2
