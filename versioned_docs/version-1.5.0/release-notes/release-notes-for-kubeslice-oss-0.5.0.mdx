@@ -1,0 +1,49 @@
+# Release Notes for KubeSlice OSS 0.5.0
+
+*Release date: 29th December 2022*
+
+KubeSlice is a ***cloud-independent*** platform that combines network, application, Kubernetes, and deployment services 
+in a framework to accelerate application deployment in a multi-cluster and multi-tenant environment. KubeSlice achieves this 
+by creating logical application ***slice*** boundaries that enable seamless communication between pods and services across 
+clusters, clouds, edges, and data centers.
+
+We continue to add new features and enhancements to KubeSlice. 
+
+## What's New
+These release notes describe the new changes and enhancements in this version.
+
+### Network Service Mesh Upgrade 
+The Network Service Mesh (NSM) component has been upgraded to the stable 
+[GA version 1.5.0](https://networkservicemesh.io/docs/releases/v1.5.0/) that provides upstream networking fixes. 
+
+### Latest Supported Kubernetes Version 
+The latest Kubernetes version that we support from this release is version [1.24](https://v1-24.docs.kubernetes.io/). 
+
+### Enhancements 
+* When the **namespace sameness** is applied to a namespace on a slice, then it applies to all worker 
+  clusters that are part of the slice. If a worker cluster does not already have that namespace, it is now created. This 
+  ensures that all the worker clusters that are part of a slice will have that 
+  namespace for which the namespace sameness is applied. This created namespace remains on the worker 
+  cluster even after the worker cluster is detached from that slice, and even when that slice is deleted.
+
+## Known Issues
+The known issues are as follows:
+
+- If the SPIRE server takes time to start up, the **spire-server** pod continues to restart, thus delaying the completion 
+of cluster registration by 120 seconds. The worker cluster can only be added to a slice after this.
+  
+  Workaround: None
+
+- After a slice is created, the gateway connectivity takes approximately 120 seconds to establish a tunnel.
+ 
+  Workaround: None
+
+- Istio version 1.13 is incompatible with Kubernetes version 1.24. It might cause issues with KubeSlice version 0.5.0, which 
+  now supports Kubernetes version 1.24. However, KubeSlice version 0.5.0 can be installed without Istio too.
+  
+  Workaround: In the following topics, you must skip the steps related to Istio:
+
+  * [Prerequisites](/versioned_docs/version-1.3.0/get-started/prerequisites/prerequisites-install-istio.mdx)
+  * [Register the worker cluster](versioned_docs/version-1.3.0/install-kubeslice/yaml/yaml-register-worker-clusters.mdx)
+  * [Create a slice](/versioned_docs/version-1.3.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx)
+  * [Deploy the BookInfo application](/versioned_docs/version-1.3.0/tutorials/yaml-tutorials/deploy-the-bookinfo-application.mdx)
