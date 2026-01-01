@@ -1,0 +1,372 @@
+# Flexible Topology Configuration
+
+KubeSlice supports flexible topology configurations that allow you to define custom gateway connectivity patterns between worker clusters in a slice. This feature provides fine-grained control over which worker clusters can communicate directly, enabling network segmentation and optimized traffic patterns.
+
+## Overview
+
+By default, KubeSlice creates a **Full Mesh** topology where every worker cluster in a slice has direct VPN gateway connections to all other worker clusters. With flexible topology configuration, you can override this behavior to create:
+
+- **Custom topologies** with selective cluster-to-cluster connections
+- **Hub-and-spoke** patterns where traffic routes through a central cluster
+- **Restricted topologies** for security and compliance requirements
+- **Optimized networks** to reduce gateway resource consumption
+
+## Topology Types
+
+### Full Mesh (Default)
+
+In a full mesh topology, every worker cluster has direct gateway connections to all other clusters in the slice.
+
+**Use Cases:**
+- Low-latency requirements between all clusters
+- High inter-cluster traffic volumes
+- Maximum redundancy and fault tolerance
+
+**Example:** For 3 worker clusters (worker-1, worker-2, worker-3):
+```
+worker-1 ↔ worker-2
+worker-1 ↔ worker-3
+worker-2 ↔ worker-3
+```
+
+### Custom Topology
+
+Custom topology allows you to explicitly define which clusters can connect directly. Clusters without direct connections can still communicate through intermediate clusters via routing.
+
+**Use Cases:**
+- Specific compliance requirements limiting connectivity
+- Cost optimization by reducing gateway instances
+- Geographic or organizational boundaries
+- Multi-tier application architectures
+
+**Example:** Hub-and-spoke through worker-1:
+```
+worker-1 ↔ worker-2
+worker-1 ↔ worker-3
+(worker-2 and worker-3 communicate via worker-1)
+```
+
+### Restricted Topology
+
+Restricted topology creates isolated clusters within a slice where certain clusters have no direct or indirect paths to each other. This is useful for complete network segmentation.
+
+**Use Cases:**
+- Strong security isolation requirements
+- Testing and development environments
+- Multi-tenant scenarios with strict separation
+- Disaster recovery with isolated regions
+
+**Example:** Isolated pairs:
+```
+worker-1 ↔ worker-2
+worker-3 ↔ worker-4
+(No path between worker-1/2 and worker-3/4)
+```
+
+## Configuration Parameters
+
+### SliceConfig Topology Fields
+
+Add the `topologyConfig` section to your `SliceConfig` YAML to define custom topologies.
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| `topologyConfig` | Object | Container for topology configuration | Optional |
+| `topologyConfig.type` | String | Topology type: `FullMesh`, `Custom`, or `Restricted` | Mandatory when using topologyConfig |
+| `topologyConfig.gatewayConnectivity` | Array | List of gateway connection definitions | Mandatory for `Custom` and `Restricted` types |
+| `gatewayConnectivity[].clusterPair` | Array | Two-element array specifying connected clusters | Mandatory |
+| `gatewayConnectivity[].gwProtocol` | String | VPN protocol for this connection (e.g., `OpenVPN`) | Optional (inherits from slice-level config) |
+
+## Creating Slices with Custom Topologies
+
+### Full Mesh Topology (Default)
+
+If you don't specify `topologyConfig`, KubeSlice automatically creates a full mesh.
+
+```yaml
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: my-fullmesh-slice
+  namespace: kubeslice-demo
+spec:
+  sliceSubnet: 10.1.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - worker-1
+    - worker-2
+    - worker-3
+  # No topologyConfig - defaults to full mesh
+```
+
+### Custom Hub-and-Spoke Topology
+
+Route all traffic through a central hub cluster.
+
+```yaml
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: hub-spoke-slice
+  namespace: kubeslice-demo
+spec:
+  sliceSubnet: 10.2.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - hub-cluster
+    - spoke-1
+    - spoke-2
+    - spoke-3
+  topologyConfig:
+    type: Custom
+    gatewayConnectivity:
+      - clusterPair:
+          - hub-cluster
+          - spoke-1
+      - clusterPair:
+          - hub-cluster
+          - spoke-2
+      - clusterPair:
+          - hub-cluster
+          - spoke-3
+```
+
+### Restricted Topology with Isolated Regions
+
+Create completely isolated cluster groups within a slice.
+
+```yaml
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: restricted-regions-slice
+  namespace: kubeslice-demo
+spec:
+  sliceSubnet: 10.3.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - us-east-1
+    - us-east-2
+    - eu-west-1
+    - eu-west-2
+  topologyConfig:
+    type: Restricted
+    gatewayConnectivity:
+      # US region isolated from EU region
+      - clusterPair:
+          - us-east-1
+          - us-east-2
+      - clusterPair:
+          - eu-west-1
+          - eu-west-2
+```
+
+### Partial Mesh Topology
+
+Connect some clusters directly while routing others through intermediaries.
+
+```yaml
+apiVersion: controller.kubeslice.io/v1alpha1
+kind: SliceConfig
+metadata:
+  name: partial-mesh-slice
+  namespace: kubeslice-demo
+spec:
+  sliceSubnet: 10.4.0.0/16
+  sliceType: Application
+  sliceGatewayProvider:
+    sliceGatewayType: OpenVPN
+    sliceCaType: Local
+  sliceIpamType: Local
+  clusters:
+    - cluster-a
+    - cluster-b
+    - cluster-c
+    - cluster-d
+  topologyConfig:
+    type: Custom
+    gatewayConnectivity:
+      # High-traffic pair
+      - clusterPair:
+          - cluster-a
+          - cluster-b
+      # Route C and D through B
+      - clusterPair:
+          - cluster-b
+          - cluster-c
+      - clusterPair:
+          - cluster-b
+          - cluster-d
+      # Optional direct connection for DR
+      - clusterPair:
+          - cluster-a
+          - cluster-c
+```
+
+## Applying Topology Configuration
+
+### Create the Slice
+
+Apply the `SliceConfig` to the KubeSlice Controller project namespace:
+
+```bash
+kubectl apply -f my-topology-slice.yaml -n kubeslice-demo
+```
+
+### Verify Gateway Connectivity
+
+Check that the expected gateway pairs are created:
+
+```bash
+# List WorkerSliceGateway resources
+kubectl get workerslicegateways -n kubeslice-demo
+
+# Check specific gateway status
+kubectl describe workerslicegateway my-slice-cluster-a-cluster-b -n kubeslice-demo
+```
+
+Expected output shows only the configured gateway pairs:
+```
+NAME                           AGE
+hub-spoke-slice-hub-spoke-1    2m
+hub-spoke-slice-hub-spoke-2    2m
+hub-spoke-slice-hub-spoke-3    2m
+```
+
+### Validate Connectivity
+
+Test connectivity between configured cluster pairs:
+
+```bash
+# From an application pod in spoke-1
+kubectl exec -it my-app-pod -n iperf -- ping <service-in-hub>.iperf.svc.slice.local
+
+# From an application pod in spoke-2
+kubectl exec -it my-app-pod -n iperf -- ping <service-in-spoke-1>.iperf.svc.slice.local
+```
+
+In a hub-spoke topology, spoke-to-spoke traffic routes through the hub.
+
+## Best Practices
+
+### Topology Design
+
+1. **Start with Full Mesh** for initial deployments and testing
+2. **Identify traffic patterns** before moving to custom topologies
+3. **Consider latency** - custom topologies may introduce additional hops
+4. **Plan for scale** - hub-and-spoke reduces gateway count from O(n²) to O(n)
+
+### Gateway Placement
+
+1. **Hub cluster selection** - choose clusters with:
+   - High bandwidth capacity
+   - Central geographic location
+   - High availability requirements
+2. **Redundancy** - consider creating multiple hubs for critical paths
+3. **Resource allocation** - hub clusters require more gateway resources
+
+### Security Considerations
+
+1. **Restricted topologies** for compliance boundaries
+2. **Network policies** still apply within topology constraints
+3. **Service exports** honor topology - only connected clusters can import
+4. **Audit logging** track which clusters can communicate
+
+## Monitoring and Troubleshooting
+
+### Check Gateway Status
+
+```bash
+# List all gateways in slice
+kubectl get workerslicegateway -n kubeslice-demo \
+  -l kubeslice.io/slice=my-slice
+
+# Check gateway pod status on worker clusters
+kubectl get pods -n kubeslice-system \
+  -l kubeslice.io/slice-gw=my-slice
+```
+
+### Verify Routing
+
+For custom topologies, verify that routing tables are correctly configured:
+
+```bash
+# On worker cluster, check slice router
+kubectl logs -n kubeslice-system \
+  $(kubectl get pods -n kubeslice-system -l kubeslice.io/pod-type=router -o name | head -1) \
+  -c kubeslice-vl3-sidecar
+```
+
+### Common Issues
+
+#### Pods Can't Communicate Across Expected Path
+
+**Cause:** Missing gateway connectivity definition or routing issue
+
+**Resolution:**
+1. Verify `gatewayConnectivity` includes the required cluster pair
+2. Check intermediate clusters are included if using multi-hop routing
+3. Confirm gateway pods are running and connected
+
+#### Gateway Not Created
+
+**Cause:** Invalid cluster names or topology type
+
+**Resolution:**
+1. Ensure cluster names in `clusterPair` match those in `clusters` list
+2. Verify topology type is `Custom` or `Restricted` when using `gatewayConnectivity`
+3. Check controller logs for validation errors
+
+## Updating Topology Configuration
+
+You can update the topology of an existing slice by modifying the `SliceConfig`:
+
+```bash
+# Edit the slice configuration
+kubectl edit sliceconfig my-slice -n kubeslice-demo
+
+# Or apply updated YAML
+kubectl apply -f updated-topology-slice.yaml -n kubeslice-demo
+```
+
+**Note:** Topology changes trigger:
+1. Deletion of removed gateway pairs
+2. Creation of new gateway pairs
+3. Brief service disruption during gateway reconciliation
+
+## Resource Impact
+
+### Full Mesh vs Custom Topology
+
+For `n` worker clusters:
+
+| Topology | Gateway Pairs | Resource Multiplier |
+|----------|--------------|---------------------|
+| Full Mesh | n × (n-1) / 2 | High (O(n²)) |
+| Hub-Spoke (1 hub) | n - 1 | Low (O(n)) |
+| Custom | Variable | Depends on design |
+| Restricted | Variable | Lowest (minimal pairs) |
+
+**Example with 5 worker clusters:**
+- Full Mesh: 10 gateway pairs (20 gateway pods total)
+- Hub-Spoke: 4 gateway pairs (8 gateway pods total)
+- Savings: 60% reduction in gateway resources
+
+## Related Topics
+
+- [Creating a Slice](/versioned_docs/version-1.4.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx)
+- [Slice Configuration Parameters](/versioned_docs/version-1.4.0/install-kubeslice/yaml/slice-operations/slice-operations-slice-creation.mdx)
+- [Topology Configuration Parameters](/versioned_docs/version-1.4.0/install-kubeslice/kubeslice-cli/topology-configuration.mdx)
+- [KubeSlice Architecture](/versioned_docs/version-1.4.0/overview/architecture.mdx)
